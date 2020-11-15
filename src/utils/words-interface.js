@@ -5,6 +5,19 @@ import DataSource from './data-source';
 const userData = DataSource.retrieveUserData();
 console.log('userData', userData);
 
+function fullWordList() {
+	var universal = wordHash;
+	var custom = userData.custom;
+	var fullList = { ...universal, ...custom };
+
+	return fullList;
+}
+
+function saveCustomWord(word, def) {
+	userData.custom[word] = def;
+	DataSource.saveUserData(userData);
+}
+
 function getActiveList() {
 	var newActiveList = Object.keys(userData.active);
 	return newActiveList;
@@ -35,8 +48,9 @@ function getActiveEntry(word) {
 }
 
 function getWordObj(word) {
-	if (wordHash[word]) {
-		return { word, def: wordHash[word] };
+	var fullList = fullWordList();
+	if (fullList[word]) {
+		return { word, def: fullList[word] };
 	} else {
 		console.log(word, 'not found');
 		return {};
@@ -60,6 +74,8 @@ function hasNotes(word) {
 }
 
 const WordsInterface = {
+	fullWordList,
+	saveCustomWord,
 	getActiveList,
 	isActiveEntry,
 	toggleActive,

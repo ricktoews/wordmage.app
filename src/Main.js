@@ -1,35 +1,16 @@
-/*
-	myWords: 
-	{
-		"custom": [custom words],
-		"active": [word with notes],
-		"archive": [word with notes]	
-	}
-
-	custom words:
-	{ [word]: [definition] }
-
-	word with notes:
-	{ [word]: [notes] }
-
- */
 import { useState } from 'react';
 import WordList from './components/WordList';
 import Spotlight from './components/Spotlight';
 import ActiveList from './components/ActiveList';
-import wordHash from './data/word-list.json';
 import WordsInterface from './utils/words-interface';
 
+const wordHash = WordsInterface.fullWordList();
 const wordList = Object.keys(wordHash);
-/*
-const active = [
-  'spurious', 'apophenia', 'specious', 'apophasis', 'vespertilionize', 'scytale'
-];
-*/
 
 function Main(props) {
 	const [item, setItem] = useState(WordsInterface.getWordObj('scytale'));
 	const [activeList, setActiveList] = useState(WordsInterface.getActiveList());
+	const [fullWordList, setFullWordList] = useState(wordHash);
 
 	const selectActive = word => {
 		var item = WordsInterface.getWordObj(word); // wordList.find(wordItem => Object.keys(wordItem)[0] === word);
@@ -43,6 +24,10 @@ function Main(props) {
 		
 	}
 
+	const updateWordList = () => {
+		setFullWordList(WordsInterface.fullWordList());
+	}
+
 	return (
 	<div className="container">
 	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' hide-section' : '')}>
@@ -51,7 +36,7 @@ function Main(props) {
 	  </div>
 
 	  <div className={'word-list-container' + (props.view !== 'word-list-container' ? ' hide-section' : '')}>
-	    <WordList toggleActive={toggleActive} />
+	    <WordList addWordState={props.addWordState} cancelAddWord={props.cancelAddWord} fullWordList={fullWordList} toggleActive={toggleActive} updateWordList={updateWordList} />
 	  </div>
 
 	</div>

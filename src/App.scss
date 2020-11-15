@@ -1,6 +1,19 @@
 /*
   COLORS
 */
+$add-word-background: #5887AA;
+$add-word-heading: #eee;
+$add-word-heading-size: 16pt;
+
+$btn-add-background: red;
+
+$btn-font-size: 14pt;
+$btn-background: #5887AA;
+$btn-color: white;
+$btn-save-background: green;
+$btn-cancel-background: red;
+
+
 $word-background: #54564F;
 $word-color: #ffffff;
 
@@ -18,26 +31,53 @@ $header-height: 30px;
 $spotlight-width: $maxwidth - 2*$header-height;
 $spotlight-height: 200px;
 
+.btn {
+	font-size: $btn-font-size;
+	border: none;
+	color: $btn-color;
+
+	&.btn-toggle {
+		display: flex;
+		border-radius: 10px;
+		justify-content: center;
+		align-items: center;
+		background-color: $btn-background;
+	}
+
+	&.btn-add {
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		font-size: 18pt;
+		padding: 0;
+		border-radius: 50%;
+		width: 25px;
+		height: 25px;
+		background-color: $btn-add-background;
+	}
+}
+
 .App-header {
-  position: sticky;
-  z-index: 100;
-  top: 0;
-  background-color: #eee;
-  height: $header-height;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  color: white;
+	position: fixed;
+	width: 100vw;
+	z-index: 100;
+	top: 0;
+	background-color: #eee;
+	height: $header-height;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	color: black;
 }
 
 .container {
 	position: relative;
+	top: $header-height;
 	height: calc(100vh - #{$header-height});
 	.word-list-container {
 		z-index: 100;
 
 		.word-list-wrapper {
-			display: flex;
 
 			ul {
 				padding: 0;
@@ -71,6 +111,72 @@ $spotlight-height: 200px;
 			}
 
 		}
+
+	.add-word-container {
+		backdrop-filter: blur(2px);
+		position: absolute;
+		width: 100vw;
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+
+		.add-word-wrapper {
+			position: relative;
+			top: 30px;
+			width: $spotlight-width;
+			min-height: $spotlight-height;
+
+			.add-word {
+				background-color: $add-word-background;
+				padding: 10px;
+	
+				h2 {
+					color: $add-word-heading;
+					font-size: $add-word-heading-size;
+					margin: 0;
+				}
+
+				.button-wrapper {
+					display: flex;
+					justify-content: space-between;
+				
+					.btn {
+						font-size: $btn-font-size;
+						border: none;
+						border-radius: 15px;
+						color: $btn-color;
+
+						&.btn-save {
+							background-color: $btn-save-background;
+						}
+
+						&.btn-cancel {
+							background-color: $btn-cancel-background;
+						}
+					}
+				}
+
+				.word input {
+					width: calc(100% - 10px);
+					font-size: 16pt;
+					color: red;
+					padding: 5px;
+					border: none;
+					border-radius: 10px;
+				}
+				.of-interest textarea {
+					font-size: 16pt;
+					width: calc(100% - 10px);
+					color: $word-color;
+					padding: 5px;
+					border: none;
+					border-radius: 10px;
+				}
+			}
+		}
+	}
+
 	}
 
 }
