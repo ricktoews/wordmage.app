@@ -1,0 +1,169 @@
+/*
+  COLORS
+*/
+$word-background: #54564F;
+$word-color: #ffffff;
+
+$info-background: #A8AFA5;
+$info-color: #000000;
+
+$notes-heading-background: #5887AA;
+$notes-heading-color: #ffffff;
+
+$notes-background: #88B8BA;
+$notes-color: #ffffff;
+
+$maxwidth: 400px;
+$header-height: 30px;
+$spotlight-width: $maxwidth - 2*$header-height;
+$spotlight-height: 200px;
+
+.App-header {
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  background-color: #eee;
+  height: $header-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+}
+
+.container {
+	position: relative;
+	height: calc(100vh - #{$header-height});
+	.word-list-container {
+		z-index: 100;
+
+		.word-list-wrapper {
+			display: flex;
+
+			ul {
+				padding: 0;
+				margin: 0;
+				list-style-type: none;
+			}
+
+			ul.word-list {
+
+				li {
+					padding: 5px;
+
+					&.active {
+						color: green;
+					}
+				}
+			}
+
+			ul.alphabet {
+				padding-left: 20px;
+				li {
+					width: 20px;
+					height: 20px;
+					border-radius: 50%;
+					color: white;
+					background-color: green;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+
+		}
+	}
+
+}
+	
+
+.rehearse {
+	z-index: 100;
+	display: flex;
+	justify-content: center;
+
+	.spotlight-container {
+		position: absolute;
+		width: 100vw;
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+
+		.spotlight-wrapper {
+			position: relative;
+			top: 30px;
+			width: $spotlight-width;
+			min-height: $spotlight-height;
+
+			.spotlight {
+	
+				.word {
+					display: flex;
+					justify-content: space-between;
+					background-color: $word-background;
+					color: $word-color;
+					padding: 5px;
+					border-bottom: 1px groove black;
+				}
+				.of-interest {
+					background-color: $info-background;
+					color: $info-color;
+					padding: 5px;
+	
+					&.closed {
+						display: none;
+					}
+				}
+				.user-notes-heading {
+					background-color: $notes-heading-background;
+					color: $notes-heading-color;
+					padding: 5px;
+				}
+				.user-notes {
+					background-color: $notes-background;
+					color: $notes-color;
+					padding: 5px;
+				}
+			}
+		}
+	}
+
+	.focus-list {
+		position: absolute;
+		bottom: 150px; // Should be above bottom of screen, not this. FIX!
+		width: $spotlight-width;
+
+		ul {
+			padding: 0;
+			margin: 0;
+			list-style-type: none;
+			display: flex;
+			flex-wrap: wrap;
+			justify-conten: flex-start;
+			align-items: flex-start;
+
+			li {
+				margin: 5px;
+				padding: 5px;
+				font-size: 15pt; // FIX
+				background-color: #09f; // FIX
+				border-radius: 5px;
+				color: white;
+			}
+		}
+	}
+}
+
+.hide-section {
+	display: none;
+}
+
+
+
+.icon-open {
+	transform: rotate(180deg);
+}
+
+.icon-closed {
+}
+

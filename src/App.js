@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+
+import Main from './Main';
+
+import './App.scss';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+	const [ view, setView ] = useState('rehearse');
+
+	const handleViewToggle = () => {
+		let newView = view === 'rehearse' ? 'word-list-container' : 'rehearse';
+		setView(newView);
+	};
+
+	return (
+	<div className="App">
+	  <header className="App-header">
+	    Catalogue of Cool Words
+	    <button onClick={handleViewToggle}>Toggle View</button>
+	  </header>
+	  <Main view={view} />
+	</div>
+	);
+}	
 
 export default App;
