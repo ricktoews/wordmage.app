@@ -116,7 +116,7 @@ $spotlight-height: 200px;
 	position: relative;
 	top: $header-height;
 	height: calc(100vh - #{$header-height});
-	.word-list-container {
+	.word-list-container, .archive-container {
 		z-index: 100;
 
 		.word-list-wrapper {
@@ -210,10 +210,6 @@ $spotlight-height: 200px;
 						&.btn-cancel {
 							background-color: $btn-cancel-background;
 						}
-
-						&.btn-archive {
-							background-color: $btn-archive-background;
-						}
 					}
 				}
 
@@ -290,6 +286,22 @@ $spotlight-height: 200px;
 					background-color: $notes-background;
 					color: $notes-color;
 					padding: 5px;
+				}
+
+				.button-wrapper {
+					display: flex;
+					justify-content: space-between;
+				
+					.btn {
+						font-size: $btn-font-size;
+						border: none;
+						border-radius: 15px;
+						color: $btn-color;
+
+						&.btn-archive {
+							background-color: $btn-archive-background;
+						}
+					}
 				}
 			}
 		}

@@ -5,12 +5,12 @@ import Main from './Main';
 
 import './App.scss';
 
-const ToggleLabels = ['Word List', 'Spotlight'];
+const ToggleLabels = ['Word List', 'Spotlight', 'Archive'];
 
 function App() {
-	const [ view, setView ] = useState('word-list-container');
+	const [ view, setView ] = useState('rehearse');
 	const [ addWordState, setAddWordState ] = useState(false);
-	const [ toggleLabel, setToggleLabel ] = useState(ToggleLabels[1]);
+	const [ toggleLabel, setToggleLabel ] = useState(ToggleLabels[0]);
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
 	const navToWordList = () => {
@@ -26,6 +26,8 @@ function App() {
 	}
 
 	const navToArchive = () => {
+		setView('archive-container');
+		setToggleLabel(ToggleLabels[2]);
 		setHamburgerClass('hamburger-nav');
 	}
 

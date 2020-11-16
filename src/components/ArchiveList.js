@@ -1,14 +1,10 @@
 import WordItem from './WordItem';
 import LetterItem from './LetterItem';
-import AddWord from './AddWord';
 import WordsInterface from '../utils/words-interface';
 
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-function WordList(props) {
-	const wordList = Object.keys(props.fullWordList).sort();
-console.log('WordList addWordState', props);
-
+function ArchiveList(props) {
+	const wordList = Object.keys(props.archiveWordList).sort();
+console.log('ArchiveList', props.archiveWordList, wordList);
 	const toggleActive = word => {
 		props.toggleActive(word);
 	}
@@ -19,7 +15,6 @@ console.log('WordList addWordState', props);
 
 	return (
 	<div className="word-list-wrapper">
-	  { props.addWordState ? <AddWord cancelAddWord={props.cancelAddWord} updateWordList={updateWordList} /> : <div/> }
 	  <ul className="word-list">
             { wordList.map((word, key) => <WordItem key={key} word={word} toggleActive={toggleActive} />)}
 	  </ul>
@@ -27,5 +22,5 @@ console.log('WordList addWordState', props);
 	);
 }
 
-export default WordList;
+export default ArchiveList;
 

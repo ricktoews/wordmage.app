@@ -4,7 +4,6 @@ import WordsInterface from '../utils/words-interface';
 function WordItem(props) {
 	const wordHash = WordsInterface.fullWordList();
 	const def = wordHash[props.word];
-
 	const className = WordsInterface.isActiveEntry(props.word) ? 'active' : '';
 	
 	const toggleActiveHandler = e => {
