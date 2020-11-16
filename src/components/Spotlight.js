@@ -17,6 +17,10 @@ function Spotlight(props) {
 		setOpen(!open);		
 	};
 
+	const archiveWord = e => {
+		WordsInterface.archiveWord(item.word);
+	}
+
 	const handleChange = e => {
 		var el = e.target;
 		var notes = el.textContent;
@@ -42,6 +46,9 @@ function Spotlight(props) {
 	      </div>
 	      <div className="user-notes" onBlur={handleChange} contentEditable={true} suppressContentEditableWarning={true}>
 	        {notes}
+	      </div>
+	      <div className="button-wrapper">
+	        <button class="btn btn-archive" onClick={archiveWord}>Archive</button>
 	      </div>
 	    </div>
 	  </div>

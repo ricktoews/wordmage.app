@@ -73,6 +73,13 @@ function hasNotes(word) {
 	return result;
 }
 
+function archiveWord(word) {
+	console.log('archiveWord', word);
+	userData.archived[word] = userData.active[word];
+	delete userData.active[word];
+	DataSource.saveUserData(userData);
+}
+
 const WordsInterface = {
 	fullWordList,
 	saveCustomWord,
@@ -83,7 +90,8 @@ const WordsInterface = {
 	getWordObj,
 	saveNotes,
 	getNotes,
-	hasNotes
+	hasNotes,
+	archiveWord
 };
 
 export default WordsInterface;

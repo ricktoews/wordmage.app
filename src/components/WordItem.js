@@ -12,7 +12,7 @@ function WordItem(props) {
 	};
 
 	return (
-	<li className={className} onClick={toggleActiveHandler}>{props.word}: {def}</li>
+	<li className={className} onClick={toggleActiveHandler}><div className="list-word">{props.word}</div><div className="list-def">{def}</div></li>
 	);
 }
 

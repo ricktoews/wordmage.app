@@ -5,17 +5,24 @@ $add-word-background: #5887AA;
 $add-word-heading: #eee;
 $add-word-heading-size: 16pt;
 
-$btn-add-background: red;
+$site-green: #008800;
+$site-red: #de3c4b;
+
+$btn-add-background: $site-red;
 
 $btn-font-size: 14pt;
-$btn-background: #5887AA;
+$btn-background: #45425a;
 $btn-color: white;
-$btn-save-background: green;
-$btn-cancel-background: red;
+$btn-save-background: $site-green;
+$btn-cancel-background: $site-red;
 
+$btn-archive-background: $site-red;
 
-$word-background: #54564F;
-$word-color: #ffffff;
+$list-word-color: #f4e3c9;
+$list-word-background: #6c7d47;
+
+$word-color: $list-word-color;
+$word-background: $list-word-background;
 
 $info-background: #A8AFA5;
 $info-color: #000000;
@@ -27,7 +34,7 @@ $notes-background: #88B8BA;
 $notes-color: #ffffff;
 
 $maxwidth: 400px;
-$header-height: 30px;
+$header-height: 50px;
 $spotlight-width: $maxwidth - 2*$header-height;
 $spotlight-height: 200px;
 
@@ -57,17 +64,52 @@ $spotlight-height: 200px;
 	}
 }
 
+.hamburger-nav {
+	position: fixed;
+	z-index: 200;
+	top: $header-height - 10;
+	width: 150px;
+	height: 100vh;
+	background-color: $site-red;
+	transition-duration: .5s;
+	left: -150px;
+
+	ul {
+		margin: 5px;
+		padding: 0;
+		list-style-type: none;
+
+		li {
+			font-size: 1.5em;
+			padding: 3px;
+			margin-bottom: 20px;
+			color: white;
+		}
+	}
+}
+.hamburger-on {
+	transition-duration: .5s;
+	left: 0;
+}
+
+
 .App-header {
 	position: fixed;
 	width: 100vw;
 	z-index: 100;
 	top: 0;
-	background-color: #eee;
 	height: $header-height;
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-	color: black;
+
+	.header-content {
+		background-color: #575c55;
+		height: $header-height - 10;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 5px;
+		color: white;
+		box-shadow: 0px 1px 3px gray;
+	}
 }
 
 .container {
@@ -88,10 +130,24 @@ $spotlight-height: 200px;
 			ul.word-list {
 
 				li {
-					padding: 5px;
+					margin-bottom: 10px;
+					background-color: #f4e3c9;
+					border-bottom: 1px solid #242729;
 
 					&.active {
-						color: green;
+						color: #90373b;
+					}
+					.list-word {
+						font-size: 1.25em;
+						padding: 5px;
+						display:block;
+						color: $list-word-color;
+						background-color: $list-word-background;
+					}
+					.list-def {
+						font-size: 1em;
+						padding: 5px;
+						color: #575c55;
 					}
 				}
 			}
@@ -154,6 +210,10 @@ $spotlight-height: 200px;
 						&.btn-cancel {
 							background-color: $btn-cancel-background;
 						}
+
+						&.btn-archive {
+							background-color: $btn-archive-background;
+						}
 					}
 				}
 
@@ -207,6 +267,7 @@ $spotlight-height: 200px;
 					display: flex;
 					justify-content: space-between;
 					background-color: $word-background;
+					font-size: 1.25em;
 					color: $word-color;
 					padding: 5px;
 					border-bottom: 1px groove black;
