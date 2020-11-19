@@ -1,10 +1,8 @@
+@import './WordForm.scss';
+
 /*
   COLORS
 */
-$add-word-background: #5887AA;
-$add-word-heading: #eee;
-$add-word-heading-size: 16pt;
-
 $site-green: #008800;
 $site-red: #de3c4b;
 
@@ -19,7 +17,7 @@ $btn-cancel-background: $site-red;
 $btn-archive-background: $site-red;
 
 $list-word-color: #f4e3c9;
-$list-word-background: #6c7d47;
+$list-word-background: #37AFFF;
 
 $word-color: $list-word-color;
 $word-background: $list-word-background;
@@ -27,7 +25,7 @@ $word-background: $list-word-background;
 $info-background: #A8AFA5;
 $info-color: #000000;
 
-$notes-heading-background: #5887AA;
+$notes-heading-background: #5CBEFF;
 $notes-heading-color: #ffffff;
 
 $notes-background: #88B8BA;
@@ -38,8 +36,21 @@ $header-height: 50px;
 $spotlight-width: $maxwidth - 2*$header-height;
 $spotlight-height: 200px;
 
+.btn-tiny {
+}
+
+.glyph-btn {
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	border: none;
+	color: white;
+	margin: 2px;
+	background-color: red;
+}
+
 .btn {
-	font-size: $btn-font-size;
+//	font-size: $btn-font-size;
 	border: none;
 	color: $btn-color;
 
@@ -137,104 +148,29 @@ $spotlight-height: 200px;
 					&.active {
 						color: #90373b;
 					}
-					.list-word {
-						font-size: 1.25em;
-						padding: 5px;
-						display:block;
-						color: $list-word-color;
-						background-color: $list-word-background;
+					.list-item {
+						position: relative;
+						
+						.list-word {
+							font-size: 1.25em;
+							padding: 5px;
+							display:block;
+							background-color: $list-word-background;
+						}
+						.list-button-wrapper {
+							position: absolute;
+							top: 0;
+							right: 0;
+						}
 					}
 					.list-def {
 						font-size: 1em;
 						padding: 5px;
-						color: #575c55;
 					}
-				}
-			}
-
-			ul.alphabet {
-				padding-left: 20px;
-				li {
-					width: 20px;
-					height: 20px;
-					border-radius: 50%;
-					color: white;
-					background-color: green;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-				}
-			}
-
-		}
-
-	.add-word-container {
-		backdrop-filter: blur(2px);
-		position: absolute;
-		width: 100vw;
-		height: 100%;
-
-		display: flex;
-		justify-content: center;
-
-		.add-word-wrapper {
-			position: relative;
-			top: 30px;
-			width: $spotlight-width;
-			min-height: $spotlight-height;
-
-			.add-word {
-				background-color: $add-word-background;
-				padding: 10px;
-	
-				h2 {
-					color: $add-word-heading;
-					font-size: $add-word-heading-size;
-					margin: 0;
-				}
-
-				.button-wrapper {
-					display: flex;
-					justify-content: space-between;
-				
-					.btn {
-						font-size: $btn-font-size;
-						border: none;
-						border-radius: 15px;
-						color: $btn-color;
-
-						&.btn-save {
-							background-color: $btn-save-background;
-						}
-
-						&.btn-cancel {
-							background-color: $btn-cancel-background;
-						}
-					}
-				}
-
-				.word input {
-					width: calc(100% - 10px);
-					font-size: 16pt;
-					color: red;
-					padding: 5px;
-					border: none;
-					border-radius: 10px;
-				}
-				.of-interest textarea {
-					font-size: 16pt;
-					width: calc(100% - 10px);
-					color: $word-color;
-					padding: 5px;
-					border: none;
-					border-radius: 10px;
 				}
 			}
 		}
 	}
-
-	}
-
 }
 	
 
@@ -308,8 +244,8 @@ $spotlight-height: 200px;
 	}
 
 	.focus-list {
-		position: absolute;
-		bottom: 150px; // Should be above bottom of screen, not this. FIX!
+		position: fixed;
+		bottom: 25px; // Should be above bottom of screen, not this. FIX!
 		width: $spotlight-width;
 
 		ul {

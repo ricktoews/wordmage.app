@@ -1,33 +1,39 @@
 import { useEffect, useState } from 'react';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import Hamburger from './components/Hamburger';
+import WordForm from './components/WordForm';
+import ConfirmDelete from './components/ConfirmDelete';
 
 import Main from './Main';
 
 import './App.scss';
 
-const ToggleLabels = ['Word List', 'Spotlight', 'Archive'];
-
-function App() {
+function App(props) {
 	const [ view, setView ] = useState('rehearse');
-	const [ addWordState, setAddWordState ] = useState(false);
-	const [ toggleLabel, setToggleLabel ] = useState(ToggleLabels[0]);
+//	const [ addWordState, setAddWordState ] = useState(false);
+	const [ wordFormState, setWordFormState ] = useState(false);
+	const [ confirmState, setConfirmState ] = useState(false);
+	const [ word, setWord ] = useState('');
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
 	const navToWordList = () => {
-		setView('word-list-container');
-		setToggleLabel(ToggleLabels[1]);
+		var history = props.history;
+console.log('navToWordList', props, history);
+		history.push('/word-list');
 		setHamburgerClass('hamburger-nav');
 	}
 
 	const navToSpotlight = () => {
-		setView('rehearse');
-		setToggleLabel(ToggleLabels[0]);
+		var history = props.history;
+console.log('navToWordList', props, history);
+		history.push('/spotlight');
 		setHamburgerClass('hamburger-nav');
 	}
 
 	const navToArchive = () => {
-		setView('archive-container');
-		setToggleLabel(ToggleLabels[2]);
+		var history = props.history;
+console.log('navToWordList', props, history);
+		history.push('/archive');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -47,12 +53,31 @@ function App() {
 		}
 	};
 
-	const handleAddWordState = () => {
-		setAddWordState(true);
+	
+	const popupConfirm = word => {
+		setWord(word);
+		setConfirmState(true);
 	}
 
-	const cancelAddWord = () => {
-		setAddWordState(false);
+	const popupWordForm = word => {
+		setWord(word);
+		setWordFormState(true);
+	}
+
+	const cancelWordForm = () => {
+		setWordFormState(false);
+	}
+
+	const saveWordForm  = () => {
+		setWordFormState(false);
+	}
+
+	const cancelDelete = () => {
+		setConfirmState(false);
+	}
+
+	const confirmeDelete = () => {
+		setConfirmState(false);
 	}
 
 	return (
@@ -71,12 +96,16 @@ function App() {
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
 	      <div className="header-title">Catalogue of Cool Words</div>
-	      {view === 'word-list-container' ? <button className="btn btn-add" onClick={handleAddWordState}>+</button> : <div /> }
+	      {1||view === 'word-list-container' ? <button className="btn btn-add" onClick={popupWordForm}>+</button> : <div /> }
 	    </div>
 	  </header>
-	  <Main view={view} addWordState={addWordState} cancelAddWord={cancelAddWord} />
+	  <Main view={view} 
+	    popupConfirm={word => { popupConfirm(word) }}
+	    popupWordForm={word => { popupWordForm(word) }} />
+	  { wordFormState ? <WordForm word={word} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
+	  { confirmState ? <ConfirmDelete word={word} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
 	</div>
 	);
 }	
 
-export default App;
+export default withRouter(App);

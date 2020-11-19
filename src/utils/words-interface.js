@@ -18,6 +18,17 @@ function saveCustomWord(word, def) {
 	DataSource.saveUserData(userData);
 }
 
+function deleteCustomWord(word) {
+	delete userData.custom[word];
+	delete userData.active[word];
+	delete userData.archived[word];
+	DataSource.saveUserData(userData);
+}
+
+function isCustom(word) {
+	return !!userData.custom[word];
+}
+
 function getActiveList() {
 	var newActiveList = Object.keys(userData.active);
 	return newActiveList;
@@ -78,15 +89,19 @@ function archiveWordList() {
 }
 
 function archiveWord(word) {
-	console.log('archiveWord', word);
+	// Add word to archived
 	userData.archived[word] = userData.active[word];
+	// Delete word from active
 	delete userData.active[word];
+	// ...and save.
 	DataSource.saveUserData(userData);
 }
 
 const WordsInterface = {
 	fullWordList,
+	isCustom,
 	saveCustomWord,
+	deleteCustomWord,
 	getActiveList,
 	isActiveEntry,
 	toggleActive,

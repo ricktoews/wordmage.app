@@ -18,8 +18,7 @@ function Spotlight(props) {
 	};
 
 	const archiveWord = e => {
-		WordsInterface.archiveWord(item.word);
-		props.moveToArchive();
+		props.moveToArchive(item.word);
 	}
 
 	const handleChange = e => {

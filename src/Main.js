@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import WordList from './components/WordList';
 import Spotlight from './components/Spotlight';
 import ActiveList from './components/ActiveList';
@@ -23,12 +24,15 @@ function Main(props) {
 
 	const toggleActive = word => {
 		var newActiveList = WordsInterface.toggleActive(word);
+console.log('Main toggleActive', word, newActiveList);
 		setActiveList(Object.keys(newActiveList));
 	}
 
 	const moveToArchive = word => {
-		var newActiveList = WordsInterface.toggleActive(word);
-		setActiveList(Object.keys(newActiveList));
+		WordsInterface.archiveWord(word);
+		var newActiveList = WordsInterface.getActiveList();
+console.log('moveToArchive', word, newActiveList);
+		setActiveList(newActiveList);
 	}
 
 	const updateWordList = () => {
@@ -37,19 +41,44 @@ function Main(props) {
 
 	return (
 	<div className="container">
-	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' hide-section' : '')}>
-	    <Spotlight item={item} moveToArchive={moveToArchive} />
-	    <ActiveList activeList={activeList} selectActive={selectActive} />
+	  <Switch>
+	    <Route path="/spotlight" render={() => { return (
+	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
+	    <Spotlight
+	      popupWordForm={props.popupWordForm}
+	      item={item}
+	      moveToArchive={word => { moveToArchive(word) }} />
+	    <ActiveList
+	      activeList={activeList}
+	      selectActive={selectActive} />
 	  </div>
+	    ); } } />
 
-	  <div className={'word-list-container' + (props.view !== 'word-list-container' ? ' hide-section' : '')}>
-	    <WordList addWordState={props.addWordState} cancelAddWord={props.cancelAddWord} fullWordList={fullWordList} toggleActive={toggleActive} updateWordList={updateWordList} />
+	    <Route path="/word-list" render={() => { return (
+	  <div className={'word-list-container' + (props.view !== 'word-list-container' ? ' no-hide-section' : '')}>
+	    <WordList 
+	      popupConfirm={word => { props.popupConfirm(word) } }
+	      popupWordForm={word => { props.popupWordForm(word) } }
+	      addWordState={props.addWordState}
+	      cancelAddWord={props.cancelAddWord}
+	      fullWordList={fullWordList}
+	      toggleActive={toggleActive}
+	      updateWordList={updateWordList} />
 	  </div>
+	    ); } } />
 
-	  <div className={'archive-container' + (props.view !== 'archive-container' ? ' hide-section' : '')}>
-	    <ArchiveList addWordState={props.addWordState} cancelAddWord={props.cancelAddWord} archiveWordList={archiveWordList} toggleActive={toggleActive} updateWordList={updateWordList} />
+	    <Route path="/archive" render={() => { return (
+	  <div className={'archive-container' + (props.view !== 'archive-container' ? ' no-hide-section' : '')}>
+	    <ArchiveList
+	      popupWordForm={props.popupWordForm}
+	      addWordState={props.addWordState}
+	      cancelAddWord={props.cancelAddWord}
+	      archiveWordList={archiveWordList}
+	      toggleActive={toggleActive}
+	      updateWordList={updateWordList} />
 	  </div>
-
+	    ); } } />
+	  </Switch>
 	</div>
 	);
 };
