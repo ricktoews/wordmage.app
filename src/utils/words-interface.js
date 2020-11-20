@@ -97,6 +97,15 @@ function archiveWord(word) {
 	DataSource.saveUserData(userData);
 }
 
+function getUserData() {
+	return userData;
+}
+
+function replaceUserData(data) {
+	DataSource.saveUserData(data);
+	return data;
+}
+
 const WordsInterface = {
 	fullWordList,
 	isCustom,
@@ -111,7 +120,9 @@ const WordsInterface = {
 	getNotes,
 	hasNotes,
 	archiveWord,
-	archiveWordList
+	archiveWordList,
+	getUserData,
+	replaceUserData
 };
 
 export default WordsInterface;

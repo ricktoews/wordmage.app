@@ -3,6 +3,8 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Hamburger from './components/Hamburger';
 import WordForm from './components/WordForm';
 import ConfirmDelete from './components/ConfirmDelete';
+import ConfirmShare from './components/ConfirmShare';
+import ReceiveData from './components/ReceiveData';
 
 import Main from './Main';
 
@@ -13,6 +15,8 @@ function App(props) {
 //	const [ addWordState, setAddWordState ] = useState(false);
 	const [ wordFormState, setWordFormState ] = useState(false);
 	const [ confirmState, setConfirmState ] = useState(false);
+	const [ confirmShareState, setConfirmShareState ] = useState(false);
+	const [ confirmReceive, setConfirmReceive ] = useState(false);
 	const [ word, setWord ] = useState('');
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
@@ -38,10 +42,12 @@ console.log('navToWordList', props, history);
 	}
 
 	const handleShare = () => {
+		setConfirmShareState(true);
 		setHamburgerClass('hamburger-nav');
 	}
 
 	const handleReceive = () => {
+		setConfirmReceive(true);
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -80,6 +86,14 @@ console.log('navToWordList', props, history);
 		setConfirmState(false);
 	}
 
+	const cancelShare = () => {
+		setConfirmShareState(false);
+	}
+
+	const cancelReceive = () => {
+		setConfirmReceive(false);
+	}
+
 	return (
 	<div className="App">
 	  <nav class={hamburgerClass}>
@@ -104,6 +118,8 @@ console.log('navToWordList', props, history);
 	    popupWordForm={word => { popupWordForm(word) }} />
 	  { wordFormState ? <WordForm word={word} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
 	  { confirmState ? <ConfirmDelete word={word} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
+	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
+	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
 	</div>
 	);
 }	
