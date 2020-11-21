@@ -7,7 +7,7 @@ function WordItem(props) {
 	const wordHash = WordsInterface.fullWordList();
 	const def = wordHash[props.word];
 	const className = WordsInterface.isActiveEntry(props.word) ? 'active' : '';
-	const isCustom = WordsInterface.isCustom(props.word);
+	const isCustom = 1||WordsInterface.isCustom(props.word);
 	
 	const toggleActiveHandler = e => {
 		var el = e.target;

@@ -47,9 +47,11 @@ function Spotlight(props) {
 	      <div className="user-notes" onBlur={handleChange} contentEditable={true} suppressContentEditableWarning={true}>
 	        {notes}
 	      </div>
+{/*
 	      <div className="button-wrapper" style={{zIndex: 300}}>
 	        <button class="btn btn-archive" onClick={archiveWord}>Archive</button>
 	      </div>
+*/}
 	    </div>
 	  </div>
 	</div>

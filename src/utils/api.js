@@ -9,9 +9,10 @@ const urls = {
 async function share(data) {
 	const response = await fetch(urls.share, {
 		method: 'POST',
-//		mode: 'cors',
+//		mode: 'no-cors',
 //		cache: 'no-cache',
 		credentials: 'omit',
+		referrerPolicy: 'no-referrer-when-downgrade',
 		headers: {
 			'Content-Type': 'application/json'
 		},
