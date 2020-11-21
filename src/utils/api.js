@@ -1,12 +1,15 @@
+//const base = 'https://words-rest.toewsweb.net';
+const base = 'https://memorize.toewsweb.net';
+
 const urls = {
-	share: '//rest.toewsweb.net/words/sendlocal',
-	receive: '//rest.toewsweb.net/words/retrievelocal/'
+	share: base + '/words.php/sendlocal',
+	receive: base + '/words.php/retrievelocal/'
 };
 
 async function share(data) {
 	const response = await fetch(urls.share, {
 		method: 'POST',
-//		mode: 'no-cors',
+//		mode: 'cors',
 //		cache: 'no-cache',
 		credentials: 'omit',
 		headers: {
