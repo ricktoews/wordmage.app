@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Hamburger from './components/Hamburger';
+import AddIcon from './components/AddIcon';
 import WordForm from './components/WordForm';
 import ConfirmDelete from './components/ConfirmDelete';
 import ConfirmShare from './components/ConfirmShare';
@@ -100,9 +101,11 @@ console.log('navToWordList', props, history);
 	    <ul>
 	      <li onClick={navToWordList}>Word List</li>
 	      <li onClick={navToSpotlight}>Spotlight</li>
+{/*
 	      <li onClick={navToArchive}>Archive</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
+*/}
 	    </ul>
 	  </nav>
 
@@ -110,7 +113,7 @@ console.log('navToWordList', props, history);
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
 	      <div className="header-title">Catalogue of Cool Words</div>
-	      {1||view === 'word-list-container' ? <button className="btn btn-add" onClick={popupWordForm}>+</button> : <div /> }
+	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={popupWordForm} /> : <div /> }
 	    </div>
 	  </header>
 	  <Main view={view} 

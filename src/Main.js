@@ -42,6 +42,18 @@ console.log('moveToArchive', word, newActiveList);
 	return (
 	<div className="container">
 	  <Switch>
+	    <Route exact path="/" render={() => { return (
+	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
+	    <Spotlight
+	      popupWordForm={props.popupWordForm}
+	      item={item}
+	      moveToArchive={word => { moveToArchive(word) }} />
+	    <ActiveList
+	      activeList={activeList}
+	      selectActive={selectActive} />
+	  </div>
+	    ); } } />
+
 	    <Route path="/spotlight" render={() => { return (
 	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
 	    <Spotlight

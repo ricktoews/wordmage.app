@@ -8,6 +8,8 @@ $site-red: #de3c4b;
 
 $btn-add-background: $site-red;
 
+$side-nav-background: #333;
+
 $btn-font-size: 14pt;
 $btn-background: #45425a;
 $btn-color: white;
@@ -81,7 +83,7 @@ $spotlight-height: 200px;
 	top: $header-height - 10;
 	width: 150px;
 	height: 100vh;
-	background-color: $site-red;
+	background-color: $side-nav-background;
 	transition-duration: .5s;
 	left: -150px;
 
@@ -112,7 +114,7 @@ $spotlight-height: 200px;
 	height: $header-height;
 
 	.header-content {
-		background-color: #575c55;
+		background-color: #000;
 		height: $header-height - 10;
 		display: flex;
 		align-items: center;
@@ -142,11 +144,12 @@ $spotlight-height: 200px;
 
 				li {
 					margin-bottom: 10px;
-					background-color: #f4e3c9;
+					background-color: #eee;
 					border-bottom: 1px solid #242729;
+					color: #666;
 
 					&.active {
-						color: #90373b;
+						color: #000;
 					}
 					.list-item {
 						position: relative;
