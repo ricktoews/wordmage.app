@@ -3,9 +3,11 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Hamburger from './components/Hamburger';
 import AddIcon from './components/AddIcon';
 import WordForm from './components/WordForm';
+import MnemonicForm from './components/MnemonicForm';
 import ConfirmDelete from './components/ConfirmDelete';
 import ConfirmShare from './components/ConfirmShare';
 import ReceiveData from './components/ReceiveData';
+import Popup from './components/Popup';
 
 import Main from './Main';
 
@@ -13,13 +15,18 @@ import './App.scss';
 
 function App(props) {
 	const [ view, setView ] = useState('rehearse');
+	const [ popupState, setPopupState ] = useState(false);
+	const [ popupData, setPopupData ] = useState({});
+	const [ popupView, setPopupView ] = useState('');
+	const [ word, setWord ] = useState('');
+	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
+
 //	const [ addWordState, setAddWordState ] = useState(false);
 	const [ wordFormState, setWordFormState ] = useState(false);
+	const [ mnemonicFormState, setMnemonicFormState ] = useState(false);
 	const [ confirmState, setConfirmState ] = useState(false);
 	const [ confirmShareState, setConfirmShareState ] = useState(false);
 	const [ confirmReceive, setConfirmReceive ] = useState(false);
-	const [ word, setWord ] = useState('');
-	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
 	const navToWordList = () => {
 		var history = props.history;
@@ -67,8 +74,26 @@ console.log('navToWordList', props, history);
 	}
 
 	const popupWordForm = word => {
+console.log('popupWordForm', word);
+/*
+		setPopupView('add-word');
+		setPopupState(true);
+		setPopupData({ word });
+*/
 		setWord(word);
 		setWordFormState(true);
+	}
+
+	const popupMnemonicForm = word => {
+console.log('popupMnemonicForm', word);
+		setWord(word);
+		setMnemonicFormState(true);
+	}
+
+	const cancelMnemonicForm = () => {
+console.log('cancelMnemonicForm');
+//		setWord('');
+		setMnemonicFormState(false);
 	}
 
 	const cancelWordForm = () => {
@@ -99,8 +124,8 @@ console.log('navToWordList', props, history);
 	<div className="App">
 	  <nav class={hamburgerClass}>
 	    <ul>
-	      <li onClick={navToWordList}>Word List</li>
 	      <li onClick={navToSpotlight}>Spotlight</li>
+	      <li onClick={navToWordList}>Word List</li>
 {/*
 	      <li onClick={navToArchive}>Archive</li>
 	      <li onClick={handleShare}>Share</li>
@@ -118,8 +143,11 @@ console.log('navToWordList', props, history);
 	  </header>
 	  <Main view={view} 
 	    popupConfirm={word => { popupConfirm(word) }}
-	    popupWordForm={word => { popupWordForm(word) }} />
+	    popupWordForm={word => { popupWordForm(word) }} 
+	    popupMnemonicForm={word => { popupMnemonicForm(word) }} />
+	  {/* popupState ? <Popup data={popupData} view={popupView} /> : <div/> */}
 	  { wordFormState ? <WordForm word={word} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
+	  { mnemonicFormState ? <MnemonicForm word={word} cancel={cancelMnemonicForm} /> : <div/> }
 	  { confirmState ? <ConfirmDelete word={word} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
 	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
 	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
