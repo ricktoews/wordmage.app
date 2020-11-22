@@ -40,12 +40,13 @@ console.log('moveToArchive', word, newActiveList);
 	}
 
 	return (
-	<div className="container">
+	<div className="app-container">
 	  <Switch>
 	    <Route exact path="/" render={() => { return (
 	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
 	    <Spotlight
-	      popupWordForm={props.popupWordForm}
+	      popupWordForm={word => { props.popupWordForm(word) }}
+	      popupMnemonicForm={word => { props.popupMnemonicForm(word) }}
 	      item={item}
 	      moveToArchive={word => { moveToArchive(word) }} />
 	    <ActiveList
@@ -58,6 +59,7 @@ console.log('moveToArchive', word, newActiveList);
 	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
 	    <Spotlight
 	      popupWordForm={props.popupWordForm}
+	      popupMnemonicForm={props.popupMnemonicForm}
 	      item={item}
 	      moveToArchive={word => { moveToArchive(word) }} />
 	    <ActiveList
