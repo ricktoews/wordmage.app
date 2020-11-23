@@ -9,16 +9,10 @@ import ConfirmShare from './components/ConfirmShare';
 import ReceiveData from './components/ReceiveData';
 import Popup from './components/Popup';
 import Main from './Main';
-import { login } from './utils/api';
 
 import './App.scss';
 
 function App(props) {
-/*
-login().then(res => res.json()).then(res => {
-console.log('login', res);
-});
-*/
 	const [ view, setView ] = useState('rehearse');
 	const [ popupState, setPopupState ] = useState(false);
 	const [ popupData, setPopupData ] = useState({});
@@ -132,9 +126,9 @@ console.log('cancelMnemonicForm');
 	      <li onClick={navToSpotlight}>Spotlight</li>
 	      <li onClick={navToWordList}>Word List</li>
 	      <li onClick={handleShare}>Share</li>
+	      <li onClick={handleReceive}>Receive</li>
 {/*
 	      <li onClick={navToArchive}>Archive</li>
-	      <li onClick={handleReceive}>Receive</li>
 */}
 	    </ul>
 	  </nav>

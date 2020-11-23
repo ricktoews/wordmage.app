@@ -26,18 +26,6 @@ async function receive(code) {
 	return response.json();
 }
 
-async function login() {
-	const url = 'https://testapi.perfectionnext.com/lti/authenticate';
-	const credentials = { "username": "toews@mailinator.com", "password": "Tttttt1" };
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(credentials)
-	});
-	return response;
-}
 
-export { share, receive, login };
+export { share, receive };
 
