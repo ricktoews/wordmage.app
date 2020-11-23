@@ -11,8 +11,8 @@ async function share(data) {
 		method: 'POST',
 //		mode: 'no-cors',
 //		cache: 'no-cache',
-		credentials: 'omit',
-		referrerPolicy: 'no-referrer-when-downgrade',
+//		credentials: 'omit',
+//		referrerPolicy: 'no-referrer-when-downgrade',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -26,5 +26,18 @@ async function receive(code) {
 	return response.json();
 }
 
-export { share, receive };
+async function login() {
+	const url = 'https://testapi.perfectionnext.com/lti/authenticate';
+	const credentials = { "username": "toews@mailinator.com", "password": "Tttttt1" };
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(credentials)
+	});
+	return response;
+}
+
+export { share, receive, login };
 
