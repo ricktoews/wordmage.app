@@ -13,8 +13,11 @@ function fullWordList() {
 	return fullList;
 }
 
-function saveCustomWord(word, def) {
+function saveCustomWord(word, def, spotlight) {
 	userData.custom[word] = def;
+	if (spotlight) {
+		userData.active[word] = '';
+	}
 	DataSource.saveUserData(userData);
 }
 
@@ -60,12 +63,19 @@ function getActiveEntry(word) {
 
 function getWordObj(word) {
 	var fullList = fullWordList();
-	if (fullList[word]) {
+	if (fullList.hasOwnProperty(word)) {
 		return { word, def: fullList[word] };
 	} else {
 		console.log(word, 'not found');
 		return {};
 	}
+}
+
+function getSpotlightItem() {
+	var activeList = getActiveList();
+	var ndx = Math.floor(Math.random() * activeList.length);
+	var word = activeList[ndx];
+	return getWordObj(word);
 }
 
 function saveNotes(word, notes) {
@@ -116,6 +126,7 @@ const WordsInterface = {
 	toggleActive,
 	getActiveEntry,
 	getWordObj,
+	getSpotlightItem,
 	saveNotes,
 	getNotes,
 	hasNotes,
