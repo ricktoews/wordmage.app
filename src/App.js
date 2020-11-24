@@ -136,7 +136,7 @@ console.log('cancelMnemonicForm');
 	  <header className="App-header">
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
-	      <div className="header-title">Catalogue of Cool Words</div>
+	      <div className="header-title">Words To Remember</div>
 	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={popupWordForm} /> : <div /> }
 	    </div>
 	  </header>

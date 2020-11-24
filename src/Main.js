@@ -11,7 +11,7 @@ const wordList = Object.keys(wordHash);
 const archiveList = WordsInterface.archiveWordList();
 
 function Main(props) {
-	const [item, setItem] = useState(WordsInterface.getWordObj('scytale'));
+	const [item, setItem] = useState(WordsInterface.getSpotlightItem());
 	const [activeList, setActiveList] = useState(WordsInterface.getActiveList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [archiveWordList, setArchiveWordList] = useState(archiveList);
@@ -24,14 +24,12 @@ function Main(props) {
 
 	const toggleActive = word => {
 		var newActiveList = WordsInterface.toggleActive(word);
-console.log('Main toggleActive', word, newActiveList);
 		setActiveList(Object.keys(newActiveList));
 	}
 
 	const moveToArchive = word => {
 		WordsInterface.archiveWord(word);
 		var newActiveList = WordsInterface.getActiveList();
-console.log('moveToArchive', word, newActiveList);
 		setActiveList(newActiveList);
 	}
 

@@ -3,10 +3,12 @@ import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 
 function WordForm(props) {
-	var word = '', def = '', notes = '';
+	var word = '', def = '', notes = '', spotlight = true;
+
 	if (props.word) {
 		// get word from custom list, from active list.
 		var { word, def } = WordsInterface.getWordObj(props.word);
+		// If word already exists, set spotlight flag to false;
 		var notes = '';
 		if (WordsInterface.isActiveEntry(props.word)) {
 			var { notes } = WordsInterface.getActiveEntry(props.word);
@@ -45,7 +47,7 @@ function WordForm(props) {
 	const saveWord = () => {
 		console.log('save', newWord, newDef);
 		// Need to save custom word, spotlight, or whatever.
-		WordsInterface.saveCustomWord(newWord, newDef);
+		WordsInterface.saveCustomWord(newWord, newDef, spotlight);
 		// If on Spotlight page, add word to active.
 		if (props.location.pathname === '/spotlight') {
 			WordsInterface.toggleActive(newWord);
