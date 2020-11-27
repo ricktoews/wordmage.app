@@ -5,6 +5,7 @@ import Spotlight from './components/Spotlight';
 import ActiveList from './components/ActiveList';
 import ArchiveList from './components/ArchiveList';
 import WordsInterface from './utils/words-interface';
+//import RouteSpotlight from './route-components/RouteSpotlight';
 
 const wordHash = WordsInterface.fullWordList();
 const wordList = Object.keys(wordHash);
@@ -40,8 +41,8 @@ function Main(props) {
 	return (
 	<div className="app-container">
 	  <Switch>
-	    <Route exact path="/" render={() => { return (
-	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
+	    <Route exact path={["/", "/spotlight"]} render={() => { return (
+	  <div className="rehearse">
 	    <Spotlight
 	      popupWordForm={word => { props.popupWordForm(word) }}
 	      popupMnemonicForm={word => { props.popupMnemonicForm(word) }}
@@ -53,21 +54,8 @@ function Main(props) {
 	  </div>
 	    ); } } />
 
-	    <Route path="/spotlight" render={() => { return (
-	  <div className={'rehearse' + (props.view !== 'rehearse' ? ' no-hide-section' : '')}>
-	    <Spotlight
-	      popupWordForm={props.popupWordForm}
-	      popupMnemonicForm={props.popupMnemonicForm}
-	      item={item}
-	      moveToArchive={word => { moveToArchive(word) }} />
-	    <ActiveList
-	      activeList={activeList}
-	      selectActive={selectActive} />
-	  </div>
-	    ); } } />
-
 	    <Route path="/word-list" render={() => { return (
-	  <div className={'word-list-container' + (props.view !== 'word-list-container' ? ' no-hide-section' : '')}>
+	  <div className="word-list-container">
 	    <WordList 
 	      popupConfirm={word => { props.popupConfirm(word) } }
 	      popupWordForm={word => { props.popupWordForm(word) } }
@@ -80,7 +68,7 @@ function Main(props) {
 	    ); } } />
 
 	    <Route path="/archive" render={() => { return (
-	  <div className={'archive-container' + (props.view !== 'archive-container' ? ' no-hide-section' : '')}>
+	  <div className="archive-container">
 	    <ArchiveList
 	      popupWordForm={props.popupWordForm}
 	      addWordState={props.addWordState}

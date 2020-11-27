@@ -1,25 +1,30 @@
 import { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import OpenCloseIcon from './OpenCloseIcon';
 import WordsInterface from '../utils/words-interface';
 import Scramble from './Scramble';
 
 function Spotlight(props) {
-	const [open, setOpen] = useState(WordsInterface.hasNotes(props.item.word) === false);
-	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(props.item.word) === false);
-	const [item, setItem] = useState(props.item);
-	const [notes, setNotes] = useState(WordsInterface.getNotes(props.item.word));
-
-	useEffect(() => {
-		setItem(props.item);
-		setNotes(WordsInterface.getNotes(props.item.word));
-	});
+	const randomItem = WordsInterface.getSpotlightItem();
+console.log('randomItem', randomItem);
+	const [item, setItem] = useState(randomItem);
+	const [openDef, setOpenDef] = useState(WordsInterface.hasNotes(randomItem.word) === false);
+	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(randomItem.word) === false);
+	//const [item, setItem] = useState(props.item);
+	const [notes, setNotes] = useState(WordsInterface.getNotes(randomItem.word));
 
 	const handleOpenCloseMnemonic = e => {
 		setOpenMnemonic(!openMnemonic);		
 	};
 
 	const handleOpenClose = e => {
-		setOpen(!open);		
+		setOpenDef(!openDef);		
+	};
+
+	const handleAnother = e => {
+		var anotherItem = WordsInterface.getSpotlightItem();
+console.log('randomItem', anotherItem);
+		setItem(anotherItem);
 	};
 
 	const archiveWord = e => {
@@ -35,7 +40,7 @@ function Spotlight(props) {
 		var notes = el.textContent;
 		WordsInterface.saveNotes(item.word, notes);
 		if (notes) {
-			setOpen(false);
+			setOpenDef(false);
 		}
 	};
 
@@ -72,7 +77,7 @@ function Spotlight(props) {
 
 	      {/* Definition */}
 	      <div className="word">
-	        { open ? (
+	        { openDef ? (
 	        <button onClick={handleOpenClose} className={'btn btn-info btn-md'}>
                   Hide Definition <span className="glyphicon glyphicon-chevron-up"></span>
                 </button>
@@ -83,24 +88,16 @@ function Spotlight(props) {
 	          )
 	        }
 	      </div>
-	      <div className={'of-interest' + (open ? ' open' : ' closed')}>
+	      <div className={'of-interest' + (openDef ? ' open' : ' closed')}>
 	        {item.def}
 	      </div>
-{/*
-	      <div className="user-notes-heading">
-	      Notes
-	      </div>
-	      <div className="user-notes" onBlur={handleChange} contentEditable={true} suppressContentEditableWarning={true}>
-	        {notes}
-	      </div>
-	      <div className="button-wrapper" style={{zIndex: 300}}>
-	        <button class="btn btn-archive" onClick={archiveWord}>Archive</button>
-	      </div>
-*/}
+	    </div>
+	    <div className="button-wrapper">
+	      <div className="btn btn-info btn-lg" onClick={handleAnother}>Another</div>
 	    </div>
 	  </div>
 	</div>
 	);
 }
 
-export default Spotlight;
+export default withRouter(Spotlight);
