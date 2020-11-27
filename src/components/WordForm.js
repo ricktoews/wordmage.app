@@ -70,10 +70,10 @@ function WordForm(props) {
 	        <input placeholder="Word" onChange={handleWord} type="text" id="new-word" size="20" value={newWord} />
 	      </div>
 	      <div className={'of-interest'}>
-	        <textarea placeholder="Definition" onChange={handleDef} id="new-def" rows="5">{newDef}</textarea>
+	        <textarea placeholder="Definition" onChange={handleDef} id="new-def">{newDef}</textarea>
 	      </div>
 	      <div className={'notes hide-section'}>
-	        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes" rows="5">{newNotes}</textarea>
+	        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes">{newNotes}</textarea>
 	      </div>
 	      <div className="button-wrapper">
 	        <button class="btn btn-cancel" onClick={cancelWord}>Cancel</button>

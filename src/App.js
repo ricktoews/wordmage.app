@@ -8,11 +8,18 @@ import ConfirmDelete from './components/ConfirmDelete';
 import ConfirmShare from './components/ConfirmShare';
 import ReceiveData from './components/ReceiveData';
 import Popup from './components/Popup';
-import Main from './Main';
+import WordsInterface from './utils/words-interface';
+
+import Spotlight from './components/Spotlight';
+import WordList from './components/WordList';
 
 import './App.scss';
 
+const wordHash = WordsInterface.fullWordList();
+
 function App(props) {
+	const [activeList, setActiveList] = useState(WordsInterface.getActiveList());
+	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [ view, setView ] = useState('rehearse');
 	const [ popupState, setPopupState ] = useState(false);
 	const [ popupData, setPopupData ] = useState({});
@@ -20,7 +27,7 @@ function App(props) {
 	const [ word, setWord ] = useState('');
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
-//	const [ addWordState, setAddWordState ] = useState(false);
+	const [ addWordState, setAddWordState ] = useState(false);
 	const [ wordFormState, setWordFormState ] = useState(false);
 	const [ mnemonicFormState, setMnemonicFormState ] = useState(false);
 	const [ confirmState, setConfirmState ] = useState(false);
@@ -38,6 +45,13 @@ console.log('navToWordList', props, history);
 		var history = props.history;
 console.log('navToWordList', props, history);
 		history.push('/spotlight');
+		setHamburgerClass('hamburger-nav');
+	}
+
+	const navToSpotlightList = () => {
+		var history = props.history;
+console.log('navToWordList', props, history);
+		history.push('/word-list/spotlight');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -119,17 +133,24 @@ console.log('cancelMnemonicForm');
 		setConfirmReceive(false);
 	}
 
+	const toggleActive = word => {
+		var newActiveList = WordsInterface.toggleActive(word);
+		setActiveList(Object.keys(newActiveList));
+	}
+
+	const updateWordList = () => {
+		setFullWordList(WordsInterface.fullWordList());
+	}
+
 	return (
 	<div className="App">
 	  <nav class={hamburgerClass}>
 	    <ul>
 	      <li onClick={navToSpotlight}>Spotlight</li>
+	      <li onClick={navToSpotlightList}>Spotlight List</li>
 	      <li onClick={navToWordList}>Word List</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
-{/*
-	      <li onClick={navToArchive}>Archive</li>
-*/}
 	    </ul>
 	  </nav>
 
@@ -140,16 +161,22 @@ console.log('cancelMnemonicForm');
 	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={popupWordForm} /> : <div /> }
 	    </div>
 	  </header>
-	  <Main view={view} 
-	    popupConfirm={word => { popupConfirm(word) }}
-	    popupWordForm={word => { popupWordForm(word) }} 
-	    popupMnemonicForm={word => { popupMnemonicForm(word) }} />
-	  {/* popupState ? <Popup data={popupData} view={popupView} /> : <div/> */}
 	  { wordFormState ? <WordForm word={word} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
 	  { mnemonicFormState ? <MnemonicForm word={word} cancel={cancelMnemonicForm} /> : <div/> }
 	  { confirmState ? <ConfirmDelete word={word} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
 	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
 	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
+	  <Switch>
+	    <Route exact path={['/', '/spotlight']} render={props => <Spotlight
+	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
+	        /> } />
+	    <Route path="/word-list/:listtype?" render={props => ( <WordList
+	        popupConfirm={word => { popupConfirm(word) } }
+	        popupWordForm={word => { popupWordForm(word) } }
+	        addWordState={addWordState}
+	        toggleActive={toggleActive}
+	        updateWordList={updateWordList} />) } />
+	  </Switch>
 	</div>
 	);
 }	

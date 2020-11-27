@@ -1,5 +1,6 @@
-$word-form-background: #5887AA;
-$word-form-heading: #eee;
+//$word-form-background: #5887AA;
+$word-form-background: #ffffff;
+$word-form-heading: #666;
 $word-form-heading-size: 16pt;
 
 $site-green: #008800;
@@ -34,6 +35,8 @@ $spotlight-height: 200px;
 		min-height: $spotlight-height;
 
 		.word-form {
+			border: 1px solid #09f;
+			border-radius: 15px;
 			background-color: $word-form-background;
 			padding: 10px;
 
@@ -68,16 +71,20 @@ $spotlight-height: 200px;
 				font-size: 16pt;
 				color: #666;
 				padding: 5px;
-				border: none;
+				border: 1px solid #999;
 				border-radius: 10px;
+				margin-bottom: 10px;
+				outline: none;
 			}
 			.of-interest textarea, .notes textarea {
 				font-size: 16pt;
+				height: 80px;
 				width: calc(100% - 10px);
 				color: #666;
 				padding: 5px;
-				border: none;
+				border: 1px solid #999;
 				border-radius: 10px;
+				outline: none;
 			}
 		}
 	}

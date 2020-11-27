@@ -5,6 +5,35 @@ import DataSource from './data-source';
 const userData = DataSource.retrieveUserData();
 console.log('userData', userData);
 
+function parseWordList() {
+	var wordList;
+	var sample = wordHash[0];
+	if (sample.hasOwnProperty('word')){
+		wordList = [];
+		wordHash.forEach(item => {
+			let wordObj = {};
+			wordObj[item.word] = item.def;
+			wordList.push(wordObj);
+		});
+	} else {
+		wordList = wordHash;
+	}
+console.log('parseWordList', wordList);
+	return wordList;
+}
+
+function getWordList(type) {
+	var list = [];
+	switch (type) {
+		case 'spotlight':
+			list = userData.active;
+			break;
+		default:
+			list = fullWordList();
+	}
+	return list;
+}
+
 function fullWordList() {
 	var universal = wordHash;
 	var custom = userData.custom;
@@ -117,6 +146,7 @@ function replaceUserData(data) {
 }
 
 const WordsInterface = {
+	getWordList,
 	fullWordList,
 	isCustom,
 	saveCustomWord,
