@@ -5,7 +5,7 @@ import EditIcon from './EditIcon';
 
 function WordItem(props) {
 	const wordHash = WordsInterface.fullWordList();
-	const def = wordHash[props.word];
+	const def = props.def ? props.def : wordHash[props.word];
 	const className = WordsInterface.isActiveEntry(props.word) ? 'active' : '';
 	const isCustom = 1||WordsInterface.isCustom(props.word);
 	

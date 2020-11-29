@@ -6,7 +6,6 @@ import Scramble from './Scramble';
 
 function Spotlight(props) {
 	const randomItem = WordsInterface.getSpotlightItem();
-console.log('randomItem', randomItem);
 	const [item, setItem] = useState(randomItem);
 	const [openDef, setOpenDef] = useState(WordsInterface.hasNotes(randomItem.word) === false);
 	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(randomItem.word) === false);
@@ -23,7 +22,6 @@ console.log('randomItem', randomItem);
 
 	const handleAnother = e => {
 		var anotherItem = WordsInterface.getSpotlightItem();
-console.log('randomItem', anotherItem);
 		setItem(anotherItem);
 	};
 
@@ -48,7 +46,7 @@ console.log('randomItem', anotherItem);
 	<div className="spotlight-container">
 	  <div className="spotlight-wrapper">
 	    <div className="spotlight">
-              <Scramble word={item.word} />
+	      <Scramble item={item} word={item.word} />
 	      <div className="user-notes-heading">
 	      How did you want to remember this word?
 	      </div>

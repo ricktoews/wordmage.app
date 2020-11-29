@@ -12,7 +12,6 @@ function initLetters(scrambled) {
 }
 
 function Scramble(props) {
-console.log('Scramble', props.word);
 	const [ scrambled, setScrambled ] = useState(scramble(props.word));
 	const [ letterStates, setLetterStates ] = useState(initLetters(scrambled));
 	const [ unscrambled, setUnscrambled ] = useState('');
