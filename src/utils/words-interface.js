@@ -1,5 +1,6 @@
 import { itemToObj } from './helpers';
-import wordHash from '../data/word-list';
+//import wordHash from '../data/word-list';
+import wordHash from '../data/luciferous';
 import DataSource from './data-source';
 
 const userData = DataSource.retrieveUserData();
@@ -9,16 +10,14 @@ function parseWordList() {
 	var wordList;
 	var sample = wordHash[0];
 	if (sample.hasOwnProperty('word')){
-		wordList = [];
+		wordList = {};
 		wordHash.forEach(item => {
-			let wordObj = {};
-			wordObj[item.word] = item.def;
-			wordList.push(wordObj);
+			wordList[item.word] = item.def;
 		});
 	} else {
 		wordList = wordHash;
 	}
-console.log('parseWordList', wordList);
+
 	return wordList;
 }
 
@@ -35,10 +34,9 @@ function getWordList(type) {
 }
 
 function fullWordList() {
-	var universal = wordHash;
+	var universal = parseWordList(wordHash);
 	var custom = userData.custom;
 	var fullList = { ...universal, ...custom };
-
 	return fullList;
 }
 
@@ -96,7 +94,7 @@ function getWordObj(word) {
 		return { word, def: fullList[word] };
 	} else {
 		console.log(word, 'not found');
-		return {};
+		return { word, def: '' };
 	}
 }
 
