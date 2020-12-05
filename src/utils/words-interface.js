@@ -89,6 +89,7 @@ function getActiveEntry(word) {
 }
 
 function getWordObj(word) {
+	console.log(word, 'not found');
 	var fullList = fullWordList();
 	if (fullList.hasOwnProperty(word)) {
 		return { word, def: fullList[word] };
@@ -99,10 +100,14 @@ function getWordObj(word) {
 }
 
 function getSpotlightItem() {
+	var spotlightItem = { word: '', def: '' };
 	var activeList = getActiveList();
-	var ndx = Math.floor(Math.random() * activeList.length);
-	var word = activeList[ndx];
-	return getWordObj(word);
+	if (activeList.length > 0) {
+		var ndx = Math.floor(Math.random() * activeList.length);
+		var word = activeList[ndx];
+		spotlightItem = getWordObj(word);
+	}
+	return spotlightItem;
 }
 
 function saveNotes(word, notes) {
