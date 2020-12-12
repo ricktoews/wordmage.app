@@ -56,7 +56,7 @@ function Scramble(props) {
 	    { scrambled.split('').map((letter, key) => {
 	      var className = 'letter';
 	      if (letterStates[key][letter]) { className += ' selected'; }
-	      return <span onClick={selectLetter} data-ndx={key} className={className}>{letter}</span>;
+	      return <span key={key} onClick={selectLetter} data-ndx={key} className={className}>{letter}</span>;
 	    })}
 	  </div>
 	  <div className={'unscrambled' + (unscrambled.length === 0 ? ' hide-section' : '')}>
