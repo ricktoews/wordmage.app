@@ -20,10 +20,10 @@ function WordItem(props) {
 	<li className={className} onClick={toggleActiveHandler}>
 	  <div className="list-item">
 	    <div className="list-word">{props.word}</div>
-	    <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
+	    {true || props.browse ? null : <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
 	      <EditIcon onClick={() => { props.popupWordForm(props.word)} } />
 	      <DeleteIcon onClick={() => { props.popupConfirm(props.word)} } />
-	    </div>
+	    </div>}
 	  </div>
 	  <div className="list-def">{def}</div>
 	</li>

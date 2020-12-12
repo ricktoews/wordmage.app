@@ -11,7 +11,8 @@ import Popup from './components/Popup';
 import WordsInterface from './utils/words-interface';
 
 import Spotlight from './components/Spotlight';
-import WordList from './components/WordList';
+import BrowseWords from './components/BrowseWords';
+import SpotlightList from './components/SpotlightList';
 
 import './App.scss';
 
@@ -34,31 +35,24 @@ function App(props) {
 	const [ confirmShareState, setConfirmShareState ] = useState(false);
 	const [ confirmReceive, setConfirmReceive ] = useState(false);
 
-	const navToWordList = () => {
+	const navToBrowseWords = () => {
 		var history = props.history;
-console.log('navToWordList', props, history);
-		history.push('/word-list');
+console.log('navToBrowseWords', props, history);
+		history.push('/browse');
 		setHamburgerClass('hamburger-nav');
 	}
 
 	const navToSpotlight = () => {
 		var history = props.history;
-console.log('navToWordList', props, history);
+console.log('navToSpotlight', props, history);
 		history.push('/spotlight');
 		setHamburgerClass('hamburger-nav');
 	}
 
 	const navToSpotlightList = () => {
 		var history = props.history;
-console.log('navToWordList', props, history);
-		history.push('/word-list/spotlight');
-		setHamburgerClass('hamburger-nav');
-	}
-
-	const navToArchive = () => {
-		var history = props.history;
-console.log('navToWordList', props, history);
-		history.push('/archive');
+console.log('navToSpotlightList', props, history);
+		history.push('/spotlight-list');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -144,11 +138,11 @@ console.log('cancelMnemonicForm');
 
 	return (
 	<div className="App">
-	  <nav class={hamburgerClass}>
+	  <nav className={hamburgerClass}>
 	    <ul>
 	      <li onClick={navToSpotlight}>Spotlight</li>
 	      <li onClick={navToSpotlightList}>Spotlight List</li>
-	      <li onClick={navToWordList}>Word List</li>
+	      <li onClick={navToBrowseWords}>Browse</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
 	    </ul>
@@ -170,12 +164,12 @@ console.log('cancelMnemonicForm');
 	    <Route exact path={['/', '/spotlight']} render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        /> } />
-	    <Route path="/word-list/:listtype?" render={props => ( <WordList
-	        popupConfirm={word => { popupConfirm(word) } }
-	        popupWordForm={word => { popupWordForm(word) } }
-	        addWordState={addWordState}
+	    <Route path="/spotlight-list" render={props => ( <SpotlightList
 	        toggleActive={toggleActive}
-	        updateWordList={updateWordList} />) } />
+	        />) } />
+	    <Route path="/browse" render={props => ( <BrowseWords
+	        toggleActive={toggleActive}
+	        />) } />
 	  </Switch>
 	</div>
 	);

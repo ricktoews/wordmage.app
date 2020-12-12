@@ -16,8 +16,6 @@ $btn-color: white;
 $btn-save-background: $site-green;
 $btn-cancel-background: $site-red;
 
-$btn-archive-background: $site-red;
-
 $list-word-color: #f4e3c9;
 $list-word-background: #37AFFF;
 
@@ -113,6 +111,7 @@ $spotlight-height: 200px;
 	z-index: 100;
 	top: 0;
 	height: $header-height;
+	background-color: white;
 
 	.header-content {
 		background-color: #000;
@@ -136,51 +135,88 @@ $spotlight-height: 200px;
 	height: calc(100vh - #{$header-height});
 }
 
-.word-list-container, .archive-container {
-	z-index: 100;
+.spotlight-list-container {
+}
 
-	.word-list-wrapper {
-		position: relative;
-		top: 50px;
+.browse-container ul.word-list {
+	top: 50px;
+}
 
-		ul.alphabet {
-			padding: 0;
-			margin: 0;
-			list-style-type: none;
+.browse-container, .spotlight-list-container {
+	position: absolute;
+	top: 0;
+	width: 100vw;
+
+	.browse {
+		position: fixed;
+		z-index: 100;
+		margin-top: $header-height;
+		padding-left: 10px;
+		padding-bottom: 10px;
+		width: 100vw;
+		background-color: white;
+
+		.partial-word {
+			border: 1px solid gray;
+			border-radius: 15px;
+			padding: 5px 15px;
+			font-size: 16px;
+			outline: none;
 		}
+	}
 
-		ul.word-list {
-			padding: 0;
-			margin: 0;
-			list-style-type: none;
+	.word-list-container {
+		z-index: 100;
 
-			li {
-				margin-bottom: 10px;
-				background-color: #eee;
-				border-bottom: 1px solid #242729;
-				color: #666;
+		.word-list-wrapper {
+			position: relative;
+			top: 50px;
 
-				&.active {
-					color: #000;
-				}
-				.list-item {
-					position: relative;
+			ul.word-list {
+				position: relative;
+				height: auto;
+				padding: 0;
+				margin: 0;
+				list-style-type: none;
+
+				li {
+					margin-bottom: 10px;
+					background-color: #eee;
+					border-bottom: 1px solid #242729;
+					color: #666;
+
+					&.active {
+						color: #000;
+					}
+					.list-item {
+						position: relative;
 					
-					.list-word {
-						font-size: 1.25em;
-						padding: 5px;
-						display:block;
-						background-color: $list-word-background;
+						.list-word {
+							font-size: 1.25em;
+							padding: 5px;
+							display:block;
+							background-color: $list-word-background;
+						}
+						.list-button-wrapper {
+							position: absolute;
+							top: 0;
+							right: 0;
+						}
 					}
-					.list-button-wrapper {
-						position: absolute;
-						top: 0;
-						right: 0;
+					.list-def {
+						font-size: 1em;
+						padding: 5px;
 					}
 				}
-				.list-def {
-					font-size: 1em;
-					padding: 5px;
+				.list-loading-container {
+					position: relative;
+					.list-loading-marker {
+						position: absolute;
+						width: 100%;
+						height: 500px;
+						background-color: rgba(255,0,255,.3);
+						top: -500px;
+					}
 				}
 			}
 		}
@@ -265,10 +301,6 @@ $spotlight-height: 200px;
 						border: none;
 						border-radius: 15px;
 						color: $btn-color;
-
-						&.btn-archive {
-							background-color: $btn-archive-background;
-						}
 					}
 				}
 		}
