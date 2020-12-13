@@ -88,7 +88,8 @@ function addCustomWord(newWordObj) {
 	let wordObj = {
 		_id: newId,
 		word: newWordObj.word,
-		def: newWordObj.def
+		def: newWordObj.def,
+		spotlight: true
 	};
 	userData.custom.push(wordObj);
 }

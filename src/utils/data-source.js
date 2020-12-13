@@ -17,7 +17,7 @@ const starter = JSON.stringify({
 		spotlight: true
 	}*/]
 });
-localStorage.removeItem('my-words');
+//localStorage.removeItem('my-words');
 
 /**
  * Get user data from local storage. Return it in original format.
