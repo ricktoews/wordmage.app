@@ -52,8 +52,8 @@ function ReceiveData(props) {
 	      </div>
 	        ) : (
 	      <div className="button-wrapper">
-	        <button class="btn btn-cancel" onClick={cancelReceive}>Cancel</button>
-	        <button class="btn btn-save" onClick={replaceData}>Continue</button>
+	        <button className="btn btn-cancel" onClick={cancelReceive}>Cancel</button>
+	        <button className="btn btn-save" onClick={replaceData}>Continue</button>
 	      </div>
 	        )
 	      }

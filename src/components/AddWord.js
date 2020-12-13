@@ -49,8 +49,8 @@ function AddWord(props) {
 	        <textarea placeholder="Definition" onChange={handleDef} id="new-def" rows="5">{fieldDef}</textarea>
 	      </div>
 	      <div className="button-wrapper">
-	        <button class="btn btn-cancel" onClick={cancelWord}>Cancel</button>
-	        <button class="btn btn-save" onClick={saveWord}>Save</button>
+	        <button className="btn btn-cancel" onClick={cancelWord}>Cancel</button>
+	        <button className="btn btn-save" onClick={saveWord}>Save</button>
 	      </div>
 	    </div>
 	  </div>
