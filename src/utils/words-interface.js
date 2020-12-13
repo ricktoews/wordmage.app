@@ -220,7 +220,7 @@ function saveNotes(word, notes) {
  */
 function getNotes(word) {
 	var wordObj = userData.custom.find(item => item.word === word);
-	var notes = wordObj.notes || '';
+	var notes = wordObj && wordObj.notes || '';
 	return notes;
 }
 
