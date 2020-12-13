@@ -42,12 +42,12 @@ function ConfirmShare(props) {
 	      }
 	      { shareCode ? (
 	      <div className="button-wrapper">
-	        <button class="btn btn-save" onClick={ok}>OK</button>
+	        <button className="btn btn-save" onClick={ok}>OK</button>
 	      </div>
 	        ) : (
 	      <div className="button-wrapper">
-	        <button class="btn btn-cancel" onClick={cancelShare}>Cancel</button>
-	        <button class="btn btn-save" onClick={shareWords}>Share</button>
+	        <button className="btn btn-cancel" onClick={cancelShare}>Cancel</button>
+	        <button className="btn btn-save" onClick={shareWords}>Share</button>
 	      </div>
 	        )
 	      }

@@ -77,8 +77,8 @@ console.log('WordForm props', props);
 	        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes">{newNotes}</textarea>
 	      </div>
 	      <div className="button-wrapper">
-	        <button class="btn btn-cancel" onClick={cancelWord}>Cancel</button>
-	        <button class="btn btn-save" onClick={saveWord}>Save</button>
+	        <button className="btn btn-cancel" onClick={cancelWord}>Cancel</button>
+	        <button className="btn btn-save" onClick={saveWord}>Save</button>
 	      </div>
 	    </div>
 	  </div>

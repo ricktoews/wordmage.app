@@ -26,8 +26,8 @@ function ConfirmDelete(props) {
 	        Delete word {props.word}. Are you sure?
 	      </h2>
 	      <div className="button-wrapper">
-	        <button class="btn btn-cancel" onClick={cancelDelete}>Cancel</button>
-	        <button class="btn btn-save" onClick={deleteWord}>Delete</button>
+	        <button className="btn btn-cancel" onClick={cancelDelete}>Cancel</button>
+	        <button className="btn btn-save" onClick={deleteWord}>Delete</button>
 	      </div>
 	    </div>
 	  </div>
