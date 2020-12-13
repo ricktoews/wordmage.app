@@ -25,10 +25,6 @@ function Spotlight(props) {
 		setItem(anotherItem);
 	};
 
-	const archiveWord = e => {
-		props.moveToArchive(item.word);
-	}
-
 	const handleEditMnemonic = e => {
 		props.popupMnemonicForm(item.word);
 	}

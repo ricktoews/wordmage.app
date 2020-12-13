@@ -4,14 +4,14 @@ import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
 const wordObjList = WordsInterface.fullWordList();
-const wordList = Object.keys(wordObjList);
+const wordList = wordObjList.map(item => item.word);
 const listLength = 10;
 
 function SpotlightList(props) {
-	const [wordList, setWordList] = useState( Object.keys( WordsInterface.getWordList('spotlight')).sort() );
+	const [wordList, setWordList] = useState( WordsInterface.getWordList('spotlight').map(item => item.word).sort() );
 console.log('SpotlightList', wordList);
-	const toggleActive = word => {
-		props.toggleActive(word);
+	const toggleSpotlight = word => {
+		props.toggleSpotlight(word);
 	}
 
 	return (
@@ -19,7 +19,7 @@ console.log('SpotlightList', wordList);
 	  <div className="word-list-container">
 	    <div className="word-list-wrapper">
 	      <ul className="word-list">
-               { wordList.map((word, key) => <WordItem key={key} word={word} toggleActive={toggleActive} popupConfirm={word => { props.popupConfirm(word) }} popupWordForm={word => { props.popupWordForm(word) }} />)}
+               { wordList.map((word, ndx) => <WordItem key={ndx} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={word => { props.popupConfirm(word) }} popupWordForm={word => { props.popupWordForm(word) }} />)}
 	      </ul>
 	    </div>
 	  </div>

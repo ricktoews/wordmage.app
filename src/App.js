@@ -19,7 +19,7 @@ import './App.scss';
 const wordHash = WordsInterface.fullWordList();
 
 function App(props) {
-	const [activeList, setActiveList] = useState(WordsInterface.getActiveList());
+	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [ view, setView ] = useState('rehearse');
 	const [ popupState, setPopupState ] = useState(false);
@@ -127,9 +127,9 @@ console.log('cancelMnemonicForm');
 		setConfirmReceive(false);
 	}
 
-	const toggleActive = word => {
-		var newActiveList = WordsInterface.toggleActive(word);
-		setActiveList(Object.keys(newActiveList));
+	const toggleSpotlight = word => {
+		var newSpotlightList = WordsInterface.toggleSpotlight(word);
+		setSpotlightList(Object.keys(newSpotlightList));
 	}
 
 	const updateWordList = () => {
@@ -152,7 +152,7 @@ console.log('cancelMnemonicForm');
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
 	      <div className="header-title">Words To Remember</div>
-	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={popupWordForm} /> : <div /> }
+	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} /> : <div /> }
 	    </div>
 	  </header>
 	  { wordFormState ? <WordForm word={word} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
@@ -163,12 +163,15 @@ console.log('cancelMnemonicForm');
 	  <Switch>
 	    <Route exact path={['/', '/spotlight']} render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
+	        popupWordForm={word => { popupWordForm(word); }}
 	        /> } />
 	    <Route path="/spotlight-list" render={props => ( <SpotlightList
-	        toggleActive={toggleActive}
+	        toggleSpotlight={toggleSpotlight}
+	        popupWordForm={word => { popupWordForm(word); }}
 	        />) } />
-	    <Route path="/browse" render={props => ( <BrowseWords
-	        toggleActive={toggleActive}
+	    <Route path="/browse/:start?" render={props => ( <BrowseWords
+	        toggleSpotlight={toggleSpotlight}
+	        popupWordForm={word => { popupWordForm(word); }}
 	        />) } />
 	  </Switch>
 	</div>
