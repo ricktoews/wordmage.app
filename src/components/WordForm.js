@@ -10,10 +10,11 @@ function WordForm(props) {
 		var { word, def } = WordsInterface.getWordObj(props.word);
 		// If word already exists, set spotlight flag to false;
 		var notes = '';
-		if (WordsInterface.isActiveEntry(props.word)) {
-			var { notes } = WordsInterface.getActiveEntry(props.word);
+		if (WordsInterface.isSpotlightEntry(props.word)) {
+			var { notes } = WordsInterface.getSpotlightEntry(props.word);
 		} 
 	}
+console.log('WordForm props', props);
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
 	const [ newNotes, setNewNotes ] = useState(notes);
@@ -70,7 +71,7 @@ function WordForm(props) {
 	        <input placeholder="Word" onChange={handleWord} type="text" id="new-word" size="20" value={newWord} />
 	      </div>
 	      <div className={'of-interest'}>
-	        <textarea placeholder="Definition" onChange={handleDef} id="new-def">{newDef}</textarea>
+	        <textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
 	      </div>
 	      <div className={'notes hide-section'}>
 	        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes">{newNotes}</textarea>

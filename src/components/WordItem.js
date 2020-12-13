@@ -1,29 +1,43 @@
+import { useEffect, useRef } from 'react';
 import { itemToObj } from '../utils/helpers';
 import WordsInterface from '../utils/words-interface';
 import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';
 
 function WordItem(props) {
-	const wordHash = WordsInterface.fullWordList();
-	const def = props.def ? props.def : wordHash[props.word];
-	const className = WordsInterface.isActiveEntry(props.word) ? 'active' : '';
-	const isCustom = 1||WordsInterface.isCustom(props.word);
+	const wordArray = WordsInterface.fullWordList();
+	const wordObj = WordsInterface.getWordObj(props.word);
+	const word = props.word;
+	const def = wordObj.def;
+	//const isCustom = wordObj.custom;
+	const className = wordObj.spotlight ? 'spotlight' : '';
+	const isCustom = WordsInterface.isCustom(word);
+	const startRef = useRef(null);
+
+	useEffect(() => {
+		if (props.browse) {
+			props.setStartWord(startRef);
+		}
+	}, []);
 	
-	const toggleActiveHandler = e => {
+	const toggleSpotlightHandler = e => {
 		var el = e.target;
 		if (el.tagName === 'DIV') {
-			props.toggleActive(props.word);
+			props.toggleSpotlight(props.word);
 		}
 	};
 
 	return (
-	<li className={className} onClick={toggleActiveHandler}>
+	<li className={className} onClick={toggleSpotlightHandler}>
+	  {props.starthere ? <div ref={startRef}></div> : null}
 	  <div className="list-item">
-	    <div className="list-word">{props.word}</div>
-	    {true || props.browse ? null : <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
-	      <EditIcon onClick={() => { props.popupWordForm(props.word)} } />
-	      <DeleteIcon onClick={() => { props.popupConfirm(props.word)} } />
-	    </div>}
+	    <div className="list-word">{word}</div>
+	    {isCustom ? (
+	      <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
+	        <EditIcon onClick={() => { props.popupWordForm(word)} } />
+	        <DeleteIcon onClick={() => { props.popupConfirm(word)} } />
+	      </div>)
+	              : null }
 	  </div>
 	  <div className="list-def">{def}</div>
 	</li>

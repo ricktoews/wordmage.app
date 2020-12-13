@@ -1,9 +1,27 @@
+/*
+{ 
+	custom: [
+		_id: <int>,
+		word: <string>,
+		def: <string>,
+		notes: <string>,
+		spotlight: <boolean>
+	]
+}
+
+ */
 const starter = JSON.stringify({
-	"custom": {},
-	"active": {},
-	"archived": {}
+	"custom": [/*{
+		_id: 1,
+		word: 'a cheval',
+		spotlight: true
+	}*/]
 });
 //localStorage.removeItem('my-words');
+
+/**
+ * Get user data from local storage. Return it in original format.
+ */
 function retrieveUserData() {
 	var myWords = localStorage.getItem('my-words') || starter;
 	try {
