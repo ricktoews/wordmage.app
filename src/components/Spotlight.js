@@ -12,6 +12,12 @@ function Spotlight(props) {
 	//const [item, setItem] = useState(props.item);
 	const [notes, setNotes] = useState(WordsInterface.getNotes(randomItem.word));
 
+	useEffect(() => {
+		if (item.word === '') {
+			props.history.push('/browse');
+		}
+	}, []);
+
 	const handleOpenCloseMnemonic = e => {
 		setOpenMnemonic(!openMnemonic);		
 	};
