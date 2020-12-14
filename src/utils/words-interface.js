@@ -88,7 +88,8 @@ function addCustomWord(newWordObj) {
 	let wordObj = {
 		_id: newId,
 		word: newWordObj.word,
-		def: newWordObj.def
+		def: newWordObj.def,
+		spotlight: newWordObj.spotlight
 	};
 	userData.custom.push(wordObj);
 }
@@ -101,7 +102,7 @@ function addCustomWord(newWordObj) {
 function saveCustomWord(id, word, def, spotlight) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	if (wordObjIndex === -1) {
-		addCustomWord({ word, def });
+		addCustomWord({ word, def, spotlight: true });
 	} else {
 		let wordObj = userData.custom[wordObjIndex];
 		wordObj.word = word;
