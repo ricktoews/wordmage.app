@@ -26,6 +26,7 @@ function App(props) {
 	const [ popupData, setPopupData ] = useState({});
 	const [ popupView, setPopupView ] = useState('');
 	const [ word, setWord ] = useState('');
+	const [ wordId, setWordId ] = useState(0);
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
 	const [ addWordState, setAddWordState ] = useState(false);
@@ -75,19 +76,19 @@ console.log('navToSpotlightList', props, history);
 	};
 
 	
-	const popupConfirm = word => {
-		setWord(word);
+	const popupConfirm = wordId => {
+		setWordId(wordId);
 		setConfirmState(true);
 	}
 
-	const popupWordForm = word => {
-console.log('popupWordForm', word);
+	const popupWordForm = wordId => {
+console.log('popupWordForm', wordId);
 /*
 		setPopupView('add-word');
 		setPopupState(true);
 		setPopupData({ word });
 */
-		setWord(word);
+		setWordId(wordId);
 		setWordFormState(true);
 	}
 
@@ -104,6 +105,7 @@ console.log('cancelMnemonicForm');
 	}
 
 	const cancelWordForm = () => {
+console.log('cancelWordForm');
 		setWordFormState(false);
 	}
 
@@ -155,23 +157,24 @@ console.log('cancelMnemonicForm');
 	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} /> : <div /> }
 	    </div>
 	  </header>
-	  { wordFormState ? <WordForm word={word} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
+	  { wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
 	  { mnemonicFormState ? <MnemonicForm word={word} cancel={cancelMnemonicForm} /> : <div/> }
-	  { confirmState ? <ConfirmDelete word={word} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
+	  { confirmState ? <ConfirmDelete wordId={wordId} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
 	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
 	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
 	  <Switch>
 	    <Route exact path={['/', '/spotlight']} render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
-	        popupWordForm={word => { popupWordForm(word); }}
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />
 	    <Route path="/spotlight-list" render={props => ( <SpotlightList
 	        toggleSpotlight={toggleSpotlight}
-	        popupWordForm={word => { popupWordForm(word); }}
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        />) } />
 	    <Route path="/browse/:start?" render={props => ( <BrowseWords
 	        toggleSpotlight={toggleSpotlight}
-	        popupWordForm={word => { popupWordForm(word); }}
+	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        />) } />
 	  </Switch>
 	</div>

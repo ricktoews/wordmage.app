@@ -73,7 +73,6 @@ function getWordList(type) {
 	switch (type) {
 		case 'spotlight':
 			list = userData.custom.filter(item => item.spotlight);
-console.log('getWordList', type, list);
 			break;
 		default:
 			list = fullWordList();
@@ -83,13 +82,12 @@ console.log('getWordList', type, list);
 
 function addCustomWord(newWordObj) {
 	var idList = userData.custom.map(item => item._id);
-	var maxId = idList.length ? Math.max(...idList) : -1;
+	var maxId = idList.length ? Math.max(...idList) : 0;
 	var newId = maxId + 1;
 	let wordObj = {
 		_id: newId,
 		word: newWordObj.word,
-		def: newWordObj.def,
-		spotlight: true
+		def: newWordObj.def
 	};
 	userData.custom.push(wordObj);
 }
@@ -99,12 +97,13 @@ function addCustomWord(newWordObj) {
  * If custom word isn't already listed, add it.
  * Maybe this needs to include the _id, to allow for modification of the word itself.
  */
-function saveCustomWord(word, def, spotlight) {
-	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
+function saveCustomWord(id, word, def, spotlight) {
+	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	if (wordObjIndex === -1) {
 		addCustomWord({ word, def });
 	} else {
 		let wordObj = userData.custom[wordObjIndex];
+		wordObj.word = word;
 		wordObj.def = def;
 		wordObj.spotlight = spotlight;
 	}
@@ -115,9 +114,9 @@ function saveCustomWord(word, def, spotlight) {
  * Remove specified word from custom list.
  * Array.splice(start, quantity);
  */
-function deleteCustomWord(word) {
-	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
-	userData.splice(wordObjIndex, 1);
+function deleteCustomWord(wordId) {
+	var wordObjIndex = userData.custom.findIndex(item => item._id === wordId);
+	userData.custom.splice(wordObjIndex, 1);
 	DataSource.saveUserData(userData);
 }
 
@@ -127,6 +126,19 @@ function deleteCustomWord(word) {
 function isCustom(word) {
 	var wordObj = userData.custom.find(item => item.word === word);
 	return !!wordObj;
+}
+
+/**
+ * Get Word object by ID. For custom words.
+ */
+function getWordObjById(id) {
+	var wordObj = userData.custom.find(item => item._id === id);
+	if (wordObj) {
+		return wordObj;
+	} else {
+		console.log(id, 'not found');
+		return { word: '', def: '' };
+	}
 }
 
 /**
@@ -149,7 +161,6 @@ function getWordObj(word) {
  * Toggle Spotlight status for specified word.
  */
 function toggleSpotlight(word) {
-console.log('toggleSpotlight', word);
 	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	if (wordObjIndex === -1) {
 		let builtInWord = wordHash.find(item => item.word === word);
@@ -161,7 +172,6 @@ console.log('toggleSpotlight', word);
 	DataSource.saveUserData(userData);
 	// Create array of words from userData.active, which is an array of { word: notes }.
 	var newSpotlightList = userData.custom.filter(item => item.spotlight);
-console.log('toggleSpotlight spotlightList', newSpotlightList);
 	return newSpotlightList;
 }
 
@@ -253,6 +263,7 @@ const WordsInterface = {
 	isSpotlightEntry,
 	toggleSpotlight,
 	getSpotlightEntry,
+	getWordObjById,
 	getWordObj,
 	getSpotlightItem,
 	saveNotes,

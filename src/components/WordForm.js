@@ -5,16 +5,16 @@ import WordsInterface from '../utils/words-interface';
 function WordForm(props) {
 	var word = '', def = '', notes = '', spotlight = true;
 
-	if (props.word) {
+	if (props.wordId) {
 		// get word from custom list, from active list.
-		var { word, def } = WordsInterface.getWordObj(props.word);
+		var { word, def } = WordsInterface.getWordObjById(props.wordId);
 		// If word already exists, set spotlight flag to false;
 		var notes = '';
 		if (WordsInterface.isSpotlightEntry(props.word)) {
 			var { notes } = WordsInterface.getSpotlightEntry(props.word);
 		} 
 	}
-console.log('WordForm props', props);
+
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
 	const [ newNotes, setNewNotes ] = useState(notes);
@@ -48,13 +48,13 @@ console.log('WordForm props', props);
 	const saveWord = () => {
 		console.log('save', newWord, newDef);
 		// Need to save custom word, spotlight, or whatever.
-		WordsInterface.saveCustomWord(newWord, newDef, spotlight);
+		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, spotlight);
 		// If on Spotlight page, add word to active.
 		if (props.location.pathname === '/spotlight') {
 			WordsInterface.toggleActive(newWord);
 		}
 		// Save notes.
-		WordsInterface.saveNotes(newWord, newNotes);
+		//WordsInterface.saveNotes(newWord, newNotes);
 
 		// Finally, hide form. This should reach the top and hopefully cascade rerender components.
 		props.cancelWordForm();
