@@ -18,7 +18,7 @@ function WordForm(props) {
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
 	const [ newNotes, setNewNotes ] = useState(notes);
-
+console.log('WordForm word', word, 'newWord', newWord);
 	const handleChange = e => {
 		var el = e.target;
 		var notes = el.textContent;

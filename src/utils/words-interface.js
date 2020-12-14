@@ -55,6 +55,7 @@ function fullWordList() {
 		if (ndx === -1) {
 			revisedCustom.push(wordObj);
 		} else {
+			universal[ndx]._id = wordObj._id;
 			universal[ndx].def = wordObj.def;
 			universal[ndx].spotlight = wordObj.spotlight;
 		}
