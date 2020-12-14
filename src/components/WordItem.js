@@ -7,6 +7,7 @@ import EditIcon from './EditIcon';
 function WordItem(props) {
 	const wordArray = WordsInterface.fullWordList();
 	const wordObj = WordsInterface.getWordObj(props.word);
+	const wordId = wordObj._id;
 	const word = props.word;
 	const def = wordObj.def;
 	//const isCustom = wordObj.custom;
@@ -34,8 +35,8 @@ function WordItem(props) {
 	    <div className="list-word">{word}</div>
 	    {isCustom ? (
 	      <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
-	        <EditIcon onClick={() => { props.popupWordForm(word)} } />
-	        <DeleteIcon onClick={() => { props.popupConfirm(word)} } />
+	        <EditIcon onClick={() => { props.popupWordForm(wordId)} } />
+	        <DeleteIcon onClick={() => { props.popupConfirm(wordId)} } />
 	      </div>)
 	              : null }
 	  </div>

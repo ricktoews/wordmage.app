@@ -91,9 +91,9 @@ console.log('setting start ref to scroll to', startRef.current, window.pageYOffs
 	      <ul ref={listRef} className="word-list">
 	        { wordListSubset.map((word, ndx) => {
 	            if (startingWord === word) {
-	                return <WordItem key={ndx} setStartWord={setStartWord} browse={true} starthere={true} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={word => { props.popupConfirm(word) }} popupWordForm={word => { props.popupWordForm(word) }} />
+	                return <WordItem key={ndx} setStartWord={setStartWord} browse={true} starthere={true} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={wordId => { props.popupConfirm(wordId) }} popupWordForm={wordId => { props.popupWordForm(wordId) }} />
 	            } else {
-	                return <WordItem key={ndx} browse={true} setStartWord={setStartWord} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={word => { props.popupConfirm(word) }} popupWordForm={word => { props.popupWordForm(word) }} />
+	                return <WordItem key={ndx} browse={true} setStartWord={setStartWord} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={wordId => { props.popupConfirm(wordId) }} popupWordForm={wordId => { props.popupWordForm(wordId) }} />
 	            }
 	        })}
 
