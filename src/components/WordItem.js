@@ -12,6 +12,7 @@ function WordItem(props) {
 	const def = wordObj.def;
 	//const isCustom = wordObj.custom;
 	const className = wordObj.spotlight ? 'spotlight' : '';
+	const spotlightMarker = wordObj.spotlight ? <div className="spotlight-marker"></div> : null;
 	const isCustom = WordsInterface.isCustom(word);
 	const startRef = useRef(null);
 
@@ -32,7 +33,7 @@ function WordItem(props) {
 	<li className={className} onClick={toggleSpotlightHandler}>
 	  {props.starthere ? <div ref={startRef}></div> : null}
 	  <div className="list-item">
-	    <div className="list-word">{word}</div>
+	    <div className="list-word">{spotlightMarker}{word}</div>
 	    {isCustom ? (
 	      <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
 	        <EditIcon onClick={() => { props.popupWordForm(wordId)} } />
