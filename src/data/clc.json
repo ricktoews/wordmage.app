@@ -1,0 +1,567 @@
+[
+    {
+        "word": "quaaltagh",
+        "oed": {
+            "cit": {
+                "year": "1845",
+                "name": "J. Train",
+                "title": "Hist. & Statist. Acct. Isle of Man",
+                "ref": "II. 115",
+                "usage": "A light-haired male or female is deemed unlucky to be a first-foot or quaaltagh on New Year's morning."
+            },
+            "def": "The first person to enter a house on New Year's Day; = first foot. Also: the first person one meets after leaving home, esp. on a special occasion."
+        },
+        "def": "the first person you meet on New Year's Day"
+        "my-usage": "Although not notably superstitious, X couldn't help thinking it auspicious as he stepped out for a pastry at the local patissiere that the quaaltagh was a notably cheerful and evently fortune-favored gentleman."
+    },
+    {
+        "word": "fedifragous",
+        "oed": {
+            "cit": {
+                "year": "1600",
+                "name": "Abp. G. Abbot",
+                "title": "Expos. Prophet Ionah",
+                "ref": " 359",
+                "usage": "Perfidious, and fedifragous, and barbarous Princes.",
+            },
+            "def": "Pledge-breaking, faithless, perfidious. Also as n. with the: promise-breakers as a class." 
+        },
+        "def": "promise-breaking, oath-violating"
+    },
+    {
+        "word": "proditomania",
+        "oed": {
+            "cit": {
+                "year": "1898",
+                "name": "Contemp. Rev.",
+                "ref": "Mar. 309",
+                "usage": "The concomitant proditomania. [Note A morbid belief in the ubiquity and omnipotence of traitors.]"
+            }
+        },
+        "def": "the irrational belief that everyone around you is a traitor"
+    },
+    {
+        "word": "cadette",
+        "oed": {
+            "cit": {
+                "year": "1679",
+                "name": "tr. M. Mancini",
+                "ref": "Apol. 4",
+                "usage": "The order..seem'd to exclude my Sister as a Cadette."
+            }
+        },
+        "def": "a younger sister or daughter"
+    },
+    {
+        "word": "raven-messenger",
+        "oed": true,
+        "def": "someone who turns up too late to be of use"
+    },
+    {
+        "word": "antimetabole",
+        "oed": true,
+        "def": "the repetition, in transposed order, of words or phrases in successive clauses"
+    },
+    {
+        "word": "Rasputinism",
+        "oed": true,
+        "def": "corrupting influence, especially over a government for political gain"
+    },
+    {
+        "word": "manubiary",
+        "oed": true,
+        "def": "plundering"
+    },
+    {
+        "word": "transmural",
+        "oed": true,
+        "def": "situated beyond or on the other side of a wall. (see other trans- words)"
+    },
+    {
+        "word": "zalabiya",
+        "oed": false,
+        "def": "an ancient Persian dessert of friend and sweetened batter"
+    },
+    {
+        "word": "Euroclydon",
+        "oed": true,
+        "def": "a huge storm"
+    },
+    {
+        "word": "calepin",
+        "oed": true,
+        "def": "a dictionary, a book of authority or reference"
+    },
+    {
+        "word": "naufrague",
+        "oed": true,
+        "def": "a shipwrecked person, a castaway"
+    },
+    {
+        "word": "twankle",
+        "oed": true,
+        "def": "to play idly on a musical instrument"
+    },
+    {
+        "word": "luition",
+        "oed": true,
+        "def": "the payment of a ransom"
+    },
+    {
+        "word": "dyvoury",
+        "oed": true,
+        "def": "bankruptcy, financial ruin"
+    },
+    {
+        "word": "Tapleyism",
+        "oed": true,
+        "def": "extreme optimism, even in the face of desperate circumstances"
+    },
+    {
+        "word": "degelation",
+        "oed": true,
+        "def": "the process of thawing"
+    },
+    {
+        "word": "hubbleshow",
+        "oed": true,
+        "def": "a noisy uproar, a riot"
+    },
+    {
+        "word": "insinuendo",
+        "oed": true,
+        "def": "an insinuated remark"
+    },
+    {
+        "word": "xenodochy",
+        "oed": true,
+        "def": "hospitality, the entertainment of strangers"
+    },
+    {
+        "word": "camisado",
+        "oed": true,
+        "def": "a surprise invasion or attack carried out at night"
+    },
+    {
+        "word": "hemerolgy",
+        "oed": false,
+        "def": "a diary, a record of the day's events"
+    },
+    {
+        "word": "twarvlement",
+        "oed": false,
+        "def": "circuitous, long-winded speech"
+    },
+    {
+        "word": "anepronym",
+        "oed": false,
+        "def": "a trademarked name that has come to be used generically"
+    },
+    {
+        "word": "mountweazel",
+        "oed": false,
+        "def": "a fictitious entry added to a book to prevent plagiarism"
+    },
+    {
+        "word": "cacafuego",
+        "oed": true,
+        "def": "a blustering braggart"
+    },
+    {
+        "word": "pantagruelian",
+        "oed": true,
+        "def": "gigantic, comically or grotesquely oversized"
+    },
+    {
+        "word": "epistolophobia",
+        "oed": false,
+        "def": "the ear of receiving correspondence"
+    },
+    {
+        "word": "breviloquent",
+        "oed": true,
+        "def": "pithy, succinct; characterized by brevity of speech"
+    },
+    {
+        "word": "zawn",
+        "oed": true,
+        "def": "a fissure or cave in a coastal cliff"
+    },
+    {
+        "word": "obsidion",
+        "oed": true,
+        "def": "a siege; the state of being besieged"
+    },
+    {
+        "word": "ecdysiast",
+        "oed": true,
+        "def": "a striptease artiste"
+    },
+    {
+        "word": "pericranics",
+        "oed": true,
+        "def": "intelligence, wits, mental faculties"
+    },
+    {
+        "word": "sicarian",
+        "oed": true,
+        "def": "an assassin"
+    },
+    {
+        "word": "absconsion",
+        "def": "an escape"
+    },
+    {
+        "word": "siderism",
+        "def": "the belief that the stars and heavens have an influence on life on earth"
+    },
+    {
+        "word": "meiosis",
+        "def": "a figure of speech that deliberately understates something truly serious"
+    },
+    {
+        "word": "antichthon",
+        "def": "a hypothetical planet hidden from our view on the opposite side of the sun"
+    },
+    {
+        "word": "vinipote",
+        "def": "a wine drinker"
+    },
+    {
+        "word": "dissight",
+        "def": "an eyesore, anything unpleasant to look upon"
+    },
+    {
+        "word": "dactylology",
+        "def": "finger-speech"
+    },
+    {
+        "word": "periscian",
+        "def": "an inhabitant of the polar regions"
+    },
+    {
+        "word": "sockdolager",
+        "def": "something of exceptional size or extraordinariness; a knockout blow"
+    },
+    {
+        "word": "lamprophony",
+        "def": "clearness of voice"
+    },
+    {
+        "word": "circumbilivagination",
+        "def": "a circular motion, a movement around"
+    },
+    {
+        "word": "pugnozzle",
+        "def": "to move the nose and lips like a pug dog"
+    },
+    {
+        "word": "solastalgia",
+        "def": "mental distress or nostalgia sparked by environmental change"
+    },
+    {
+        "word": "arsefoot",
+        "def": "a penguin; any squat, short-statured waterbird"
+    },
+    {
+        "word": "ceraunite",
+        "def": "a meteorite"
+    },
+    {
+        "word": "apodeictic",
+        "def": "demonstrated to be incontrovertibly true"
+    },
+    {
+        "word": "paragrandine",
+        "def": "a device for protection against hail"
+    },
+    {
+        "word": "orchestic",
+        "def": "of or relating to dancing or a dance sequence"
+    },
+    {
+        "word": "word-grubber",
+        "def": "someone who uses obscure or difficult words in everyday conversation"
+    },
+    {
+        "word": "periegesis",
+        "def": "a geographival survey; a description of a place or account of a journey"
+    },
+    {
+        "word": "Slurvian",
+        "def": "nonsense, incoherent speech"
+    },
+    {
+        "word": "three-pipe",
+        "def": "extremely complex, requiring much thought"
+    },
+    {
+        "word": "sanguisugent",
+        "def": "blood-sucking"
+    },
+    {
+        "word": "shivviness",
+        "def": "the uncomfortable feeling of wearing new undergarments"
+    },
+    {
+        "word": "transnivean",
+        "def": "located beyond the snows, beyond snow-capped mountains"
+    },
+    {
+        "word": "vespering",
+        "def": "flying westwards, heading towards sunset"
+    },
+    {
+        "word": "anaphora",
+        "def": "a figure of speech that repeats a sequence of words at the start of successive clauses"
+    },
+    {
+        "word": "orthophony",
+        "def": "perfectly correct speaking or enunciation"
+    },
+    {
+        "word": "Wunderkammer",
+        "def": "a collection of oddities; a room set aside for just such a collection"
+    },
+    {
+        "word": "curfuggle",
+        "def": "a confused mess; disorder, disarray"
+    },
+    {
+        "word": "noctilucy",
+        "def": "the shining of the moon "
+    },
+    {
+        "word": "polymicrian",
+        "def": "extremely cramped; containing a great deal in a small space"
+    },
+    {
+        "word": "malison",
+        "def": "a curse; an accursed person or thing"
+    },
+    {
+        "word": "choreomania",
+        "def": "a mania for dancing"
+    },
+    {
+        "word": "decapulate",
+        "def": "to pour a liquid from one vessel into another"
+    },
+    {
+        "word": "muggle",
+        "def": "a fish's tail"
+    },
+    {
+        "word": "Mavortian",
+        "def": "warlike, martial"
+    },
+    {
+        "word": "Carthaginian",
+        "def": "a peace settlement imposing severe penalties on the defeated party"
+    },
+    {
+        "word": "scathefire",
+        "def": "a vast, destructive conflagration"
+    },
+    {
+        "word": "transpontine",
+        "def": "located on the opposite side of a bridge"
+    },
+    {
+        "word": "monadnock",
+        "def": "an isolated hill or mountain"
+    },
+    {
+        "word": "Augean",
+        "def": "horrendously filthy"
+    },
+    {
+        "word": "bluenose",
+        "def": "a strict prude; a priggish, puritanical person"
+    },
+    {
+        "word": "insulet",
+        "def": "a small island"
+    },
+    {
+        "word": "acharnement",
+        "def": "bloodthirsty enthusiasm"
+    },
+    {
+        "word": "steganogram",
+        "def": "a coded text or message"
+    },
+    {
+        "word": "pelmatogram",
+        "def": "a footprint"
+    },
+    {
+        "word": "siderodromophobia",
+        "def": "the fear of rail travel"
+    },
+    {
+        "word": "Sardoodledom",
+        "def": "well-made but contrived or trivial works for theatre"
+    },
+    {
+        "word": "misocapnist",
+        "def": "someone who hates tobacco smoke"
+    },
+    {
+        "word": "kelter",
+        "def": " a hand of cards of little value or use"
+    },
+    {
+        "word": "Sebastianist",
+        "def": "someone who believes something unbelievable"
+    },
+    {
+        "word": "Proteusian",
+        "def": "able to change shape at will; variable, inconstant"
+    },
+    {
+        "word": "schoenobatist",
+        "def": "a tightrope walker"
+    },
+    {
+        "word": "repdigit",
+        "def": "a number composed of a single repeated figure"
+    },
+    {
+        "word": "rusticate",
+        "def": "to live in the countryside, to live a quiet rural life"
+    },
+    {
+        "word": "unrecking",
+        "def": "not paying attention, unheeding"
+    },
+    {
+        "word": "cyllenian",
+        "def": "pertaining to theft or thieving"
+    },
+    {
+        "word": "desulture",
+        "def": "the act of vaulting from one horse to another"
+    },
+    {
+        "word": "viaticated",
+        "def": "fully prepared for a journey"
+    },
+    {
+        "word": "ucalegon",
+        "def": "a neighbor whose house is on fire"
+    },
+    {
+        "word": "ambilaevous",
+        "def": "equally clumsy in both hands"
+    },
+    {
+        "word": "prosopopoeia",
+        "def": "personification, the application fo human characteristics to an inanimate thing"
+    },
+    {
+        "word": "agerasia",
+        "def": "a more youthful appearance than one's true age"
+    },
+    {
+        "word": "perfretation",
+        "def": "a sea voyage or crossing"
+    },
+    {
+        "word": "cohonestatin",
+        "def": "the act of honoring with your company"
+    },
+    {
+        "word": "beaglepuss",
+        "def": "a pair of novelty glasses with a fake nose, eyebrows and moustache attached"
+    },
+    {
+        "word": "latrocination",
+        "def": "robbery, theft"
+    },
+    {
+        "word": "blunder-a-whack",
+        "def": "someone whose carelessness has caused a disaster"
+    },
+    {
+        "word": "umbratical",
+        "def": "disguised, cloaked"
+    },
+    {
+        "word": "spurcity",
+        "def": "obscenitym, uncleanness"
+    },
+    {
+        "word": "quaquaversally",
+        "def": "moving, pointing, or protruding in all directions"
+    },
+    {
+        "word": "parietines",
+        "def": "fallen or ruined walls"
+    },
+    {
+        "word": "cataractine",
+        "def": "resembling a waterfall"
+    },
+    {
+        "word": "belue",
+        "def": "a great beast or sea monster; a whale"
+    },
+    {
+        "word": "exsibilation",
+        "def": "the hissing or jeering of a performer from a stage"
+    },
+    {
+        "word": "arctician",
+        "def": "a polar animal; a polar explorer"
+    },
+    {
+        "word": "astrobleme",
+        "def": "an eroded impact crater, caused by a meteorite or asteroid"
+    },
+    {
+        "word": "obstrigillation",
+        "oed": true,
+        "def": "the action of opposing or resisting; an act of defiance"
+    },
+    {
+        "word": "geoplanarian",
+        "def": "someone who believes the earth is flat"
+    },
+    {
+        "word": "premonstrance",
+        "def": "a portent, an omen"
+    },
+    {
+        "word": "licitation",
+        "def": "to sell at auction; to sell to the highest bidder"
+    },
+    {
+        "word": "saucerian",
+        "def": "a believer in flying saucers; an alien that travels by saucer-shaped craft"
+    },
+    {
+        "word": "periplus",
+        "def": "a written account of a grand expedition or circumnavigation; an epic journey"
+    },
+    {
+        "word": "Thule",
+        "def": "an extreme point, or the extreme point of a journey or discovery"
+    },
+    {
+        "word": "scurryfunge",
+        "def": "to hastily tidy a house"
+    },
+    {
+        "word": "doniferous",
+        "def": "carrying a gift"
+    },
+    {
+        "word": "yule-hole",
+        "def": "the hole you must move your belt buckle to after eating Christmas lunch"
+    },
+    {
+        "word": "morganize",
+        "def": "to assassinate someone to prevent them from disclosing information"
+    }
+]
