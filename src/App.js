@@ -163,6 +163,10 @@ console.log('cancelWordForm');
 	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
 	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
 	  <Switch>
+	    <Route exact path={['/', '/spotlight/:word/:def']} render={props => <Spotlight
+	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        /> } />
 	    <Route exact path={['/', '/spotlight']} render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}

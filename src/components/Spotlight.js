@@ -13,7 +13,11 @@ function Spotlight(props) {
 	const [notes, setNotes] = useState(WordsInterface.getNotes(randomItem.word));
 
 	useEffect(() => {
-		if (item.word === '') {
+		if (props.match.params.word) {
+			let { word, def } = props.match.params;
+			WordsInterface.saveCustomWord(-1, word, def);
+			props.history.push('/spotlight-list');
+		} else if (item.word === '') {
 			props.history.push('/browse');
 		}
 	}, []);
