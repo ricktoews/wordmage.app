@@ -60,7 +60,7 @@ function Scramble(props) {
 	    })}
 	  </div>
 	  <div className={'unscrambled' + (unscrambled.length === 0 ? ' hide-section' : '')}>
-	    <RefreshIcon onClick={handleRefresh} finished={finished} /> {unscrambled.split('').map((letter, key) => <span>{letter}</span>)}
+	    <RefreshIcon onClick={handleRefresh} finished={finished} /> {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
 	  </div>
 	</div>
 	);
