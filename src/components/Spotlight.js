@@ -41,11 +41,28 @@ function Spotlight(props) {
 
 	const handleChange = e => {
 		var el = e.target;
-		var notes = el.textContent;
+		var label = el.ariaLabel;
+		var content = el.textContent;
+		switch (label) {
+			case 'def':
+console.log('handleChange definition', content, item);
+				WordsInterface.saveCustomDef(item._id, content);
+				break;
+			case 'mnemonic':
+console.log('handleChange how to remember', content, item);
+				WordsInterface.saveNotes(item._id, content);
+				break;
+			default:
+				break;
+		}
+
+
+/*
 		WordsInterface.saveNotes(item.word, notes);
 		if (notes) {
 			setOpenDef(false);
 		}
+*/
 	};
 
 	return (
@@ -54,12 +71,14 @@ function Spotlight(props) {
 	    <div className="spotlight">
 	      <Scramble item={item} word={item.word} />
 	      <div className="user-notes-heading">
-	      How did you want to remember this word?
+	      How do you want to remember this word?
 	      </div>
-	      <div className="user-notes" contentEditable={true} suppressContentEditableWarning={true}>
+	      <div className="user-notes" aria-label="mnemonic" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleChange}>
+	        {notes}
 	      </div>
 
 	      {/* Mnemonic device */}
+{/*
 	      <div className="word">
 	        { openMnemonic ? (
 	        <button onClick={handleOpenCloseMnemonic} className={'btn btn-info btn-md'}>
@@ -78,8 +97,13 @@ function Spotlight(props) {
 	      <div className={'of-interest' + (openMnemonic ? ' open' : ' closed')}>
 	        {notes}
 	      </div>
+*/}
 
 	      {/* Definition */}
+	      <div className="user-notes-heading">
+	      Definition (Customize, abbreviate to suit your need.)
+	      </div>
+{/*
 	      <div className="word">
 	        { openDef ? (
 	        <button onClick={handleOpenClose} className={'btn btn-info btn-md'}>
@@ -92,7 +116,8 @@ function Spotlight(props) {
 	          )
 	        }
 	      </div>
-	      <div className={'of-interest' + (openDef ? ' open' : ' closed')}>
+*/}
+	      <div aria-label="def" className={'user-notes' + (openDef ? ' open' : ' closed')} contentEditable={true} suppressContentEditableWarning={true} onBlur={handleChange}>
 	        {item.def}
 	      </div>
 	    </div>
