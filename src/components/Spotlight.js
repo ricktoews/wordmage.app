@@ -54,12 +54,14 @@ function Spotlight(props) {
 	    <div className="spotlight">
 	      <Scramble item={item} word={item.word} />
 	      <div className="user-notes-heading">
-	      How did you want to remember this word?
+	      How do you want to remember this word?
 	      </div>
 	      <div className="user-notes" contentEditable={true} suppressContentEditableWarning={true}>
+	        {notes}
 	      </div>
 
 	      {/* Mnemonic device */}
+{/*
 	      <div className="word">
 	        { openMnemonic ? (
 	        <button onClick={handleOpenCloseMnemonic} className={'btn btn-info btn-md'}>
@@ -78,8 +80,13 @@ function Spotlight(props) {
 	      <div className={'of-interest' + (openMnemonic ? ' open' : ' closed')}>
 	        {notes}
 	      </div>
+*/}
 
 	      {/* Definition */}
+	      <div className="user-notes-heading">
+	      Definition (Customize, abbreviate to suit your need.)
+	      </div>
+{/*
 	      <div className="word">
 	        { openDef ? (
 	        <button onClick={handleOpenClose} className={'btn btn-info btn-md'}>
@@ -92,7 +99,8 @@ function Spotlight(props) {
 	          )
 	        }
 	      </div>
-	      <div className={'of-interest' + (openDef ? ' open' : ' closed')}>
+*/}
+	      <div className={'user-notes' + (openDef ? ' open' : ' closed')} contentEditable={true} suppressContentEditableWarning={true}>
 	        {item.def}
 	      </div>
 	    </div>
