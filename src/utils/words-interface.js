@@ -95,6 +95,18 @@ function addCustomWord(newWordObj) {
 }
 
 /**
+ * Save custom definition.
+ * If custom word isn't already listed, add it.
+ * Maybe this needs to include the _id, to allow for modification of the word itself.
+ */
+function saveCustomDef(id, def) {
+	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
+	let wordObj = userData.custom[wordObjIndex];
+	wordObj.def = def;
+	DataSource.saveUserData(userData);
+}
+
+/**
  * Save custom word.
  * If custom word isn't already listed, add it.
  * Maybe this needs to include the _id, to allow for modification of the word itself.
@@ -221,9 +233,10 @@ function getSpotlightItem() {
 /**
  * Save notes for word in custom list.
  */
-function saveNotes(word, notes) {
-	var wordObjNdx = userData.custom.findIndex(item => item.word === word);
-	userData.custom[wordObjNdx].notes = notes;
+function saveNotes(id, notes) {
+	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
+	let wordObj = userData.custom[wordObjIndex];
+	wordObj.notes = notes;
 	DataSource.saveUserData(userData);
 	console.log('updated userData', userData);
 }
@@ -259,6 +272,7 @@ const WordsInterface = {
 	getWordList,
 	fullWordList,
 	isCustom,
+	saveCustomDef,
 	saveCustomWord,
 	deleteCustomWord,
 	getSpotlightList,

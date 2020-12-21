@@ -41,11 +41,28 @@ function Spotlight(props) {
 
 	const handleChange = e => {
 		var el = e.target;
-		var notes = el.textContent;
+		var label = el.ariaLabel;
+		var content = el.textContent;
+		switch (label) {
+			case 'def':
+console.log('handleChange definition', content, item);
+				WordsInterface.saveCustomDef(item._id, content);
+				break;
+			case 'mnemonic':
+console.log('handleChange how to remember', content, item);
+				WordsInterface.saveNotes(item._id, content);
+				break;
+			default:
+				break;
+		}
+
+
+/*
 		WordsInterface.saveNotes(item.word, notes);
 		if (notes) {
 			setOpenDef(false);
 		}
+*/
 	};
 
 	return (
@@ -56,7 +73,7 @@ function Spotlight(props) {
 	      <div className="user-notes-heading">
 	      How do you want to remember this word?
 	      </div>
-	      <div className="user-notes" contentEditable={true} suppressContentEditableWarning={true}>
+	      <div className="user-notes" aria-label="mnemonic" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleChange}>
 	        {notes}
 	      </div>
 
@@ -100,7 +117,7 @@ function Spotlight(props) {
 	        }
 	      </div>
 */}
-	      <div className={'user-notes' + (openDef ? ' open' : ' closed')} contentEditable={true} suppressContentEditableWarning={true}>
+	      <div aria-label="def" className={'user-notes' + (openDef ? ' open' : ' closed')} contentEditable={true} suppressContentEditableWarning={true} onBlur={handleChange}>
 	        {item.def}
 	      </div>
 	    </div>
