@@ -13,12 +13,16 @@ function sortWordObj(a, b) {
 	var result = 0;
 	var aWord = a.word.toLowerCase();
 	var bWord = b.word.toLowerCase();
+	// localeCompare() takes care of accents.
+	return a.word.localeCompare(b.word);
+/*
 	if (aWord < bWord) {
 		result = -1;
 	} else if (bWord < aWord) {
 		result = 1;
 	}
 	return result;
+*/
 }
 
 /**
