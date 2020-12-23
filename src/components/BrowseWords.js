@@ -38,7 +38,7 @@ function BrowseWords(props) {
 		var startingNdx = 0;
 		var foundStart = false;
 		for (let i = 0; i < wordList.length && !foundStart; i++) {
-			if (wordList[i] >= startHere) {
+			if (wordList[i].localeCompare(startHere) >= 0) {
 				foundStart = true;
 				setStartingWord(wordList[i]);
 				startingNdx = i;
