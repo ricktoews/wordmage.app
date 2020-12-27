@@ -43,6 +43,27 @@ $spotlight-height: 200px;
 .btn-tiny {
 }
 
+.badge-add {
+	background: #c00;
+}
+
+.badge-delete {
+	background: #c00;
+}
+
+.badge-edit {
+	background: #09f;
+}
+
+.badge-circle {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: none;
+	color: white;
+	margin: 2px;
+}
+
 .glyph-btn {
 	width: 26px;
 	height: 26px;
@@ -304,6 +325,7 @@ $spotlight-height: 200px;
 				.user-notes-heading {
 					background-color: $notes-heading-background;
 					color: $notes-heading-color;
+					font-size: 14pt;
 					padding: 5px;
 				}
 				.user-notes {
@@ -314,18 +336,18 @@ $spotlight-height: 200px;
 				}
 
 			}
-				.button-wrapper {
-					margin-top: 10px;
-					display: flex;
-					justify-content: space-around;
-				
-					.btn {
-						font-size: $btn-font-size;
-						border: none;
-						border-radius: 15px;
-						color: $btn-color;
-					}
+			.button-wrapper {
+				margin-top: 10px;
+				display: flex;
+				justify-content: space-around;
+			
+				.btn {
+					font-size: $btn-font-size;
+					border: none;
+					border-radius: 15px;
+					color: $btn-color;
 				}
+			}
 		}
 	}
 
@@ -354,6 +376,12 @@ $spotlight-height: 200px;
 		}
 	}
 
+
+.explanatory {
+	font-size:10pt;
+	background-color: gray;
+	color: white;
+}
 
 .spotlight {
 	.scrambled {

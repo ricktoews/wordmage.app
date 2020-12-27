@@ -9,7 +9,6 @@ function Spotlight(props) {
 	const [item, setItem] = useState(randomItem);
 	const [openDef, setOpenDef] = useState(WordsInterface.hasNotes(randomItem.word) === false);
 	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(randomItem.word) === false);
-	//const [item, setItem] = useState(props.item);
 	const [notes, setNotes] = useState(WordsInterface.getNotes(randomItem.word));
 
 	useEffect(() => {
@@ -22,104 +21,65 @@ function Spotlight(props) {
 		}
 	}, []);
 
-	const handleOpenCloseMnemonic = e => {
-		setOpenMnemonic(!openMnemonic);		
-	};
-
-	const handleOpenClose = e => {
-		setOpenDef(!openDef);		
-	};
-
 	const handleAnother = e => {
 		var anotherItem = WordsInterface.getSpotlightItem();
 		setItem(anotherItem);
 	};
 
-	const handleEditMnemonic = e => {
-		props.popupMnemonicForm(item.word);
-	}
-
-	const handleChange = e => {
+	const handleSetNotes = e => {
 		var el = e.target;
-		var label = el.ariaLabel;
 		var content = el.textContent;
-		switch (label) {
-			case 'def':
-console.log('handleChange definition', content, item);
-				WordsInterface.saveCustomDef(item._id, content);
-				break;
-			case 'mnemonic':
-console.log('handleChange how to remember', content, item);
-				WordsInterface.saveNotes(item._id, content);
-				break;
-			default:
-				break;
-		}
-
-
-/*
-		WordsInterface.saveNotes(item.word, notes);
-		if (notes) {
-			setOpenDef(false);
-		}
-*/
+		WordsInterface.saveNotes(item._id, content);
 	};
+
+
+	const handleSetCustomDef = e => {
+		var el = e.target;
+		var content = el.textContent;
+		WordsInterface.saveCustomDef(item._id, content);
+	};
+
+	const handleClearCustom = e => {
+		e.preventDefault();
+		var el = e.target;
+		var content = '';
+		let currentItem = WordsInterface.saveCustomDef(item._id, content);
+		setItem(currentItem);
+	}
 
 	return (
 	<div className="spotlight-container">
 	  <div className="spotlight-wrapper">
 	    <div className="spotlight">
 	      <Scramble item={item} word={item.word} />
+
+	      {/* Mnemonic device */}
 	      <div className="user-notes-heading">
 	      How do you want to remember this word?
 	      </div>
-	      <div className="user-notes" aria-label="mnemonic" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleChange}>
+	      <div className="user-notes" aria-label="mnemonic" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleSetNotes}>
 	        {notes}
 	      </div>
 
-	      {/* Mnemonic device */}
-{/*
-	      <div className="word">
-	        { openMnemonic ? (
-	        <button onClick={handleOpenCloseMnemonic} className={'btn btn-info btn-md'}>
-                  Hide Mnemonic <span className="glyphicon glyphicon-chevron-up"></span>
-                </button>
-	          ) : (
-	        <button onClick={handleOpenCloseMnemonic} className={'btn btn-info btn-md'}>
-                  Show Mnemonic <span className="glyphicon glyphicon-chevron-down"></span>
-                </button>
-	          )
-	        }
-	        <button onClick={handleEditMnemonic} className={'btn btn-info btn-md'}>
-                  <span className="glyphicon glyphicon-edit"></span>
-                </button>
-	      </div>
-	      <div className={'of-interest' + (openMnemonic ? ' open' : ' closed')}>
-	        {notes}
-	      </div>
-*/}
 
 	      {/* Definition */}
+	      { item.customDef ? (
 	      <div className="user-notes-heading">
-	      Definition (Customize, abbreviate to suit your need.)
+	      Definition <div className="badge pull-right" onClick={handleClearCustom}>Clear Custom</div>
 	      </div>
-{/*
-	      <div className="word">
-	        { openDef ? (
-	        <button onClick={handleOpenClose} className={'btn btn-info btn-md'}>
-                  Hide Definition <span className="glyphicon glyphicon-chevron-up"></span>
-                </button>
-	          ) : (
-	        <button onClick={handleOpenClose} className={'btn btn-info btn-md'}>
-                  Show Definition <span className="glyphicon glyphicon-chevron-down"></span>
-                </button>
-	          )
-	        }
+	      ) : (
+	      <div className="user-notes-heading">
+	      Definition
 	      </div>
-*/}
-	      <div aria-label="def" className={'user-notes' + (openDef ? ' open' : ' closed')} contentEditable={true} suppressContentEditableWarning={true} onBlur={handleChange}>
+	      ) }
+
+	      <div className="explanatory">
+	      (Customize, abbreviate to suit your need.)
+	      </div>
+	      <div aria-label="def" className="user-notes" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleSetCustomDef}>
 	        {item.def}
 	      </div>
+
 	    </div>
 	    <div className="button-wrapper">
 	      <div className="btn btn-info btn-lg" onClick={handleAnother}>Another</div>
