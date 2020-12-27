@@ -1,5 +1,5 @@
 const EditIcon = props => {
-	return <button onClick={props.onClick} className="btn btn-info btn-md">
+	return <button onClick={props.onClick} className="badge badge-circle badge-edit">
           <span className="glyphicon glyphicon-pencil"></span>
         </button>
 }

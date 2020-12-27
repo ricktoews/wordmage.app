@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { itemToObj } from '../utils/helpers';
 import WordsInterface from '../utils/words-interface';
 import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';

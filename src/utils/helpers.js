@@ -1,9 +1,11 @@
-function itemToObj(keyValue) {
-	var obj = {
-		word: Object.keys(keyValue)[0],
-		def: Object.values(keyValue)[0]
-	};
-	return obj;
+function cloneJSON(obj) {
+	var clone = obj;
+	try {
+		clone = JSON.parse(JSON.stringify(obj));	
+	} catch(e) {
+		console.log('Hit snag cloning JSON:', e);	
+	}
+	return clone;
 }
 
-export { itemToObj };
+export { cloneJSON };

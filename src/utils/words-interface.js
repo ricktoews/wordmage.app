@@ -1,4 +1,4 @@
-import { itemToObj } from './helpers';
+import { cloneJSON } from './helpers';
 //import wordHash from '../data/word-list';
 import wordHash from '../data/luciferous';
 import DataSource from './data-source';
@@ -15,35 +15,6 @@ function sortWordObj(a, b) {
 	var bWord = b.word.toLowerCase();
 	// localeCompare() takes care of accents.
 	return a.word.localeCompare(b.word);
-/*
-	if (aWord < bWord) {
-		result = -1;
-	} else if (bWord < aWord) {
-		result = 1;
-	}
-	return result;
-*/
-}
-
-/**
- * Return word list in { word: def } format.
- */
-function parseWordList() {
-	var wordList;
-	var sample = wordHash[0];
-	if (sample.hasOwnProperty('word')){
-		wordList = wordHash;
-/*
-		wordList = {};
-		wordHash.forEach(item => {
-			wordList[item.word] = item.def;
-		});
-*/
-	} else {
-		wordList = wordHash;
-	}
-
-	return wordList;
 }
 
 /**
@@ -51,7 +22,7 @@ function parseWordList() {
  * We might want to return array instead.
  */
 function fullWordList() {
-	var universal = parseWordList(wordHash);
+	var universal = cloneJSON(wordHash);
 	var custom = userData.custom;
 	var revisedCustom = [];
 	custom.forEach(wordObj => {
@@ -60,7 +31,11 @@ function fullWordList() {
 			revisedCustom.push(wordObj);
 		} else {
 			universal[ndx]._id = wordObj._id;
-			universal[ndx].def = wordObj.def;
+			// Check for customized definition. Flag Word obj.
+			if (wordObj.def !== universal[ndx].def) {
+				universal[ndx].def = wordObj.def;
+				wordObj.customDef = true;
+			}
 			universal[ndx].spotlight = wordObj.spotlight;
 		}
 	});
@@ -106,8 +81,17 @@ function addCustomWord(newWordObj) {
 function saveCustomDef(id, def) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	let wordObj = userData.custom[wordObjIndex];
-	wordObj.def = def;
+	if (def === '') {
+		let builtInWord = cloneJSON(wordHash.find(item => item.word === wordObj.word));
+console.log('saveCustomDef', id, builtInWord);
+		wordObj.def = builtInWord.def;
+		wordObj.customDef = false;
+	} else {
+		wordObj.def = def;
+		wordObj.customDef = true;
+	}
 	DataSource.saveUserData(userData);
+	return wordObj;
 }
 
 /**
@@ -181,7 +165,7 @@ function getWordObj(word) {
 function toggleSpotlight(word) {
 	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	if (wordObjIndex === -1) {
-		let builtInWord = wordHash.find(item => item.word === word);
+		let builtInWord = cloneJSON(wordHash.find(item => item.word === word));
 		addCustomWord(builtInWord);
 		wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	}

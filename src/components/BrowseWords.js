@@ -50,10 +50,10 @@ function BrowseWords(props) {
 	}, [startHere]);
 
 	useEffect(() => {
-if (startRef) {
-		startRef.current.scrollIntoView();
+		if (startRef) {
+			startRef.current.scrollIntoView();
 console.log('setting start ref to scroll to', startRef.current, window.pageYOffset);
-}
+		}
 	}, [startRef]);
 
 	var partialWordTimer;
