@@ -38,7 +38,7 @@ function BrowseWords(props) {
 		var startingNdx = 0;
 		var foundStart = false;
 		for (let i = 0; i < wordList.length && !foundStart; i++) {
-			if (wordList[i].localeCompare(startHere) >= 0) {
+			if (wordList[i].toLowerCase().localeCompare(startHere) >= 0) {
 				foundStart = true;
 				setStartingWord(wordList[i]);
 				startingNdx = i;
@@ -60,8 +60,11 @@ console.log('setting start ref to scroll to', startRef.current, window.pageYOffs
 	const handlePartialWord = e => {
 		var el = e.target;
 		var partial = el.value.toLowerCase();
+		// Meant to fix scrolling issue. The issue seems to be caused by successive partial
+		// searches, from different timers set on the same input: e.g., from 'Let'.
+		// To test this, set the timeout to 2000 and comment out this clearTimeout line.
+		if (partialWordTimer) clearTimeout(partialWordTimer);
 		partialWordTimer = setTimeout(() => {
-			console.log('handlePartialWord', partial);
 			window.scrollTo(0,0);
 			// For some reason, we seem to have to set this state, even though we're pushing to history.
 			setStartHere(partial);
