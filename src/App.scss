@@ -43,6 +43,21 @@ $spotlight-height: 200px;
 .btn-tiny {
 }
 
+.browse-filter-buttons {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.badge-spotlight-filter {
+	background: #f90;
+}
+
+.flag-my-own {
+	color: #f90;
+	font-size: .8em;
+}
+
 .badge-add {
 	background: #0c0;
 }
@@ -62,6 +77,7 @@ $spotlight-height: 200px;
 	border: none;
 	color: white;
 	margin: 2px;
+	outline: none;
 }
 
 .glyph-btn {
@@ -167,13 +183,20 @@ $spotlight-height: 200px;
 }
 
 .spotlight-marker {
+/*
 	width: 10px;
 	height: 10px;
 	background-color: #0c0;
 	border-radius: 50px;
-	margin-top: 8px;
-	margin-right: 4px;
 	float: left;
+*/
+	font-size: 10px;
+	margin-right: 4px;
+	color: #0c0;
+}
+
+::placeholder {
+	color:#ccc;
 }
 
 .browse-container, .spotlight-list-container {
@@ -192,6 +215,7 @@ $spotlight-height: 200px;
 
 		.partial-word {
 			height: 30px;
+			width: 150px;
 			font-size: 16px;
 			line-height: 30px;
 			box-sizing: border-box;

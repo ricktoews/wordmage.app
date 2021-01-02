@@ -9,15 +9,14 @@ function WordItem(props) {
 	const wordId = wordObj._id;
 	const word = props.word;
 	const def = wordObj.def;
-	//const isCustom = wordObj.custom;
+	const isMyOwn = !!wordObj.myown;
 	const className = wordObj.spotlight ? 'spotlight' : '';
-	const spotlightMarker = wordObj.spotlight ? <div className="spotlight-marker"></div> : null;
+	const spotlightMarker = wordObj.spotlight ? <i className="spotlight-marker glyphicon glyphicon-heart"></i> : null;
 	const isCustom = WordsInterface.isCustom(word);
-	const startRef = useRef(null);
 
 	useEffect(() => {
 		if (props.browse) {
-			props.setStartWord(startRef);
+//			props.setStartWord(startRef);
 		}
 	}, []);
 	
@@ -30,10 +29,14 @@ function WordItem(props) {
 
 	return (
 	<li className={className} onClick={toggleSpotlightHandler}>
-	  {props.starthere ? <div ref={startRef}></div> : null}
 	  <div className="list-item">
+	    { isMyOwn ? (
+	    <div className="list-word">{spotlightMarker}{word} <i className="glyphicon glyphicon-star flag-my-own"></i></div>
+	    ) : (
 	    <div className="list-word">{spotlightMarker}{word}</div>
-	    {isCustom ? (
+	    )}
+
+	    { isCustom ? (
 	      <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
 	        <EditIcon onClick={() => { props.popupWordForm(wordId)} } />
 	        <DeleteIcon onClick={() => { props.popupConfirm(wordId)} } />
