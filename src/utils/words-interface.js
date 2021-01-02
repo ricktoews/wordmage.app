@@ -28,6 +28,7 @@ function fullWordList() {
 	custom.forEach(wordObj => {
 		let ndx = universal.findIndex(item => item.word === wordObj.word);
 		if (ndx === -1) {
+			wordObj.myown = true;
 			revisedCustom.push(wordObj);
 		} else {
 			universal[ndx]._id = wordObj._id;

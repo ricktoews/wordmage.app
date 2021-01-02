@@ -3,29 +3,38 @@ import { withRouter } from 'react-router-dom';
 import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
-const wordObjList = WordsInterface.fullWordList();
-const wordList = wordObjList.map(item => item.word);
-const listLength = 10;
+//const wordObjList = WordsInterface.fullWordList();
+//const wordList = wordObjList.map(item => item.word);
+const listLength = 20;
+const listIncrement = 30;
 
 function BrowseWords(props) {
-	const [ wordListSubset, setWordListSubset ] = useState(wordList.slice(0, listLength));
-	const [ startHere, setStartHere ] = useState(props.match.params.start || '');
-	const [ startingWord, setStartingWord ] = useState('');
-	const [ startRef, setStartRef] = useState(null);
+	const [ wordObjList, setWordObjList ] = useState(WordsInterface.fullWordList());
+	const [ wordList, setWordList ] = useState(wordObjList.map(item => item.word));
+	const [ wordListSubset, setWordListSubset ] = useState([]);
+	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
+	const [ browseMode, setBrowseMode ] = useState('built-in');
 	const listRef = useRef(null);
 	const loadingRef = useRef(null);
 
 	const myObserverCallback = (entries, observer) => {
 		var listStart = listRef.current.attributes.start;
-		listRef.current.attributes.end += listLength;
+		listRef.current.attributes.end += listIncrement;
 		var listEnd = listRef.current.attributes.end;
-		entries.forEach(entry => {
-			if (entry.isIntersecting) {
-				var newSubset = wordList.slice(listStart, listEnd);
-				setWordListSubset(newSubset);
-			}
-		});
+console.log('myObserverCallback browseMode', listRef.current.attributes.browseMode);
+		if (!listRef.current.attributes.browseMode || listRef.current.attributes.browseMode === 'built-in') {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					var newSubset = wordList.slice(listStart, listEnd);
+					setWordListSubset(newSubset);
+				}
+			});
+		}
 	};
+
+	useEffect(() => {
+		console.log('useEffect, browseMode', browseMode);
+	}, [browseMode]);
 
 	useEffect(() => {
 		var intersectionObserver = new IntersectionObserver(myObserverCallback, { root: null, rootMargin: '0px', threshold: .1});
@@ -34,27 +43,23 @@ function BrowseWords(props) {
 		return () => { console.log('disconnect observer'); intersectionObserver.disconnect(); }
 	}, []);
 
-	useEffect(() => {
-		var startingNdx = 0;
-		var foundStart = false;
-		for (let i = 0; i < wordList.length && !foundStart; i++) {
-			if (wordList[i].toLowerCase().localeCompare(startHere) >= 0) {
-				foundStart = true;
-				setStartingWord(wordList[i]);
-				startingNdx = i;
-				listRef.current.attributes.start = startingNdx;
-				listRef.current.attributes.end = startingNdx + listLength;
-			}
-		}
-		setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
-	}, [startHere]);
 
 	useEffect(() => {
-		if (startRef) {
-			startRef.current.scrollIntoView();
-console.log('setting start ref to scroll to', startRef.current, window.pageYOffset);
+		if (browseMode === 'built-in') {
+			var startingNdx = 0;
+			var foundStart = false;
+			for (let i = 0; i < wordList.length && !foundStart; i++) {
+				if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
+					foundStart = true;
+					startingNdx = i;
+					listRef.current.attributes.start = startingNdx;
+					listRef.current.attributes.end = startingNdx + listLength;
+				}
+			}
+			setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
 		}
-	}, [startRef]);
+	}, [startingLetters, browseMode]);
+
 
 	var partialWordTimer;
 	const handlePartialWord = e => {
@@ -63,11 +68,13 @@ console.log('setting start ref to scroll to', startRef.current, window.pageYOffs
 		// Meant to fix scrolling issue. The issue seems to be caused by successive partial
 		// searches, from different timers set on the same input: e.g., from 'Let'.
 		// To test this, set the timeout to 2000 and comment out this clearTimeout line.
-		if (partialWordTimer) clearTimeout(partialWordTimer);
+		if (partialWordTimer) {
+			clearTimeout(partialWordTimer);
+		}
 		partialWordTimer = setTimeout(() => {
 			window.scrollTo(0,0);
 			// For some reason, we seem to have to set this state, even though we're pushing to history.
-			setStartHere(partial);
+			setStartingLetters(partial);
 			props.history.push('/browse/' + partial);
 			el.blur();
 		}, 1000);
@@ -75,29 +82,59 @@ console.log('setting start ref to scroll to', startRef.current, window.pageYOffs
 
 	const toggleSpotlight = word => {
 		props.toggleSpotlight(word);
+		// We should update wordObjList here.
+		// ... and this does work. the above props.toggleSpotlight calls toggleSpotlight in App.js,
+		// which calls WordsInterface.toggleSpotlight, updating the spotlight flag for this word.
+		setWordObjList(WordsInterface.fullWordList());
 	}
 
-	const setStartWord = (ref) => {
-		if (ref.current) {
-			setStartRef(ref);
+	const handleBrowseCustom = e => {
+		if (browseMode !== 'custom') {
+			let filteredWordList = wordObjList.filter(obj => obj.myown).map(item => item.word);
+			setWordListSubset(filteredWordList);
+			setBrowseMode('custom');
+			listRef.current.attributes.browseMode = 'custom';
+		} else {
+			setStartingLetters('');
+			setBrowseMode('built-in');
+			props.history.push('/browse/');
+			listRef.current.attributes.browseMode = 'built-in';
 		}
-	};
+	}
+
+	const handleBrowseSpotlight = e => {
+		if (browseMode !== 'spotlight') {
+			let filteredWordList = wordObjList.filter(obj => obj.spotlight).map(item => item.word);
+			setWordListSubset(filteredWordList);
+			setBrowseMode('spotlight');
+			listRef.current.attributes.browseMode = 'spotlight';
+		} else {
+			setStartingLetters('');
+			setBrowseMode('built-in');
+			props.history.push('/browse/');
+			listRef.current.attributes.browseMode = 'built-in';
+		}
+	}
 
 	return (
 	<div className="browse-container">
 	  <div className="browse">
-	    <input type="text" className="partial-word" onChange={handlePartialWord} />
+	    <input type="text" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+	    <div className="browse-filter-buttons">
+	      <button className="badge badge-circle badge-spotlight-filter" onClick={handleBrowseCustom}><i className="glyphicon glyphicon-star"></i></button>
+	      <button className="badge badge-circle badge-spotlight-filter" onClick={handleBrowseSpotlight}><i className="glyphicon glyphicon-heart"></i></button>
+	    </div>
 	  </div>
 
 	  <div className="word-list-container">
 	    <div className="word-list-wrapper">
 	      <ul ref={listRef} className="word-list">
 	        { wordListSubset.map((word, ndx) => {
-	            if (startingWord === word) {
-	                return <WordItem key={ndx} setStartWord={setStartWord} browse={true} starthere={true} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={wordId => { props.popupConfirm(wordId) }} popupWordForm={wordId => { props.popupWordForm(wordId) }} />
-	            } else {
-	                return <WordItem key={ndx} browse={true} setStartWord={setStartWord} word={word} toggleSpotlight={toggleSpotlight} popupConfirm={wordId => { props.popupConfirm(wordId) }} popupWordForm={wordId => { props.popupWordForm(wordId) }} />
-	            }
+	                return <WordItem key={ndx} 
+	                                 word={word} 
+	                                 toggleSpotlight={toggleSpotlight} 
+	                                 popupConfirm={wordId => { props.popupConfirm(wordId) }} 
+	                                 popupWordForm={wordId => { props.popupWordForm(wordId) }} />
 	        })}
 
 	        <li className="list-loading-container"><div ref={loadingRef} className="list-loading-marker"></div></li>

@@ -74,7 +74,7 @@ console.log('WordForm word', word, 'newWord', newWord);
 	        <textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
 	      </div>
 	      <div className={'notes hide-section'}>
-	        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes">{newNotes}</textarea>
+	        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes" value={newNotes}></textarea>
 	      </div>
 	      <div className="button-wrapper">
 	        <button className="btn btn-cancel" onClick={cancelWord}>Cancel</button>

@@ -131,7 +131,8 @@ console.log('cancelWordForm');
 
 	const toggleSpotlight = word => {
 		var newSpotlightList = WordsInterface.toggleSpotlight(word);
-		setSpotlightList(Object.keys(newSpotlightList));
+		// FIXME: Why do we need this, since spotlightList isn't used in App.js or passed to a component? 
+		//setSpotlightList(newSpotlightList);
 	}
 
 	const updateWordList = () => {
@@ -154,9 +155,10 @@ console.log('cancelWordForm');
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
 	      <div className="header-title">Words To Remember</div>
-	      {1||view === 'word-list-container' ? <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} /> : <div /> }
+	      <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
 	    </div>
 	  </header>
+
 	  { wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
 	  { mnemonicFormState ? <MnemonicForm word={word} cancel={cancelMnemonicForm} /> : <div/> }
 	  { confirmState ? <ConfirmDelete wordId={wordId} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
@@ -179,6 +181,7 @@ console.log('cancelWordForm');
 	    <Route path="/browse/:start?" render={props => ( <BrowseWords
 	        toggleSpotlight={toggleSpotlight}
 	        popupConfirm={wordId => { popupConfirm(wordId); }}
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        />) } />
 	  </Switch>
 	</div>
