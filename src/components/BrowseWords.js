@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom';
 import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
-//const wordObjList = WordsInterface.fullWordList();
-//const wordList = wordObjList.map(item => item.word);
+const INFINITE_SCROLLING_ON = 'list-loading-container';
+const INFINITE_SCROLLING_OFF = 'hide-section';
 const listLength = 20;
 const listIncrement = 30;
 
@@ -14,6 +14,7 @@ function BrowseWords(props) {
 	const [ wordListSubset, setWordListSubset ] = useState([]);
 	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
 	const [ browseMode, setBrowseMode ] = useState('built-in');
+	const [ listLoadClass, setListLoadClass ] = useState(INFINITE_SCROLLING_ON);
 	const listRef = useRef(null);
 	const loadingRef = useRef(null);
 
@@ -93,10 +94,12 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 			let filteredWordList = wordObjList.filter(obj => obj.myown).map(item => item.word);
 			setWordListSubset(filteredWordList);
 			setBrowseMode('custom');
+			setListLoadClass(INFINITE_SCROLLING_OFF);
 			listRef.current.attributes.browseMode = 'custom';
 		} else {
 			setStartingLetters('');
 			setBrowseMode('built-in');
+			setListLoadClass(INFINITE_SCROLLING_ON);
 			props.history.push('/browse/');
 			listRef.current.attributes.browseMode = 'built-in';
 		}
@@ -107,10 +110,12 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 			let filteredWordList = wordObjList.filter(obj => obj.spotlight).map(item => item.word);
 			setWordListSubset(filteredWordList);
 			setBrowseMode('spotlight');
+			setListLoadClass(INFINITE_SCROLLING_OFF);
 			listRef.current.attributes.browseMode = 'spotlight';
 		} else {
 			setStartingLetters('');
 			setBrowseMode('built-in');
+			setListLoadClass(INFINITE_SCROLLING_ON);
 			props.history.push('/browse/');
 			listRef.current.attributes.browseMode = 'built-in';
 		}
@@ -137,7 +142,7 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 	                                 popupWordForm={wordId => { props.popupWordForm(wordId) }} />
 	        })}
 
-	        <li className="list-loading-container"><div ref={loadingRef} className="list-loading-marker"></div></li>
+	        <li className={listLoadClass}><div ref={loadingRef} className="list-loading-marker"></div></li>
 	      </ul>
 	    </div>
 	  </div>
