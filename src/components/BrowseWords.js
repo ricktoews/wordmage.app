@@ -121,13 +121,16 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 		}
 	}
 
+	const spotlightFilterClass = browseMode === 'spotlight' ? 'badge-spotlight-filter' : 'badge-spotlight-filter-off';
+	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
+
 	return (
 	<div className="browse-container">
 	  <div className="browse">
 	    <input type="text" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
 	    <div className="browse-filter-buttons">
-	      <button className="badge badge-circle badge-spotlight-filter" onClick={handleBrowseCustom}><i className="glyphicon glyphicon-star"></i></button>
-	      <button className="badge badge-circle badge-spotlight-filter" onClick={handleBrowseSpotlight}><i className="glyphicon glyphicon-heart"></i></button>
+	      <button className={'badge ' + customFilterClass} onClick={handleBrowseCustom}><i className="glyphicon glyphicon-star"></i></button>
+	      <button className={'badge ' + spotlightFilterClass} onClick={handleBrowseSpotlight}><i className="glyphicon glyphicon-heart"></i></button>
 	    </div>
 	  </div>
 
