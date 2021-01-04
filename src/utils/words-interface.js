@@ -109,6 +109,10 @@ function saveCustomWord(id, word, def, spotlight) {
 		let wordObj = userData.custom[wordObjIndex];
 		wordObj.word = word;
 		wordObj.def = def;
+		if (def === wordObj.original) {
+			delete wordObj.original;
+			wordObj.customDef = false;
+		}
 		wordObj.spotlight = spotlight;
 	}
 	DataSource.saveUserData(userData);
