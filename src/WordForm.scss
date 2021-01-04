@@ -40,6 +40,12 @@ $spotlight-height: 200px;
 			background-color: $word-form-background;
 			padding: 10px;
 
+			.header {
+				font-size: 8pt;
+				border-top: 1px solid gray;
+				margin: 5px 0;
+			}
+
 			h2 {
 				color: $word-form-heading;
 				font-size: $word-form-heading-size;
@@ -66,6 +72,14 @@ $spotlight-height: 200px;
 				}
 			}
 
+			.word span {
+				font-size: 16pt;
+			}
+			.original-def {
+				background-color: #eee;
+				padding: 5px;
+				margin-bottom: 5px;
+			}
 			.word input {
 				width: calc(100% - 10px);
 				font-size: 16pt;
@@ -78,7 +92,7 @@ $spotlight-height: 200px;
 			}
 			.of-interest textarea, .notes textarea {
 				font-size: 16pt;
-				height: 80px;
+				height: 120px;
 				width: calc(100% - 10px);
 				color: #666;
 				padding: 5px;

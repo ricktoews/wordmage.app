@@ -34,6 +34,7 @@ function fullWordList() {
 			universal[ndx]._id = wordObj._id;
 			// Check for customized definition. Flag Word obj.
 			if (wordObj.def !== universal[ndx].def) {
+				wordObj.original = universal[ndx].def;
 				universal[ndx].def = wordObj.def;
 				wordObj.customDef = true;
 			}
