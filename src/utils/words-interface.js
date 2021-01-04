@@ -1,10 +1,12 @@
 import { cloneJSON } from './helpers';
 //import wordHash from '../data/word-list';
-import wordHash from '../data/luciferous';
+//import wordHash from '../data/luciferous';
+import wordHash from '../data/combine';
 import DataSource from './data-source';
 
 const userData = DataSource.retrieveUserData();
 console.log('userData', userData);
+console.log('wordHash length', wordHash.length);
 
 /**
  * Sort word objects by word
