@@ -1,7 +1,8 @@
 import { cloneJSON } from './helpers';
 //import wordHash from '../data/word-list';
 //import wordHash from '../data/luciferous';
-import wordHash from '../data/combine';
+// word-pool copied from toewsweb site_words table. Appears to have come from same source as luciferous.
+import wordHash from '../data/word-pool';
 import DataSource from './data-source';
 
 const userData = DataSource.retrieveUserData();
