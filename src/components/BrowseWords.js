@@ -9,8 +9,11 @@ const listLength = 20;
 const listIncrement = 30;
 
 function BrowseWords(props) {
-	const [ wordObjList, setWordObjList ] = useState(WordsInterface.fullWordList());
-	const [ wordList, setWordList ] = useState(wordObjList.map(item => item.word));
+	const fullWordObjList = WordsInterface.fullWordList();
+	const fullWordList = fullWordObjList.map(item => item.word);
+
+	const [ wordObjList, setWordObjList ] = useState(fullWordObjList);
+	const [ wordList, setWordList ] = useState(fullWordList);
 	const [ wordListSubset, setWordListSubset ] = useState([]);
 	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
 	const [ browseMode, setBrowseMode ] = useState('built-in');
@@ -33,9 +36,37 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 		}
 	};
 
+	// Separate this into its own function, since it's used in a couple of places.
+	// Oh: you want to know what it actually DOES, do you? ...
+	// OK, fine. This builds a subset of words from the full list of words. It takes a slice defined by
+	// the listLength const (20) and beginning at the user-specified point (startingLetters, from the 
+	// search field) or at the beginning of the alphabet.
+	const builtInSubset = () => {
+		var startingNdx = 0;
+		var foundStart = false;
+		for (let i = 0; i < wordList.length && !foundStart; i++) {
+			if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
+				foundStart = true;
+				startingNdx = i;
+				listRef.current.attributes.start = startingNdx;
+				listRef.current.attributes.end = startingNdx + listLength;
+			}
+		}
+		setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
+	}
+
+	// First step in updating word list on add / delete custom word.
+	// Update wordObjList, wordList, which changes the wordList.length and gets to second step, below.
 	useEffect(() => {
-		console.log('useEffect, browseMode', browseMode);
-	}, [browseMode]);
+		setWordObjList(fullWordObjList);
+		setWordList(fullWordList);
+	}, [fullWordObjList.length]);
+
+	// Second step in updating word list on add / delete custom word.
+	// When the wordList length changes, that's the signal to rebuild the word list subset with builtInSubset().
+	useEffect(() => {
+		builtInSubset();
+	}, [wordList.length]);
 
 	useEffect(() => {
 		var intersectionObserver = new IntersectionObserver(myObserverCallback, { root: null, rootMargin: '0px', threshold: .1});
@@ -47,6 +78,8 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 
 	useEffect(() => {
 		if (browseMode === 'built-in') {
+			builtInSubset();
+/*
 			var startingNdx = 0;
 			var foundStart = false;
 			for (let i = 0; i < wordList.length && !foundStart; i++) {
@@ -57,7 +90,9 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 					listRef.current.attributes.end = startingNdx + listLength;
 				}
 			}
+console.log('setWordListSubset', startingNdx);
 			setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
+*/
 		}
 	}, [startingLetters, browseMode]);
 
