@@ -154,7 +154,7 @@ console.log('cancelWordForm');
 	  <header className="App-header">
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
-	      <div className="header-title">Words To Remember</div>
+	      <div className="header-title">WordMage</div>
 	      <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
 	    </div>
 	  </header>
