@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 
 function WordForm(props) {
-	var word = '', def = '', notes = '', spotlight = true, myown = false, originalDef = '';
+	var word = '', def = '', notes = '', spotlight = true, myown = true, originalDef = '';
 
 	if (props.wordId) {
 		// get word from custom list, from active list.
