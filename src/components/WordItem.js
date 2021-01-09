@@ -28,7 +28,7 @@ function WordItem(props) {
 	};
 
 	return (
-	<li className={className} onClick={toggleSpotlightHandler}>
+	<div className={className} onClick={toggleSpotlightHandler}>
 	  <div className="list-item">
 	    { isMyOwn ? (
 	    <div className="list-word">{spotlightMarker}{word} <i className="glyphicon glyphicon-star flag-my-own"></i></div>
@@ -44,7 +44,7 @@ function WordItem(props) {
 	              : null }
 	  </div>
 	  <div className="list-def">{def}</div>
-	</li>
+	</div>
 	);
 }
 

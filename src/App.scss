@@ -196,7 +196,7 @@ $spotlight-height: 200px;
 .spotlight-list-container {
 }
 
-.browse-container ul.word-list {
+.browse-container div.word-list {
 	top: 50px;
 }
 
@@ -259,14 +259,14 @@ $spotlight-height: 200px;
 			position: relative;
 			top: 50px;
 
-			ul.word-list {
+			div.word-list {
 				position: relative;
 				height: auto;
 				padding: 0;
 				margin: 0;
 				list-style-type: none;
 
-				li {
+				& > div {
 					font-family: Roboto;
 					font-weight: 300;
 					border-top: 2px solid #ccc;

@@ -171,7 +171,7 @@ console.log('setWordListSubset', startingNdx);
 
 	  <div className="word-list-container">
 	    <div className="word-list-wrapper">
-	      <ul ref={listRef} className="word-list">
+	      <div ref={listRef} className="word-list">
 	        { wordListSubset.map((word, ndx) => {
 	                return <WordItem key={ndx} 
 	                                 word={word} 
@@ -180,8 +180,8 @@ console.log('setWordListSubset', startingNdx);
 	                                 popupWordForm={wordId => { props.popupWordForm(wordId) }} />
 	        })}
 
-	        <li className={listLoadClass}><div ref={loadingRef} className="list-loading-marker"></div></li>
-	      </ul>
+	        <div className={listLoadClass}><div ref={loadingRef} className="list-loading-marker"></div></div>
+	      </div>
 	    </div>
 	  </div>
 
