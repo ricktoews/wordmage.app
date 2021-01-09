@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const luciferous = require('./luciferous.json');
-const phront = require('./combine.json');
+const luciferous = require('./word-pool.json');
+const phront = require('./clw-complete.json');
 const l_words = {};
 const p_words = {};
 const pnotl = {};
