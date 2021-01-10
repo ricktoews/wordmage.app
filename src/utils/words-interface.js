@@ -7,7 +7,21 @@ import DataSource from './data-source';
 
 const userData = DataSource.retrieveUserData();
 console.log('userData', userData);
-console.log('wordHash length', wordHash.length);
+
+/**
+ *
+ */
+const POOL_SIZE = 20;
+function getRandomPool() {
+	var fullListClone = fullWordList().slice(0);
+	var randomPool = [];
+	for (let i = 0; i < POOL_SIZE; i++) {
+		let ndx = Math.floor(Math.random() * fullListClone.length);
+		randomPool.push(fullListClone[ndx]);
+		fullListClone = fullListClone.filter((item, n) => n !== ndx);
+	}
+	return randomPool;
+}
 
 /**
  * Sort word objects by word
@@ -266,6 +280,7 @@ function replaceUserData(data) {
 }
 
 const WordsInterface = {
+	getRandomPool,
 	getWordList,
 	fullWordList,
 	isCustom,

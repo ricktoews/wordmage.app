@@ -9,7 +9,7 @@ const listLength = 10;
 
 function SpotlightList(props) {
 	const wordList = WordsInterface.getWordList('spotlight').map(item => item.word).sort();
-console.log('SpotlightList', wordList);
+
 	const toggleSpotlight = word => {
 		props.toggleSpotlight(word);
 	}
