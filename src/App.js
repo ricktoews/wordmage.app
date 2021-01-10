@@ -13,6 +13,7 @@ import WordsInterface from './utils/words-interface';
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import SpotlightList from './components/SpotlightList';
+import Random from './components/Random';
 
 import './App.scss';
 
@@ -35,6 +36,13 @@ function App(props) {
 	const [ confirmState, setConfirmState ] = useState(false);
 	const [ confirmShareState, setConfirmShareState ] = useState(false);
 	const [ confirmReceive, setConfirmReceive ] = useState(false);
+
+	const navToRandom = () => {
+		var history = props.history;
+console.log('navToRandom', props, history);
+		history.push('/random');
+		setHamburgerClass('hamburger-nav');
+	}
 
 	const navToBrowseWords = () => {
 		var history = props.history;
@@ -146,6 +154,7 @@ console.log('cancelWordForm');
 	      <li onClick={navToSpotlight}>Spotlight</li>
 	      <li onClick={navToSpotlightList}>Spotlight List</li>
 	      <li onClick={navToBrowseWords}>Browse</li>
+	      <li onClick={navToRandom}>Random</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
 	    </ul>
@@ -182,6 +191,9 @@ console.log('cancelWordForm');
 	        toggleSpotlight={toggleSpotlight}
 	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        />) } />
+	    <Route path="/random" render={props => ( <Random
+	        toggleSpotlight={toggleSpotlight}
 	        />) } />
 	  </Switch>
 	</div>

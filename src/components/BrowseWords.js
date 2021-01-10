@@ -11,7 +11,7 @@ const listIncrement = 30;
 function BrowseWords(props) {
 	const fullWordObjList = WordsInterface.fullWordList();
 	const fullWordList = fullWordObjList.map(item => item.word);
-
+console.log('BrowseWords top');
 	const [ wordObjList, setWordObjList ] = useState(fullWordObjList);
 	const [ wordList, setWordList ] = useState(fullWordList);
 	const [ wordListSubset, setWordListSubset ] = useState([]);
