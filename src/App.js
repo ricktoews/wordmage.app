@@ -14,6 +14,7 @@ import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import SpotlightList from './components/SpotlightList';
 import Random from './components/Random';
+import About from './About';
 
 import './App.scss';
 
@@ -62,6 +63,12 @@ console.log('navToSpotlight', props, history);
 		var history = props.history;
 console.log('navToSpotlightList', props, history);
 		history.push('/spotlight-list');
+		setHamburgerClass('hamburger-nav');
+	}
+
+	const navToAbout = () => {
+		var history = props.history;
+		history.push('/about');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -157,6 +164,7 @@ console.log('cancelWordForm');
 	      <li onClick={navToRandom}>Random</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
+	      <li onClick={navToAbout}>About</li>
 	    </ul>
 	  </nav>
 
@@ -195,6 +203,7 @@ console.log('cancelWordForm');
 	    <Route path="/random" render={props => ( <Random
 	        toggleSpotlight={toggleSpotlight}
 	        />) } />
+	    <Route path="/about" component={About} />
 	  </Switch>
 	</div>
 	);
