@@ -5,17 +5,15 @@ function About(props) {
 	return (
 	<div className="plain-content container">
 	  <h3>About</h3>
-	  <p>I've been a lover of words since I was a boy, and I was once passionate about enlarging my vocabulary. At some point, my interest in words that were merely among those an educated person ought to know gave way to a fascination for words rather more off the beaten path; and when I discovered Mrs. Byrne's Dictionary of Unusual, Obscure, and Preposterous Words, I thought I'd died and gone to heaven.</p>
-
-	  <p>This is not s resource intended as an almost academic aid in pragmatically vocabulary building. These are not words you learn in order to sound educated--though if you were to use them in ordinary conversation, you might come off a touch pretentious. No: these are words you learn for no reason other than that you're drawn to cool and unusual words.</p>
+	  <p><i>wordmage.app</i> is designed for a mobile device and is intended to serve two purposes. First, it contains a collection of several thousand off-the-beaten-path words that are more likely to hold recreational appeal for the logophile than to be of use in, say, boosting an SAT score. Second, it provides a tool ("Spotlight") for reviewing words you might want to note for particular attention. Such words need not be in the afore-mentioned list.</p>
 
 	  <h4>Sources</h4>
 
-	  <p>Most of the words included here were taken, as far I can tell, from an online resource titled Luciferous Logolepsy, which no longer exists. Years ago--at least a decade, I should think--I created a database table of words and populated it with roughly 9,000 worthy specimens. I don't recall where I got the words, or how; however, when I compare entries with those at the Cafe Arcane (https://arcane.org/luciferous-logolepsy/), I find the definitions are identical, and certain misspellings are the same. I infer a common source.</p>
+	  <p><b>Luciferous Logolepsy</b> (RIP). Most of the words included here were taken, as far I can tell, from an online resource titled <i>Luciferous Logolepsy</i>, which no longer exists. Years ago&mdash;at least a decade, I should think&mdash;I created a database table of words and populated it with roughly 9,000 worthy specimens. I don't recall where I got the words, or how; however, when I compare entries with those at the <i>Cafe Arcane</i> (<i>arcane.org/luciferous-logolepsy/</i>), I find several convincing indications of a common source.</p>
 
 	  <p>Since what I believe to have been my original source no longer exists, I feel more free than I otherwise might to use the list for my purposes here.</p>
 
-	  <p>Another longtime trove for the logophile is The Phrontistery (phrontistery.info). From this, I took the 412 entries within the group titled Compendium of Lost Words.</p>
+	  <p><b>The Phrontistery</b>. Another longtime trove for the logophile is <i>The Phrontistery</i> (<i>phrontistery.info</i>). From this, I took the 412 entries within the group titled <i>Compendium of Lost Words</i>.</p>
 	</div>
 	);
 }	

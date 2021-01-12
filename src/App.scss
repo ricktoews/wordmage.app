@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,100;1,300&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+
 
 @import './WordForm.scss';
 
@@ -40,7 +42,10 @@ $header-height: 50px;
 $spotlight-width: 100vw;
 $spotlight-height: 200px;
 
-.btn-tiny {
+body {
+	font-family: Roboto;
+	font-weight: 400;
+	font-size: 16px;
 }
 
 .plain-content {
@@ -205,13 +210,6 @@ $spotlight-height: 200px;
 }
 
 .spotlight-marker {
-/*
-	width: 10px;
-	height: 10px;
-	background-color: #0c0;
-	border-radius: 50px;
-	float: left;
-*/
 	font-size: 10px;
 	margin-right: 4px;
 	color: #0c0;
@@ -314,20 +312,6 @@ $spotlight-height: 200px;
 	}
 }
 
-.alphabet {
-	& > li {
-		& > div:nth-child(1) {
-			background-color: #09f;
-			color: white;
-			text-align: center;
-			padding: 5px;
-			margin-bottom: 5px;
-		}
-		& > div:nth-child(2) {
-		}
-	}
-}
-	
 
 .rehearse {
 	z-index: 100;
@@ -472,14 +456,5 @@ $spotlight-height: 200px;
 
 .hide-section {
 	display: none;
-}
-
-
-
-.icon-open {
-	transform: rotate(180deg);
-}
-
-.icon-closed {
 }
 
