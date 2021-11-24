@@ -458,3 +458,78 @@ body {
 	display: none;
 }
 
+.modal-container {
+	backdrop-color: blur(2px);
+	position: fixed;
+	top: 0;
+	z-index: 1000;
+	width: 100vw;
+	height: 100vh;
+
+	display: flex;
+	justify-content: center;
+
+	.modal-wrapper {
+		position: fixed;
+		width: calc(100vw - 50px);
+		background-color: white;
+		margin-top: 100px;
+		padding: 10px;
+		border: 1px solid gray;
+		border-radius: 5px;
+
+			.header {
+				font-size: 8pt;
+				border-top: 1px solid gray;
+				margin: 5px 0;
+			}
+			.button-wrapper {
+				display: flex;
+				justify-content: space-between;
+			
+				.btn {
+					font-size: $btn-font-size;
+					border: none;
+					border-radius: 15px;
+					color: $btn-color;
+
+					&.btn-save {
+						background-color: $btn-save-background;
+					}
+
+					&.btn-cancel {
+						background-color: $btn-cancel-background;
+					}
+				}
+			}
+
+			.word span {
+				font-size: 16pt;
+			}
+			.original-def {
+				background-color: #eee;
+				padding: 5px;
+				margin-bottom: 5px;
+			}
+			.word input {
+				width: calc(100% - 10px);
+				font-size: 16pt;
+				color: #666;
+				padding: 5px;
+				border: 1px solid #999;
+				border-radius: 10px;
+				margin-bottom: 10px;
+				outline: none;
+			}
+			.of-interest textarea, .notes textarea {
+				font-size: 16pt;
+				height: 120px;
+				width: calc(100% - 10px);
+				color: #666;
+				padding: 5px;
+				border: 1px solid #999;
+				border-radius: 10px;
+				outline: none;
+			}
+	}
+}

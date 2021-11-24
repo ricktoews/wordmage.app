@@ -24,7 +24,7 @@ console.log('BrowseWords top');
 	const myObserverCallback = (entries, observer) => {
 		var listStart = listRef.current.attributes.start;
 		listRef.current.attributes.end += listIncrement;
-		var listEnd = listRef.current.attributes.end;
+var listEnd = listRef.current.attributes.end;
 console.log('myObserverCallback browseMode', listRef.current.attributes.browseMode);
 		if (!listRef.current.attributes.browseMode || listRef.current.attributes.browseMode === 'built-in') {
 			entries.forEach(entry => {
@@ -176,8 +176,7 @@ console.log('setWordListSubset', startingNdx);
 	                return <WordItem key={ndx} 
 	                                 word={word} 
 	                                 toggleSpotlight={toggleSpotlight} 
-	                                 popupConfirm={wordId => { props.popupConfirm(wordId) }} 
-	                                 popupWordForm={wordId => { props.popupWordForm(wordId) }} />
+/>
 	        })}
 
 	        <li className={listLoadClass}><div ref={loadingRef} className="list-loading-marker"></div></li>

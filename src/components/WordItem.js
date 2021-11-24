@@ -1,9 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import WordsInterface from '../utils/words-interface';
 import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';
+import EditModal from './EditModal';
+//import DeleteModal from './DeleteModal';
+import useModal from '../hooks/useModal';
 
 function WordItem(props) {
+	const { isShowing, toggle } = useModal();
 	const wordArray = WordsInterface.fullWordList();
 	const wordObj = WordsInterface.getWordObj(props.word);
 	const wordId = wordObj._id;
@@ -13,18 +17,26 @@ function WordItem(props) {
 	const className = wordObj.spotlight ? 'spotlight' : '';
 	const spotlightMarker = wordObj.spotlight ? <i className="spotlight-marker glyphicon glyphicon-heart"></i> : null;
 	const isCustom = WordsInterface.isCustom(word);
+	const { showEditModal, setShowEditModal } = useState(false);
+	const { showDeleteModal, setShowDeleteModal } = useState(false);
 
-	useEffect(() => {
-		if (props.browse) {
-//			props.setStartWord(startRef);
-		}
-	}, []);
-	
+	const cancelWordForm = () => {
+		console.log('cancel word form');
+document.getElementById('popup').style.display = 'none';
+	}
+
+	const popupConfirm = (wordId) => {
+		console.log('popupConfirm', wordId);
+	}
+
 	const toggleSpotlightHandler = e => {
 		var el = e.target;
+console.log('toggleSpotlightHandler', el.tagName, props.word);
+/*
 		if (el.tagName === 'DIV') {
 			props.toggleSpotlight(props.word);
 		}
+*/
 	};
 
 	return (
@@ -38,8 +50,10 @@ function WordItem(props) {
 
 	    { isCustom ? (
 	      <div className={'list-button-wrapper' + (isCustom ? '' : ' hide-section')}>
-	        <EditIcon onClick={() => { props.popupWordForm(wordId)} } />
-	        <DeleteIcon onClick={() => { props.popupConfirm(wordId)} } />
+	        <EditIcon onClick={toggle} />
+	        <DeleteIcon onClick={toggle} />
+	        <EditModal {...wordObj} show={isShowing} hide={toggle} wordId={wordId} />
+{/*	        <DeleteModal show={isShowing} hide={toggle} word-id={wordId} /> */}
 	      </div>)
 	              : null }
 	  </div>

@@ -32,7 +32,6 @@ function App(props) {
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
 	const [ addWordState, setAddWordState ] = useState(false);
-	const [ wordFormState, setWordFormState ] = useState(false);
 	const [ mnemonicFormState, setMnemonicFormState ] = useState(false);
 	const [ confirmState, setConfirmState ] = useState(false);
 	const [ confirmShareState, setConfirmShareState ] = useState(false);
@@ -98,13 +97,7 @@ console.log('navToSpotlightList', props, history);
 
 	const popupWordForm = wordId => {
 console.log('popupWordForm', wordId);
-/*
-		setPopupView('add-word');
-		setPopupState(true);
-		setPopupData({ word });
-*/
 		setWordId(wordId);
-		setWordFormState(true);
 	}
 
 	const popupMnemonicForm = word => {
@@ -121,11 +114,9 @@ console.log('cancelMnemonicForm');
 
 	const cancelWordForm = () => {
 console.log('cancelWordForm');
-		setWordFormState(false);
 	}
 
 	const saveWordForm  = () => {
-		setWordFormState(false);
 	}
 
 	const cancelDelete = () => {
@@ -176,7 +167,8 @@ console.log('cancelWordForm');
 	    </div>
 	  </header>
 
-	  { wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
+	  <div id="popup"></div>
+
 	  { mnemonicFormState ? <MnemonicForm word={word} cancel={cancelMnemonicForm} /> : <div/> }
 	  { confirmState ? <ConfirmDelete wordId={wordId} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
 	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
@@ -197,8 +189,6 @@ console.log('cancelWordForm');
 	        />) } />
 	    <Route path="/browse/:start?" render={props => ( <BrowseWords
 	        toggleSpotlight={toggleSpotlight}
-	        popupConfirm={wordId => { popupConfirm(wordId); }}
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        />) } />
 	    <Route path="/random" render={props => ( <Random
 	        toggleSpotlight={toggleSpotlight}

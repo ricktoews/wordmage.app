@@ -51,6 +51,10 @@ function WordForm(props) {
 		console.log('save', newWord, newDef);
 		// Need to save custom word, spotlight, or whatever.
 		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, spotlight);
+		// If on Spotlight page, add word to active.
+		if (props.location.pathname === '/spotlight') {
+			WordsInterface.toggleActive(newWord);
+		}
 		// Save notes.
 		//WordsInterface.saveNotes(newWord, newNotes);
 
@@ -67,6 +71,13 @@ function WordForm(props) {
 	<div className="word-form-container">
 	  <div className="word-form-wrapper">
 	    <div className="word-form">
+
+	      {/* Word prompt: Add or Edit */}
+{/*
+	      <div className="word">
+	        { newWord ? 'Edit' : 'Word Not Listed? Add it!' }
+	      </div>
+*/}
 
 	      {/* Word input field (custom), or word displayed only (built-in) */}
 	      <div className="word">
