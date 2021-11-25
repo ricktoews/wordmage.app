@@ -143,6 +143,10 @@ body {
 	}
 }
 
+.hamburger-icon, .hamburger-nav li {
+	cursor: pointer;
+}
+
 .hamburger-nav {
 	position: fixed;
 	z-index: 200;
