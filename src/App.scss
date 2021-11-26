@@ -462,3 +462,40 @@ body {
 	display: none;
 }
 
+.word-list-scroller {
+    position: relative;
+    top: 100px;
+}
+
+.word-item {
+    font-family: Lato;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+.word-item-word {
+    min-width: 100px;
+    padding: 1px 15px 1px 5px;
+    margin-left: 5px;
+    color: white;
+    background-color: #09f;
+    border-radius: 10px 10px 0 0;
+}
+
+.word-item-def {
+    color: black;
+    font-weight: 200;
+}
+.word-item-def {
+    width: 100%;
+    padding: 5px;
+    color: black;
+    background-color: white;
+    border-top: 1px solid #09f;
+    border-right: 1px solid #09f;
+    border-bottom: 1px solid #09f;
+    border-radius: 0 5px 5px 0;
+}

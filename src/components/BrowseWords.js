@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordItem from './WordItem';
@@ -8,31 +9,47 @@ const INFINITE_SCROLLING_OFF = 'hide-section';
 const listLength = 20;
 const listIncrement = 30;
 
+function makeWordEntry(wordObj) {
+	return (
+	  <div className="word-item">
+	    <div className="word-item-word">{wordObj.word}</div>
+	    <div className="word-item-def">{wordObj.def}</div>
+	  </div>
+	);
+}
+
 function BrowseWords(props) {
 	const fullWordObjList = WordsInterface.fullWordList();
 	const fullWordList = fullWordObjList.map(item => item.word);
-console.log('BrowseWords top');
 	const [ wordObjList, setWordObjList ] = useState(fullWordObjList);
 	const [ wordList, setWordList ] = useState(fullWordList);
 	const [ wordListSubset, setWordListSubset ] = useState([]);
 	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
 	const [ browseMode, setBrowseMode ] = useState('built-in');
 	const [ listLoadClass, setListLoadClass ] = useState(INFINITE_SCROLLING_ON);
-	const listRef = useRef(null);
-	const loadingRef = useRef(null);
 
-	const myObserverCallback = (entries, observer) => {
-		var listStart = listRef.current.attributes.start;
-		listRef.current.attributes.end += listIncrement;
-		var listEnd = listRef.current.attributes.end;
-console.log('myObserverCallback browseMode', listRef.current.attributes.browseMode);
-		if (!listRef.current.attributes.browseMode || listRef.current.attributes.browseMode === 'built-in') {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					var newSubset = wordList.slice(listStart, listEnd);
-					setWordListSubset(newSubset);
-				}
-			});
+	const scrollerRef = useRef(null);
+	const sentinelRef = useRef(null);
+console.log('BrowseWords top scrollerRef', scrollerRef.current);
+
+	function loadItems(quant) {
+		let counter = scrollerRef.current.attributes.counter;
+		for (let i = 0; i < quant; i++) {
+			let wordItem = fullWordObjList[counter++];
+			let item = document.createElement('div');
+			item.classList.add('word-item-container');
+			var wordEl = makeWordEntry(wordItem);
+			ReactDOM.render(wordEl, item);
+			scrollerRef.current.appendChild(item);
+		}
+		scrollerRef.current.attributes.counter = counter;
+	}
+
+	const myObserverCallback = (entries) => {
+		if (entries.some(entry => entry.isIntersecting)) {
+			loadItems(10);
+			scrollerRef.current.appendChild(sentinelRef.current);
+			loadItems(5);
 		}
 	};
 
@@ -48,11 +65,19 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 			if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
 				foundStart = true;
 				startingNdx = i;
-				listRef.current.attributes.start = startingNdx;
-				listRef.current.attributes.end = startingNdx + listLength;
+				scrollerRef.current.attributes.counter = startingNdx;
+//				scrollerRef.current.attributes.start = startingNdx;
+//				scrollerRef.current.attributes.end = startingNdx + listLength;
 			}
 		}
-		setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
+console.log('builtInSubset startingLetters', startingLetters, 'counter', scrollerRef.current.attributes.counter);
+//		setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
+		while (scrollerRef.current.firstChild) {
+			scrollerRef.current.removeChild(scrollerRef.current.firstChild);
+		}
+		loadItems(10);
+		scrollerRef.current.appendChild(sentinelRef.current);
+		loadItems(5);
 	}
 
 	// First step in updating word list on add / delete custom word.
@@ -69,8 +94,8 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 	}, [wordList.length]);
 
 	useEffect(() => {
-		var intersectionObserver = new IntersectionObserver(myObserverCallback, { root: null, rootMargin: '0px', threshold: .1});
-		intersectionObserver.observe(loadingRef.current);
+		var intersectionObserver = new IntersectionObserver(myObserverCallback);
+		intersectionObserver.observe(sentinelRef.current);
 
 		return () => { console.log('disconnect observer'); intersectionObserver.disconnect(); }
 	}, []);
@@ -79,20 +104,6 @@ console.log('myObserverCallback browseMode', listRef.current.attributes.browseMo
 	useEffect(() => {
 		if (browseMode === 'built-in') {
 			builtInSubset();
-/*
-			var startingNdx = 0;
-			var foundStart = false;
-			for (let i = 0; i < wordList.length && !foundStart; i++) {
-				if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
-					foundStart = true;
-					startingNdx = i;
-					listRef.current.attributes.start = startingNdx;
-					listRef.current.attributes.end = startingNdx + listLength;
-				}
-			}
-console.log('setWordListSubset', startingNdx);
-			setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
-*/
 		}
 	}, [startingLetters, browseMode]);
 
@@ -130,13 +141,13 @@ console.log('setWordListSubset', startingNdx);
 			setWordListSubset(filteredWordList);
 			setBrowseMode('custom');
 			setListLoadClass(INFINITE_SCROLLING_OFF);
-			listRef.current.attributes.browseMode = 'custom';
+			scrollerRef.current.attributes.browseMode = 'custom';
 		} else {
 			setStartingLetters('');
 			setBrowseMode('built-in');
 			setListLoadClass(INFINITE_SCROLLING_ON);
 			props.history.push('/browse/');
-			listRef.current.attributes.browseMode = 'built-in';
+			scrollerRef.current.attributes.browseMode = 'built-in';
 		}
 	}
 
@@ -146,13 +157,13 @@ console.log('setWordListSubset', startingNdx);
 			setWordListSubset(filteredWordList);
 			setBrowseMode('spotlight');
 			setListLoadClass(INFINITE_SCROLLING_OFF);
-			listRef.current.attributes.browseMode = 'spotlight';
+			scrollerRef.current.attributes.browseMode = 'spotlight';
 		} else {
 			setStartingLetters('');
 			setBrowseMode('built-in');
 			setListLoadClass(INFINITE_SCROLLING_ON);
 			props.history.push('/browse/');
-			listRef.current.attributes.browseMode = 'built-in';
+			scrollerRef.current.attributes.browseMode = 'built-in';
 		}
 	}
 
@@ -170,18 +181,8 @@ console.log('setWordListSubset', startingNdx);
 	  </div>
 
 	  <div className="word-list-container">
-	    <div className="word-list-wrapper">
-	      <ul ref={listRef} className="word-list">
-	        { wordListSubset.map((word, ndx) => {
-	                return <WordItem key={ndx} 
-	                                 word={word} 
-	                                 toggleSpotlight={toggleSpotlight} 
-	                                 popupConfirm={wordId => { props.popupConfirm(wordId) }} 
-	                                 popupWordForm={wordId => { props.popupWordForm(wordId) }} />
-	        })}
-
-	        <li className={listLoadClass}><div ref={loadingRef} className="list-loading-marker"></div></li>
-	      </ul>
+	    <div className="word-list-scroller" ref={scrollerRef}>
+	      <div id="sentinel" ref={sentinelRef}></div>
 	    </div>
 	  </div>
 
