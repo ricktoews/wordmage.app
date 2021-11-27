@@ -6,7 +6,7 @@ import wordHash from '../data/word-pool';
 import DataSource from './data-source';
 
 const userData = DataSource.retrieveUserData();
-console.log('userData', userData);
+//console.log('userData', userData);
 
 /**
  *

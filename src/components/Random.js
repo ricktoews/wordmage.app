@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
+import WordScroller from './WordScroller';
 
 function Random(props) {
 	const [randomWords, setRandomWords] = useState([]);
@@ -25,7 +26,7 @@ function Random(props) {
 		setUpdatePageToggle(!updatePageToggle);
 	}
 
-	return (
+	return randomWords.length > 0 ? (
 	<div className="browse-container">
 	  <div className="browse">
 		<div>Random Selection</div>
@@ -34,6 +35,8 @@ function Random(props) {
 	    </div>
 	  </div>
 
+	  <WordScroller pool={randomWords} startingNdx={0} />
+{/*
 	  <div className="word-list-container">
 	    <div className="word-list-wrapper">
 	      <ul className="word-list">
@@ -47,9 +50,10 @@ function Random(props) {
 	      </ul>
 	    </div>
 	  </div>
+*/}
 
 	</div>
-	);
+	) : null;
 }
 
 export default withRouter(Random);

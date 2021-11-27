@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
+import WordScroller from './WordScroller';
 import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
@@ -9,14 +10,6 @@ const INFINITE_SCROLLING_OFF = 'hide-section';
 const listLength = 20;
 const listIncrement = 30;
 
-function makeWordEntry(wordObj) {
-	return (
-	  <div className="word-item">
-	    <div className="word-item-word">{wordObj.word}</div>
-	    <div className="word-item-def">{wordObj.def}</div>
-	  </div>
-	);
-}
 
 function BrowseWords(props) {
 	const fullWordObjList = WordsInterface.fullWordList();
@@ -25,33 +18,13 @@ function BrowseWords(props) {
 	const [ wordList, setWordList ] = useState(fullWordList);
 	const [ wordListSubset, setWordListSubset ] = useState([]);
 	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
+	const [ startingNdx, setStartingNdx ] = useState(0);
 	const [ browseMode, setBrowseMode ] = useState('built-in');
 	const [ listLoadClass, setListLoadClass ] = useState(INFINITE_SCROLLING_ON);
 
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
-console.log('BrowseWords top scrollerRef', scrollerRef.current);
 
-	function loadItems(quant) {
-		let counter = scrollerRef.current.attributes.counter;
-		for (let i = 0; i < quant; i++) {
-			let wordItem = fullWordObjList[counter++];
-			let item = document.createElement('div');
-			item.classList.add('word-item-container');
-			var wordEl = makeWordEntry(wordItem);
-			ReactDOM.render(wordEl, item);
-			scrollerRef.current.appendChild(item);
-		}
-		scrollerRef.current.attributes.counter = counter;
-	}
-
-	const myObserverCallback = (entries) => {
-		if (entries.some(entry => entry.isIntersecting)) {
-			loadItems(10);
-			scrollerRef.current.appendChild(sentinelRef.current);
-			loadItems(5);
-		}
-	};
 
 	// Separate this into its own function, since it's used in a couple of places.
 	// Oh: you want to know what it actually DOES, do you? ...
@@ -59,25 +32,13 @@ console.log('BrowseWords top scrollerRef', scrollerRef.current);
 	// the listLength const (20) and beginning at the user-specified point (startingLetters, from the 
 	// search field) or at the beginning of the alphabet.
 	const builtInSubset = () => {
-		var startingNdx = 0;
-		var foundStart = false;
-		for (let i = 0; i < wordList.length && !foundStart; i++) {
+		var ndx = -1;
+		for (let i = 0; i < wordList.length && ndx === -1; i++) {
 			if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
-				foundStart = true;
-				startingNdx = i;
-				scrollerRef.current.attributes.counter = startingNdx;
-//				scrollerRef.current.attributes.start = startingNdx;
-//				scrollerRef.current.attributes.end = startingNdx + listLength;
+				ndx = i;
+				setStartingNdx(ndx);
 			}
 		}
-console.log('builtInSubset startingLetters', startingLetters, 'counter', scrollerRef.current.attributes.counter);
-//		setWordListSubset(wordList.slice(startingNdx, startingNdx + listLength));
-		while (scrollerRef.current.firstChild) {
-			scrollerRef.current.removeChild(scrollerRef.current.firstChild);
-		}
-		loadItems(10);
-		scrollerRef.current.appendChild(sentinelRef.current);
-		loadItems(5);
 	}
 
 	// First step in updating word list on add / delete custom word.
@@ -92,13 +53,6 @@ console.log('builtInSubset startingLetters', startingLetters, 'counter', scrolle
 	useEffect(() => {
 		builtInSubset();
 	}, [wordList.length]);
-
-	useEffect(() => {
-		var intersectionObserver = new IntersectionObserver(myObserverCallback);
-		intersectionObserver.observe(sentinelRef.current);
-
-		return () => { console.log('disconnect observer'); intersectionObserver.disconnect(); }
-	}, []);
 
 
 	useEffect(() => {
@@ -180,12 +134,7 @@ console.log('builtInSubset startingLetters', startingLetters, 'counter', scrolle
 	    </div>
 	  </div>
 
-	  <div className="word-list-container">
-	    <div className="word-list-scroller" ref={scrollerRef}>
-	      <div id="sentinel" ref={sentinelRef}></div>
-	    </div>
-	  </div>
-
+	  <WordScroller pool={fullWordObjList} startingNdx={startingNdx} />
 	</div>
 	);
 }
