@@ -3,8 +3,22 @@ import { useEffect, useRef } from 'react';
 import WordsInterface from '../utils/words-interface';
 
 const spotlightFilterClass = 'badge-spotlight-filter';
-const likeOffClass = 'badge-spotlight-filter-off';
-const likeOnClass = 'badge-spotlight-filter-on';
+const likeOffClass = 'badge-like-filter-off';
+const likeOnClass = 'badge-like-filter-on';
+const dislikeOffClass = 'badge-dislike-filter-off';
+const dislikeOnClass = 'badge-dislike-filter-on';
+
+function toggleClass(el, toggleClasses) {
+	let classes = Array.from(el.classList);
+	if (classes.indexOf(toggleClasses[0]) !== -1) {
+		el.classList.remove(toggleClasses[0])
+		el.classList.add(toggleClasses[1])
+	}
+	else {
+		el.classList.remove(toggleClasses[1])
+		el.classList.add(toggleClasses[0])
+	}
+}
 
 function thumbsUpHandler(e) {
 	var el = e.target;
@@ -13,20 +27,35 @@ function thumbsUpHandler(e) {
 	}
 	var data = el.dataset;
 	var {liked, word} = data;
+	toggleClass(el, [likeOnClass, likeOffClass]);
 	WordsInterface.toggleSpotlight(word);
+}
+
+function thumbsDownHandler(e) {
+	var el = e.target;
+	if (!el.dataset.word) {
+		el = el.parentNode;
+	}
+	var data = el.dataset;
+console.log('thumbsDownHandler', el, data);
+	var {disliked, word} = data;
+	toggleClass(el, [dislikeOnClass, dislikeOffClass]);
+	WordsInterface.toggleDislike(word);
 }
 
 function makeButtonSet(wordObj, listType) {
 	var buttons;
 	if (listType === 'liked') {
-              buttons = (<div className="word-item-buttons">
+		buttons = (<div className="word-item-buttons">
                 <button className={'badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
               </div>);
 	}
 	else {
-              buttons = (<div className="word-item-buttons">
-                <button className={'badge ' + spotlightFilterClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
-                <button className={'badge ' + spotlightFilterClass}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp; Meh</button>
+		let likeClass = wordObj.spotlight ? likeOnClass : likeOffClass;
+		let dislikeClass = wordObj.dislike ? dislikeOnClass : dislikeOffClass;
+		buttons = (<div className="word-item-buttons">
+                <button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
+                <button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp; Meh</button>
               </div>);
 	}
 		
@@ -35,7 +64,7 @@ function makeButtonSet(wordObj, listType) {
 
 function makeWordEntry(wordObj, listtype) {
 	var buttons = makeButtonSet(wordObj, listtype);
-	return (
+	return wordObj.divider ? <hr className="rejects" /> : (
 	  <div className="word-item">
 	    <div className="word-item-word-container">
 	      <div className="word-item-word">{wordObj.word}</div>

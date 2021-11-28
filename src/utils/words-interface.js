@@ -14,6 +14,8 @@ const userData = DataSource.retrieveUserData();
 const POOL_SIZE = 20;
 function getRandomPool() {
 	var fullListClone = fullWordList().slice(0);
+	var [notDislikedList, dislikedList] = separateDisliked(fullListClone);
+	fullListClone = notDislikedList;
 	var randomPool = [];
 	for (let i = 0; i < POOL_SIZE; i++) {
 		let ndx = Math.floor(Math.random() * fullListClone.length);
@@ -32,6 +34,12 @@ function sortWordObj(a, b) {
 	var bWord = b.word.toLowerCase();
 	// localeCompare() takes care of accents.
 	return a.word.localeCompare(b.word);
+}
+
+function separateDisliked(list) {
+	var dislikedList = list.filter(wordObj => wordObj.dislike);
+	var notDislikedList = list.filter(wordObj => !wordObj.dislike);
+	return [notDislikedList, dislikedList];
 }
 
 /**
@@ -56,9 +64,13 @@ function fullWordList() {
 				wordObj.customDef = true;
 			}
 			universal[ndx].spotlight = wordObj.spotlight;
+			universal[ndx].dislike = wordObj.dislike;
 		}
 	});
-	var fullList = [ ...revisedCustom, ...universal].sort(sortWordObj);
+	var [notDislikedList, dislikedList] = separateDisliked(universal);
+	universal = notDislikedList;
+	var fullList = [ ...revisedCustom, ...notDislikedList].sort(sortWordObj);
+	fullList = [...fullList, {divider: true}, ...dislikedList];
 	return fullList;
 }
 
@@ -72,6 +84,9 @@ function getWordList(type) {
 	switch (type) {
 		case 'spotlight':
 			list = userData.custom.filter(item => item.spotlight);
+			break;
+		case 'dislike':
+			list = userData.custom.filter(item => item.dislike);
 			break;
 		default:
 			list = fullWordList();
@@ -87,7 +102,8 @@ function addCustomWord(newWordObj) {
 		_id: newId,
 		word: newWordObj.word,
 		def: newWordObj.def,
-		spotlight: newWordObj.spotlight
+		spotlight: newWordObj.spotlight,
+		dislike: newWordObj.dislike
 	};
 	userData.custom.push(wordObj);
 }
@@ -201,6 +217,26 @@ function toggleSpotlight(word) {
 }
 
 /**
+ * Toggle Dislike status for specified word.
+ */
+function toggleDislike(word) {
+	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
+	if (wordObjIndex === -1) {
+		let builtInWord = cloneJSON(wordHash.find(item => item.word === word));
+		addCustomWord(builtInWord);
+		wordObjIndex = userData.custom.findIndex(item => item.word === word);
+	}
+	var wordObj = userData.custom[wordObjIndex];
+	wordObj.dislike = !wordObj.dislike;
+console.log('calling saveUserData', userData);
+	DataSource.saveUserData(userData);
+	// Create array of words from userData.active, which is an array of { word: notes }.
+	var newDislikeList = userData.custom.filter(item => item.dislike);
+console.log('newDislikeList', newDislikeList);
+	return newDislikeList;
+}
+
+/**
  * Return true / false, depending on whether or not the word is Spotlighted.
  */
 function isSpotlightEntry(word) {
@@ -290,6 +326,7 @@ const WordsInterface = {
 	getSpotlightList,
 	isSpotlightEntry,
 	toggleSpotlight,
+	toggleDislike,
 	getSpotlightEntry,
 	getWordObjById,
 	getWordObj,

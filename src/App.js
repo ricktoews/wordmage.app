@@ -158,10 +158,10 @@ console.log('cancelWordForm');
 	<div className="App">
 	  <nav className={hamburgerClass}>
 	    <ul>
-	      <li onClick={navToSpotlight}>Spotlight</li>
+	      <li onClick={navToRandom}>Random</li>
 	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
 	      <li onClick={navToBrowseWords}>Browse</li>
-	      <li onClick={navToRandom}>Random</li>
+	      <li onClick={navToSpotlight}>Spotlight</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
 	      <li onClick={navToAbout}>About</li>

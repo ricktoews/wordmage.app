@@ -85,6 +85,28 @@ body {
 	outline: none;
 }
 
+.badge-dislike-filter-off {
+	background: #fff;
+	border: 1px solid #09f;
+	color: #09f;
+}
+
+.badge-dislike-filter-on {
+	background: #09f;
+	color: #fff;
+}
+
+.badge-like-filter-off {
+	background: #fff;
+	border: 1px solid #09f;
+	color: #09f;
+}
+
+.badge-like-filter-on {
+	background: #09f;
+	color: #fff;
+}
+
 .badge-spotlight-filter-off {
 	background: #fff;
 	border: 2px solid #f90;
@@ -519,4 +541,8 @@ body {
     align-items: flex-start;
     font-size: .75em;
     padding: 0px 10px;
+}
+
+.rejects {
+    border-top: 3px solid red;
 }
