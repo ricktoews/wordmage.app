@@ -64,7 +64,7 @@ body {
 }
 
 .badge-add {
-	background: #0c0;
+	background: #09f;
 }
 
 .badge-delete {
@@ -76,9 +76,9 @@ body {
 }
 
 .badge {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
+	width: 65px;
+	height: 25px;
+	border-radius: 12px;
 	border: none;
 	color: white;
 	margin: 2px;
@@ -91,9 +91,15 @@ body {
 	color: #f90;
 }
 
-.badge-spotlight-filter {
-	background: #f90;
+.badge-spotlight-filter-on {
+	background: #09f;
 	color: #fff;
+}
+
+.badge-spotlight-filter {
+	border: 1px solid #09f;
+	background-color: white;
+	color: #09f;
 }
 
 .badge-custom-filter-off {
@@ -151,11 +157,11 @@ body {
 	position: fixed;
 	z-index: 200;
 	top: $header-height - 10;
-	width: 150px;
+	width: 200px;
 	height: 100vh;
 	background-color: $side-nav-background;
 	transition-duration: .5s;
-	left: -150px;
+	left: -200px;
 
 	ul {
 		margin: 5px;
@@ -468,15 +474,21 @@ body {
 }
 
 .word-item {
-    font-family: Lato;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding-bottom: 10px;
-    background-color: white;
+    font-family: Lato;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #999;
+}
+
+.word-item-word-container {
 }
 
 .word-item-word {
+    font-size:1.1em;
     min-width: 100px;
     padding: 1px 15px 1px 5px;
     margin-left: 5px;
@@ -488,14 +500,23 @@ body {
 .word-item-def {
     color: black;
     font-weight: 200;
+    font-size:.85em;
 }
 .word-item-def {
     width: 100%;
     padding: 5px;
     color: black;
     background-color: white;
-    border-top: 1px solid #09f;
+    border-top: 2px solid #09f;
     border-right: 1px solid #09f;
-    border-bottom: 1px solid #09f;
-    border-radius: 0 5px 5px 0;
+    border-bottom: 2px solid #09f;
+    border-radius: 0 5px 0px 0;
+}
+.word-item-buttons {
+    float: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-size: .75em;
+    padding: 0px 10px;
 }

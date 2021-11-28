@@ -128,10 +128,12 @@ function BrowseWords(props) {
 	<div className="browse-container">
 	  <div className="browse">
 	    <input type="text" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+{/*
 	    <div className="browse-filter-buttons">
 	      <button className={'badge ' + customFilterClass} onClick={handleBrowseCustom}><i className="glyphicon glyphicon-star"></i></button>
 	      <button className={'badge ' + spotlightFilterClass} onClick={handleBrowseSpotlight}><i className="glyphicon glyphicon-heart"></i></button>
 	    </div>
+*/}
 	  </div>
 
 	  <WordScroller pool={fullWordObjList} startingNdx={startingNdx} />

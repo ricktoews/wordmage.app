@@ -29,29 +29,13 @@ function Random(props) {
 	return randomWords.length > 0 ? (
 	<div className="browse-container">
 	  <div className="browse">
-		<div>Random Selection</div>
+	    <div>Random Selection</div>
 	    <div className="browse-filter-buttons">
 	      <button className={'badge badge-spotlight-filter'} onClick={handleNewRandom}><i className="glyphicon glyphicon-repeat"></i></button>
 	    </div>
 	  </div>
 
 	  <WordScroller pool={randomWords} startingNdx={0} />
-{/*
-	  <div className="word-list-container">
-	    <div className="word-list-wrapper">
-	      <ul className="word-list">
-	        {randomWords.map((wordObj, ndx) => {
-			let word = wordObj.word;
-	                return <WordItem key={ndx} 
-	                                 word={word} 
-	                                 toggleSpotlight={toggleSpotlight} 
-	                                 />
-	        })}
-	      </ul>
-	    </div>
-	  </div>
-*/}
-
 	</div>
 	) : null;
 }

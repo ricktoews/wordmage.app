@@ -159,7 +159,7 @@ console.log('cancelWordForm');
 	  <nav className={hamburgerClass}>
 	    <ul>
 	      <li onClick={navToSpotlight}>Spotlight</li>
-	      <li onClick={navToSpotlightList}>Spotlight List</li>
+	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
 	      <li onClick={navToBrowseWords}>Browse</li>
 	      <li onClick={navToRandom}>Random</li>
 	      <li onClick={handleShare}>Share</li>
@@ -182,11 +182,11 @@ console.log('cancelWordForm');
 	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
 	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
 	  <Switch>
-	    <Route exact path={['/', '/spotlight/:word/:def']} render={props => <Spotlight
+	    <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />
-	    <Route exact path={['/', '/spotlight']} render={props => <Spotlight
+	    <Route exact path={['/spotlight']} render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />
@@ -200,7 +200,7 @@ console.log('cancelWordForm');
 	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        />) } />
-	    <Route path="/random" render={props => ( <Random
+	    <Route path={['/', '/random']} render={props => ( <Random
 	        toggleSpotlight={toggleSpotlight}
 	        />) } />
 	    <Route path="/about" component={About} />
