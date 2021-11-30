@@ -1,41 +1,5 @@
 [
     {
-        "word": "a cheval",
-        "def": "'on horseback'; astride; straddling."
-    },
-    {
-        "word": "a corps perdu",
-        "def": "'with lost body'; impetuously; in desperation."
-    },
-    {
-        "word": "a fond",
-        "def": "'to the bottom'; thoroughly."
-    },
-    {
-        "word": "a la mort",
-        "def": "'to the death'; mortally."
-    },
-    {
-        "word": "a mensa et thoro",
-        "def": "'from table and bed'; applied to judicial separation of husband and wife."
-    },
-    {
-        "word": "a outrance",
-        "def": "'to the utmost'; to the death."
-    },
-    {
-        "word": "ab initio",
-        "def": "from the beginning; from the very start or outset"
-    },
-    {
-        "word": "ab irato",
-        "def": "from an angry man: hence, not to be taken too seriously"
-    },
-    {
-        "word": "ab ovo",
-        "def": "from the egg: from the very beginning, hence completely and in great detail; thoroughly or voluminously"
-    },
-    {
         "word": "abderian",
         "def": "pertaining to foolish or excessive laughter"
     },
@@ -305,7 +269,7 @@
     },
     {
         "word": "acopic",
-        "def": "& a. Medicine, curative of fatigue."
+        "def": "Medicine, curative of fatigue."
     },
     {
         "word": "acor",
@@ -712,8 +676,8 @@
     },
     {
         "word": "adnascentia",
-        "def": "root-like branches that sprout into the earth from a plant&apos;s stem",
-        "sentence": "Every winter, the adnascentia would shift around, destroying the lawn&apos;s even texture."
+        "def": "root-like branches that sprout into the earth from a plant's stem",
+        "sentence": "Every winter, the adnascentia would shift around, destroying the lawn's even texture."
     },
     {
         "word": "adnate",
@@ -1008,7 +972,7 @@
     {
         "word": "affuage",
         "def": "right to cut wood in a forest for family fire",
-        "sentence": "The family&apos;s right of affuage ensured they would have enough wood for winter."
+        "sentence": "The family's right of affuage ensured they would have enough wood for winter."
     },
     {
         "word": "affusion",
@@ -1385,11 +1349,11 @@
     },
     {
         "word": "alexipyretic",
-        "def": "& a. (drug) curative of fever."
+        "def": "(drug) curative of fever."
     },
     {
         "word": "alexiteric",
-        "def": "& a. preventive of contagion; antidote against poison."
+        "def": "preventive of contagion; antidote against poison."
     },
     {
         "word": "alfet",
@@ -1469,7 +1433,7 @@
     },
     {
         "word": "alidade",
-        "def": "instrument used in surveying & navigation."
+        "def": "instrument used in surveying and navigation."
     },
     {
         "word": "alienism",
@@ -1537,7 +1501,7 @@
     },
     {
         "word": "allative",
-        "def": "& a. Grammar, (case) expressing motion towards."
+        "def": "Grammar, (case) expressing motion towards."
     },
     {
         "word": "alliaceous",
@@ -2005,7 +1969,7 @@
     },
     {
         "word": "amphiscian",
-        "def": "& a. (inhabitant) of tropics, whose shadow falls in different ways according to the time of year."
+        "def": "(inhabitant) of tropics, whose shadow falls in different ways according to the time of year."
     },
     {
         "word": "amphivorous",
@@ -2077,7 +2041,7 @@
     },
     {
         "word": "anacathartic",
-        "def": "& a. (drug) causing vomiting."
+        "def": "(drug) causing vomiting."
     },
     {
         "word": "anachorism",
@@ -2901,7 +2865,7 @@
     },
     {
         "word": "antifebrile",
-        "def": "& a. preventive or curative of fever."
+        "def": "preventive or curative of fever."
     },
     {
         "word": "antilibration",
@@ -2950,7 +2914,7 @@
     },
     {
         "word": "antiphlogistic",
-        "def": "& a. (drug) used against inflammation."
+        "def": "(drug) used against inflammation."
     },
     {
         "word": "antiphon",
@@ -2974,7 +2938,7 @@
     },
     {
         "word": "antiscorbutic",
-        "def": "& a. preventive of scurvy, especially applied to vitamin C or food containing it."
+        "def": "preventive of scurvy, especially applied to vitamin C or food containing it."
     },
     {
         "word": "antispast",
@@ -3010,7 +2974,7 @@
     },
     {
         "word": "antitussive",
-        "def": "& a. (drug, etc.) that alleviates or prevents coughing."
+        "def": "(drug, etc.) that alleviates or prevents coughing."
     },
     {
         "word": "antitype",
@@ -3299,7 +3263,7 @@
     },
     {
         "word": "apophyge",
-        "def": "(architecture) curve between shaft and base, or between shaft & capital, in a column."
+        "def": "(architecture) curve between shaft and base, or between shaft and capital, in a column."
     },
     {
         "word": "apophysis",
@@ -3312,7 +3276,7 @@
     {
         "word": "aporrhoea",
         "def": "a bodily emanation; an effluvium",
-        "sentence": "The evening&apos;s revelries were followed by an unfortunate episode of aporrhoea."
+        "sentence": "The evening's revelries were followed by an unfortunate episode of aporrhoea."
     },
     {
         "word": "aposematic",
@@ -3825,7 +3789,7 @@
     {
         "word": "artigrapher",
         "def": "writer or composer of a grammar; a grammarian",
-        "sentence": "Today&apos;s prescriptivists are no better than the artigraphers of the Renaissance."
+        "sentence": "Today's prescriptivists are no better than the artigraphers of the Renaissance."
     },
     {
         "word": "artuate",
@@ -3853,7 +3817,7 @@
     },
     {
         "word": "ascoliasm",
-        "def": "boys&apos; game of beating each other with gloves or leather while hopping",
+        "def": "boys' game of beating each other with gloves or leather while hopping",
         "sentence": "If you think bullies are bad today, look at brutal games of the past like ascoliasm. "
     },
     {
@@ -4498,7 +4462,7 @@
     {
         "word": "auturgy",
         "def": "self-action; independent activity",
-        "sentence": "The film director&apos;s legendary auturgy frustrated editors and producers alike."
+        "sentence": "The film director's legendary auturgy frustrated editors and producers alike."
     },
     {
         "word": "auxanometer",
@@ -5486,7 +5450,7 @@
     {
         "word": "binoternary",
         "def": "combining binary and trinary aspects",
-        "sentence": "The dots on the &apos;6&apos; face of a die are arranged in a binoternary fashion."
+        "sentence": "The dots on the \"6\" face of a die are arranged in a binoternary fashion."
     },
     {
         "word": "binotic",
@@ -5695,7 +5659,7 @@
     {
         "word": "blateration",
         "def": "chatter; babbling",
-        "sentence": "I&apos;ve had just about enough of your garrulous blateration, you clod!"
+        "sentence": "I've had just about enough of your garrulous blateration, you clod!"
     },
     {
         "word": "blende",
@@ -5828,7 +5792,7 @@
     {
         "word": "bonifate",
         "def": "lucky; fortunate",
-        "sentence": "The gambler was too bonifate, and attracted the casino manager&apos;s attention."
+        "sentence": "The gambler was too bonifate, and attracted the casino manager's attention."
     },
     {
         "word": "bonification",
@@ -5886,7 +5850,7 @@
     {
         "word": "boscaresque",
         "def": "picturesque; scenically wooded",
-        "sentence": "Despite northern England&apos;s industrial pollution, parts of it remain boscaresque."
+        "sentence": "Despite northern England's industrial pollution, parts of it remain boscaresque."
     },
     {
         "word": "bosch",
@@ -6150,7 +6114,7 @@
     {
         "word": "bromography",
         "def": "a treatise on food",
-        "sentence": "It&apos;s not enough to write a bromography - today&apos;s celebrity chefs need to be on TV!"
+        "sentence": "It's not enough to write a bromography - today's celebrity chefs need to be on TV!"
     },
     {
         "word": "brontephobia",
@@ -6879,7 +6843,7 @@
     {
         "word": "caprizant",
         "def": "of the pulse, uneven or irregular",
-        "sentence": "While he hadn&apos;t had a full-blown heart attack, his pulse was very caprizant."
+        "sentence": "While he hadn't had a full-blown heart attack, his pulse was very caprizant."
     },
     {
         "word": "caprylic",
@@ -6959,7 +6923,7 @@
     },
     {
         "word": "carminative",
-        "def": "& a. (medicine) expelling wind."
+        "def": "(medicine) expelling wind."
     },
     {
         "word": "carnassial",
@@ -7069,7 +7033,7 @@
     {
         "word": "castaldy",
         "def": "stewardship",
-        "sentence": "His castaldy over the manor was dependent on his good relations with the lord&apos;s sons."
+        "sentence": "His castaldy over the manor was dependent on his good relations with the lord's sons."
     },
     {
         "word": "castanean",
@@ -7436,7 +7400,7 @@
     },
     {
         "word": "cestuan",
-        "def": "of or pertaining to a boxer&apos;s gloves or cesti",
+        "def": "of or pertaining to a boxer's gloves or cesti",
         "sentence": "No cestuan improvements can negate the damage of such blows to the head."
     },
     {
@@ -8252,7 +8216,7 @@
     },
     {
         "word": "clupeoid",
-        "def": "& a. (fish) like a herring."
+        "def": "(fish) like a herring."
     },
     {
         "word": "clypeus",
@@ -8369,7 +8333,7 @@
     {
         "word": "coherentific",
         "def": "causing to become coherent; causing cohesion",
-        "sentence": "Her speech was the coherentific factor behind the jury&apos;s consensus verdict."
+        "sentence": "Her speech was the coherentific factor behind the jury's consensus verdict."
     },
     {
         "word": "cohibit",
@@ -8723,7 +8687,7 @@
     },
     {
         "word": "conglobate",
-        "def": "ball-shaped; v.i. & t. form or be formed into a ball-shaped mass."
+        "def": "ball-shaped; form or be formed into a ball-shaped mass."
     },
     {
         "word": "conglobulate",
@@ -8855,7 +8819,7 @@
     },
     {
         "word": "contrabass",
-        "def": "& a. (voice or instrument) one octave lower than bass; double-bass."
+        "def": "(voice or instrument) one octave lower than bass; double-bass."
     },
     {
         "word": "contractile",
@@ -8879,7 +8843,7 @@
     },
     {
         "word": "contubernal",
-        "def": "& a. cohabiting (person)."
+        "def": "cohabiting (person)."
     },
     {
         "word": "contumacious",
@@ -9230,7 +9194,7 @@
     {
         "word": "crassulent",
         "def": "very fat; grossly obese",
-        "sentence": "While some point to Brando&apos;s crassulent state, others focus on his acting."
+        "sentence": "While some point to Brando's crassulent state, others focus on his acting."
     },
     {
         "word": "cratometer",
@@ -9994,7 +9958,7 @@
     },
     {
         "word": "decuple",
-        "def": "tenfold; arranged in tens; n. such amount; v.i. & t. multiply by ten."
+        "def": "tenfold; arranged in tens; n. such amount; multiply by ten."
     },
     {
         "word": "decurrent",
@@ -10028,7 +9992,7 @@
     {
         "word": "defedate",
         "def": "to defile; to pollute",
-        "sentence": "The toxic chemicals continue to defedate our town&apos;s water supply."
+        "sentence": "The toxic chemicals continue to defedate our town's water supply."
     },
     {
         "word": "defeneration",
@@ -10611,7 +10575,7 @@
     {
         "word": "dicaearchy",
         "def": "just government",
-        "sentence": "While we dream of living in a dicaearchy, in truth, we&apos;re governed by dicks."
+        "sentence": "While we dream of living in a dicaearchy, in truth, we're governed by dicks."
     },
     {
         "word": "dicaeology",
@@ -10733,7 +10697,7 @@
     {
         "word": "dignorate",
         "def": "to mark or brand an animal",
-        "sentence": "He was glad he had dignorated his horse, or else he couldn&apos;t have claimed it."
+        "sentence": "He was glad he had dignorated his horse, or else he couldn't have claimed it."
     },
     {
         "word": "digoneutic",
@@ -11021,7 +10985,7 @@
     {
         "word": "divinipotent",
         "def": "having strong divinatory powers",
-        "sentence": "While the TV psychic claims to be divinipotent, he&apos;s clearly a charlatan."
+        "sentence": "While the TV psychic claims to be divinipotent, he's clearly a charlatan."
     },
     {
         "word": "divulse",
@@ -11058,7 +11022,7 @@
     {
         "word": "dodrantal",
         "def": "of nine inches in length",
-        "sentence": "The male stripper&apos;s dodrantal instrument impressed the ladies greatly."
+        "sentence": "The male stripper's dodrantal instrument impressed the ladies greatly."
     },
     {
         "word": "dol",
@@ -11422,7 +11386,7 @@
     {
         "word": "ebaptization",
         "def": "declaring that someone has not been properly baptized",
-        "sentence": "They feared the priest&apos;s heterodoxy would lead to charges of ebaptization."
+        "sentence": "They feared the priest's heterodoxy would lead to charges of ebaptization."
     },
     {
         "word": "ebeneous",
@@ -11568,7 +11532,7 @@
     {
         "word": "ectylotic",
         "def": "removing warts or calluses",
-        "sentence": "Use this ectylotic bandage on your finger and you&apos;ll be cured in a week or two."
+        "sentence": "Use this ectylotic bandage on your finger and you'll be cured in a week or two."
     },
     {
         "word": "ectype",
@@ -11650,7 +11614,7 @@
     {
         "word": "eicastic",
         "def": "imitative",
-        "sentence": "The comedian&apos;s wit is limited to his considerable eicastic abilities."
+        "sentence": "The comedian's wit is limited to his considerable eicastic abilities."
     },
     {
         "word": "eidetic",
@@ -12182,7 +12146,7 @@
     {
         "word": "epalpebrate",
         "def": "lacking eyebrows",
-        "sentence": "If you don&apos;t stop plucking, soon you&apos;ll be epalpebrate!"
+        "sentence": "If you don't stop plucking, soon you'll be epalpebrate!"
     },
     {
         "word": "epanadiplosis",
@@ -12854,7 +12818,7 @@
     {
         "word": "eveniency",
         "def": "coming to pass",
-        "sentence": "His mother thought that the eveniency of her son&apos;s marriage was inevitable."
+        "sentence": "His mother thought that the eveniency of her son's marriage was inevitable."
     },
     {
         "word": "eventerate",
@@ -13228,7 +13192,7 @@
     {
         "word": "famelicose",
         "def": "often or very hungry",
-        "sentence": "The tribe&apos;s crops frequently fail, and their children are famelicose."
+        "sentence": "The tribe's crops frequently fail, and their children are famelicose."
     },
     {
         "word": "famicide",
@@ -13725,7 +13689,7 @@
     {
         "word": "flosculation",
         "def": "an embellishment or ornament in speech",
-        "sentence": "The speaker&apos;s lecture was rendered laughable by ridiculous flosculations."
+        "sentence": "The speaker's lecture was rendered laughable by ridiculous flosculations."
     },
     {
         "word": "fluminous",
@@ -14262,7 +14226,7 @@
     {
         "word": "gardevisure",
         "def": "visor of a helmet as shown on heraldic devices",
-        "sentence": "Since you&apos;re so ugly, why not place a gardevisure on your coat of arms?"
+        "sentence": "Since you're so ugly, why not place a gardevisure on your coat of arms?"
     },
     {
         "word": "garganey",
@@ -14675,7 +14639,7 @@
     {
         "word": "gnathonize",
         "def": "to flatter",
-        "sentence": "I can tell that you&apos;re just trying to gnathonize me, you sycophantic buffoon!"
+        "sentence": "I can tell that you're just trying to gnathonize me, you sycophantic buffoon!"
     },
     {
         "word": "gnomic",
@@ -14849,7 +14813,7 @@
     {
         "word": "graviloquence",
         "def": "grave speech",
-        "sentence": "The bishop&apos;s funeral orations were known for their graviloquence."
+        "sentence": "The bishop's funeral orations were known for their graviloquence."
     },
     {
         "word": "greave",
@@ -15319,7 +15283,7 @@
     {
         "word": "hecatologue",
         "def": "code consisting of 100 rules",
-        "sentence": "The teen whined that her parents&apos; list of rules was practically a hecatologue."
+        "sentence": "The teen whined that her parents' list of rules was practically a hecatologue."
     },
     {
         "word": "hecatomb",
@@ -15558,7 +15522,7 @@
     {
         "word": "hercotectonic",
         "def": "of or pertaining to the construction of fortifications or walls",
-        "sentence": "The fort&apos;s hercotectonic strength was insufficient to repel cannon-fire."
+        "sentence": "The fort's hercotectonic strength was insufficient to repel cannon-fire."
     },
     {
         "word": "hereditament",
@@ -15808,7 +15772,7 @@
     {
         "word": "hirquitalliency",
         "def": "strength of voice",
-        "sentence": "The wrestler&apos;s hirquitalliency compensated for his lack of strength and talent."
+        "sentence": "The wrestler's hirquitalliency compensated for his lack of strength and talent."
     },
     {
         "word": "hirrient",
@@ -15919,7 +15883,7 @@
     {
         "word": "homerkin",
         "def": "old liquid measure for beer",
-        "sentence": "&quot;I&apos;m so thirsty I could drink a homerkin of beer,&quot; Simpson lamented."
+        "sentence": "\"I'm so thirsty I could drink a homerkin of beer,\" Simpson lamented."
     },
     {
         "word": "hominal",
@@ -36372,10 +36336,6 @@
     },
     {
         "word": "zetetic",
-        "def": "pondering, questioning"
-    },
-    {
-        "word": "zetetic",
         "def": "asking; questioning"
     },
     {
@@ -36554,5 +36514,10 @@
     {
         "word": "zymotic",
         "def": "pertaining to fermentation; due to development of germs entering body from outside; n. contagious or infectious disease."
-    }
+    },
+	{
+		"word": "zythepsary",
+		"def": "a brewhouse",
+		"source": "The Word Museum (Jeffrey Kacirk)"
+	}
 ]
