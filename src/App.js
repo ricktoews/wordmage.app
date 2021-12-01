@@ -161,9 +161,11 @@ console.log('cancelWordForm');
 	      <li onClick={navToRandom}>Random</li>
 	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
 	      <li onClick={navToBrowseWords}>Browse</li>
+		{/*
 	      <li onClick={navToSpotlight}>Spotlight</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
+		  */}
 	      <li onClick={navToAbout}>About</li>
 	    </ul>
 	  </nav>
@@ -172,7 +174,8 @@ console.log('cancelWordForm');
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
 	      <div className="header-title">WordMage</div>
-	      <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
+		{/*	      <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} /> */}
+		  <div></div>
 	    </div>
 	  </header>
 
@@ -200,7 +203,7 @@ console.log('cancelWordForm');
 	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        />) } />
-	    <Route path={['/', '/random']} render={props => ( <Random
+	    <Route exact path={['/', '/random']} render={props => ( <Random
 	        toggleSpotlight={toggleSpotlight}
 	        />) } />
 	    <Route path="/about" component={About} />
