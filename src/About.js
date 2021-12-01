@@ -12,12 +12,14 @@ function About(props) {
       <p>The <b>Liked</b> list ... Yeah, you're wondering what that could be, aren't you?</p>
       <p>The <b>Random</b> list is a random selection of words from the Browse list, but not arranged in any order. It's meant to give you a quick sampling of words you're not likely to have just seen and gotten bored with.</p>
 
+      <hr/>
+
+      <h4>Source</h4>
+
+      <p><b>Luciferous Logolepsy</b> (RIP). Most of the words included here were taken, as far I can tell, from an online resource titled <i>Luciferous Logolepsy</i>, which no longer exists. Years ago&mdash;at least a decade, I think&mdash;I created a database table of words and populated it with roughly 9,000 worthy specimens. I don't recall exactly where I got the words; however, when I compare entries with those at <i>Cafe Arcane</i> (<i>arcane.org/luciferous-logolepsy/</i>), I find several convincing indications of a common source.</p>
+
+      <p>Since what I believe to have been my original source no longer exists, I feel more free than I otherwise might to use the list without getting someone's permission.</p>
 		{/*
-	  <h4>Sources</h4>
-
-	  <p><b>Luciferous Logolepsy</b> (RIP). Most of the words included here were taken, as far I can tell, from an online resource titled <i>Luciferous Logolepsy</i>, which no longer exists. Years ago&mdash;at least a decade, I should think&mdash;I created a database table of words and populated it with roughly 9,000 worthy specimens. I don't recall where I got the words, or how; however, when I compare entries with those at the <i>Cafe Arcane</i> (<i>arcane.org/luciferous-logolepsy/</i>), I find several convincing indications of a common source.</p>
-
-	  <p>Since what I believe to have been my original source no longer exists, I feel more free than I otherwise might to use the list for my purposes here.</p>
 
 	  <p><b>The Phrontistery</b>. Another longtime trove for the logophile is <i>The Phrontistery</i> (<i>phrontistery.info</i>). From this, I took the 412 entries within the group titled <i>Compendium of Lost Words</i>.</p>
 	  */}
