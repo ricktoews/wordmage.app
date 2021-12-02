@@ -52,33 +52,6 @@ function Spotlight(props) {
 	  <div className="spotlight-wrapper">
 	    <div className="spotlight">
 	      <Scramble item={item} word={item.word} />
-
-	      {/* Mnemonic device */}
-{/*
-	      <div className="user-notes-heading">
-	      How do you want to remember this word?
-	      </div>
-	      <div className="user-notes" aria-label="mnemonic" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleSetNotes}>
-	        {notes}
-	      </div>
-*/}
-
-	      {/* Definition */}
-{/*
-	      { item.customDef ? (
-	      <div className="user-notes-heading">
-	      Definition <div className="badge pull-right" onClick={handleClearCustom}>Clear Custom</div>
-	      </div>
-	      ) : (
-	      <div className="user-notes-heading">
-	      Definition
-	      </div>
-	      ) }
-
-	      <div className="explanatory">
-	      (Customize, abbreviate to suit your need.)
-	      </div>
-*/}
 	      <div aria-label="def" className="user-notes" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleSetCustomDef}>
 	        {item.def}
 	      </div>

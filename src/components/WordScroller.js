@@ -7,6 +7,8 @@ const likeOffClass = 'badge-like-filter-off';
 const likeOnClass = 'badge-like-filter-on';
 const dislikeOffClass = 'badge-dislike-filter-off';
 const dislikeOnClass = 'badge-dislike-filter-on';
+const focusOffClass = 'badge-dislike-filter-off';
+const focusOnClass = 'badge-dislike-filter-on';
 
 function toggleClass(el, toggleClasses) {
 	let classes = Array.from(el.classList);
@@ -31,6 +33,18 @@ function thumbsUpHandler(e) {
 	WordsInterface.toggleSpotlight(word);
 }
 
+function focusHandler(e) {
+	var el = e.target;
+	if (!el.dataset.word) {
+		el = el.parentNode;
+	}
+	var data = el.dataset;
+console.log('focusHandler', el, data);
+	var {focus, word} = data;
+	toggleClass(el, [focusOnClass, focusOffClass]);
+	WordsInterface.toggleFocus(word);
+}
+
 function thumbsDownHandler(e) {
 	var el = e.target;
 	if (!el.dataset.word) {
@@ -51,9 +65,11 @@ function makeButtonSet(wordObj, listType) {
               </div>);
 	}
 	else {
+		let focusClass = wordObj.focus ? focusOnClass : focusOffClass;
 		let likeClass = wordObj.spotlight ? likeOnClass : likeOffClass;
 		let dislikeClass = wordObj.dislike ? dislikeOnClass : dislikeOffClass;
 		buttons = (<div className="word-item-buttons">
+                <button className={'badge ' + focusClass} data-liked={wordObj.focus} data-word={wordObj.word} onClick={focusHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp; Focus</button>
                 <button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
                 <button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp; Meh</button>
               </div>);
@@ -70,8 +86,8 @@ function makeWordEntry(wordObj, listtype) {
 	      <div className="word-item-word">{wordObj.word}</div>
 	    </div>
 	    <div className="word-item-def">
-	      {buttons}
               {wordObj.def}
+	      {buttons}
             </div>
 	  </div>
 	);

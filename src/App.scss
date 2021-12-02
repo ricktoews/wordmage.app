@@ -251,7 +251,7 @@ body {
 	color:#ccc;
 }
 
-.browse-container, .spotlight-list-container {
+.browse-container, .spotlight-list-container, .focus-list-container {
 	position: absolute;
 	top: 0;
 	width: 100vw;
@@ -535,9 +535,8 @@ body {
     border-radius: 0 5px 0px 0;
 }
 .word-item-buttons {
-    float: right;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: flex-start;
     font-size: .75em;
     padding: 0px 10px;
