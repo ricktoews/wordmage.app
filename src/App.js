@@ -12,7 +12,7 @@ import WordsInterface from './utils/words-interface';
 
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
-import FocusList from './components/FocusList';
+import Learn from './components/Learn';
 import SpotlightList from './components/SpotlightList';
 import Random from './components/Random';
 import About from './About';
@@ -24,7 +24,7 @@ const wordHash = WordsInterface.fullWordList();
 function App(props) {
 	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
-	const [ view, setView ] = useState('rehearse');
+	const [ view, setView ] = useState('Random');
 	const [ popupState, setPopupState ] = useState(false);
 	const [ popupData, setPopupData ] = useState({});
 	const [ popupView, setPopupView ] = useState('');
@@ -71,10 +71,10 @@ console.log('navToSpotlightList', props, history);
 		setHamburgerClass('hamburger-nav');
 	}
 
-	const navToFocusList = () => {
+	const navToLearn = () => {
 		var history = props.history;
-console.log('navToFocusList', props, history);
-		history.push('/focus');
+console.log('navToLearn', props, history);
+		history.push('/learn');
 		setView('Learn');
 		setHamburgerClass('hamburger-nav');
 	}
@@ -158,8 +158,8 @@ console.log('cancelWordForm');
 		setConfirmReceive(false);
 	}
 
-	const toggleFocus = word => {
-		var newFocusList = WordsInterface.toggleFocus(word);
+	const toggleLearn = word => {
+		var newLearn = WordsInterface.toggleLearn(word);
 	}
 
 	const toggleSpotlight = word => {
@@ -179,7 +179,7 @@ console.log('cancelWordForm');
 	      <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
 	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
 	      <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
-	      <li onClick={navToFocusList}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
+	      <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
 
 	      <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
 		{/*
@@ -210,8 +210,8 @@ console.log('cancelWordForm');
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />
-	    <Route exact path={['/focus']} render={props => ( <FocusList
-	        toggleFocus={toggleFocus}
+	    <Route exact path={['/learn']} render={props => ( <Learn
+	        toggleLearn={toggleLearn}
 	        />) } />
 	    <Route exact path='/spotlight' render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }

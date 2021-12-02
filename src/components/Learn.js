@@ -10,20 +10,23 @@ function sortWords(a, b) {
 	return a.word < b.word ? -1 : 1;
 }
 
-function FocusList(props) {
-	const focusWordList = WordsInterface.getWordList('focus').sort(sortWords);
+function Learn(props) {
+	const learnList = WordsInterface.getWordList('learn').sort(sortWords);
 	const toggleFocus = word => {
 		props.toggleFocus(word);
 	}
 
 	return (
-	<div className="focus-list-container">
-	  <WordScroller pool={focusWordList} startingNdx={0} listtype={'focus'} />
+	<div className="learn-list-container">
+      <div className="browse">
+		<p>When you play the Unscramble game, this is the list the words are taken from.</p>
+      </div>
+	  <WordScroller pool={learnList} startingNdx={0} listtype={'learn'} />
 	</div>
 	);
 }
 
-export default withRouter(FocusList);
+export default withRouter(Learn);
 
 
 

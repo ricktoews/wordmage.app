@@ -21,6 +21,9 @@ function SpotlightList(props) {
 
 	return (
 	<div className="spotlight-list-container">
+      <div className="browse">
+		<p>These are words you want to make special note of, for whatever reason.</p>
+      </div>
 	  <WordScroller pool={spotlightWordList} startingNdx={0} listtype={'liked'} />
 	</div>
 	);

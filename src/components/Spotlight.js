@@ -52,13 +52,13 @@ function Spotlight(props) {
 	  <div className="spotlight-wrapper">
 	    <div className="spotlight">
 	      <Scramble item={item} word={item.word} />
-	      <div aria-label="def" className="user-notes" contentEditable={true} suppressContentEditableWarning={true} onBlur={handleSetCustomDef}>
+	      <div aria-label="def" className="word-item-def">
 	        {item.def}
 	      </div>
 
 	    </div>
 	    <div className="button-wrapper">
-	      <div className="btn btn-info btn-lg" onClick={handleAnother}>Another</div>
+	      <button className={'badge badge-refresh'} onClick={handleAnother}><i className="glyphicon glyphicon-play"></i> Another</button>
 	    </div>
 	  </div>
 	</div>

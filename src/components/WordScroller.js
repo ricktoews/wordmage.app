@@ -2,13 +2,12 @@ import ReactDOM from 'react-dom';
 import { useEffect, useRef } from 'react';
 import WordsInterface from '../utils/words-interface';
 
-const spotlightFilterClass = 'badge-spotlight-filter';
 const likeOffClass = 'badge-like-filter-off';
 const likeOnClass = 'badge-like-filter-on';
 const dislikeOffClass = 'badge-dislike-filter-off';
 const dislikeOnClass = 'badge-dislike-filter-on';
-const focusOffClass = 'badge-dislike-filter-off';
-const focusOnClass = 'badge-dislike-filter-on';
+const learnOffClass = 'badge-learn-filter-off';
+const learnOnClass = 'badge-learn-filter-on';
 
 function toggleClass(el, toggleClasses) {
 	let classes = Array.from(el.classList);
@@ -33,16 +32,16 @@ function thumbsUpHandler(e) {
 	WordsInterface.toggleSpotlight(word);
 }
 
-function focusHandler(e) {
+function learnHandler(e) {
 	var el = e.target;
 	if (!el.dataset.word) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-console.log('focusHandler', el, data);
-	var {focus, word} = data;
-	toggleClass(el, [focusOnClass, focusOffClass]);
-	WordsInterface.toggleFocus(word);
+console.log('learnHandler', el, data);
+	var {learn, word} = data;
+	toggleClass(el, [learnOnClass, learnOffClass]);
+	WordsInterface.toggleLearn(word);
 }
 
 function thumbsDownHandler(e) {
@@ -59,17 +58,26 @@ console.log('thumbsDownHandler', el, data);
 
 function makeButtonSet(wordObj, listType) {
 	var buttons;
-	if (listType === 'liked') {
-		buttons = (<div className="word-item-buttons">
+	var learnClass = wordObj.learn ? learnOnClass : learnOffClass;
+	var likeClass = wordObj.spotlight ? likeOnClass : likeOffClass;
+	var dislikeClass = wordObj.dislike ? dislikeOnClass : dislikeOffClass;
+	switch (listType) {
+		case 'liked':
+			buttons = (<div className="word-item-buttons">
+                <button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp; Learn</button>
                 <button className={'badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
               </div>);
-	}
-	else {
-		let focusClass = wordObj.focus ? focusOnClass : focusOffClass;
-		let likeClass = wordObj.spotlight ? likeOnClass : likeOffClass;
-		let dislikeClass = wordObj.dislike ? dislikeOnClass : dislikeOffClass;
-		buttons = (<div className="word-item-buttons">
-                <button className={'badge ' + focusClass} data-liked={wordObj.focus} data-word={wordObj.word} onClick={focusHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp; Focus</button>
+			break;
+		case 'learn':
+			buttons = (<div className="word-item-buttons">
+                <button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp; Learn</button>
+                <button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
+                <button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp; Meh</button>
+              </div>);
+			break;
+		default:
+			buttons = (<div className="word-item-buttons">
+                <button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp; Learn</button>
                 <button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp; Like</button>
                 <button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp; Meh</button>
               </div>);
