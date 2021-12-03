@@ -59,7 +59,7 @@ console.log('unscrambled', unscrambled, scrambled);
 	      return <span key={key} onClick={selectLetter} data-ndx={key} className={className}>{letter}</span>;
 	    })}
 	  </div>
-	  <div className={'unscrambled' + (finished ? ' hide-section' : '')}>
+	  <div className={'unscrambled'}>
 	    <RefreshIcon onClick={handleRefresh} finished={finished} /> {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
 	  </div>
 	</div>

@@ -4,7 +4,7 @@ const RefreshIcon = props => {
           <span className="glyphicon glyphicon-refresh"></span>
         </button>
 		*/
-	return <button className={'badge badge-refresh'} onClick={props.onClick}><i className="glyphicon glyphicon-repeat"></i> Reset</button>
+	return <button className={'badge badge-refresh' + (props.finished ? ' hide-section' : '')} onClick={props.onClick}><i className="glyphicon glyphicon-repeat"></i> Reset</button>
 }
 
 export default RefreshIcon;
