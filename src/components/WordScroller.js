@@ -38,7 +38,6 @@ function learnHandler(e) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-console.log('learnHandler', el, data);
 	var {learn, word} = data;
 	toggleClass(el, [learnOnClass, learnOffClass]);
 	WordsInterface.toggleLearn(word);
@@ -50,7 +49,6 @@ function thumbsDownHandler(e) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-console.log('thumbsDownHandler', el, data);
 	var {disliked, word} = data;
 	toggleClass(el, [dislikeOnClass, dislikeOffClass]);
 	WordsInterface.toggleDislike(word);
@@ -86,12 +84,18 @@ function makeButtonSet(wordObj, listType) {
 	return buttons;
 }
 
+function deleteWord(wordObj) {
+	WordsInterface.deleteCustomWord(wordObj._id);
+}
+
 function makeWordEntry(wordObj, listtype) {
+	console.log('makeWordEntry', wordObj);
 	var buttons = makeButtonSet(wordObj, listtype);
 	return wordObj.divider ? <hr className="rejects" /> : (
 	  <div className="word-item">
 	    <div className="word-item-word-container">
 	      <div className="word-item-word">{wordObj.word}</div>
+		{ wordObj.myown ? <div className="trash-btn" onClick={() => { deleteWord(wordObj); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
 	    </div>
 	    <div className="word-item-def">
               {wordObj.def}
