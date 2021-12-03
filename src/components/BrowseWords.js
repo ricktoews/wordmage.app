@@ -121,7 +121,6 @@ function BrowseWords(props) {
 		}
 	}
 
-	const spotlightFilterClass = browseMode === 'spotlight' ? 'badge-spotlight-filter' : 'badge-spotlight-filter-off';
 	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
 
 	return (
@@ -131,7 +130,6 @@ function BrowseWords(props) {
 {/*
 	    <div className="browse-filter-buttons">
 	      <button className={'badge ' + customFilterClass} onClick={handleBrowseCustom}><i className="glyphicon glyphicon-star"></i></button>
-	      <button className={'badge ' + spotlightFilterClass} onClick={handleBrowseSpotlight}><i className="glyphicon glyphicon-heart"></i></button>
 	    </div>
 */}
 	  </div>

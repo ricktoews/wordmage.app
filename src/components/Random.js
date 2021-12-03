@@ -29,9 +29,9 @@ function Random(props) {
 	return randomWords.length > 0 ? (
 	<div className="browse-container">
 	  <div className="browse">
-	    <div>Random Selection</div>
+		<p>A random selection from the Browse list.</p>
 	    <div className="browse-filter-buttons">
-	      <button className={'badge badge-spotlight-filter'} onClick={handleNewRandom}><i className="glyphicon glyphicon-repeat"></i></button>
+	      <button className={'badge badge-refresh'} onClick={handleNewRandom}><i className="glyphicon glyphicon-repeat"></i> Refresh</button>
 	    </div>
 	  </div>
 

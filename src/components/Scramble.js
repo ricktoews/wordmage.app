@@ -49,7 +49,7 @@ function Scramble(props) {
 		setLetterStates(initLetters(props.word));
 		setUnscrambled('');
 	};
-
+console.log('unscrambled', unscrambled, scrambled);
 	return (
 	<div className="scrambled-wrapper">
 	  <div className={'scrambled' + (finished ? ' finished' : '')}>
@@ -59,7 +59,7 @@ function Scramble(props) {
 	      return <span key={key} onClick={selectLetter} data-ndx={key} className={className}>{letter}</span>;
 	    })}
 	  </div>
-	  <div className={'unscrambled' + (unscrambled.length === 0 ? ' hide-section' : '')}>
+	  <div className={'unscrambled'}>
 	    <RefreshIcon onClick={handleRefresh} finished={finished} /> {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
 	  </div>
 	</div>

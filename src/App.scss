@@ -76,13 +76,28 @@ body {
 }
 
 .badge {
-	width: 65px;
+	width: 70px;
 	height: 25px;
 	border-radius: 12px;
 	border: none;
 	color: white;
 	margin: 2px;
 	outline: none;
+}
+
+.badge-learn-filter-off {
+	background: #fff;
+	border: 1px solid #09f;
+	color: #09f;
+}
+
+.badge-learn-filter-on {
+	background: #09f;
+	color: #fff;
+}
+
+.badge-learn-filter-off i {
+	color: #3f0;
 }
 
 .badge-dislike-filter-off {
@@ -107,21 +122,11 @@ body {
 	color: #fff;
 }
 
-.badge-spotlight-filter-off {
-	background: #fff;
-	border: 2px solid #f90;
-	color: #f90;
-}
-
-.badge-spotlight-filter-on {
-	background: #09f;
-	color: #fff;
-}
-
-.badge-spotlight-filter {
+.badge-refresh {
 	border: 1px solid #09f;
 	background-color: white;
 	color: #09f;
+	width: 75px;
 }
 
 .badge-custom-filter-off {
@@ -251,7 +256,7 @@ body {
 	color:#ccc;
 }
 
-.browse-container, .spotlight-list-container {
+.browse-container, .spotlight-list-container, .learn-list-container {
 	position: absolute;
 	top: 0;
 	width: 100vw;
@@ -524,6 +529,10 @@ body {
     font-weight: 200;
     font-size:.85em;
 }
+.spotlight .word-item-def {
+    font-size:1.5em;
+}
+
 .word-item-def {
     width: 100%;
     padding: 5px;
@@ -535,9 +544,8 @@ body {
     border-radius: 0 5px 0px 0;
 }
 .word-item-buttons {
-    float: right;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: flex-start;
     font-size: .75em;
     padding: 0px 10px;

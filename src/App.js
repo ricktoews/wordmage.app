@@ -12,6 +12,7 @@ import WordsInterface from './utils/words-interface';
 
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
+import Learn from './components/Learn';
 import SpotlightList from './components/SpotlightList';
 import Random from './components/Random';
 import About from './About';
@@ -23,7 +24,7 @@ const wordHash = WordsInterface.fullWordList();
 function App(props) {
 	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
-	const [ view, setView ] = useState('rehearse');
+	const [ view, setView ] = useState('Random');
 	const [ popupState, setPopupState ] = useState(false);
 	const [ popupData, setPopupData ] = useState({});
 	const [ popupView, setPopupView ] = useState('');
@@ -42,6 +43,7 @@ function App(props) {
 		var history = props.history;
 console.log('navToRandom', props, history);
 		history.push('/random');
+		setView('Random');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -49,6 +51,7 @@ console.log('navToRandom', props, history);
 		var history = props.history;
 console.log('navToBrowseWords', props, history);
 		history.push('/browse');
+		setView('Browse');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -56,6 +59,7 @@ console.log('navToBrowseWords', props, history);
 		var history = props.history;
 console.log('navToSpotlight', props, history);
 		history.push('/spotlight');
+		setView('Unscramble');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -63,12 +67,22 @@ console.log('navToSpotlight', props, history);
 		var history = props.history;
 console.log('navToSpotlightList', props, history);
 		history.push('/spotlight-list');
+		setView('Liked');
+		setHamburgerClass('hamburger-nav');
+	}
+
+	const navToLearn = () => {
+		var history = props.history;
+console.log('navToLearn', props, history);
+		history.push('/learn');
+		setView('Learn');
 		setHamburgerClass('hamburger-nav');
 	}
 
 	const navToAbout = () => {
 		var history = props.history;
 		history.push('/about');
+		setView('About');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -144,6 +158,10 @@ console.log('cancelWordForm');
 		setConfirmReceive(false);
 	}
 
+	const toggleLearn = word => {
+		var newLearn = WordsInterface.toggleLearn(word);
+	}
+
 	const toggleSpotlight = word => {
 		var newSpotlightList = WordsInterface.toggleSpotlight(word);
 		// FIXME: Why do we need this, since spotlightList isn't used in App.js or passed to a component? 
@@ -158,14 +176,17 @@ console.log('cancelWordForm');
 	<div className="App">
 	  <nav className={hamburgerClass}>
 	    <ul>
-	      <li onClick={navToRandom}>Random</li>
+	      <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
 	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
-	      <li onClick={navToBrowseWords}>Browse</li>
+	      <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
+	      <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
+
+	      <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
 		{/*
-	      <li onClick={navToSpotlight}>Spotlight</li>
 	      <li onClick={handleShare}>Share</li>
 	      <li onClick={handleReceive}>Receive</li>
-		  */}
+		*/}
+
 	      <li onClick={navToAbout}>About</li>
 	    </ul>
 	  </nav>
@@ -173,7 +194,7 @@ console.log('cancelWordForm');
 	  <header className="App-header">
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
-	      <div className="header-title">WordMage</div>
+	      <div className="header-title">WordMage - {view}</div>
 		{/*	      <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} /> */}
 		  <div></div>
 	    </div>
@@ -189,7 +210,10 @@ console.log('cancelWordForm');
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />
-	    <Route exact path={['/spotlight']} render={props => <Spotlight
+	    <Route exact path={['/learn']} render={props => ( <Learn
+	        toggleLearn={toggleLearn}
+	        />) } />
+	    <Route exact path='/spotlight' render={props => <Spotlight
 	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />

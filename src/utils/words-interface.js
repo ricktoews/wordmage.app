@@ -65,6 +65,7 @@ function fullWordList() {
 			}
 			universal[ndx].spotlight = wordObj.spotlight;
 			universal[ndx].dislike = wordObj.dislike;
+			universal[ndx].learn = wordObj.learn;
 		}
 	});
 	var [notDislikedList, dislikedList] = separateDisliked(universal);
@@ -88,6 +89,9 @@ function getWordList(type) {
 		case 'dislike':
 			list = userData.custom.filter(item => item.dislike);
 			break;
+		case 'learn':
+			list = userData.custom.filter(item => item.learn);
+			break;
 		default:
 			list = fullWordList();
 	}
@@ -103,7 +107,8 @@ function addCustomWord(newWordObj) {
 		word: newWordObj.word,
 		def: newWordObj.def,
 		spotlight: newWordObj.spotlight,
-		dislike: newWordObj.dislike
+		dislike: newWordObj.dislike,
+		learn: newWordObj.learn
 	};
 	userData.custom.push(wordObj);
 }
@@ -217,6 +222,26 @@ function toggleSpotlight(word) {
 }
 
 /**
+ * Toggle Learn status for specified word.
+ */
+function toggleLearn(word) {
+	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
+	if (wordObjIndex === -1) {
+		let builtInWord = cloneJSON(wordHash.find(item => item.word === word));
+		addCustomWord(builtInWord);
+		wordObjIndex = userData.custom.findIndex(item => item.word === word);
+	}
+	var wordObj = userData.custom[wordObjIndex];
+	wordObj.learn = !wordObj.learn;
+console.log('calling saveUserData', userData);
+	DataSource.saveUserData(userData);
+	// Create array of words from userData.active, which is an array of { word: notes }.
+	var newLearnList = userData.custom.filter(item => item.learn);
+console.log('newLearnList', newLearnList);
+	return newLearnList;
+}
+
+/**
  * Toggle Dislike status for specified word.
  */
 function toggleDislike(word) {
@@ -260,7 +285,7 @@ function getSpotlightEntry(word) {
  * Get list of Spotlight words.
  */
 function getSpotlightList() {
-	var spotlightArray = userData.custom.filter(item => item.spotlight);
+	var spotlightArray = userData.custom.filter(item => item.learn);
 	return spotlightArray;
 }
 
@@ -327,6 +352,7 @@ const WordsInterface = {
 	isSpotlightEntry,
 	toggleSpotlight,
 	toggleDislike,
+	toggleLearn,
 	getSpotlightEntry,
 	getWordObjById,
 	getWordObj,
