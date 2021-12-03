@@ -195,8 +195,7 @@ console.log('cancelWordForm');
 	    <div className="header-content">
 	      <Hamburger onClick={hamburgerClick} />
 	      <div className="header-title">WordMage - {view}</div>
-		{/*	      <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} /> */}
-		  <div></div>
+		  <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
 	    </div>
 	  </header>
 
