@@ -163,6 +163,12 @@ body {
 }
 
 .badge-refresh {
+	border: 1px solid #f90;
+	background-color: #f90;
+	color: #fff;
+}
+
+.badge-another {
 	min-width: 140px;
 	min-height: 50px;
 	padding: 10px;

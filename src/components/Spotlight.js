@@ -58,7 +58,7 @@ function Spotlight(props) {
 
 	    </div>
 	    <div className="button-wrapper">
-	      <button className={'badge badge-refresh'} onClick={handleAnother}><i className="glyphicon glyphicon-play"></i> Another</button>
+	      <button className={'badge badge-another'} onClick={handleAnother}><i className="glyphicon glyphicon-play"></i> Another</button>
 	    </div>
 	  </div>
 	</div>
