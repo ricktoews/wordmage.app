@@ -1,5 +1,5 @@
 //$word-form-background: #5887AA;
-$word-form-background: #ffffff;
+$word-form-background: #fff;
 $word-form-heading: #666;
 $word-form-heading-size: 16pt;
 
@@ -9,8 +9,8 @@ $site-red: #de3c4b;
 $btn-font-size: 14pt;
 $btn-background: #45425a;
 $btn-color: white;
-$btn-save-background: $site-green;
-$btn-cancel-background: $site-red;
+$btn-save-background: #09f;
+$btn-cancel-background: #09f;
 
 $maxwidth: 400px;
 $header-height: 50px;
@@ -30,22 +30,28 @@ $spotlight-height: 200px;
 
 	.word-form-wrapper {
 		position: relative;
-		top: 30px;
+		top: 60px;
 		width: $spotlight-width;
 		min-height: $spotlight-height;
 
 		.word-form {
-			border: 1px solid #09f;
-			border-radius: 15px;
+			border: 1px solid gray;
+			border-radius: 10px 10px 0 0;
 			background-color: $word-form-background;
-			padding: 10px;
 
 			.header {
-				font-size: 8pt;
-				border-top: 1px solid gray;
-				margin: 5px 0;
+				background-color: #000;
+				border-radius: 10px 10px 0 0;
+				font-size: 14pt;
+				font-weight: bold;
+				text-align: center;
+				min-height: 20px;
+				padding: 5px;
+				color: white;
 			}
 
+			.field-wrapper {
+				padding: 10px;
 			h2 {
 				color: $word-form-heading;
 				font-size: $word-form-heading-size;
@@ -73,7 +79,7 @@ $spotlight-height: 200px;
 			}
 
 			.word span {
-				font-size: 16pt;
+				font-size: 14pt;
 			}
 			.original-def {
 				background-color: #eee;
@@ -82,23 +88,24 @@ $spotlight-height: 200px;
 			}
 			.word input {
 				width: calc(100% - 10px);
-				font-size: 16pt;
+				font-size: 14pt;
 				color: #666;
 				padding: 5px;
 				border: 1px solid #999;
-				border-radius: 10px;
+				border-radius: 5px;
 				margin-bottom: 10px;
 				outline: none;
 			}
 			.of-interest textarea, .notes textarea {
-				font-size: 16pt;
+				font-size: 14pt;
 				height: 120px;
 				width: calc(100% - 10px);
 				color: #666;
 				padding: 5px;
 				border: 1px solid #999;
-				border-radius: 10px;
+				border-radius: 5px;
 				outline: none;
+			}
 			}
 		}
 	}

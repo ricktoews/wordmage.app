@@ -63,6 +63,19 @@ body {
 	font-size: .8em;
 }
 
+.trash-btn {
+	width: 25px;
+	height: 25px;
+	background-color:#c00;
+	border-radius: 12px;
+	color: white;
+	font-size: 8pt;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+}
+
 .badge-add {
 	background: #09f;
 }
@@ -81,6 +94,26 @@ body {
 	color: white;
 	margin: 2px;
 	outline: none;
+}
+
+.badge-remove {
+	background-color:#fff;
+	border: 1px solid #09f;
+	color:#09f;
+}
+
+.badge-remove i {
+	color: #c00;
+}
+
+.badge-ok {
+	background-color:#fff;
+	border: 1px solid #09f;
+	color:#09f;
+}
+
+.badge-ok i {
+	color: #0f0;
 }
 
 .badge-learn-filter-off {
@@ -533,6 +566,7 @@ body {
 }
 
 .word-item-word-container {
+	display: flex;
 }
 
 .word-item-word {
@@ -543,6 +577,10 @@ body {
     color: white;
     background-color: #09f;
     border-radius: 10px 10px 0 0;
+
+    &.deleted {
+        background-color: gray;
+    }
 }
 
 .word-item-def {
