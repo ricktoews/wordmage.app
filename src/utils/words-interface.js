@@ -163,6 +163,13 @@ function saveCustomWord(id, word, def, spotlight) {
 function deleteCustomWord(wordId) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === wordId);
 	userData.custom.splice(wordObjIndex, 1);
+console.log('deletecustomWord', wordId, userData.custom);
+	DataSource.saveUserData(userData);
+}
+
+function undeleteCustomWord(wordObj) {
+	userData.custom.push(wordObj);
+console.log('undeletecustomWord', wordObj, userData.custom);
 	DataSource.saveUserData(userData);
 }
 
@@ -348,6 +355,7 @@ const WordsInterface = {
 	saveCustomDef,
 	saveCustomWord,
 	deleteCustomWord,
+	undeleteCustomWord,
 	getSpotlightList,
 	isSpotlightEntry,
 	toggleSpotlight,

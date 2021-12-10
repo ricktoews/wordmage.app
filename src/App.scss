@@ -577,6 +577,10 @@ body {
     color: white;
     background-color: #09f;
     border-radius: 10px 10px 0 0;
+
+    &.deleted {
+        background-color: gray;
+    }
 }
 
 .word-item-def {

@@ -84,8 +84,18 @@ function makeButtonSet(wordObj, listType) {
 	return buttons;
 }
 
-function deleteWord(wordObj) {
-	WordsInterface.deleteCustomWord(wordObj._id);
+function deleteWordToggle(wordObj, e) {
+	var wordEl = e.target.parentNode.parentNode.querySelector('.word-item-word');
+	var classes = Array.from(wordEl.classList);
+	if (classes.indexOf('deleted') === -1) {
+		wordEl.classList.add('deleted');
+		WordsInterface.deleteCustomWord(wordObj._id);
+	}
+	else {
+		wordEl.classList.remove('deleted');
+		WordsInterface.undeleteCustomWord(wordObj);
+	}
+	
 }
 
 function makeWordEntry(wordObj, listtype) {
@@ -95,7 +105,7 @@ function makeWordEntry(wordObj, listtype) {
 	  <div className="word-item">
 	    <div className="word-item-word-container">
 	      <div className="word-item-word">{wordObj.word}</div>
-		{ wordObj.myown ? <div className="trash-btn" onClick={() => { deleteWord(wordObj); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
+		{ wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
 	    </div>
 	    <div className="word-item-def">
               {wordObj.def}
