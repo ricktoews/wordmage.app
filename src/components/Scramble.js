@@ -16,6 +16,7 @@ function Scramble(props) {
 	const [ letterStates, setLetterStates ] = useState(initLetters(scrambled));
 	const [ unscrambled, setUnscrambled ] = useState('');
 	const [ finished, setFinished ] = useState(false);
+	const [ showWord, setShowWord ] = useState(false);
 
 	useEffect(() => {
 		let newScrambled = scramble(props.word);
@@ -41,6 +42,7 @@ function Scramble(props) {
 			setUnscrambled(unscrambled + letter);
 			if (unscrambled + letter === props.word) {
 				setFinished(true);
+				setShowWord(false);
 			}
 		}
 	};
@@ -50,8 +52,39 @@ function Scramble(props) {
 		setUnscrambled('');
 	};
 console.log('unscrambled', unscrambled, scrambled);
+
+	const handleHint = e => {
+		var ndx = unscrambled.length;
+		var nextLetter = props.word[ndx];
+		var position = scrambled.split('').indexOf(nextLetter);
+		var els = Array.from(document.querySelectorAll('.letter'));
+		els.forEach(el => {
+			if (el.dataset.ndx == position) {
+console.log('found', el);
+				el.classList.add('hinted');
+			}
+});
+	}
+
+	const handleShowWord = e => {
+		setShowWord(true);
+	}
+
 	return (
 	<div className="scrambled-wrapper">
+
+          <div className="word-scramble-buttons">
+	    <button className={'badge badge-scramble' + (props.finished ? ' hide-section' : '')} onClick={handleRefresh}><i className="glyphicon glyphicon-repeat"></i> Reset</button>
+            <div className="scramble-hint">
+	      <button className={'badge badge-scramble' + (props.finished ? ' hide-section' : '')} onClick={handleHint}><i className="glyphicon glyphicon-question-sign"></i> Hint</button>
+	      <button className={'badge badge-scramble' + (props.finished ? ' hide-section' : '')} onClick={handleShowWord}><i className="glyphicon glyphicon-info-sign"></i> Show Word</button>
+            </div>
+          </div>
+
+          {showWord ? (<div className="show-word">
+            {props.word.split('').map((letter, key) => <span key={key}>{letter}</span>)}
+          </div>) : null}
+
 	  <div className={'scrambled' + (finished ? ' finished' : '')}>
 	    { scrambled.split('').map((letter, key) => {
 	      var className = 'letter';
@@ -60,7 +93,7 @@ console.log('unscrambled', unscrambled, scrambled);
 	    })}
 	  </div>
 	  <div className={'unscrambled'}>
-	    <RefreshIcon onClick={handleRefresh} finished={finished} /> {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
+            {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
 	  </div>
 	</div>
 	);
