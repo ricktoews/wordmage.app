@@ -41,7 +41,6 @@ function App(props) {
 
 	const navToRandom = () => {
 		var history = props.history;
-console.log('navToRandom', props, history);
 		history.push('/random');
 		setView('Random');
 		setHamburgerClass('hamburger-nav');
@@ -49,7 +48,6 @@ console.log('navToRandom', props, history);
 
 	const navToBrowseWords = () => {
 		var history = props.history;
-console.log('navToBrowseWords', props, history);
 		history.push('/browse');
 		setView('Browse');
 		setHamburgerClass('hamburger-nav');
@@ -57,7 +55,6 @@ console.log('navToBrowseWords', props, history);
 
 	const navToSpotlight = () => {
 		var history = props.history;
-console.log('navToSpotlight', props, history);
 		history.push('/spotlight');
 		setView('Unscramble');
 		setHamburgerClass('hamburger-nav');
@@ -65,7 +62,6 @@ console.log('navToSpotlight', props, history);
 
 	const navToSpotlightList = () => {
 		var history = props.history;
-console.log('navToSpotlightList', props, history);
 		history.push('/spotlight-list');
 		setView('Liked');
 		setHamburgerClass('hamburger-nav');
@@ -73,7 +69,6 @@ console.log('navToSpotlightList', props, history);
 
 	const navToLearn = () => {
 		var history = props.history;
-console.log('navToLearn', props, history);
 		history.push('/learn');
 		setView('Learn');
 		setHamburgerClass('hamburger-nav');
