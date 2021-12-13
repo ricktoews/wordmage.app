@@ -76,6 +76,20 @@ body {
 	margin: 0 5px;
 }
 
+.scramble-btn {
+	width: 25px;
+	height: 25px;
+	background-color:#09f;
+	border-radius: 12px;
+	color: white;
+	font-size: 8pt;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
 .badge-add {
 	background: #09f;
 }

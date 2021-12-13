@@ -5,11 +5,20 @@ import WordsInterface from '../utils/words-interface';
 import Scramble from './Scramble';
 
 function Spotlight(props) {
-	const randomItem = WordsInterface.getSpotlightItem();
-	const [item, setItem] = useState(randomItem);
-	const [openDef, setOpenDef] = useState(WordsInterface.hasNotes(randomItem.word) === false);
-	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(randomItem.word) === false);
-	const [notes, setNotes] = useState(WordsInterface.getNotes(randomItem.word));
+	// Check state for selected scrambled word.
+	const state = props.location.state;
+	const [randomPick, setRandomPick] = useState(state === undefined ? true : false);
+	var scrambledItem;
+	if (randomPick === false) {
+		scrambledItem = state.wordObj;
+	}
+	else {
+		scrambledItem = WordsInterface.getSpotlightItem();
+	}
+	const [item, setItem] = useState(scrambledItem);
+	const [openDef, setOpenDef] = useState(WordsInterface.hasNotes(scrambledItem.word) === false);
+	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(scrambledItem.word) === false);
+	const [notes, setNotes] = useState(WordsInterface.getNotes(scrambledItem.word));
 
 	useEffect(() => {
 		if (props.match.params.word) {

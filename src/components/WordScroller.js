@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 import { useEffect, useRef } from 'react';
+import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 
 const likeOffClass = 'badge-like-filter-off';
@@ -98,26 +99,32 @@ function deleteWordToggle(wordObj, e) {
 	
 }
 
-function makeWordEntry(wordObj, listtype) {
-	console.log('makeWordEntry', wordObj);
-	var buttons = makeButtonSet(wordObj, listtype);
-	return wordObj.divider ? <hr className="rejects" /> : (
-	  <div className="word-item">
-	    <div className="word-item-word-container">
-	      <div className="word-item-word">{wordObj.word}</div>
-		{ wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
-	    </div>
-	    <div className="word-item-def">
-              {wordObj.def}
-	      {buttons}
-            </div>
-	  </div>
-	);
-}
-
 function WordScroller(props) {
+	const { history } = props;
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
+
+	function scrambleWord(wordObj) {
+		console.log('scrambleWord', wordObj);
+		history.push('/spotlight', { wordObj: wordObj });
+	}
+
+	function makeWordEntry(wordObj, listtype) {
+		var buttons = makeButtonSet(wordObj, listtype);
+		return wordObj.divider ? <hr className="rejects" /> : (
+		  <div className="word-item">
+		    <div className="word-item-word-container">
+		      <div className="word-item-word">{wordObj.word}</div>
+			{ wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
+			<div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i>&nbsp;</div>
+		    </div>
+		    <div className="word-item-def">
+       	       {wordObj.def}
+		      {buttons}
+       	     </div>
+		  </div>
+		);
+	}
 
 	function loadItems(quant) {
 		let counter = scrollerRef.current.startingNdx || 0;
@@ -177,4 +184,4 @@ function WordScroller(props) {
 	);
 }
 
-export default WordScroller;
+export default withRouter(WordScroller);
