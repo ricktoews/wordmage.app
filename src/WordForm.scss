@@ -31,7 +31,7 @@ $spotlight-height: 200px;
 	.word-form-wrapper {
 		position: relative;
 		top: 60px;
-		width: $spotlight-width;
+		max-width: $spotlight-width;
 		min-height: $spotlight-height;
 
 		.word-form {
@@ -52,10 +52,12 @@ $spotlight-height: 200px;
 
 			.field-wrapper {
 				padding: 10px;
-			h2 {
-				color: $word-form-heading;
-				font-size: $word-form-heading-size;
-				margin: 0;
+
+				.word {
+					color: $word-form-heading;
+					font-size: $word-form-heading-size;
+					margin: 0;
+				}
 			}
 
 			.button-wrapper {
@@ -81,6 +83,22 @@ $spotlight-height: 200px;
 			.word span {
 				font-size: 14pt;
 			}
+			.word {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+			}
+			.word .qrcode {
+				padding: 5px;
+			}
+			.word .code {
+				font-size: 2em;
+				letter-spacing: 5pt;
+				color: #09f;
+				font-weight: bold;
+				padding: 5px;
+			}
 			.original-def {
 				background-color: #eee;
 				padding: 5px;
@@ -105,7 +123,6 @@ $spotlight-height: 200px;
 				border: 1px solid #999;
 				border-radius: 5px;
 				outline: none;
-			}
 			}
 		}
 	}

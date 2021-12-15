@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 import { share } from '../utils/api';
+import QRCode from 'qrcode.react';
 
 function ConfirmShare(props) {
 	const [ shareCode, setShareCode ] = useState('');
+
+	useEffect(() => {
+		console.log('ConfirmShare; generate code.');
+		share(WordsInterface.getUserData()).then(res => {
+			console.log('share res', res);
+			setShareCode(res.code);
+		});
+	}, []);
+
 	const cancelShare = () => {
 		console.log('cancel');
 		props.cancelShare();
@@ -30,27 +40,10 @@ function ConfirmShare(props) {
 	<div className="word-form-container">
 	  <div className="word-form-wrapper">
 	    <div className="word-form">
-	      { shareCode ? (
-	      <h2 className="word">
-	        Select Receive, and use this code on your other device: {shareCode}
-	      </h2>
-	        ) : (
-	      <h2 className="word">
-	        Share your words data with another device. Are you sure?
-	      </h2>
-	        )
-	      }
-	      { shareCode ? (
-	      <div className="button-wrapper">
-	        <button className="btn btn-save" onClick={ok}>OK</button>
+	      <div className="word">
+            <div className="qrcode"><QRCode value={'https://wordmage.app/get/' + shareCode} /></div>
+		    <div className="code">{shareCode}</div>
 	      </div>
-	        ) : (
-	      <div className="button-wrapper">
-	        <button className="btn btn-cancel" onClick={cancelShare}>Cancel</button>
-	        <button className="btn btn-save" onClick={shareWords}>Share</button>
-	      </div>
-	        )
-	      }
 	    </div>
 	  </div>
 	</div>
