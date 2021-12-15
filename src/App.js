@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Hamburger from './components/Hamburger';
 import AddIcon from './components/AddIcon';
@@ -38,6 +38,34 @@ function App(props) {
 	const [ confirmState, setConfirmState ] = useState(false);
 	const [ confirmShareState, setConfirmShareState ] = useState(false);
 	const [ confirmReceive, setConfirmReceive ] = useState(false);
+
+	const hamburgerRef = useRef(null);
+
+	const closePopups = () => {
+		setAddWordState(false);
+		setConfirmShareState(false);
+		setConfirmReceive(false);
+	}
+
+	const handleDocumentClicked = e => {
+		// Check if clicked outside hambuger menu.
+		var el = e.target;
+		var elClass = Array.from(el.classList);
+		var parentElClass = Array.from(el.parentNode.classList);
+		if (elClass.indexOf('hamburger-icon') === -1 && parentElClass.indexOf('hamburger-icon') === -1) {
+			if (!hamburgerRef.current.contains(el)) {
+				setHamburgerClass('hamburger-nav');
+			}
+		}
+		setConfirmShareState(false);
+		if (el.tagName.toLowerCase() !== 'input') {
+			setConfirmReceive(false);
+		}
+	}
+
+	useEffect(() => {
+		document.addEventListener('click', handleDocumentClicked, true);
+	}, []);
 
 	const navToRandom = () => {
 		var history = props.history;
@@ -92,6 +120,7 @@ function App(props) {
 	}
 
 	const hamburgerClick = () => {
+		console.log('hamburger clicked', hamburgerClass);
 		if (hamburgerClass === 'hamburger-nav') {
 			setHamburgerClass('hamburger-nav hamburger-on');
 		} else {
@@ -169,7 +198,7 @@ console.log('cancelWordForm');
 
 	return (
 	<div className="App">
-	  <nav className={hamburgerClass}>
+	  <nav ref={hamburgerRef} className={hamburgerClass}>
 	    <ul>
 	      <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
 	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
@@ -177,10 +206,10 @@ console.log('cancelWordForm');
 	      <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
 
 	      <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
-		{/*
-	      <li onClick={handleShare}>Share</li>
-	      <li onClick={handleReceive}>Receive</li>
-		*/}
+
+	      <li onClick={handleShare}><i className="glyphicon glyphicon-upload"></i> Share</li>
+	      <li onClick={handleReceive}><i className="glyphicon glyphicon-download"></i> Receive</li>
+
 
 	      <li onClick={navToAbout}>About</li>
 	    </ul>
