@@ -49,9 +49,10 @@ function Scramble(props) {
 
 	const handleRefresh = e => {
 		setLetterStates(initLetters(props.word));
+		setFinished(false);
 		setUnscrambled('');
+		setScrambled(scramble(props.word));
 	};
-console.log('unscrambled', unscrambled, scrambled);
 
 	const handleHint = e => {
 		var ndx = unscrambled.length;
