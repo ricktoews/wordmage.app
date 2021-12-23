@@ -19,9 +19,8 @@ import About from './About';
 
 import './App.scss';
 
-const wordHash = WordsInterface.fullWordList();
-
 function App(props) {
+	const wordHash = WordsInterface.fullWordList();
 	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [ view, setView ] = useState('Random');

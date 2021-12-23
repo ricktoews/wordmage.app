@@ -4,7 +4,7 @@ import WordScroller from './WordScroller';
 import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
-const wordObjList = WordsInterface.fullWordList();
+//const wordObjList = WordsInterface.fullWordList();
 
 function sortWords(a, b) {
 	return a.word < b.word ? -1 : 1;

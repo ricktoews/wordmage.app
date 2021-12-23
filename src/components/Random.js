@@ -12,7 +12,8 @@ function Random(props) {
 	useEffect(() => {
 		if (refresh) {
 			setRefresh(false);
-			setRandomWords(WordsInterface.getRandomPool());
+			var randomPool = WordsInterface.getRandomPool();
+			setRandomWords(randomPool);
 		}
 	});
 
