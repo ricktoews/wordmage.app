@@ -7,7 +7,6 @@ import DataSource from './data-source';
 const userData = DataSource.retrieveUserData();
 
 const WORD_POOL = [];
-//console.log('userData', userData);
 
 async function initializeWordPool() {
 	var response = await fetch('https://words-rest.toewsweb.net');
@@ -71,6 +70,10 @@ function fullWordList() {
 				wordObj.original = universal[ndx].def;
 				universal[ndx].def = wordObj.def;
 				wordObj.customDef = true;
+			}
+			// Fill in source.
+			if (!wordObj.source) {
+				wordObj.source = universal[ndx].source;
 			}
 			universal[ndx].spotlight = wordObj.spotlight;
 			universal[ndx].dislike = wordObj.dislike;
