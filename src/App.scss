@@ -607,12 +607,13 @@ body {
     color: black;
     font-weight: 200;
     font-size:.85em;
+	margin-bottom: 5px;
 }
 .spotlight .word-item-def {
     font-size:1.5em;
 }
 
-.word-item-def {
+.word-item-def-container {
     width: 100%;
     padding: 5px;
     color: black;
@@ -622,6 +623,20 @@ body {
     border-bottom: 2px solid #09f;
     border-radius: 0 5px 0px 0;
 }
+
+.word-item-source {
+	color: white;
+	font-size:.7em;
+	background-color:#999;
+	padding: 5px;
+	border-radius: 10px;
+	float: right;
+	clear: both;
+}
+.source-def-container {
+	margin-bottom: 10px;
+}
+
 .word-item-buttons {
     display: flex;
     justify-content: center;

@@ -21,7 +21,7 @@ function Learn(props) {
       <div className="browse">
 		<p>When you play the Unscramble game, this is the list the words are taken from.</p>
       </div>
-	  <WordScroller pool={learnList} startingNdx={0} listtype={'learn'} />
+	  <WordScroller pool={learnList} startingNdx={0} listType={'learn'} />
 	</div>
 	);
 }
