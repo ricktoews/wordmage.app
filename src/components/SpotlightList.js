@@ -4,7 +4,7 @@ import WordScroller from './WordScroller';
 import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
-const wordObjList = WordsInterface.fullWordList();
+//const wordObjList = WordsInterface.fullWordList();
 //const wordList = wordObjList.map(item => item.word);
 const listLength = 10;
 

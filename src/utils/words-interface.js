@@ -2,18 +2,27 @@ import { cloneJSON } from './helpers';
 //import wordHash from '../data/word-list';
 //import wordHash from '../data/luciferous';
 // word-pool copied from toewsweb site_words table. Appears to have come from same source as luciferous.
-import wordHash from '../data/word-pool';
+//import wordHash from '../data/word-pool';
 import DataSource from './data-source';
-
 const userData = DataSource.retrieveUserData();
+
+const WORD_POOL = [];
 //console.log('userData', userData);
+
+async function initializeWordPool() {
+	var response = await fetch('https://words-rest.toewsweb.net');
+	var data = await response.json();
+	WORD_POOL.push(...data);
+	return data;
+}
 
 /**
  *
  */
 const POOL_SIZE = 20;
 function getRandomPool() {
-	var fullListClone = fullWordList().slice(0);
+	var wordList = fullWordList();
+	var fullListClone = wordList.slice(0);
 	var [notDislikedList, dislikedList] = separateDisliked(fullListClone);
 	fullListClone = notDislikedList;
 	var randomPool = [];
@@ -47,7 +56,7 @@ function separateDisliked(list) {
  * We might want to return array instead.
  */
 function fullWordList() {
-	var universal = cloneJSON(wordHash);
+	var universal = cloneJSON(WORD_POOL);
 	var custom = userData.custom;
 	var revisedCustom = [];
 	custom.forEach(wordObj => {
@@ -122,7 +131,7 @@ function saveCustomDef(id, def) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	let wordObj = userData.custom[wordObjIndex];
 	if (def === '') {
-		let builtInWord = cloneJSON(wordHash.find(item => item.word === wordObj.word));
+		let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === wordObj.word));
 console.log('saveCustomDef', id, builtInWord);
 		wordObj.def = builtInWord.def;
 		wordObj.customDef = false;
@@ -216,7 +225,7 @@ function getWordObj(word) {
 function toggleSpotlight(word) {
 	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	if (wordObjIndex === -1) {
-		let builtInWord = cloneJSON(wordHash.find(item => item.word === word));
+		let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
 		addCustomWord(builtInWord);
 		wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	}
@@ -234,7 +243,7 @@ function toggleSpotlight(word) {
 function toggleLearn(word) {
 	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	if (wordObjIndex === -1) {
-		let builtInWord = cloneJSON(wordHash.find(item => item.word === word));
+		let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
 		addCustomWord(builtInWord);
 		wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	}
@@ -254,7 +263,7 @@ console.log('newLearnList', newLearnList);
 function toggleDislike(word) {
 	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	if (wordObjIndex === -1) {
-		let builtInWord = cloneJSON(wordHash.find(item => item.word === word));
+		let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
 		addCustomWord(builtInWord);
 		wordObjIndex = userData.custom.findIndex(item => item.word === word);
 	}
@@ -348,6 +357,7 @@ function replaceUserData(data) {
 }
 
 const WordsInterface = {
+	initializeWordPool,
 	getRandomPool,
 	getWordList,
 	fullWordList,
