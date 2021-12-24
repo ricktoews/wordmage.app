@@ -63,6 +63,19 @@ body {
 	font-size: .8em;
 }
 
+.edit-btn {
+	width: 25px;
+	height: 25px;
+	background-color:#0c0;
+	border-radius: 12px;
+	color: white;
+	font-size: 8pt;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+}
+
 .trash-btn {
 	width: 25px;
 	height: 25px;

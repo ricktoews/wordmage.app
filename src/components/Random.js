@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
 

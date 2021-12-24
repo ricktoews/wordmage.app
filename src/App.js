@@ -21,18 +21,19 @@ import './App.scss';
 
 function App(props) {
 	const wordHash = WordsInterface.fullWordList();
-	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
+//	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [ view, setView ] = useState('Random');
-	const [ popupState, setPopupState ] = useState(false);
-	const [ popupData, setPopupData ] = useState({});
-	const [ popupView, setPopupView ] = useState('');
+//	const [ popupState, setPopupState ] = useState(false);
+//	const [ popupData, setPopupData ] = useState({});
+//	const [ popupView, setPopupView ] = useState('');
 	const [ word, setWord ] = useState('');
 	const [ wordId, setWordId ] = useState(0);
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
-	const [ addWordState, setAddWordState ] = useState(false);
+//	const [ addWordState, setAddWordState ] = useState(false);
 	const [ wordFormState, setWordFormState ] = useState(false);
+
 	const [ mnemonicFormState, setMnemonicFormState ] = useState(false);
 	const [ confirmState, setConfirmState ] = useState(false);
 	const [ confirmShareState, setConfirmShareState ] = useState(false);
@@ -40,11 +41,13 @@ function App(props) {
 
 	const hamburgerRef = useRef(null);
 
+	/*
 	const closePopups = () => {
-		setAddWordState(false);
+//		setAddWordState(false);
 		setConfirmShareState(false);
 		setConfirmReceive(false);
 	}
+	*/
 
 	const handleDocumentClicked = e => {
 		// Check if clicked outside hambuger menu.
@@ -135,11 +138,6 @@ function App(props) {
 
 	const popupWordForm = wordId => {
 console.log('popupWordForm', wordId);
-/*
-		setPopupView('add-word');
-		setPopupState(true);
-		setPopupData({ word });
-*/
 		setWordId(wordId);
 		setWordFormState(true);
 	}

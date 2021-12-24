@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordScroller from './WordScroller';
-import WordItem from './WordItem';
 import WordsInterface from '../utils/words-interface';
 
 const INFINITE_SCROLLING_ON = 'list-loading-container';
@@ -134,7 +133,7 @@ function BrowseWords(props) {
 */}
 	  </div>
 
-	  <WordScroller pool={fullWordObjList} startingNdx={startingNdx} />
+	  <WordScroller pool={fullWordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
 	</div>
 	);
 }
