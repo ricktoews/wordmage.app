@@ -7,18 +7,17 @@ function WordForm(props) {
 
 	if (props.wordId) {
 		// get word from custom list, from active list.
-		var { word, def, myown, original, customDef } = WordsInterface.getWordObjById(props.wordId);
+		var { word, def, source, myown, original, customDef } = WordsInterface.getWordObjById(props.wordId);
 		// If word already exists, set spotlight flag to false;
-		var notes = '';
 		if (WordsInterface.isSpotlightEntry(props.word)) {
-			var { notes } = WordsInterface.getSpotlightEntry(props.word);
+			var { source } = WordsInterface.getSpotlightEntry(props.word);
 		} 
 		if (original) originalDef = original;
 	}
 
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
-	const [ newNotes, setNewNotes ] = useState(notes);
+	const [ newSource, setNewSource ] = useState(source);
 	const [ newMyOwn, setNewMyOwn ] = useState(myown);
 
 	const handleChange = e => {
@@ -36,9 +35,9 @@ function WordForm(props) {
 		setNewDef(el.value);
 	};
 
-	const handleNotes = e => {
+	const handleSource = e => {
 		var el = e.target;
-		setNewNotes(el.value);
+		setNewSource(el.value);
 	};
 
 	const cancelWord = () => {
@@ -48,9 +47,8 @@ function WordForm(props) {
 	}
 
 	const saveWord = () => {
-		console.log('save', newWord, newDef);
 		// Need to save custom word, spotlight, or whatever.
-		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, spotlight);
+		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, newSource, spotlight);
 		// If on Spotlight page, add word to active.
 		if (props.location.pathname === '/spotlight') {
 			WordsInterface.toggleActive(newWord);
@@ -99,9 +97,9 @@ function WordForm(props) {
 		        <div className="original-def">{ originalDef }</div>
 		      </div>) : null }
 
-		      {/* Notes. For ... ? */}
-		      <div className={'notes hide-section'}>
-		        <textarea placeholder="Notes" onChange={handleNotes} id="new-notes" value={newNotes}></textarea>
+		      {/* Source. For ... ? */}
+		      <div className={'of-interest'}>
+		        <input placeholder="Source" onChange={handleSource} type="text" id="new-notes" size="20" value={newSource} />
 		      </div>
 
 		      {/* Cancel / Save buttons */}

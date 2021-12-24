@@ -15,7 +15,7 @@ function WordScroller(props) {
 			let wordItem = scrollerRef.current.pool[counter++];
 			let item = document.createElement('div');
 			item.classList.add('word-item-container');
-			ReactDOM.render(<WordEntry wordObj={wordItem} listType={props.listType} history={props.history} />, item);
+			ReactDOM.render(<WordEntry wordObj={wordItem} listType={props.listType} history={props.history} popupWordForm={props.popupWordForm} />, item);
 			scrollerRef.current.appendChild(item);
 		}
 		scrollerRef.current.startingNdx = counter;

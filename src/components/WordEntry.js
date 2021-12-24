@@ -19,6 +19,12 @@ function WordEntry(props) {
 	
 	}
 
+	function editWord(wordObj, e) {
+		var wordEl = e.target.parentNode.parentNode.querySelector('.word-item-word');
+		var classes = Array.from(wordEl.classList);
+		props.popupWordForm(wordObj._id);
+	}
+
 	function scrambleWord(wordObj) {
 		console.log('scrambleWord', wordObj);
 		history.push('/spotlight', { wordObj: wordObj });
@@ -29,6 +35,7 @@ function WordEntry(props) {
 	    <div className="word-item-word-container">
 	      <div className="word-item-word">{wordObj.word}</div>
 	      { wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
+	      { wordObj.myown ? <div className="edit-btn" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i>&nbsp;</div> : null }
 		  <div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i>&nbsp;</div>
 	    </div>
 	    <div className="word-item-def-container">

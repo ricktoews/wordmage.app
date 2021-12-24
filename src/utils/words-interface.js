@@ -151,14 +151,15 @@ console.log('saveCustomDef', id, builtInWord);
  * If custom word isn't already listed, add it.
  * Maybe this needs to include the _id, to allow for modification of the word itself.
  */
-function saveCustomWord(id, word, def, spotlight) {
+function saveCustomWord(id, word, def, source, spotlight) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	if (wordObjIndex === -1) {
-		addCustomWord({ word, def, spotlight: true });
+		addCustomWord({ word, def, source, spotlight: true });
 	} else {
 		let wordObj = userData.custom[wordObjIndex];
 		wordObj.word = word;
 		wordObj.def = def;
+		wordObj.source = source;
 		if (def === wordObj.original) {
 			delete wordObj.original;
 			wordObj.customDef = false;
