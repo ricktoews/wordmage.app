@@ -35,7 +35,7 @@ function Random(props) {
 	    </div>
 	  </div>
 
-	  <WordScroller pool={randomWords} startingNdx={0} />
+	  <WordScroller pool={randomWords} popupWordForm={props.popupWordForm} startingNdx={0} />
 	</div>
 	) : null;
 }

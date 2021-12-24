@@ -3,14 +3,14 @@ import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 
 function WordForm(props) {
-	var word = '', def = '', notes = '', spotlight = true, myown = true, originalDef = '';
+	var word = '', def = '', source = '', spotlight = true, myown = true, originalDef = '';
 
 	if (props.wordId) {
 		// get word from custom list, from active list.
-		var { word, def, source, myown, original, customDef } = WordsInterface.getWordObjById(props.wordId);
+		var { word, def, source = '', myown, original, customDef } = WordsInterface.getWordObjById(props.wordId);
 		// If word already exists, set spotlight flag to false;
 		if (WordsInterface.isSpotlightEntry(props.word)) {
-			var { source } = WordsInterface.getSpotlightEntry(props.word);
+			var { source = '' } = WordsInterface.getSpotlightEntry(props.word);
 		} 
 		if (original) originalDef = original;
 	}
