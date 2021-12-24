@@ -137,7 +137,6 @@ function App(props) {
 	}
 
 	const popupWordForm = wordId => {
-console.log('popupWordForm', wordId);
 		setWordId(wordId);
 		setWordFormState(true);
 	}
@@ -227,27 +226,29 @@ console.log('cancelWordForm');
 	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
 	  <Switch>
 	    <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
-	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        /> } />
 	    <Route exact path={['/learn']} render={props => ( <Learn
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        toggleLearn={toggleLearn}
 	        />) } />
 	    <Route exact path='/spotlight' render={props => <Spotlight
-	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        popupMnemonicForm={word => { popupMnemonicForm(word) } }
 	        /> } />
 	    <Route path="/spotlight-list" render={props => ( <SpotlightList
-	        toggleSpotlight={toggleSpotlight}
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        toggleSpotlight={toggleSpotlight}
 	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        />) } />
 	    <Route path="/browse/:start?" render={props => ( <BrowseWords
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        toggleSpotlight={toggleSpotlight}
 	        popupConfirm={wordId => { popupConfirm(wordId); }}
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        />) } />
 	    <Route exact path={['/', '/random']} render={props => ( <Random
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        toggleSpotlight={toggleSpotlight}
 	        />) } />
 	    <Route path="/about" component={About} />
