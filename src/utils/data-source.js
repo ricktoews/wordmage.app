@@ -1,4 +1,5 @@
 /*
+ * This schema for custom is way out of date.
 { 
 	custom: [
 		_id: <int>,
@@ -11,12 +12,9 @@
 
  */
 const starter = JSON.stringify({
-	"custom": [/*{
-		_id: 1,
-		word: 'a cheval',
-		spotlight: true
-	}*/]
+	"custom": []
 });
+
 //localStorage.removeItem('my-words');
 
 /**
@@ -28,6 +26,7 @@ function retrieveUserLocalData() {
 		var userData = JSON.parse(myWords);
 	} catch(e) {
 		console.log('Oops', myWords, e);
+		userData = JSON.parse(starter);
 	}
 
 	return userData;
@@ -39,17 +38,30 @@ function retrieveUserData() {
 		var userData = JSON.parse(myWords);
 	} catch(e) {
 		console.log('Oops', myWords, e);
+		userData = { custom: [] };
 	}
 
 	return userData;
 }
 
-function saveUserData(userData) {
-	try {
-		var myWords = JSON.stringify(userData);
-		localStorage.setItem('my-words', myWords);
-	} catch (e) {
-		console.log('Problem saving', userData, e);
+async function saveUserData(userData) {
+	var custom = userData.custom;
+	localStorage.setItem('my-words', JSON.stringify(custom));
+
+	// If logged in profile, save custom list to database.
+	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
+	var profile_email = localStorage.getItem('wordmage-profile-email');
+	if (profile_user_id) {
+		try {
+			var options = {
+				method: 'post',
+				header: { 'Content-type': 'application/json' },
+				body: JSON.stringify({ user_id: profile_user_id, custom })
+			};
+			var response = fetch('https://words-rest.toewsweb.net/savecustom', options);
+		} catch (e) {
+			console.log('Problem saving', userData, e);
+		}
 	}
 }
 

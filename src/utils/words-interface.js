@@ -124,6 +124,7 @@ function addCustomWord(newWordObj) {
 		_id: newId,
 		word: newWordObj.word,
 		def: newWordObj.def,
+		source: newWordObj.source,
 		spotlight: newWordObj.spotlight,
 		dislike: newWordObj.dislike,
 		learn: newWordObj.learn

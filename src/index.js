@@ -6,7 +6,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import WordsInterface from './utils/words-interface';
 
+async function initCustom(user_id) {
+	var options = {
+		method: 'POST',
+		headers: {'Content-type': 'application/json'},
+		body: JSON.stringify({ user_id })
+	};
+	var response = await fetch('https://words-rest.toewsweb.net/loadcustom', options);
+	var custom = await response.json();
+	WordsInterface.initializeCustom(custom);
+}
+
 (async () => {
+	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
+	if (profile_user_id) {
+		var response = await initCustom(profile_user_id);
+	}
 	await WordsInterface.initializeWordPool();
 	ReactDOM.render(
 	  <React.StrictMode>

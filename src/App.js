@@ -226,7 +226,7 @@ console.log('cancelWordForm');
 		  */}
 
 	      <li onClick={navToProfile}>Profile</li>
-	      <li onClick={navToRegister}>Register</li>
+		{/*	      <li onClick={navToRegister}>Register</li> */}
 
 	      <li onClick={navToAbout}>About</li>
 	    </ul>
