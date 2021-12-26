@@ -669,3 +669,12 @@ body {
 .rejects {
     border-top: 3px solid red;
 }
+
+.profile-form label {
+	display: block;
+	font-size: .75em;
+}
+.profile-form input {
+	width: 100%;
+	margin-bottom: 10px;
+}

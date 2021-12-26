@@ -22,6 +22,17 @@ const starter = JSON.stringify({
 /**
  * Get user data from local storage. Return it in original format.
  */
+function retrieveUserLocalData() {
+	var myWords = localStorage.getItem('my-words') || starter;
+	try {
+		var userData = JSON.parse(myWords);
+	} catch(e) {
+		console.log('Oops', myWords, e);
+	}
+
+	return userData;
+}
+
 function retrieveUserData() {
 	var myWords = localStorage.getItem('my-words') || starter;
 	try {
@@ -42,6 +53,6 @@ function saveUserData(userData) {
 	}
 }
 
-const DataSource = { retrieveUserData, saveUserData };
+const DataSource = { retrieveUserLocalData, retrieveUserData, saveUserData };
 
 export default DataSource;
