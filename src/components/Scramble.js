@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { scramble } from '../utils/spotlight';
-import RefreshIcon from './RefreshIcon';
+import RefreshIcon from './icons/RefreshIcon';
 
 function initLetters(scrambled) {
 	var letterStates = [];

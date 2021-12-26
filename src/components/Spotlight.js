@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import OpenCloseIcon from './OpenCloseIcon';
+import OpenCloseIcon from './icons/OpenCloseIcon';
 import WordsInterface from '../utils/words-interface';
 import Scramble from './Scramble';
 

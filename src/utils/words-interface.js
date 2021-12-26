@@ -4,9 +4,15 @@ import { cloneJSON } from './helpers';
 // word-pool copied from toewsweb site_words table. Appears to have come from same source as luciferous.
 //import wordHash from '../data/word-pool';
 import DataSource from './data-source';
-const userData = DataSource.retrieveUserData();
+const userData = { custom: []};
+//const userData = DataSource.retrieveUserData();
 
 const WORD_POOL = [];
+
+function initializeCustom(custom) {
+	userData.custom = custom;
+	console.log('initializeCustom', userData);
+}
 
 async function initializeWordPool() {
 	var response = await fetch('https://words-rest.toewsweb.net');
@@ -361,6 +367,7 @@ function replaceUserData(data) {
 }
 
 const WordsInterface = {
+	initializeCustom,
 	initializeWordPool,
 	getRandomPool,
 	getWordList,
