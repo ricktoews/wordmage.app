@@ -42,7 +42,7 @@ function Profile(props) {
 		var user_id = data.user_id;
 		var user_custom = JSON.parse(data.custom);
 		console.log('login custom', user_custom);
-		WordsInterface.initializeCustom(user_custom.custom);
+		WordsInterface.initializeCustom(user_custom);
 	}
 
 	return (
