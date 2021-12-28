@@ -14,6 +14,10 @@ function initializeCustom(custom) {
 	console.log('initializeCustom', userData);
 }
 
+function getCustom() {
+	return userData.custom;
+}
+
 async function initializeWordPool() {
 	var response = await fetch('https://words-rest.toewsweb.net');
 	var data = await response.json();
@@ -368,6 +372,7 @@ function replaceUserData(data) {
 }
 
 const WordsInterface = {
+	getCustom,
 	initializeCustom,
 	initializeWordPool,
 	getRandomPool,
