@@ -30,6 +30,7 @@ function Profile(props) {
 	const setCustomData = custom => {
 		var user_custom = JSON.parse(custom);
 		WordsInterface.initializeCustom(user_custom);
+		setCustom(getMyWords());
 	}
 
 	const handleFocus = e => {
