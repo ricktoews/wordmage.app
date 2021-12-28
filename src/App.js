@@ -54,7 +54,7 @@ function App(props) {
 		// Check if clicked outside hambuger menu.
 		var el = e.target;
 		var elClass = Array.from(el.classList);
-		var parentElClass = Array.from(el.parentNode.classList);
+		var parentElClass = Array.isArray(el.parentNode.classList) ? Array.from(el.parentNode.classList) : [];
 		if (elClass.indexOf('hamburger-icon') === -1 && parentElClass.indexOf('hamburger-icon') === -1) {
 			if (!hamburgerRef.current.contains(el)) {
 				setHamburgerClass('hamburger-nav');

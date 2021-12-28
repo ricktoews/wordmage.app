@@ -10,6 +10,7 @@ function Profile(props) {
 	const [ passwordConf, setPasswordConf ] = useState('');
 	const [ message, setMessage ] = useState('');
 	const [ profileUser, setProfileUser ] = useState(profileObj);
+	const [ custom, setCustom ] = useState(getMyWords());
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -18,19 +19,13 @@ function Profile(props) {
 		if (emailRef.current) {
 			emailRef.current.focus();
 		}
-		/*
-		else {
-			var options = {
-				method: 'POST',
-				headers: {'Content-type': 'application/json'},
-				body: JSON.stringify({ user_id: userId })
-			};
-			var response = await fetch('https://words-rest.toewsweb.net/loadcustom', options);
-			var data = await response.json();
-			setCustomData(data);
-		}
-		*/
 	}, []);
+
+	function getMyWords() {
+		var tmpCustom = WordsInterface.getCustom();
+		var liked = tmpCustom.filter(item => item.learn).sort((a, b) => a.word < b.word ? -1 : 1);
+		return liked;
+	}
 
 	const setCustomData = custom => {
 		var user_custom = JSON.parse(custom);
@@ -93,23 +88,36 @@ function Profile(props) {
 	        { message === '' ? null : <div className="profile-form-message">{message}</div> }
 
 	        { !profileUser.user_id ? (
-			<div className="profile-fields">
-	          <div className="email-field">
-	            <label htmlFor="email">Email</label><input ref={emailRef} type="text" id="email" className="email" onChange={handleChange} onFocus={handleFocus} />
+		<div className="form">
+	          <div className="input-field">
+				<div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
+	            <input placeholder="Email" ref={emailRef} type="text" id="email" className="email" onChange={handleChange} onFocus={handleFocus} />
 	          </div>
-	          <div className="password-field">
-	            <label htmlFor="password">Password</label><input ref={passwordRef} type="text" id="password" className="password" onChange={handleChange} onFocus={handleFocus} />
+	          <div className="input-field">
+				<div className="icon-wrapper"><i className="glyphicon glyphicon-lock"></i></div>
+	            <input placeholder="Password" ref={passwordRef} type="text" id="password" className="password" onChange={handleChange} onFocus={handleFocus} />
 	          </div>
 	          <div className="button-wrapper">
-	            <button className={'badge badge-ok'} onClick={login}><i className="glyphicon glyphicon-ok"></i> Log in</button>
+	            <button className={'login-btn'} onClick={login}>Log in</button>
 	          </div>
-		      <div><a href="/register">Not registered?</a></div>
-	        </div>
+		      <div className="link-wrapper"><a href="/register">Not registered?</a></div>
+		</div>
 			) : (
-			<div>
+			<div className="form">
 	          <div>Logged in as {profileUser.email}</div>
 	          <div className="button-wrapper">
-	            <button className={'badge badge-ok'} onClick={logout}><i className="glyphicon glyphicon-ok"></i> Log out</button>
+	            <button className={'logout-btn'} onClick={logout}>Log out</button>
+	          </div>
+
+	          <div className="my-profile-content">
+		        <h4>Words You're Learning</h4>
+				{ custom.length > 0 ? (
+	            <div className="my-words">
+	            { custom.map((item, ndx) => {
+	              return <div key={ndx}>{item.word}</div>
+		        }) }
+	            </div>
+				) : <div>Nothing yet...</div> }
 	          </div>
 
 			</div>
