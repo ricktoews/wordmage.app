@@ -40,8 +40,8 @@ function WordEntry(props) {
 	    </div>
 	    <div className="word-item-def-container">
 	      <div className="source-def-container">
-		    <span className="word-item-source">{wordObj.source}</span>
 	        <div className="word-item-def">{wordObj.def}</div>
+		    <span className="word-item-source">(source: {wordObj.source})</span>
 		  </div>
 		  <WordEntryButtons wordObj={wordObj} listType={listType} />
 	    </div>
