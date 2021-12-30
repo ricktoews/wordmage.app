@@ -11,15 +11,36 @@ function Profile(props) {
 	const [ message, setMessage ] = useState('');
 	const [ profileUser, setProfileUser ] = useState(profileObj);
 	const [ custom, setCustom ] = useState(getMyWords());
+	const [ clickedWord, setClickedWord ] = useState('');
+	const [ clickedDef, setClickedDef ] = useState('');
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
+	const clickedWordRef = useRef(null);
+	const profileFormRef = useRef(null);
 
 	useEffect(async () => {
 		if (emailRef.current) {
 			emailRef.current.focus();
 		}
 	}, []);
+
+	useEffect(() => {
+		if (profileFormRef.current) {
+			console.log('profile form', profileFormRef.current);
+			profileFormRef.current.addEventListener('click', handleProfileFormClick);
+		}
+	}, []);
+
+	function handleProfileFormClick(e) {
+		var el = e.target;
+		var elClasses = Array.from(el.classList);
+		console.log('profile form clicked', elClasses);
+		if (elClasses.indexOf('my-word') === -1) {
+			clickedWordRef.current.classList.remove('element-show');
+			clickedWordRef.current.classList.add('element-hide');
+		}
+	}
 
 	function getMyWords() {
 		var tmpCustom = WordsInterface.getCustom();
@@ -83,8 +104,24 @@ function Profile(props) {
 		}
 	}
 
+	const handleWordClick = e => {
+		var el = e.target;
+		var { word, def } = el.dataset;
+		setClickedWord(word);
+		setClickedDef(def);
+		clickedWordRef.current.classList.remove('element-hide');
+		clickedWordRef.current.classList.add('element-show');
+		console.log('handleWordClick', word, def);
+	}
+
 	return (
-	  <div className="profile-form plain-content container">
+	  <div ref={profileFormRef} className="profile-form plain-content container">
+		<div ref={clickedWordRef} className="clicked-word-container element-hide">
+		  <div className="clicked-word">
+	        <div>{clickedWord}</div>
+		    <div>{clickedDef}</div>
+		  </div>
+		</div>
 	        <h3>Profile</h3>
 	        { message === '' ? null : <div className="profile-form-message">{message}</div> }
 
@@ -115,7 +152,7 @@ function Profile(props) {
 				{ custom.length > 0 ? (
 	            <div className="my-words">
 	            { custom.map((item, ndx) => {
-	              return <div key={ndx}>{item.word}</div>
+	              return <div key={ndx} onClick={handleWordClick} data-word={item.word} data-def={item.def} className="my-word">{item.word}</div>
 		        }) }
 	            </div>
 				) : <div>Nothing yet...</div> }
