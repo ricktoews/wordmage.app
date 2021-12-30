@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 
 function WordForm(props) {
-	var word = '', def = '', source = '', spotlight = true, myown = true, originalDef = '';
+	var word = '', def = '', source = '', spotlight = true, originalDef = '';
 
 	if (props.wordId) {
 		// get word from custom list, from active list.
-		var { word, def, source = '', myown, original, customDef } = WordsInterface.getWordObjById(props.wordId);
+		var { word, def, source = '', original, customDef } = WordsInterface.getWordObjById(props.wordId);
 		// If word already exists, set spotlight flag to false;
 		if (WordsInterface.isSpotlightEntry(props.word)) {
 			var { source = '' } = WordsInterface.getSpotlightEntry(props.word);
@@ -18,8 +18,18 @@ function WordForm(props) {
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
 	const [ newSource, setNewSource ] = useState(source);
-	const [ newMyOwn, setNewMyOwn ] = useState(myown);
+/*
+	useEffect(() => {
+		if (containerRef.current) {
+			containerRef.current.addEventListener('WordForm click', handleDocumentClicked, true);
+		}
+	}, []);
 
+	const handleDocumentClicked = e => {
+		var el = e.target;
+		console.log('handleDocumentClicked', el);
+	}
+*/
 	const handleChange = e => {
 		var el = e.target;
 		var notes = el.textContent;
@@ -75,15 +85,14 @@ function WordForm(props) {
 	        Add Word
 	      </div>
 
-		  <div className="field-wrapper">
+		  <div className="form field-wrapper">
 		      {/* Word input field (custom), or word displayed only (built-in) */}
-		      <div className="word">
-		        { newMyOwn ? <input placeholder="Word" onChange={handleWord} type="text" id="new-word" size="20" value={newWord} />
-		                   : <span>{newWord}</span> }
+		      <div className="input-field">
+		        <input placeholder="Word" onChange={handleWord} type="text" id="new-word" size="20" value={newWord} />
 		      </div>
 
 		      {/* Definition input field */}
-		      <div className={'of-interest'}>
+		      <div className="input-field">
 		        <textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
 		      </div>
 
@@ -98,14 +107,14 @@ function WordForm(props) {
 		      </div>) : null }
 
 		      {/* Source. For ... ? */}
-		      <div className={'of-interest'}>
+		      <div className="input-field">
 		        <input placeholder="Source" onChange={handleSource} type="text" id="new-notes" size="20" value={newSource} />
 		      </div>
 
 		      {/* Cancel / Save buttons */}
 		      <div className="button-wrapper">
-		        <button className={'badge badge-remove'} onClick={cancelWord}><i className="glyphicon glyphicon-remove"></i> Cancel</button>
-		        <button className={'badge badge-ok'} onClick={saveWord}><i className="glyphicon glyphicon-ok"></i> Save</button>
+		        <button className="cancel" onClick={cancelWord}>Cancel</button>
+		        <button className="save" onClick={saveWord}>Save</button>
 	          </div>
 	      </div>
 

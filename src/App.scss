@@ -684,7 +684,7 @@ body {
 	display: block;
 	font-size: .75em;
 }
-.form input {
+.form input, .form textarea {
 	-webkit-appearance: none;
 	width: 100%;
 	padding-left: 30px;
@@ -694,6 +694,10 @@ body {
 	border-bottom: 1px solid #eee;
 	outline: none;
 }
+.form textarea {
+	height: 60px;
+}
+
 .form .input-field {
 	position: relative;
 	margin-top: 20px;
