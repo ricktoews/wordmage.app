@@ -53,8 +53,9 @@ function App(props) {
 	const handleDocumentClicked = e => {
 		// Check if clicked outside hambuger menu.
 		var el = e.target;
+		console.log('handleDocumentClicked', el);
 		var elClass = Array.from(el.classList);
-		var parentElClass = Array.isArray(el.parentNode.classList) ? Array.from(el.parentNode.classList) : [];
+		var parentElClass = Array.isArray(el.parentNode?.classList) ? Array.from(el.parentNode.classList) : [];
 		if (elClass.indexOf('hamburger-icon') === -1 && parentElClass.indexOf('hamburger-icon') === -1) {
 			if (!hamburgerRef.current.contains(el)) {
 				setHamburgerClass('hamburger-nav');
@@ -63,6 +64,9 @@ function App(props) {
 		setConfirmShareState(false);
 		if (el.tagName.toLowerCase() !== 'input') {
 			setConfirmReceive(false);
+		}
+		if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
+			setWordFormState(false);
 		}
 	}
 
