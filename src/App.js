@@ -3,11 +3,6 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Hamburger from './components/Hamburger';
 import AddIcon from './components/icons/AddIcon';
 import WordForm from './components/WordForm';
-//import MnemonicForm from './components/MnemonicForm';
-import ConfirmDelete from './components/ConfirmDelete';
-import ConfirmShare from './components/ConfirmShare';
-import ReceiveData from './components/ReceiveData';
-//import Popup from './components/Popup';
 import WordsInterface from './utils/words-interface';
 
 import Spotlight from './components/Spotlight';
@@ -23,32 +18,15 @@ import './App.scss';
 
 function App(props) {
 	const wordHash = WordsInterface.fullWordList();
-//	const [spotlightList, setSpotlightList] = useState(WordsInterface.getSpotlightList());
 	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [ view, setView ] = useState('Random');
-//	const [ popupState, setPopupState ] = useState(false);
-//	const [ popupData, setPopupData ] = useState({});
-//	const [ popupView, setPopupView ] = useState('');
 	const [ word, setWord ] = useState('');
 	const [ wordId, setWordId ] = useState(0);
 	const [ hamburgerClass, setHamburgerClass ] = useState('hamburger-nav');
 
-//	const [ addWordState, setAddWordState ] = useState(false);
 	const [ wordFormState, setWordFormState ] = useState(false);
 
-	const [ confirmState, setConfirmState ] = useState(false);
-	const [ confirmShareState, setConfirmShareState ] = useState(false);
-	const [ confirmReceive, setConfirmReceive ] = useState(false);
-
 	const hamburgerRef = useRef(null);
-
-	/*
-	const closePopups = () => {
-//		setAddWordState(false);
-		setConfirmShareState(false);
-		setConfirmReceive(false);
-	}
-	*/
 
 	const handleDocumentClicked = e => {
 		// Check if clicked outside hambuger menu.
@@ -59,10 +37,6 @@ function App(props) {
 			if (!hamburgerRef.current.contains(el)) {
 				setHamburgerClass('hamburger-nav');
 			}
-		}
-		setConfirmShareState(false);
-		if (el.tagName.toLowerCase() !== 'input') {
-			setConfirmReceive(false);
 		}
 		if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
 			setWordFormState(false);
@@ -129,16 +103,6 @@ function App(props) {
 		setHamburgerClass('hamburger-nav');
 	}
 
-	const handleShare = () => {
-		setConfirmShareState(true);
-		setHamburgerClass('hamburger-nav');
-	}
-
-	const handleReceive = () => {
-		setConfirmReceive(true);
-		setHamburgerClass('hamburger-nav');
-	}
-
 	const hamburgerClick = () => {
 		console.log('hamburger clicked', hamburgerClass);
 		if (hamburgerClass === 'hamburger-nav') {
@@ -149,29 +113,10 @@ function App(props) {
 	};
 
 	
-	const popupConfirm = wordId => {
-		setWordId(wordId);
-		setConfirmState(true);
-	}
-
 	const popupWordForm = wordId => {
 		setWordId(wordId);
 		setWordFormState(true);
 	}
-
-	/*
-	const popupMnemonicForm = word => {
-console.log('popupMnemonicForm', word);
-		setWord(word);
-		setMnemonicFormState(true);
-	}
-
-	const cancelMnemonicForm = () => {
-console.log('cancelMnemonicForm');
-//		setWord('');
-		setMnemonicFormState(false);
-	}
-	*/
 
 	const cancelWordForm = () => {
 console.log('cancelWordForm');
@@ -182,34 +127,8 @@ console.log('cancelWordForm');
 		setWordFormState(false);
 	}
 
-	const cancelDelete = () => {
-		setConfirmState(false);
-	}
-
-	const confirmeDelete = () => {
-		setConfirmState(false);
-	}
-
-	const cancelShare = () => {
-		setConfirmShareState(false);
-	}
-
-	const cancelReceive = () => {
-		setConfirmReceive(false);
-	}
-
-	const toggleLearn = word => {
-		var newLearn = WordsInterface.toggleLearn(word);
-	}
-
 	const toggleSpotlight = word => {
 		var newSpotlightList = WordsInterface.toggleSpotlight(word);
-		// FIXME: Why do we need this, since spotlightList isn't used in App.js or passed to a component? 
-		//setSpotlightList(newSpotlightList);
-	}
-
-	const updateWordList = () => {
-		setFullWordList(WordsInterface.fullWordList());
 	}
 
 	return (
@@ -220,17 +139,8 @@ console.log('cancelWordForm');
 	      <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
 	      <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
 	      <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
-
 	      <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
-
-		{/*
-	      <li onClick={handleShare}><i className="glyphicon glyphicon-upload"></i> Share</li>
-	      <li onClick={handleReceive}><i className="glyphicon glyphicon-download"></i> Receive</li>
-		  */}
-
 	      <li onClick={navToProfile}>Profile</li>
-		{/*	      <li onClick={navToRegister}>Register</li> */}
-
 	      <li onClick={navToAbout}>About</li>
 	    </ul>
 	  </nav>
@@ -244,16 +154,12 @@ console.log('cancelWordForm');
 	  </header>
 
 	  { wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
-	  { confirmState ? <ConfirmDelete wordId={wordId} cancelDelete={cancelDelete} confirmeDelete={confirmeDelete} /> : <div/> }
-	  { confirmShareState ? <ConfirmShare word={word} cancelShare={cancelShare} /> : <div/> }
-	  { confirmReceive ? <ReceiveData cancelReceive={cancelReceive} /> : <div/> }
 	  <Switch>
 	    <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        /> } />
 	    <Route exact path={['/learn']} render={props => ( <Learn
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        toggleLearn={toggleLearn}
 	        />) } />
 	    <Route exact path='/spotlight' render={props => <Spotlight
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
@@ -261,12 +167,10 @@ console.log('cancelWordForm');
 	    <Route path="/spotlight-list" render={props => ( <SpotlightList
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        toggleSpotlight={toggleSpotlight}
-	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        />) } />
 	    <Route path="/browse/:start?" render={props => ( <BrowseWords
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        toggleSpotlight={toggleSpotlight}
-	        popupConfirm={wordId => { popupConfirm(wordId); }}
 	        />) } />
 	    <Route exact path={['/', '/random']} render={props => ( <Random
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
