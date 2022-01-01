@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
+import TagList from './TagList';
 
 const INFINITE_SCROLLING_ON = 'list-loading-container';
 const INFINITE_SCROLLING_OFF = 'hide-section';
@@ -19,7 +20,9 @@ function BrowseWords(props) {
 	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
 	const [ startingNdx, setStartingNdx ] = useState(0);
 	const [ browseMode, setBrowseMode ] = useState('built-in');
-	const [ listLoadClass, setListLoadClass ] = useState(INFINITE_SCROLLING_ON);
+	const [showTags, setShowTags] = useState(false);
+	const [ tagList, setTagList ] = useState(WordsInterface.getTagList());
+	const [ tagFilter, setTagFilter ] = useState('');
 
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
@@ -60,6 +63,22 @@ function BrowseWords(props) {
 		}
 	}, [startingLetters, browseMode]);
 
+	function tagSelection(discard, tag, checked, closeTagList) {
+		console.log('tagSelection', tag, checked, closeTagList);
+		setTagFilter(tag);
+		
+		// Stolen code. Coopted for showing tagged words.
+		let filteredWordList = wordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1).map(item => item.word);
+console.log('tagSelection, filteredWordList', filteredWordList);
+		setWordListSubset(filteredWordList);
+		setBrowseMode('tagged');
+//		scrollerRef.current.attributes.browseMode = 'tagged';
+		// End stolen code.
+
+		if (closeTagList) {
+			setShowTags(false);
+		}
+	}
 
 	var partialWordTimer;
 	const handlePartialWord = e => {
@@ -88,36 +107,21 @@ function BrowseWords(props) {
 		setWordObjList(WordsInterface.fullWordList());
 	}
 
-	const handleBrowseCustom = e => {
+	const handleTagFilter = e => {
+		setShowTags(true)
+/*
 		if (browseMode !== 'custom') {
 			let filteredWordList = wordObjList.filter(obj => obj.myown).map(item => item.word);
 			setWordListSubset(filteredWordList);
 			setBrowseMode('custom');
-			setListLoadClass(INFINITE_SCROLLING_OFF);
 			scrollerRef.current.attributes.browseMode = 'custom';
 		} else {
 			setStartingLetters('');
 			setBrowseMode('built-in');
-			setListLoadClass(INFINITE_SCROLLING_ON);
 			props.history.push('/browse/');
 			scrollerRef.current.attributes.browseMode = 'built-in';
 		}
-	}
-
-	const handleBrowseSpotlight = e => {
-		if (browseMode !== 'spotlight') {
-			let filteredWordList = wordObjList.filter(obj => obj.spotlight).map(item => item.word);
-			setWordListSubset(filteredWordList);
-			setBrowseMode('spotlight');
-			setListLoadClass(INFINITE_SCROLLING_OFF);
-			scrollerRef.current.attributes.browseMode = 'spotlight';
-		} else {
-			setStartingLetters('');
-			setBrowseMode('built-in');
-			setListLoadClass(INFINITE_SCROLLING_ON);
-			props.history.push('/browse/');
-			scrollerRef.current.attributes.browseMode = 'built-in';
-		}
+*/
 	}
 
 	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
@@ -125,14 +129,16 @@ function BrowseWords(props) {
 	return (
 	<div className="browse-container">
 	  <div className="browse">
+	{/* Word search field */}
 	    <input type="text" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
-{/*
+
+	{/* Tag filtering UI: Selected tag, tag selection button */}
 	    <div className="browse-filter-buttons">
-	      <button className={'badge ' + customFilterClass} onClick={handleBrowseCustom}><i className="glyphicon glyphicon-star"></i></button>
+	      {tagFilter} <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
 	    </div>
-*/}
 	  </div>
 
+	  <TagList showTags={showTags} tagList={tagList} wordObj={{}} tagWord={tagSelection} />
 	  <WordScroller pool={fullWordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
 	</div>
 	);
