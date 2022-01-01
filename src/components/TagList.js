@@ -23,6 +23,7 @@ function Tag(props) {
 
 function TagList(props) {
 	const [tags, setTags] = useState(props.tagList);
+	const [isAddTag, setIsAddTag] = useState(!!props.wordObj.word);
 	const newTagRef = useRef(null);
 	const tagListRef = useRef(null);
 
@@ -31,7 +32,9 @@ function TagList(props) {
 		if (newTagRef.current) {
 			newTagRef.current.focus();
 		}
-		newTagRef.current.value = '';
+		if (newTagRef.current) {
+			newTagRef.current.value = '';
+		}
 	}, [props.showTags]);
 
 	// Show tag list
@@ -50,24 +53,33 @@ function TagList(props) {
 	}, [props.showTags]);
 
 	function handleCheckClick(e) {
-		var newTag = newTagRef.current.value;
-		props.tagWord(props.wordObj, newTag, true, true);
+		if (newTagRef.current) {
+			var newTag = newTagRef.current.value;
+			props.tagWord(props.wordObj, newTag, true, true);
+		}
+		else {
+			props.tagWord(props.wordObj, '', false, true);
+		}
 	}
 
 	function handleTagClick(el, tag) {
 //		console.log('handleTagClick', el.dataset.tag, el.checked, tag);
 //		console.log('add tag', tag, 'to wordObj', props.wordObj);
-		props.tagWord(props.wordObj, el.dataset.tag, el.checked);
+		props.tagWord(props.wordObj, el.dataset.tag, el.checked, !isAddTag);
 	}
 
 	return (
 	<div ref={tagListRef} className="tag-list-popup element-hide">
+	  { isAddTag ? (
 	  <div className="button-wrapper">
 	    <div className="tag-button save-tag" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i></div>
 	  </div>
+	  ) : null }
 	  <div className="tag-list">
+	  { isAddTag ? (<div>
 	    <div><input ref={newTagRef} type="text" placeholder="New Tag" /></div>
 	    <hr />
+	    </div>) : null }
 	  { tags ? tags.map((item, ndx) => {
 	      return <Tag key={ndx} label={item} wordTags={props.wordObj.tags} tagClick={handleTagClick} />
 	  }) : null}

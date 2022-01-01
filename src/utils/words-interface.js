@@ -236,6 +236,18 @@ function getWordObj(word) {
 }
 
 /**
+ * Make list of tags by compiling from word list.
+ */
+function getTagList() {
+	var wordObjList = WordsInterface.fullWordList();
+	var taggedWords = wordObjList.filter(item => item.tags && Array.isArray(item.tags));
+	var tags = taggedWords.map(item => item.tags);
+	tags = [].concat(...tags);
+	tags = Array.from(new Set(tags));
+	return tags;
+}
+
+/**
  * Adjust tags for selected word
  */
 function updateTags(word, tags) {
@@ -399,6 +411,7 @@ const WordsInterface = {
 	saveCustomWord,
 	deleteCustomWord,
 	undeleteCustomWord,
+	getTagList,
 	updateTags,
 	getSpotlightList,
 	isSpotlightEntry,

@@ -11,16 +11,7 @@ function WordScroller(props) {
 	const sentinelRef = useRef(null);
 	const [showTags, setShowTags] = useState(false);
 	const [tagWordObj, setTagWordObj] = useState({});
-	const [tagList, setTagList] = useState(getTagList());
-
-	function getTagList() {
-		var wordObjList = WordsInterface.fullWordList();
-		var taggedWords = wordObjList.filter(item => item.tags && Array.isArray(item.tags));
-		var tags = taggedWords.map(item => item.tags);
-		tags = [].concat(...tags);
-		tags = Array.from(new Set(tags));
-		return tags;
-	}
+	const [tagList, setTagList] = useState(WordsInterface.getTagList());
 
 	function tagWord(wordObj, tag, add, closeTagList) {
 		if (Array.isArray(wordObj.tags) === false) { wordObj.tags = []; }
@@ -38,7 +29,7 @@ function WordScroller(props) {
 		WordsInterface.updateTags(wordObj.word, wordObj.tags);
 		if (closeTagList) {
 			setShowTags(false);
-			setTagList(getTagList());
+			setTagList(WordsInterface.getTagList());
 		}
 	}
 
