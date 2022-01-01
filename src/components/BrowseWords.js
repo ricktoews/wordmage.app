@@ -68,9 +68,9 @@ function BrowseWords(props) {
 		setTagFilter(tag);
 		
 		// Stolen code. Coopted for showing tagged words.
-		let filteredWordList = wordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1).map(item => item.word);
-console.log('tagSelection, filteredWordList', filteredWordList);
-		setWordListSubset(filteredWordList);
+		let filteredWordObjList = fullWordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1);
+console.log('tagSelection, filteredWordList', filteredWordObjList);
+		setWordObjList(filteredWordObjList);
 		setBrowseMode('tagged');
 //		scrollerRef.current.attributes.browseMode = 'tagged';
 		// End stolen code.
@@ -107,6 +107,11 @@ console.log('tagSelection, filteredWordList', filteredWordList);
 		setWordObjList(WordsInterface.fullWordList());
 	}
 
+	const handleCancelTagFilter = e => {
+		setTagFilter('');
+		setWordObjList(fullWordObjList);
+	}
+
 	const handleTagFilter = e => {
 		setShowTags(true)
 /*
@@ -134,12 +139,12 @@ console.log('tagSelection, filteredWordList', filteredWordList);
 
 	{/* Tag filtering UI: Selected tag, tag selection button */}
 	    <div className="browse-filter-buttons">
-	      {tagFilter} <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
+	      { tagFilter ? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>) : null } <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
 	    </div>
 	  </div>
 
 	  <TagList showTags={showTags} tagList={tagList} wordObj={{}} tagWord={tagSelection} />
-	  <WordScroller pool={fullWordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
+	  <WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
 	</div>
 	);
 }
