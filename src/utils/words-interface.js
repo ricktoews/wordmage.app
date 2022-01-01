@@ -85,6 +85,7 @@ function fullWordList() {
 			if (!wordObj.source) {
 				wordObj.source = universal[ndx].source;
 			}
+			universal[ndx].tags = wordObj.tags;
 			universal[ndx].spotlight = wordObj.spotlight;
 			universal[ndx].dislike = wordObj.dislike;
 			universal[ndx].learn = wordObj.learn;
@@ -232,6 +233,21 @@ function getWordObj(word) {
 		console.log(word, 'not found');
 		return { word, def: '' };
 	}
+}
+
+/**
+ * Adjust tags for selected word
+ */
+function updateTags(word, tags) {
+	var wordObjIndex = userData.custom.findIndex(item => item.word === word);
+	if (wordObjIndex === -1) {
+		let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
+		addCustomWord(builtInWord);
+		wordObjIndex = userData.custom.findIndex(item => item.word === word);
+	}
+	var wordObj = userData.custom[wordObjIndex];
+	wordObj.tags = tags;
+	DataSource.saveUserData(userData);
 }
 
 /**
@@ -383,6 +399,7 @@ const WordsInterface = {
 	saveCustomWord,
 	deleteCustomWord,
 	undeleteCustomWord,
+	updateTags,
 	getSpotlightList,
 	isSpotlightEntry,
 	toggleSpotlight,

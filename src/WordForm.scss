@@ -14,7 +14,7 @@ $btn-cancel-background: #09f;
 
 $maxwidth: 400px;
 $header-height: 50px;
-$spotlight-width: $maxwidth - 2*$header-height;
+$spotlight-width: 380px;
 $spotlight-height: 200px;
 .word-form-container {
 	backdrop-filter: blur(2px);
@@ -29,15 +29,16 @@ $spotlight-height: 200px;
 
 	.word-form-wrapper {
 		position: relative;
-		top: 60px;
-		max-width: $spotlight-width;
+		top: 50px;
+		min-width: $spotlight-width;
 		min-height: $spotlight-height;
+		box-shadow: #ccc 5px 5px 10px;
 
 		.word-form {
 			border: 2px solid #ccc;
-			border-radius: 10px 10px 0 0;
+/*			border-radius: 10px 10px 0 0;*/
 			background-color: $word-form-background;
-			width: 300px;
+/*			width: 300px;*/
 
 			.header {
 				border-radius: 5px;

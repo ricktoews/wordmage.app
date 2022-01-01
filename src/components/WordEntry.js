@@ -5,6 +5,10 @@ function WordEntry(props) {
 	const { history } = props;
 	const { wordObj, listType } = props;
 
+	function tags(wordObj, e) {
+		props.popupTags(wordObj);
+	}
+
 	function deleteWordToggle(wordObj, e) {
 		var wordEl = e.target.parentNode.parentNode.querySelector('.word-item-word');
 		var classes = Array.from(wordEl.classList);
@@ -33,17 +37,17 @@ function WordEntry(props) {
 	return wordObj.divider ? <hr className="rejects" /> : (
 	  <div className="word-item">
 	    <div className="word-item-word-container">
-	      <div className="word-item-word">{wordObj.word}</div>
+	      <div onClick={e => { tags(wordObj, e); }} className="word-item-word">{wordObj.word}</div>
 	      { wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
 	      { wordObj.myown ? <div className="edit-btn" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i>&nbsp;</div> : null }
 		  <div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i>&nbsp;</div>
 	    </div>
 	    <div className="word-item-def-container">
-	      <div className="source-def-container">
+	      <div onClick={e => { tags(wordObj, e); }} className="source-def-container">
 	        <div className="word-item-def">{wordObj.def}</div>
-		    <span className="word-item-source">(source: {wordObj.source})</span>
-		  </div>
-		  <WordEntryButtons wordObj={wordObj} listType={listType} />
+		<span className="word-item-source">(source: {wordObj.source})</span>
+	      </div>
+	      <WordEntryButtons wordObj={wordObj} listType={listType} />
 	    </div>
 	  </div>
 	);
