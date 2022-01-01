@@ -81,10 +81,11 @@ function WordForm(props) {
 	    <div className="word-form">
 
 	      {/* Word Form Heading: Built-in, or Custom word */}
+{/*
 	      <div className="header">
 	        Add Word
 	      </div>
-
+*/}
 		  <div className="form field-wrapper">
 		      {/* Word input field (custom), or word displayed only (built-in) */}
 		      <div className="input-field">
