@@ -23,7 +23,6 @@ function BrowseWords(props) {
 	const [showTags, setShowTags] = useState(false);
 	const [ tagList, setTagList ] = useState(WordsInterface.getTagList());
 	const [ tagFilter, setTagFilter ] = useState('');
-
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
 
@@ -41,6 +40,7 @@ function BrowseWords(props) {
 				setStartingNdx(ndx);
 			}
 		}
+console.log('startingNdx', startingNdx);
 	}
 
 	// First step in updating word list on add / delete custom word.
@@ -71,6 +71,7 @@ function BrowseWords(props) {
 		let filteredWordObjList = fullWordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1);
 console.log('tagSelection, filteredWordList', filteredWordObjList);
 		setWordObjList(filteredWordObjList);
+		setStartingNdx(0);
 		setBrowseMode('tagged');
 //		scrollerRef.current.attributes.browseMode = 'tagged';
 		// End stolen code.
@@ -93,19 +94,14 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 		partialWordTimer = setTimeout(() => {
 			window.scrollTo(0,0);
 			// For some reason, we seem to have to set this state, even though we're pushing to history.
+			setWordObjList(fullWordObjList);
+			setBrowseMode('built-in');
+			setTagFilter('');
 			setStartingLetters(partial);
 			props.history.push('/browse/' + partial);
 			el.blur();
 		}, 1000);
 	};
-
-	const toggleSpotlight = word => {
-		props.toggleSpotlight(word);
-		// We should update wordObjList here.
-		// ... and this does work. the above props.toggleSpotlight calls toggleSpotlight in App.js,
-		// which calls WordsInterface.toggleSpotlight, updating the spotlight flag for this word.
-		setWordObjList(WordsInterface.fullWordList());
-	}
 
 	const handleCancelTagFilter = e => {
 		setTagFilter('');
@@ -135,7 +131,7 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 	<div className="browse-container">
 	  <div className="browse">
 	{/* Word search field */}
-	    <input type="text" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+	    <input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
 
 	{/* Tag filtering UI: Selected tag, tag selection button */}
 	    <div className="browse-filter-buttons">
