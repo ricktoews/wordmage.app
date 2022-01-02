@@ -50,6 +50,7 @@ function TagList(props) {
 			}
 		}	
 		setTags(props.tagList);
+		setIsAddTag(!!props.wordObj.word);
 	}, [props.showTags]);
 
 	function handleCheckClick(e) {
