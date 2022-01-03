@@ -77,9 +77,7 @@ function fullWordList() {
 			universal[ndx]._id = wordObj._id;
 			// Check for customized definition. Flag Word obj.
 			if (wordObj.def !== universal[ndx].def) {
-				wordObj.original = universal[ndx].def;
-				universal[ndx].def = wordObj.def;
-				wordObj.customDef = true;
+				wordObj.def = universal[ndx].def;
 			}
 			// Fill in source.
 			if (!wordObj.source) {
@@ -138,27 +136,6 @@ function addCustomWord(newWordObj) {
 }
 
 /**
- * Save custom definition.
- * If custom word isn't already listed, add it.
- * Maybe this needs to include the _id, to allow for modification of the word itself.
- */
-function saveCustomDef(id, def) {
-	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
-	let wordObj = userData.custom[wordObjIndex];
-	if (def === '') {
-		let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === wordObj.word));
-console.log('saveCustomDef', id, builtInWord);
-		wordObj.def = builtInWord.def;
-		wordObj.customDef = false;
-	} else {
-		wordObj.def = def;
-		wordObj.customDef = true;
-	}
-	DataSource.saveUserData(userData);
-	return wordObj;
-}
-
-/**
  * Save custom word.
  * If custom word isn't already listed, add it.
  * Maybe this needs to include the _id, to allow for modification of the word itself.
@@ -172,10 +149,6 @@ function saveCustomWord(id, word, def, source, spotlight) {
 		wordObj.word = word;
 		wordObj.def = def;
 		wordObj.source = source;
-		if (def === wordObj.original) {
-			delete wordObj.original;
-			wordObj.customDef = false;
-		}
 		wordObj.spotlight = spotlight;
 	}
 	DataSource.saveUserData(userData);
@@ -361,43 +334,10 @@ function getSpotlightItem() {
 	return spotlightItem;
 }
 
-/**
- * Save notes for word in custom list.
- */
-function saveNotes(id, notes) {
-	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
-	let wordObj = userData.custom[wordObjIndex];
-	wordObj.notes = notes;
-	DataSource.saveUserData(userData);
-	console.log('updated userData', userData);
-}
-
-/**
- * If word has notes, return them; otherwise, return empty string.
- */
-function getNotes(word) {
-	var wordObj = userData.custom.find(item => item.word === word);
-	var notes = wordObj && wordObj.notes || '';
-	return notes;
-}
-
-/**
- * Return true / false. Check custom array for a) word, and b) whether or not word has notes.
- */
-function hasNotes(word) {
-	var wordObj = userData.custom.find(item => item.word === word);
-	var result = wordObj && wordObj.notes && wordObj.notes.lenghth > 0;
-	return !!result;
-}
-
 function getUserData() {
 	return userData;
 }
 
-function replaceUserData(data) {
-	DataSource.saveUserData(data);
-	return data;
-}
 
 const WordsInterface = {
 	getCustom,
@@ -407,7 +347,6 @@ const WordsInterface = {
 	getWordList,
 	fullWordList,
 	isCustom,
-	saveCustomDef,
 	saveCustomWord,
 	deleteCustomWord,
 	undeleteCustomWord,
@@ -422,11 +361,7 @@ const WordsInterface = {
 	getWordObjById,
 	getWordObj,
 	getSpotlightItem,
-	saveNotes,
-	getNotes,
-	hasNotes,
 	getUserData,
-	replaceUserData
 };
 
 export default WordsInterface;

@@ -16,9 +16,6 @@ function Spotlight(props) {
 		scrambledItem = WordsInterface.getSpotlightItem();
 	}
 	const [item, setItem] = useState(scrambledItem);
-	const [openDef, setOpenDef] = useState(WordsInterface.hasNotes(scrambledItem.word) === false);
-	const [openMnemonic, setOpenMnemonic] = useState(WordsInterface.hasNotes(scrambledItem.word) === false);
-	const [notes, setNotes] = useState(WordsInterface.getNotes(scrambledItem.word));
 
 	useEffect(() => {
 		if (props.match.params.word) {
@@ -34,27 +31,6 @@ function Spotlight(props) {
 		var anotherItem = WordsInterface.getSpotlightItem();
 		setItem(anotherItem);
 	};
-
-	const handleSetNotes = e => {
-		var el = e.target;
-		var content = el.textContent;
-		WordsInterface.saveNotes(item._id, content);
-	};
-
-
-	const handleSetCustomDef = e => {
-		var el = e.target;
-		var content = el.textContent;
-		WordsInterface.saveCustomDef(item._id, content);
-	};
-
-	const handleClearCustom = e => {
-		e.preventDefault();
-		var el = e.target;
-		var content = '';
-		let currentItem = WordsInterface.saveCustomDef(item._id, content);
-		setItem(currentItem);
-	}
 
 	return (
 	<div className="spotlight-container">

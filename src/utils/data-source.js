@@ -44,8 +44,27 @@ function retrieveUserData() {
 	return userData;
 }
 
+function cleanCustomWords(custom) {
+	custom = custom.map(item => {
+		if (!item.myown) {
+			delete item.def;
+			delete item.source;
+		}
+		if (item.tags && item.tags.length === 0) {
+			delete item.tags;
+		}
+		return item;
+	});
+	custom = custom.filter(item => {
+		if (item.myown || item.tags || item.spotlight || item.learn || item.dislike) {
+			return true;
+		}
+	});
+	return custom;
+}
+
 async function saveUserData(userData) {
-	var custom = userData.custom;
+	var custom = cleanCustomWords(userData.custom);
 	localStorage.setItem('my-words', JSON.stringify(custom));
 
 	// If logged in profile, save custom list to database.

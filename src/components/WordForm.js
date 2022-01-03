@@ -7,7 +7,7 @@ function WordForm(props) {
 
 	if (props.wordId) {
 		// get word from custom list, from active list.
-		var { word, def, source = '', original, customDef } = WordsInterface.getWordObjById(props.wordId);
+		var { word, def, source = '', original } = WordsInterface.getWordObjById(props.wordId);
 		// If word already exists, set spotlight flag to false;
 		if (WordsInterface.isSpotlightEntry(props.word)) {
 			var { source = '' } = WordsInterface.getSpotlightEntry(props.word);
@@ -63,8 +63,6 @@ function WordForm(props) {
 		if (props.location.pathname === '/spotlight') {
 			WordsInterface.toggleActive(newWord);
 		}
-		// Save notes.
-		//WordsInterface.saveNotes(newWord, newNotes);
 
 		// Finally, hide form. This should reach the top and hopefully cascade rerender components.
 		props.cancelWordForm();
@@ -96,16 +94,6 @@ function WordForm(props) {
 		      <div className="input-field">
 		        <textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
 		      </div>
-
-		      {/* If definition customized, provide a Reset option. */}
-		      { customDef ? (
-		      <div className={'of-interest'}>
-		        <div className="" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-		          <div>Original Definition</div>
-		          <div className="btn btn-warning btn-sm" onClick={restoreOriginalDef}>Restore</div>
-		        </div>
-		        <div className="original-def">{ originalDef }</div>
-		      </div>) : null }
 
 		      {/* Source. For ... ? */}
 		      <div className="input-field">
