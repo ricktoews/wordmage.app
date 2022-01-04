@@ -132,6 +132,9 @@ function addCustomWord(newWordObj) {
 		dislike: newWordObj.dislike,
 		learn: newWordObj.learn
 	};
+	if (newWordObj.myown) {
+		wordObj.myown = true;
+	}
 	userData.custom.push(wordObj);
 }
 
@@ -143,7 +146,7 @@ function addCustomWord(newWordObj) {
 function saveCustomWord(id, word, def, source, spotlight) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	if (wordObjIndex === -1) {
-		addCustomWord({ word, def, source, spotlight: true });
+		addCustomWord({ word, def, source, spotlight: true, myown: true });
 	} else {
 		let wordObj = userData.custom[wordObjIndex];
 		wordObj.word = word;
