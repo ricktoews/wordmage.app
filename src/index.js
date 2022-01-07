@@ -14,6 +14,7 @@ async function initCustom(user_id) {
 	};
 	var response = await fetch('https://words-rest.toewsweb.net/loadcustom', options);
 	var custom = await response.json();
+	if (!custom) custom = [];
 	WordsInterface.initializeCustom(custom);
 }
 

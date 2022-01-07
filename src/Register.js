@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import DataSource from './utils/data-source';
+import WordsInterface from './utils/words-interface';
 const userLocalData = DataSource.retrieveUserLocalData();
 
 function Register(props) {
@@ -7,6 +9,9 @@ function Register(props) {
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ passwordConf, setPasswordConf ] = useState('');
+	const [ profileUser, setProfileUser ] = useState({});
+	const [ custom, setCustom ] = useState();
+	const [ showMsg, setShowMsg ] = useState(false);
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -15,6 +20,10 @@ function Register(props) {
 		console.log('focus email field');
 		emailRef.current.focus();
 	}, []);
+
+	const handleFocus = e => {
+		setShowMsg(false);
+	};
 
 	const handleChange = e => {
 		var el = e.target;
@@ -29,6 +38,31 @@ function Register(props) {
 
 	};
 
+	const setCustomData = custom => {
+		var user_custom = JSON.parse(custom);
+		WordsInterface.initializeCustom(user_custom);
+	}
+
+	const login = async () => {
+		console.log('login', email, password);
+		var options = {
+			method: 'POST',
+			headers: {'Content-type': 'application/json'},
+			body: JSON.stringify({ email, password })
+		};
+		var response = await fetch('https://words-rest.toewsweb.net/login', options);
+		var data = await response.json();
+		console.log('login from Registration', data);
+		var user_id = data.user_id;
+		setProfileUser({ user_id, email });
+		localStorage.setItem('wordmage-profile-user_id', user_id);
+		localStorage.setItem('wordmage-profile-email', email);
+		if (data.custom) {
+			setCustomData(data.custom);
+		}
+		props.history.push('/profile');
+	}
+
 	const register = async () => {
 		console.log('register', email, password, userLocalData);
 		var payload = { email, password, userData: userLocalData };
@@ -40,6 +74,13 @@ function Register(props) {
 		var response = await fetch('https://words-rest.toewsweb.net/register', options);
 		var data = await response.json();
 		console.log('register', data);
+		if (data.status) {
+			login();
+		}
+		else {
+			setShowMsg(true);
+			console.log('registration failed', data);
+		}
 	}
 
 	return (
@@ -49,17 +90,15 @@ function Register(props) {
 	    <div className="form">
 	      <div className="input-field">
 	        <div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
-	        <input placeholder="Email" ref={emailRef} type="email" id="register-email" className="register-email" onChange={handleChange} />
+	        <input placeholder="Email" ref={emailRef} type="email" id="register-email" className="register-email" onChange={handleChange} onFocus={handleFocus} />
 	      </div>
+		  { showMsg ? (<div className="profile-form-message">
+		    Email already registered.
+		  </div>) : null }
 	      <div className="input-field">
 	        <div className="icon-wrapper"><i className="glyphicon glyphicon-lock"></i></div>
-	        <input placeholder="Password" ref={passwordRef} type="text" id="register-password" className="register-password" onChange={handleChange} />
+	        <input placeholder="Password" ref={passwordRef} type="text" id="register-password" className="register-password" onChange={handleChange} onFocus={handleFocus} />
 	      </div>
-{/*
-	        <div className="password-confirmation-field">
-	          <label htmlFor="password">Confirm</label><input type="text" id="register-password-confirmation" className="register-password" onChange={handleChange} />
-	        </div>
-*/}
 	      <div className="button-wrapper">
 	        <button className={'register-btn'} onClick={register}>Register</button>
 	      </div>
@@ -68,4 +107,4 @@ function Register(props) {
 	);
 }	
 
-export default Register;
+export default withRouter(Register);
