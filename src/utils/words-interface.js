@@ -11,7 +11,7 @@ const WORD_POOL = [];
 
 function initializeCustom(custom) {
 	userData.custom = custom;
-	console.log('initializeCustom', userData);
+	console.log('initializeCustom', userData.custom.find(item => item.word === 'opprobrium'));
 }
 
 function getCustom() {
@@ -135,6 +135,9 @@ function addCustomWord(newWordObj) {
 	if (newWordObj.myown) {
 		wordObj.myown = true;
 	}
+	if (newWordObj.mem) {
+		wordObj.mem = newWordObj.mem;
+	}
 	userData.custom.push(wordObj);
 }
 
@@ -143,14 +146,15 @@ function addCustomWord(newWordObj) {
  * If custom word isn't already listed, add it.
  * Maybe this needs to include the _id, to allow for modification of the word itself.
  */
-function saveCustomWord(id, word, def, source, spotlight) {
+function saveCustomWord(id, word, def, mem, source, spotlight) {
 	var wordObjIndex = userData.custom.findIndex(item => item._id === id);
 	if (wordObjIndex === -1) {
-		addCustomWord({ word, def, source, spotlight: true, myown: true });
+		addCustomWord({ word, def, mem, source, spotlight: true, myown: true });
 	} else {
 		let wordObj = userData.custom[wordObjIndex];
 		wordObj.word = word;
 		wordObj.def = def;
+		wordObj.mem = mem;
 		wordObj.source = source;
 		wordObj.spotlight = spotlight;
 	}
@@ -337,6 +341,27 @@ function getSpotlightItem() {
 	return spotlightItem;
 }
 
+/**
+ * Get list of words with definitions to memorize.
+ */
+function getMemDefList() {
+	var list = userData.custom.filter(item => item.mem);
+	return list;
+}
+
+/**
+ * Get random item with definition to memorize.
+ */
+function getMemDefItem() {
+	var item = { word: '', def: '', mem: '' };
+	var list = getMemDefList();
+	if (list.length > 0) {
+		var ndx = Math.floor(Math.random() * list.length);
+		item = list[ndx];
+	}
+	return item;
+}
+
 function getUserData() {
 	return userData;
 }
@@ -364,6 +389,8 @@ const WordsInterface = {
 	getWordObjById,
 	getWordObj,
 	getSpotlightItem,
+	getMemDefList,
+	getMemDefItem,
 	getUserData,
 };
 

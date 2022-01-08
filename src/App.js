@@ -10,6 +10,7 @@ import BrowseWords from './components/BrowseWords';
 import Learn from './components/Learn';
 import SpotlightList from './components/SpotlightList';
 import Random from './components/Random';
+import MemorizeDef from './components/MemorizeDef';
 import Register from './Register';
 import Profile from './Profile';
 import About from './About';
@@ -72,6 +73,13 @@ function App(props) {
 		var history = props.history;
 		history.push('/spotlight-list');
 		setView('Liked');
+		setHamburgerClass('hamburger-nav');
+	}
+
+	const navToMemorizeDef = () => {
+		var history = props.history;
+		history.push('/memorize');
+		setView('Memorize');
 		setHamburgerClass('hamburger-nav');
 	}
 
@@ -140,6 +148,7 @@ console.log('cancelWordForm');
 	      <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
 	      <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
 	      <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
+	      <li onClick={navToMemorizeDef}><i className="glyphicon glyphicon-leaf"></i> Memorize</li>
 	      <li onClick={navToProfile}>Profile</li>
 	      <li onClick={navToAbout}>About</li>
 	    </ul>
@@ -173,6 +182,10 @@ console.log('cancelWordForm');
 	        toggleSpotlight={toggleSpotlight}
 	        />) } />
 	    <Route exact path={['/', '/random']} render={props => ( <Random
+	        popupWordForm={wordId => { popupWordForm(wordId); }}
+	        toggleSpotlight={toggleSpotlight}
+	        />) } />
+	    <Route exact path={['/memorize']} render={props => ( <MemorizeDef
 	        popupWordForm={wordId => { popupWordForm(wordId); }}
 	        toggleSpotlight={toggleSpotlight}
 	        />) } />

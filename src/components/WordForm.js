@@ -3,33 +3,22 @@ import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 
 function WordForm(props) {
-	var word = '', def = '', source = '', spotlight = true, originalDef = '';
+	var word = '', def = '', mem = '', source = '', spotlight = true;
 
 	if (props.wordId) {
 		// get word from custom list, from active list.
-		var { word, def, source = '', original } = WordsInterface.getWordObjById(props.wordId);
+		var { word, def, mem = '', source = '', original } = WordsInterface.getWordObjById(props.wordId);
 		// If word already exists, set spotlight flag to false;
 		if (WordsInterface.isSpotlightEntry(props.word)) {
 			var { source = '' } = WordsInterface.getSpotlightEntry(props.word);
 		} 
-		if (original) originalDef = original;
 	}
 
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
+	const [ newMem, setNewMem ] = useState(mem);
 	const [ newSource, setNewSource ] = useState(source);
-/*
-	useEffect(() => {
-		if (containerRef.current) {
-			containerRef.current.addEventListener('WordForm click', handleDocumentClicked, true);
-		}
-	}, []);
 
-	const handleDocumentClicked = e => {
-		var el = e.target;
-		console.log('handleDocumentClicked', el);
-	}
-*/
 	const handleChange = e => {
 		var el = e.target;
 		var notes = el.textContent;
@@ -45,6 +34,11 @@ function WordForm(props) {
 		setNewDef(el.value);
 	};
 
+	const handleMem = e => {
+		var el = e.target;
+		setNewMem(el.value);
+	};
+
 	const handleSource = e => {
 		var el = e.target;
 		setNewSource(el.value);
@@ -58,7 +52,7 @@ function WordForm(props) {
 
 	const saveWord = () => {
 		// Need to save custom word, spotlight, or whatever.
-		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, newSource, spotlight);
+		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, newMem, newSource, spotlight);
 		// If on Spotlight page, add word to active.
 		if (props.location.pathname === '/spotlight') {
 			WordsInterface.toggleActive(newWord);
@@ -68,22 +62,12 @@ function WordForm(props) {
 		props.cancelWordForm();
 	}
 
-	const restoreOriginalDef = () => {
-		console.log('Restore', originalDef, 'for this word');
-		setNewDef(originalDef);
-	};
-
 	return (
 	<div className="word-form-container">
 	  <div className="word-form-wrapper">
 	    <div className="word-form">
 
 	      {/* Word Form Heading: Built-in, or Custom word */}
-{/*
-	      <div className="header">
-	        Add Word
-	      </div>
-*/}
 		  <div className="form field-wrapper">
 		      {/* Word input field (custom), or word displayed only (built-in) */}
 		      <div className="input-field">
@@ -93,6 +77,11 @@ function WordForm(props) {
 		      {/* Definition input field */}
 		      <div className="input-field">
 		        <textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
+		      </div>
+
+		      {/* Part to memorize */}
+		      <div className="input-field">
+		        <textarea placeholder="Memorize (opt)" onChange={handleMem} id="new-mem" value={newMem}></textarea>
 		      </div>
 
 		      {/* Source. For ... ? */}
