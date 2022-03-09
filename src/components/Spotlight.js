@@ -36,9 +36,11 @@ function Spotlight(props) {
 	<div className="spotlight-container">
 	  <div className="spotlight-wrapper">
 	    <div className="spotlight">
-	      <div aria-label="def" className="word-item-def">
-	        {item.def}
-	      </div>
+		  <div className="word-item-def-container">
+	        <div aria-label="def" className="word-item-def">
+	          {item.def}
+	        </div>
+		  </div>
 	      <Scramble item={item} word={item.word} />
 
 	    </div>
