@@ -53,6 +53,11 @@ function TagList(props) {
 		setIsAddTag(!!props.wordObj.word);
 	}, [props.showTags]);
 
+	useEffect(() => {
+		console.log('set tagList', tagListRef);
+		props.tagListEl(tagListRef);
+	}, []);
+
 	function handleCheckClick(e) {
 		if (newTagRef.current) {
 			var newTag = newTagRef.current.value;
@@ -70,7 +75,7 @@ function TagList(props) {
 	}
 
 	return (
-	<div ref={tagListRef} className="tag-list-popup element-hide">
+	<div ref={tagListRef} className="clicked-word-container tag-list-popup element-hide">
 	  { isAddTag ? (
 	  <div className="button-wrapper">
 	    <div className="tag-button save-tag" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i></div>

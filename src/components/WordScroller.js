@@ -34,6 +34,7 @@ function WordScroller(props) {
 	}
 
 	function popupTags(wordObj) {
+		console.log('popupTags', wordObj);
 		setShowTags(true);
 		setTagWordObj(wordObj);
 	}
@@ -86,9 +87,20 @@ function WordScroller(props) {
 		return () => { console.log('disconnect observer'); intersectionObserver.disconnect(); }
 	}, []);
 
+	const tagListEl = ref => {
+		console.log('WordScroller, tagListEl', ref);
+		let el = ref.current;
+		let classes = Array.from(el.classList);
+		let isPopupActive = classes.indexOf('element-hide') === -1;
+		if (isPopupActive) {
+			console.log('Should hide popup');
+		}
+
+	}
+
 	return (
 	  <div className="word-list-container">
-	    <TagList showTags={showTags} tagList={tagList} wordObj={tagWordObj} tagWord={tagWord} />
+	    <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} tagWord={tagWord} />
 	    <div className="word-list-scroller" ref={scrollerRef}>
 	      <div id="sentinel" ref={sentinelRef}></div>
 	    </div>
