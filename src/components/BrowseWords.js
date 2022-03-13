@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
-import TagList from './TagList';
+import TagFilter from './TagFilter';
 
 const INFINITE_SCROLLING_ON = 'list-loading-container';
 const INFINITE_SCROLLING_OFF = 'hide-section';
@@ -152,7 +152,7 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 	    </div>
 	  </div>
 
-	  <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={{}} tagWord={tagSelection} />
+	  <TagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} />
 	  <WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
 	</div>
 	);
