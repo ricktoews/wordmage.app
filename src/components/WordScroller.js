@@ -33,8 +33,12 @@ function WordScroller(props) {
 		}
 	}
 
+	function closeTagPopup() {
+		setShowTags(false);
+	}
+
 	function popupTags(wordObj) {
-		console.log('popupTags', wordObj);
+//		console.log('popupTags', wordObj);
 		setShowTags(true);
 		setTagWordObj(wordObj);
 	}
@@ -100,7 +104,7 @@ function WordScroller(props) {
 
 	return (
 	  <div className="word-list-container">
-	    <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} tagWord={tagWord} />
+	    <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} closeTagPopup={closeTagPopup} tagWord={tagWord} />
 	    <div className="word-list-scroller" ref={scrollerRef}>
 	      <div id="sentinel" ref={sentinelRef}></div>
 	    </div>

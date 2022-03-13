@@ -39,16 +39,7 @@ function TagList(props) {
 
 	// Show tag list
 	useEffect(() => {
-		if (tagListRef.current) {
-			if (props.showTags) {
-				tagListRef.current.classList.remove('element-hide');
-				tagListRef.current.classList.add('element-show');
-			}
-			else {
-				tagListRef.current.classList.remove('element-show');
-				tagListRef.current.classList.add('element-hide');
-			}
-		}	
+		toggleTagPopup(props.showTags);
 		setTags(props.tagList);
 		setIsAddTag(!!props.wordObj.word);
 	}, [props.showTags]);
@@ -57,6 +48,20 @@ function TagList(props) {
 		console.log('set tagList', tagListRef);
 		props.tagListEl(tagListRef);
 	}, []);
+
+	function toggleTagPopup(showPopup) {
+		console.log('toggleTagPopup', showPopup);
+		if (tagListRef.current) {
+			if (showPopup) {
+				tagListRef.current.classList.remove('element-hide');
+				tagListRef.current.classList.add('element-show');
+			}
+			else {
+				tagListRef.current.classList.remove('element-show');
+				tagListRef.current.classList.add('element-hide');
+			}
+		}	
+	}
 
 	function handleCheckClick(e) {
 		if (newTagRef.current) {
@@ -68,6 +73,10 @@ function TagList(props) {
 		}
 	}
 
+	function handleClickCancel(e) {
+		props.closeTagPopup();
+	}
+
 	function handleTagClick(el, tag) {
 //		console.log('handleTagClick', el.dataset.tag, el.checked, tag);
 //		console.log('add tag', tag, 'to wordObj', props.wordObj);
@@ -76,20 +85,28 @@ function TagList(props) {
 
 	return (
 	<div ref={tagListRef} className="clicked-word-container tag-list-popup element-hide">
+	  <div className="word-item-word">{props.wordObj.word}</div>
+	  <div className="tag-list">
+	    <div>Select one or more tags to associate with this word.</div>
+	    { tags ? tags.map((item, ndx) => {
+	        return <Tag key={ndx} label={item} wordTags={props.wordObj.tags} tagClick={handleTagClick} />
+	    }) : null}
+
+	    <div>To use a new tag, enter it here.</div>
+	    { isAddTag ? (<div>
+	      <div><input ref={newTagRef} type="text" placeholder="New Tag" /></div>
+	      <hr />
+	      </div>) : null }
+
+	  </div>
+
 	  { isAddTag ? (
-	  <div className="button-wrapper">
-	    <div className="tag-button save-tag" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i></div>
+	  <div className="tag-list-button-wrapper">
+		<div className="badge tag-button tag-button-cancel" onClick={handleClickCancel}><i className="glyphicon glyphicon-remove"></i> Cancel</div>
+	    <div className="badge tag-button" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i> Save</div>
 	  </div>
 	  ) : null }
-	  <div className="tag-list">
-	  { isAddTag ? (<div>
-	    <div><input ref={newTagRef} type="text" placeholder="New Tag" /></div>
-	    <hr />
-	    </div>) : null }
-	  { tags ? tags.map((item, ndx) => {
-	      return <Tag key={ndx} label={item} wordTags={props.wordObj.tags} tagClick={handleTagClick} />
-	  }) : null}
-	  </div>
+
 	</div>
 	);
 }
