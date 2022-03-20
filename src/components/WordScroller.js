@@ -29,6 +29,7 @@ function WordScroller(props) {
 		WordsInterface.updateTags(wordObj.word, wordObj.tags);
 		if (closeTagList) {
 			setShowTags(false);
+			console.log('getTagList', WordsInterface.getTagList());
 			setTagList(WordsInterface.getTagList());
 		}
 	}
