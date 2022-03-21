@@ -64,7 +64,7 @@ function App(props) {
 	const navToSpotlight = () => {
 		var history = props.history;
 		history.push('/spotlight');
-		setView('Unscramble');
+		setView('Solve');
 		setHamburgerClass('hamburger-nav');
 	}
 

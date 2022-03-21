@@ -50,10 +50,12 @@ function TagFilter(props) {
 	return (
 	<div ref={tagListRef} className="clicked-word-container tag-list-popup element-hide">
 	  <div className="tag-list">
-		<div>Select tag for filtering.</div>
+		<div className="instructions">Select tag for filtering.</div>
+        <div className="tag-wrapper">
 	    { tags ? tags.map((item, ndx) => {
 	        return <Tag key={ndx} tag={item} tagClick={tagClick} />
 	    }) : null}
+        </div>
 
 	  </div>
 	</div>
