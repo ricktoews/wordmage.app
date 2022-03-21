@@ -126,6 +126,9 @@ body {
 }
 
 .badge {
+    padding: 10px;
+    font-family: Futura;
+    font-size: 16px;
 	border-radius: 50px;
 	border: none;
 	color: white;
@@ -206,7 +209,7 @@ body {
 	color: #fff;
 	line-height: 16px;
 	font-size: 16px;
-	height: 26px;
+    padding: 10px;
     cursor: pointer;
 }
 
@@ -332,6 +335,7 @@ body {
 		padding: 0 5px;
 		color: white;
 		text-transform: uppercase;
+		font-family: Futura;
 		font-size:1em;
 		font-weight: bold;
 		letter-spacing: .25em;
@@ -411,12 +415,12 @@ body {
 				padding: 0;
 				margin: 0;
 				list-style-type: none;
-
+/*
 				li {
-					font-family: Roboto;
+					font-family: Times;
 					font-weight: 300;
 					border-top: 2px solid #ccc;
-					color: #000;
+					color: #f00;
 
 					.list-item {
 						position: relative;
@@ -440,6 +444,8 @@ body {
 						background-color: #eee;
 					}
 				}
+*/
+/*
 				.list-loading-container {
 					position: relative;
 					.list-loading-marker {
@@ -450,6 +456,7 @@ body {
 						top: -500px;
 					}
 				}
+*/
 			}
 		}
 	}
@@ -621,7 +628,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    font-family: Lato;
+    font-family: Futura;
     padding-top: 10px;
     margin-bottom: 10px;
     background-color: #f8f8f8;
@@ -633,7 +640,7 @@ body {
 }
 
 .word-item-word {
-    font-size:1.1em;
+    font-size:1.3em;
     min-width: 100px;
     padding: 1px 15px 1px 5px;
     color: white;
@@ -659,6 +666,7 @@ body {
 }
 
 .word-item-def-container {
+    font-family: Lato;
     width: 100%;
     padding: 5px;
     color: black;
@@ -686,8 +694,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    font-size: .75em;
-    padding: 0px 10px;
 }
 
 .word-scramble-buttons {
@@ -818,8 +824,16 @@ input[type="checkbox"] {
 }
 */
 .tag-list {
-	padding: 10px;
 }
+.tag-list > .instructions {
+  padding: 10px;
+  background-color: black;
+  color: white;
+}
+.tag-list > .tag-wrapper {
+  padding: 6px;
+}
+
 .tag-list-button-wrapper {
 	display: flex;
 	justify-content: center;
