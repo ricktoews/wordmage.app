@@ -140,8 +140,8 @@ console.log('cancelWordForm');
 	      <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
 	      <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
 	      <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
-	      <li onClick={navToProfile}>Profile</li>
-	      <li onClick={navToAbout}>About</li>
+	      <li onClick={navToProfile}><i className="glyphicon glyphicon-user"></i> Profile</li>
+	      <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
 	    </ul>
 	  </nav>
 
