@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,100;1,300&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
 
-
 @import './WordForm.scss';
-
 
 /*
   COLORS
@@ -26,6 +24,9 @@ $list-word-background: #fff;
 
 $word-color: $list-word-color;
 $word-background: $list-word-background;
+$word-btn-height: 32px;
+$word-btn-width: 32px;
+$word-btn-font: 14px;
 
 $info-background: #A8AFA5;
 $info-color: #000000;
@@ -42,15 +43,6 @@ $header-height: 50px;
 $spotlight-width: 100vw;
 $spotlight-height: 200px;
 
-/*
-body {
-	height: 100vh;
-	background-image:url('/assets/book-letters.jpeg');
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position-y: bottom;
-}
-*/
 
 body {
 	font-family: Roboto;
@@ -74,47 +66,62 @@ body {
 }
 
 .edit-btn {
-	width: 25px;
-	height: 25px;
+	width: $word-btn-width;
+	height: $word-btn-height;
 	background-color:#0c0;
-	border-radius: 12px;
+	border-radius: 50%;
 	color: white;
-	font-size: 8pt;
+	font-size: $word-btn-font;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin: 0 5px;
+	margin: 0 2px;
+	cursor: pointer;
 }
 
 .trash-btn {
-	width: 25px;
-	height: 25px;
+	width: $word-btn-width;
+	height: $word-btn-height;
 	background-color:#c00;
-	border-radius: 12px;
+	border-radius: 50%;
 	color: white;
-	font-size: 8pt;
+	font-size: $word-btn-font;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin: 0 5px;
+	margin: 0 2px;
+	cursor: pointer;
 }
 
 .scramble-btn {
-	width: 25px;
-	height: 25px;
+	width: $word-btn-width;
+	height: $word-btn-height;
 	background-color:#09f;
-	border-radius: 12px;
+	border-radius: 50%;
 	color: white;
-	font-size: 8pt;
+	font-size: $word-btn-font;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin: 0 5px;
+	margin: 0 2px;
 	cursor: pointer;
 }
 
 .badge-add {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
 	background: #09f;
+	color: white;
+	/* letter-spacing: normal here to cancel letter-spacing from header. 
+	   Otherwise, the icon in this button is thrown off center. */
+	letter-spacing: normal;
+	font-size: 12pt;
+	margin: 2px;
+	cursor: pointer;
 }
 
 .badge-delete {
@@ -328,7 +335,7 @@ body {
 
 	.header-content {
 		background-color: #000;
-		height: $header-height - 10;
+		height: $header-height - 8;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -641,8 +648,10 @@ body {
 
 .word-item-word {
     font-size:1.3em;
+	letter-spacing:.1em;
     min-width: 100px;
     padding: 1px 15px 1px 5px;
+	margin-right: 5px;
     color: white;
     background-color: #09f;
 

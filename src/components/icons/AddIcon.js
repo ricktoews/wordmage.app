@@ -1,7 +1,7 @@
 const AddIcon = props => {
-	return <button onClick={props.onClick} className="btn btn-danger badge-add">
-          <span className="glyphicon glyphicon-plus"></span>
-        </button>
+	return <div onClick={props.onClick} className="badge-add">
+          <i className="glyphicon glyphicon-plus"></i>
+        </div>
 }
 
 export default AddIcon;

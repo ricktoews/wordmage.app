@@ -34,9 +34,9 @@ function WordEntry(props) {
 	  <div className="word-item">
 	    <div className="word-item-word-container">
 	      <div className="word-item-word">{wordObj.word}</div>
-	      { wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i>&nbsp;</div> : null }
-	      { wordObj.myown ? <div className="edit-btn" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i>&nbsp;</div> : null }
-		  <div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i>&nbsp;</div>
+	      { wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null }
+	      { wordObj.myown ? <div className="edit-btn" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></div> : null }
+		  <div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
 	    </div>
 	    <div className="word-item-def-container">
 	      <div className="source-def-container">
