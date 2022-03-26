@@ -117,9 +117,9 @@ function Profile(props) {
 	return (
 	  <div ref={profileFormRef} className="profile-form plain-content container">
 		<div ref={clickedWordRef} className="clicked-word-container element-hide">
-		  <div className="clicked-word">
-	        <div>{clickedWord}</div>
-		    <div>{clickedDef}</div>
+		  <div className="clicked-word-item">
+	      <div className="clicked-word">{clickedWord}</div>
+		    <div className="clicked-def">{clickedDef}</div>
 		  </div>
 		</div>
 	        <h3>Profile</h3>
