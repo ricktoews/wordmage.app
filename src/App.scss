@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,100;1,300&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Cardo&family=Lato:wght@300;400&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
 @import './WordForm.scss';
 
 /*
@@ -8,15 +6,20 @@
 */
 $site-green: #008800;
 $site-red: #de3c4b;
-
-$large-button-color: rgb(128, 0, 255);
-$word-control-button-color: rgb(128, 0, 255);
+$experimental-green: rgba(104,160,8, .7);
+$button-purple: rgb(128,0,255);
+$large-button-color: $experimental-green;
+$word-control-button-color: $experimental-green;
 $word-control-label-color: #fff;
-$word-control-off-border: rgb(128, 0, 255);
+$word-control-off-border: $experimental-green;
 $word-delete-button: rgb(0, 0, 0);
 $word-edit-button: rgb(0, 0, 0);
 $word-delete-button-border: 1px solid rgb(255,255,255);
 $word-edit-button-border: 1px solid rgb(255,255,255);
+$button-orange: rgb(255, 153, 0);
+$button-background-another: $button-purple;
+$btn-add-background: $button-purple;
+$learning-word-background: $experimental-green;
 
 $header-background-color: rgb(60,0,80);
 
@@ -34,7 +37,6 @@ $scramble-letter-picked: rgb(128,128,128);
 $scramble-letter-color: rgb(255,255,255);
 $unscrambled-letter: rgb(128,0,255);
 
-$btn-add-background: $site-red;
 
 $side-nav-background: #333;
 
@@ -141,7 +143,7 @@ body {
 	border-radius: 50%;
 	width: 40px;
 	height: 40px;
-	background: $large-button-color;
+	background: $btn-add-background;
 	color: white;
 	/* letter-spacing: normal here to cancel letter-spacing from header. 
 	   Otherwise, the icon in this button is thrown off center. */
@@ -202,7 +204,7 @@ body {
 }
 
 .badge-learn-filter-off i {
-	color: #3f0;
+	color: $word-control-off-border;
 }
 
 .badge-dislike-filter-off {
@@ -239,7 +241,7 @@ body {
 }
 
 .badge-tag {
-	background: #09f;
+	background: $button-purple;
 	color: #fff;
 	line-height: 16px;
 	font-size: 16px;
@@ -268,8 +270,7 @@ body {
 	padding: 10px;
 	font-size:16pt;
 	border-radius: 50%;
-	border: 1px solid #f90;
-	background-color: #f90;
+	background-color: $button-background-another;
 	color: #fff;
 }
 
@@ -316,7 +317,6 @@ body {
 		border-radius: 50%;
 		width: 25px;
 		height: 25px;
-		background-color: $btn-add-background;
 	}
 }
 
@@ -531,10 +531,15 @@ body {
 				}
 				.word-item-def-container {
 					padding: 10px 20px;
-					font-size: 10pt;
+					font-size: 8pt;
+					font-family: Roboto Condensed;
+					font-weight: bold;
 					border-top: 1px solid $scramble-definition-border;
 					border-bottom: 1px solid $scramble-definition-border;
 					background-color: $scramble-definition-background;
+				}
+				.word-item-def-container:first-letter {
+					text-transform: capitalize;
 				}
 				.of-interest {
 					background-color: $info-background;
@@ -822,7 +827,7 @@ input[type="checkbox"] {
 }
 .my-words > .my-word {
 	padding: 5px 12px;
-	background-color: #09f;
+	background-color: $learning-word-background;
 	color: white;
 	font-family: futura;
 	font-size: 14pt;
@@ -857,11 +862,13 @@ input[type="checkbox"] {
 	padding: 5px;
 	font-family: futura;
 	font-size: 16pt;
-	background: rgb(23, 198, 204);
+	background: rgb(0,0,0);
 	color: white;
 }
 .clicked-def {
 	padding: 5px;
+	font-family: Roboto Condensed;
+	font-weight: bold;
 
 }
 /*
@@ -887,6 +894,7 @@ input[type="checkbox"] {
   padding: 10px;
   background-color: black;
   color: white;
+  font-family: Roboto Condensed;
 }
 .tag-list > .tag-wrapper {
   padding: 6px;
