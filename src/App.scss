@@ -26,6 +26,14 @@ $word-item-padding: 0;
 $word-item-bottom-border: rgb(0, 0, 0);
 $word-scramble-button: #666;
 
+$scramble-definition-background: rgb(192,192,192);
+$scramble-definition-border: rgb(0,0,0);
+
+$scramble-letter-background: rgb(0,0,0);
+$scramble-letter-picked: rgb(128,128,128);
+$scramble-letter-color: rgb(255,255,255);
+$unscrambled-letter: rgb(128,0,255);
+
 $btn-add-background: $site-red;
 
 $side-nav-background: #333;
@@ -521,6 +529,13 @@ body {
 					padding: 5px;
 					border-bottom: 1px groove black;
 				}
+				.word-item-def-container {
+					padding: 10px 20px;
+					font-size: 10pt;
+					border-top: 1px solid $scramble-definition-border;
+					border-bottom: 1px solid $scramble-definition-border;
+					background-color: $scramble-definition-background;
+				}
 				.of-interest {
 					background-color: $info-background;
 					color: $info-color;
@@ -610,14 +625,14 @@ body {
 			height: 60px;
 			border-radius: 50%;
 			margin: 0 8px 15px 8px;
-			background-color: #09f;
-			color: white;
+			background-color: $scramble-letter-background;
+			color: $scramble-letter-color;
 			text-transform: uppercase;
 			font-size: 1.25em;
 			font-weight: bold;
 			font-family: futura;
 			&.selected {
-				background-color: #67c2ff;
+				background-color: $scramble-letter-picked;
 			}
 			&.hinted {
 				background-color: #f90;
@@ -633,10 +648,12 @@ body {
 		text-transform: uppercase;
 		font-weight: bold;
 		font-family: futura;
-		color: #09f;
+		color: $unscrambled-letter;
 	}
 	.unscrambled {
-		color: #09f;
+		color: $unscrambled-letter;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+
 	}
 	.show-word {
 		color: #f90;
