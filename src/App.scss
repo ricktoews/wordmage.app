@@ -10,8 +10,15 @@ $site-green: #008800;
 $site-red: #de3c4b;
 
 $large-button-color: rgb(128, 0, 255);
-$word-control-button-color: #09f;
+$word-control-button-color: rgb(128, 0, 255);
 $word-control-label-color: #fff;
+$word-control-off-border: rgb(128, 0, 255);
+$word-delete-button: rgb(0, 0, 0);
+$word-edit-button: rgb(0, 0, 0);
+$word-delete-button-border: 1px solid rgb(255,255,255);
+$word-edit-button-border: 1px solid rgb(255,255,255);
+
+$header-background-color: rgb(60,0,80);
 
 $word-tab-background: rgb(0, 0, 0);
 $word-header-background: rgb(0, 0, 0);
@@ -78,7 +85,8 @@ body {
 .edit-btn {
 	width: $word-btn-width;
 	height: $word-btn-height;
-	background-color:#0c0;
+	background-color: $word-edit-button;
+	border: $word-edit-button-border;
 	border-radius: 50%;
 	color: white;
 	font-size: $word-btn-font;
@@ -92,7 +100,8 @@ body {
 .trash-btn {
 	width: $word-btn-width;
 	height: $word-btn-height;
-	background-color:#c00;
+	background-color: $word-delete-button;
+	border: $word-delete-button-border;
 	border-radius: 50%;
 	color: white;
 	font-size: $word-btn-font;
@@ -135,7 +144,7 @@ body {
 }
 
 .badge-delete {
-	background: #c00;
+	background: $word-delete-button;
 }
 
 .badge-edit {
@@ -175,8 +184,8 @@ body {
 
 .badge-learn-filter-off {
 	background: #fff;
-	border: 1px solid $word-control-button-color;
-	color: #09f;
+	border: 1px solid $word-control-off-border;
+	color: $word-control-off-border;
 }
 
 .badge-learn-filter-on {
@@ -190,8 +199,8 @@ body {
 
 .badge-dislike-filter-off {
 	background: #fff;
-	border: 1px solid $word-control-button-color;
-	color: #09f;
+	border: 1px solid $word-control-off-border;
+	color: $word-control-off-border;
 }
 
 .badge-dislike-filter-on {
@@ -201,8 +210,8 @@ body {
 
 .badge-like-filter-off {
 	background: #fff;
-	border: 1px solid $word-control-button-color;
-	color: #09f;
+	border: 1px solid $word-control-off-border;
+	color: $word-control-off-border;
 }
 
 .badge-like-filter-on {
@@ -212,8 +221,8 @@ body {
 
 .badge-tag-filter-off {
 	background: #fff;
-	border: 1px solid $word-control-button-color;
-	color: #09f;
+	border: 1px solid $word-control-off-border;
+	color: $word-control-off-border;
 }
 
 .badge-tag-filter-on {
@@ -258,12 +267,12 @@ body {
 
 .badge-custom-filter-off {
 	background: #fff;
-	border: 2px solid #09f;
-	color: #09f;
+	border: 2px solid $word-control-off-border;
+	color: $word-control-off-border;
 }
 
 .badge-custom-filter {
-	background: #09f;
+	background: $word-control-button-color;
 	color: #fff;
 }
 
@@ -345,7 +354,7 @@ body {
 	background-color: white;
 
 	.header-content {
-		background-color: #000;
+		background-color: $header-background-color;
 		height: $header-height - 8;
 		display: flex;
 		align-items: center;
