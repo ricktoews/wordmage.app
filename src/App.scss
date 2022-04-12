@@ -9,6 +9,16 @@
 $site-green: #008800;
 $site-red: #de3c4b;
 
+$large-button-color: rgb(128, 0, 255);
+$word-control-button-color: #09f;
+$word-control-label-color: #fff;
+
+$word-tab-background: rgb(0, 0, 0);
+$word-header-background: rgb(0, 0, 0);
+$word-item-padding: 0;
+$word-item-bottom-border: rgb(0, 0, 0);
+$word-scramble-button: #666;
+
 $btn-add-background: $site-red;
 
 $side-nav-background: #333;
@@ -96,7 +106,7 @@ body {
 .scramble-btn {
 	width: $word-btn-width;
 	height: $word-btn-height;
-	background-color:#09f;
+	background-color:$word-scramble-button;
 	border-radius: 50%;
 	color: white;
 	font-size: $word-btn-font;
@@ -114,7 +124,7 @@ body {
 	border-radius: 50%;
 	width: 40px;
 	height: 40px;
-	background: #09f;
+	background: $large-button-color;
 	color: white;
 	/* letter-spacing: normal here to cancel letter-spacing from header. 
 	   Otherwise, the icon in this button is thrown off center. */
@@ -165,13 +175,13 @@ body {
 
 .badge-learn-filter-off {
 	background: #fff;
-	border: 1px solid #09f;
+	border: 1px solid $word-control-button-color;
 	color: #09f;
 }
 
 .badge-learn-filter-on {
-	background: #09f;
-	color: #fff;
+	background: $word-control-button-color;
+	color: $word-control-label-color;
 }
 
 .badge-learn-filter-off i {
@@ -180,35 +190,35 @@ body {
 
 .badge-dislike-filter-off {
 	background: #fff;
-	border: 1px solid #09f;
+	border: 1px solid $word-control-button-color;
 	color: #09f;
 }
 
 .badge-dislike-filter-on {
-	background: #09f;
-	color: #fff;
+	background: $word-control-button-color;
+	color: $word-control-label-color;
 }
 
 .badge-like-filter-off {
 	background: #fff;
-	border: 1px solid #09f;
+	border: 1px solid $word-control-button-color;
 	color: #09f;
 }
 
 .badge-like-filter-on {
-	background: #09f;
-	color: #fff;
+	background: $word-control-button-color;
+	color: $word-control-label-color;
 }
 
 .badge-tag-filter-off {
 	background: #fff;
-	border: 1px solid #09f;
+	border: 1px solid $word-control-button-color;
 	color: #09f;
 }
 
 .badge-tag-filter-on {
-	background: #09f;
-	color: #fff;
+	background: $word-control-button-color;
+	color: $word-control-label-color;
 }
 
 .badge-tag {
@@ -221,25 +231,26 @@ body {
 }
 
 .badge-scramble {
-	min-height: 30px;
-	padding: 10px;
-	font-size:12pt;
-	border: 1px solid #4eb54e;
-	background-color: #4eb54e;
+	min-height: 40px;
+//	padding: 10px;
+	font-size:14pt;
+	background-color: $large-button-color;
 	color: #fff;
 }
 
 .badge-refresh {
-	border: 1px solid #f90;
-	background-color: #f90;
+	min-height: 40px;
+	font-size:14pt;
+	background-color: $large-button-color;
 	color: #fff;
 }
 
 .badge-another {
-	min-width: 140px;
-	min-height: 50px;
+	width: 150px;
+	height: 150px;
 	padding: 10px;
-	font-size:14pt;
+	font-size:16pt;
+	border-radius: 50%;
 	border: 1px solid #f90;
 	background-color: #f90;
 	color: #fff;
@@ -595,6 +606,7 @@ body {
 			text-transform: uppercase;
 			font-size: 1.25em;
 			font-weight: bold;
+			font-family: futura;
 			&.selected {
 				background-color: #67c2ff;
 			}
@@ -611,6 +623,7 @@ body {
 		letter-spacing: .25em;
 		text-transform: uppercase;
 		font-weight: bold;
+		font-family: futura;
 		color: #09f;
 	}
 	.unscrambled {
@@ -636,9 +649,9 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     font-family: Futura;
-    padding-top: 10px;
-    margin-bottom: 10px;
-    background-color: #f8f8f8;
+    padding-top: $word-item-padding;
+    margin-bottom: 40px;
+    background-color: $word-header-background;
     border-top: 1px solid #999;
 }
 
@@ -652,7 +665,7 @@ body {
     padding: 1px 15px 1px 5px;
 	margin-right: 5px;
     color: white;
-    background-color: #09f;
+    background-color: $word-tab-background;
 
     &.deleted {
         background-color: gray;
@@ -682,9 +695,9 @@ body {
 }
 
 .word-list-scroller .word-item-def-container {
-    border-top: 2px solid #09f;
+    border-top: 2px solid $word-item-bottom-border;
     border-right: 1px solid #09f;
-    border-bottom: 2px solid #09f;
+    border-bottom: 2px solid $word-item-bottom-border;
     border-radius: 0 5px 0px 0;
 }
 
