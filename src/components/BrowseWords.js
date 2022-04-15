@@ -110,19 +110,6 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 
 	const handleTagFilter = e => {
 		setShowTags(true)
-/*
-		if (browseMode !== 'custom') {
-			let filteredWordList = wordObjList.filter(obj => obj.myown).map(item => item.word);
-			setWordListSubset(filteredWordList);
-			setBrowseMode('custom');
-			scrollerRef.current.attributes.browseMode = 'custom';
-		} else {
-			setStartingLetters('');
-			setBrowseMode('built-in');
-			props.history.push('/browse/');
-			scrollerRef.current.attributes.browseMode = 'built-in';
-		}
-*/
 	}
 
 	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
@@ -136,9 +123,7 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 		if (isPopupActive) {
 			console.log('Should hide popup');
 		}
-
 	}
-
 
 	return (
 	<div className="browse-container">

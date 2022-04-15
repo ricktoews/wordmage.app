@@ -19,16 +19,13 @@ function TagFilter(props) {
 	useEffect(() => {
 		toggleTagPopup(props.showTags);
 		setTags(props.tagList);
-//		setIsAddTag(!!props.wordObj.word);
 	}, [props.showTags]);
 
 	useEffect(() => {
-		console.log('set tagList', tagListRef);
 		props.tagListEl(tagListRef);
 	}, []);
 
 	function toggleTagPopup(showPopup) {
-		console.log('toggleTagPopup', showPopup);
 		if (tagListRef.current) {
 			if (showPopup) {
 				tagListRef.current.classList.remove('element-hide');
@@ -42,8 +39,6 @@ function TagFilter(props) {
 	}
 
 	function tagClick(tag) {
-		console.log('tagClick', tag);
-//		console.log('add tag', tag, 'to wordObj', props.wordObj);
 		props.tagWord(props.wordObj, tag, true, true);
 	}
 

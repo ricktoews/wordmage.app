@@ -18,18 +18,7 @@ function WordForm(props) {
 	const [ newWord, setNewWord ] = useState(word);
 	const [ newDef, setNewDef ] = useState(def);
 	const [ newSource, setNewSource ] = useState(source);
-/*
-	useEffect(() => {
-		if (containerRef.current) {
-			containerRef.current.addEventListener('WordForm click', handleDocumentClicked, true);
-		}
-	}, []);
 
-	const handleDocumentClicked = e => {
-		var el = e.target;
-		console.log('handleDocumentClicked', el);
-	}
-*/
 	const handleChange = e => {
 		var el = e.target;
 		var notes = el.textContent;
