@@ -68,7 +68,7 @@ function WordEntryButtons(props) {
 			el = el.parentNode;
 		}
 		var data = el.dataset;
-		popupTags(wordObj);
+		popupTags(wordObj, el);
 		// Popup tag list.
 	}
 	

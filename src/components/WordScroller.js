@@ -12,6 +12,10 @@ function WordScroller(props) {
 	const [showTags, setShowTags] = useState(false);
 	const [tagWordObj, setTagWordObj] = useState({});
 	const [tagList, setTagList] = useState(WordsInterface.getTagList());
+	const [tagToggle, setTagToggle] = useState(null);
+
+	const taggedOnClass = 'badge-tag-filter-on';
+	const taggedOffClass = 'badge-tag-filter-off';
 
 	function tagWord(wordObj, tag, add, closeTagList) {
 		if (Array.isArray(wordObj.tags) === false) { wordObj.tags = []; }
@@ -20,10 +24,19 @@ function WordScroller(props) {
 			if (add) {
 				if (ndx === -1) {
 					wordObj.tags.push(tag);
+					// highlight Tag button
+					tagToggle.classList.remove(taggedOffClass);
+					tagToggle.classList.add(taggedOnClass);
 				}
 			}
 			else {
 				wordObj.tags.splice(ndx, 1);
+				// unhighlight Tag button
+				console.log('wordObj.tags', wordObj.tags);
+				if (wordObj.tags.length === 0) {
+					tagToggle.classList.remove(taggedOnClass);
+					tagToggle.classList.add(taggedOffClass);
+				}
 			}
 		}
 		WordsInterface.updateTags(wordObj.word, wordObj.tags);
@@ -38,10 +51,11 @@ function WordScroller(props) {
 		setShowTags(false);
 	}
 
-	function popupTags(wordObj) {
-//		console.log('popupTags', wordObj);
+	function popupTags(wordObj, tagButtonEl) {
+		//console.log('popupTags', wordObj, tagButtonEl);
 		setShowTags(true);
 		setTagWordObj(wordObj);
+		setTagToggle(tagButtonEl);
 	}
 
 	function loadItems(quant) {
