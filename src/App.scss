@@ -679,7 +679,6 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    font-family: Futura;
     padding-top: $word-item-padding;
     margin-bottom: 40px;
     background-color: $word-header-background;
@@ -691,10 +690,11 @@ body {
 }
 
 .word-item-word {
+    font-family: Futura;
     font-size:1.3em;
     min-width: 100px;
     padding: 1px 15px 1px 5px;
-	margin-right: 5px;
+	/*margin-right: 5px;*/
     color: white;
     background-color: $word-tab-background;
 
@@ -841,9 +841,9 @@ input[type="checkbox"] {
 .clicked-word-container {
 	position: fixed;
 	z-index: 100;
-	top: 60px;
-	left: calc(50vw - 150px);
-	width: 300px;
+	top: 50px;
+	left: calc(50vw - 190px);
+	width: 380px;
 //	height: 150px;
 //	border: 2px solid #ccc;
 	background-color: #fff;
@@ -869,9 +869,6 @@ input[type="checkbox"] {
 }
 .clicked-def {
 	padding: 5px;
-	font-family: Roboto Condensed;
-	font-weight: bold;
-
 }
 /*
 .tag-list-popup {
@@ -890,8 +887,7 @@ input[type="checkbox"] {
 	}
 }
 */
-.tag-list {
-}
+
 .tag-list > .instructions {
   padding: 10px;
   background-color: black;

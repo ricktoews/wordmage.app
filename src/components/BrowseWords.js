@@ -109,7 +109,7 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 	}
 
 	const handleTagFilter = e => {
-		setShowTags(true)
+		setShowTags(!showTags);
 	}
 
 	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
