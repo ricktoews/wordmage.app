@@ -1,10 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
+
+// Import WordMageContext to set Context for app.
+import { WordMageContext } from './WordMageContext';
+
+// Import WordsInterface - data, utilities.
+import WordsInterface from './utils/words-interface';
+
+// Import components
 import Hamburger from './components/Hamburger';
 import AddIcon from './components/icons/AddIcon';
 import WordForm from './components/WordForm';
-import WordsInterface from './utils/words-interface';
-
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import Learn from './components/Learn';
@@ -17,6 +23,11 @@ import About from './About';
 import './App.scss';
 
 function App(props) {
+  // Set up Context for app. WordMageContext.Provider will wrap everything.
+  const [ contextValue, setContextValue ] = useState({ targetEl: null });
+  const contextProviderValue = useMemo(() => ({ contextValue, setContextValue }), [contextValue, setContextValue]);
+
+  //---------------------------------------------
 	const wordHash = WordsInterface.fullWordList();
 	const [fullWordList, setFullWordList] = useState(wordHash);
 	const [ view, setView ] = useState('Random');
@@ -41,6 +52,7 @@ function App(props) {
 		if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
 			setWordFormState(false);
 		}
+    setContextValue({...contextValue, targetEl: el });
 	}
 
 	useEffect(() => {
@@ -154,32 +166,35 @@ console.log('cancelWordForm');
 	  </header>
 
 	  { wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div/> }
-	  <Switch>
-	    <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        /> } />
-	    <Route exact path={['/learn']} render={props => ( <Learn
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        />) } />
-	    <Route exact path='/spotlight' render={props => <Spotlight
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        /> } />
-	    <Route path="/spotlight-list" render={props => ( <SpotlightList
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        toggleSpotlight={toggleSpotlight}
-	        />) } />
-	    <Route path="/browse/:start?" render={props => ( <BrowseWords
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        toggleSpotlight={toggleSpotlight}
-	        />) } />
-	    <Route exact path={['/', '/random']} render={props => ( <Random
-	        popupWordForm={wordId => { popupWordForm(wordId); }}
-	        toggleSpotlight={toggleSpotlight}
-	        />) } />
-	    <Route path="/profile" component={Profile} />
-	    <Route path="/register" component={Register} />
-	    <Route path="/about" component={About} />
-	  </Switch>
+
+	  <WordMageContext.Provider value={contextProviderValue}>
+      <Switch>
+        <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            /> } />
+        <Route exact path={['/learn']} render={props => ( <Learn
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            />) } />
+        <Route exact path='/spotlight' render={props => <Spotlight
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            /> } />
+        <Route path="/spotlight-list" render={props => ( <SpotlightList
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            toggleSpotlight={toggleSpotlight}
+            />) } />
+        <Route path="/browse/:start?" render={props => ( <BrowseWords
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            toggleSpotlight={toggleSpotlight}
+            />) } />
+        <Route exact path={['/', '/random']} render={props => ( <Random
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            toggleSpotlight={toggleSpotlight}
+            />) } />
+        <Route path="/profile" component={Profile} />
+        <Route path="/register" component={Register} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </WordMageContext.Provider>
 	</div>
 	);
 }	

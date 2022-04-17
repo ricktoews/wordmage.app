@@ -1,14 +1,18 @@
 import ReactDOM from 'react-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { WordMageContext } from '../WordMageContext';
 import WordsInterface from '../utils/words-interface';
 import WordEntry from './WordEntry';
 import TagList from './TagList';
 
 function WordScroller(props) {
+  const { contextValue, setContextValue } = useContext(WordMageContext);
+
 	const { history } = props;
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
+  const tagListRef = useRef(null);
 	const [showTags, setShowTags] = useState(false);
 	const [tagWordObj, setTagWordObj] = useState({});
 	const [tagList, setTagList] = useState(WordsInterface.getTagList());
@@ -16,6 +20,17 @@ function WordScroller(props) {
 
 	const taggedOnClass = 'badge-tag-filter-on';
 	const taggedOffClass = 'badge-tag-filter-off';
+
+  // This useEffect works with the Context established at the top level of the app.
+  // It checks for a document.click event and detects whether that occurred outside
+  // the Tags popup. If it did, it turns off the popup display.
+  useEffect(() => {
+    if (showTags) {
+      if (tagListRef.current.contains(contextValue.targetEl) === false) {
+        setShowTags(false);
+      }
+    }
+  }, [contextValue]);
 
 	function tagWord(wordObj, tag, add, closeTagList) {
 		if (Array.isArray(wordObj.tags) === false) { wordObj.tags = []; }
@@ -119,7 +134,9 @@ function WordScroller(props) {
 
 	return (
 	  <div className="word-list-container">
-	    <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} closeTagPopup={closeTagPopup} tagWord={tagWord} />
+      <div ref={tagListRef}>
+        <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} closeTagPopup={closeTagPopup} tagWord={tagWord} />
+      </div>
 	    <div className="word-list-scroller" ref={scrollerRef}>
 	      <div id="sentinel" ref={sentinelRef}></div>
 	    </div>

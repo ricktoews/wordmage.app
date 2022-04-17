@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { WordMageContext } from '../WordMageContext';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
 import TagFilter from './TagFilter';
@@ -12,6 +13,8 @@ const listIncrement = 30;
 
 
 function BrowseWords(props) {
+	const { contextValue, setContextValue } = useContext(WordMageContext);
+
 	const fullWordObjList = WordsInterface.fullWordList();
 	const fullWordList = fullWordObjList.map(item => item.word);
 	const [ wordObjList, setWordObjList ] = useState(fullWordObjList);
@@ -25,6 +28,7 @@ function BrowseWords(props) {
 	const [ tagFilter, setTagFilter ] = useState('');
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
+  const tagFilterRef = useRef(null);
 
 
 	// Separate this into its own function, since it's used in a couple of places.
@@ -43,6 +47,17 @@ function BrowseWords(props) {
 console.log('startingNdx', startingNdx);
 	}
 
+  // Here is where we respond to document click.
+  // contextValue is set in App.js when document.click is detected.
+	useEffect(() => {
+    // In addition to checking popup visibility, we verify a click outside of the popup before hiding.
+    if (showTags) {
+      if (tagFilterRef.current.contains(contextValue.targetEl) === false) {
+        setShowTags(false);
+      }
+    }
+	}, [contextValue]);
+
 	// First step in updating word list on add / delete custom word.
 	// Update wordObjList, wordList, which changes the wordList.length and gets to second step, below.
 	useEffect(() => {
@@ -55,7 +70,6 @@ console.log('startingNdx', startingNdx);
 	useEffect(() => {
 		builtInSubset();
 	}, [wordList.length]);
-
 
 	useEffect(() => {
 		if (browseMode === 'built-in') {
@@ -137,7 +151,9 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 	    </div>
 	  </div>
 
-	  <TagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} />
+	  <div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
+      <TagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} />
+    </div>
 	  <WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
 	</div>
 	);
