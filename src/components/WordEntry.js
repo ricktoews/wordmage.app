@@ -37,7 +37,6 @@ function WordEntry(props) {
 			<FacebookShareButton 
 			url={'https://wordmage.app/browse/' + wordObj.word}
 			quote={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
-			hashtag="#wordmage"
 			className={'share-btn'}>
 				<FacebookIcon size={32} round={true} />
 			</FacebookShareButton>
