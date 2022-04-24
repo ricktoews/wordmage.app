@@ -76,8 +76,9 @@ function TagList(props) {
 	}
 
 	function handleTagClick(el, tag) {
-//		console.log('handleTagClick', el.dataset.tag, el.checked, tag);
-//		console.log('add tag', tag, 'to wordObj', props.wordObj);
+		// Toggle "checked" state for HTML checkbox, since capturing document click is interfering.
+		// FIXME!
+		el.checked = !el.checked;
 		props.tagWord(props.wordObj, el.dataset.tag, el.checked, !isAddTag);
 	}
 
