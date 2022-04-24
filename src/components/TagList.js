@@ -45,12 +45,10 @@ function TagList(props) {
 	}, [props.showTags]);
 
 	useEffect(() => {
-		console.log('set tagList', tagListRef);
 		props.tagListEl(tagListRef);
 	}, []);
 
 	function toggleTagPopup(showPopup) {
-		console.log('toggleTagPopup', showPopup);
 		if (tagListRef.current) {
 			if (showPopup) {
 				tagListRef.current.classList.remove('element-hide');

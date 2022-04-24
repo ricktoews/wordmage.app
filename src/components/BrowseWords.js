@@ -44,7 +44,6 @@ function BrowseWords(props) {
 				setStartingNdx(ndx);
 			}
 		}
-console.log('startingNdx', startingNdx);
 	}
 
   // Here is where we respond to document click.
@@ -129,11 +128,9 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
 
 	const tagListEl = ref => {
-		console.log('BrowseWords, tagListEl', ref.current);
 		let el = ref.current;
 		let classes = Array.from(el.classList);
 		let isPopupActive = classes.indexOf('element-hide') === -1;
-		console.log('is popup active?', classes);
 		if (isPopupActive) {
 			console.log('Should hide popup');
 		}

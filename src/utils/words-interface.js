@@ -11,7 +11,6 @@ const WORD_POOL = [];
 
 function initializeCustom(custom) {
 	userData.custom = custom;
-	console.log('initializeCustom', userData);
 }
 
 function getCustom() {

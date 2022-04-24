@@ -122,7 +122,6 @@ function WordScroller(props) {
 	}, []);
 
 	const tagListEl = ref => {
-		console.log('WordScroller, tagListEl', ref);
 		let el = ref.current;
 		let classes = Array.from(el.classList);
 		let isPopupActive = classes.indexOf('element-hide') === -1;
