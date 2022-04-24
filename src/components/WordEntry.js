@@ -1,5 +1,7 @@
 import WordsInterface from '../utils/words-interface';
 import WordEntryButtons from './WordEntryButtons';
+import {FacebookShareButton, FacebookIcon} from "react-share";
+import {TwitterShareButton, TwitterIcon} from "react-share";
 
 function WordEntry(props) {
 	const { history } = props;
@@ -30,13 +32,40 @@ function WordEntry(props) {
 		history.push('/spotlight', { wordObj: wordObj });
 	}
 
+	function FacebookShare(wordObj) {
+		return (
+			<FacebookShareButton 
+			url={'https://wordmage.app/browse/' + wordObj.word}
+			quote={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
+			hashtag="#wordmage"
+			className={'share-btn'}>
+				<FacebookIcon size={32} round={true} />
+			</FacebookShareButton>
+		);
+
+	}
+
+	function TwitterShare(wordObj) {
+		return (
+			<TwitterShareButton 
+			url={'https://wordmage.app/browse/' + wordObj.word}
+			title={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
+			hashtags={['wordmage']}
+			className={'share-btn'}>
+				<TwitterIcon size={32} round={true} />
+			</TwitterShareButton>
+		);
+	}
+
 	return wordObj.divider ? <hr className="rejects" /> : (
 	  <div className="word-item">
 	    <div className="word-item-word-container">
 	      <div className="word-item-word">{wordObj.word}</div>
-		  <div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
+		    <div className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
 	      { wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null }
 	      { wordObj.myown ? <div className="edit-btn" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></div> : null }
+        { FacebookShare(wordObj) }
+        { TwitterShare(wordObj) }
 	    </div>
 	    <div className="word-item-def-container">
 	      <div className="source-def-container">

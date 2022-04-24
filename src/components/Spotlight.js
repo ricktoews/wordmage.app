@@ -18,7 +18,7 @@ function Spotlight(props) {
 	const [item, setItem] = useState(scrambledItem);
 
 	useEffect(() => {
-		if (props.match.params.word) {
+		if (props.match.params.word && props.match.params.def) {
 			let { word, def } = props.match.params;
 			WordsInterface.saveCustomWord(-1, word, def);
 			props.history.push('/spotlight-list');
