@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import WordsInterface from './utils/words-interface';
+import FacebookLogin from './components/social-media-authentication/FacebookLogin';
+import TwitterLogin from './components/social-media-authentication/TwitterLogin';
 
 function Profile(props) {
 	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
@@ -126,7 +128,14 @@ function Profile(props) {
 	        { message === '' ? null : <div className="profile-form-message">{message}</div> }
 
 	        { !profileUser.user_id ? (
-		<div className="form">
+	  	<div className="form">
+        <div>
+				  <FacebookLogin />
+			  </div>
+        <div>
+				  <TwitterLogin />
+			  </div>
+
 	          <div className="input-field">
 				<div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
 	            <input placeholder="Email" ref={emailRef} type="text" id="email" className="email" onChange={handleChange} onFocus={handleFocus} />
@@ -139,7 +148,7 @@ function Profile(props) {
 	            <button className={'login-btn'} onClick={login}>Log in</button>
 	          </div>
 		      <div className="link-wrapper"><a href="/register">Not registered?</a></div>
-		</div>
+  		</div>
 			) : (
 			<div className="form">
 	          <div>Logged in as {profileUser.email}</div>
