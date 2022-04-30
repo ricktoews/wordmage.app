@@ -132,9 +132,6 @@ function Profile(props) {
         <div>
 				  <FacebookLogin />
 			  </div>
-        <div>
-				  <TwitterLogin />
-			  </div>
 
 	          <div className="input-field">
 				<div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
