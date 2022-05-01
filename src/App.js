@@ -175,6 +175,9 @@ console.log('cancelWordForm');
         <Route exact path={['/learn']} render={props => ( <Learn
             popupWordForm={wordId => { popupWordForm(wordId); }}
             />) } />
+        <Route exact path='/spotlight/:word' render={props => <Spotlight
+            popupWordForm={wordId => { popupWordForm(wordId); }}
+            /> } />
         <Route exact path='/spotlight' render={props => <Spotlight
             popupWordForm={wordId => { popupWordForm(wordId); }}
             /> } />

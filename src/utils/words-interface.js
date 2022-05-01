@@ -195,6 +195,19 @@ function getWordObjById(id) {
 }
 
 /**
+ * Get Word object by word. For scrambled words.
+ */
+ function getWordObjByWord(word) {
+	var wordObj = userData.custom.find(item => item.word === word);
+	if (wordObj) {
+		return wordObj;
+	} else {
+		console.log(word, 'not found');
+		return { word: '', def: '' };
+	}
+}
+
+/**
  * How does this need to work?
  * Full list includes built-in list and user customizations (added / modified).
  * Since custom word list is [ { word: [word], def: [def] }, ... ], shoudn't built-in list be the same? 
@@ -333,6 +346,7 @@ function getSpotlightItem() {
 		var ndx = Math.floor(Math.random() * spotlightArray.length);
 		spotlightItem = spotlightArray[ndx];
 	}
+	console.log('getSpotlightItem', spotlightItem);
 	return spotlightItem;
 }
 
@@ -361,6 +375,7 @@ const WordsInterface = {
 	toggleLearn,
 	getSpotlightEntry,
 	getWordObjById,
+	getWordObjByWord,
 	getWordObj,
 	getSpotlightItem,
 	getUserData,

@@ -7,10 +7,17 @@ import Scramble from './Scramble';
 function Spotlight(props) {
 	// Check state for selected scrambled word.
 	const state = props.location.state;
-	const [randomPick, setRandomPick] = useState(state === undefined ? true : false);
+	// Check for word to be scrambled, passed in with URL.
+	const spotlightWord = props.match?.params?.word;
+	const [randomPick, setRandomPick] = useState(!spotlightWord && state === undefined ? true : false);
 	var scrambledItem;
 	if (randomPick === false) {
-		scrambledItem = state.wordObj;
+		// Not random if word was passed via URL or state.
+		if (spotlightWord) {
+			scrambledItem = WordsInterface.getWordObjByWord(spotlightWord);
+		} else {
+			scrambledItem = state.wordObj;
+		}
 	}
 	else {
 		scrambledItem = WordsInterface.getSpotlightItem();
