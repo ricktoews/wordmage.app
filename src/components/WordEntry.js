@@ -35,7 +35,7 @@ function WordEntry(props) {
 	function FacebookShare(wordObj) {
 		return (
 			<FacebookShareButton 
-			url={'https://wordmage.app/spotlight/' + wordObj.word}
+			url={'https://wordmage.app/browse/' + wordObj.word}
 			quote={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
 			className={'share-btn'}>
 				<FacebookIcon size={32} round={true} />
@@ -47,7 +47,7 @@ function WordEntry(props) {
 	function TwitterShare(wordObj) {
 		return (
 			<TwitterShareButton 
-			url={'https://wordmage.app/spotlight/' + wordObj.word}
+			url={'https://wordmage.app/browse/' + wordObj.word}
 			title={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
 			hashtags={['wordmage']}
 			className={'share-btn'}>
