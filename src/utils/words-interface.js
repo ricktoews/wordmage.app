@@ -198,7 +198,9 @@ function getWordObjById(id) {
  * Get Word object by word. For scrambled words.
  */
  function getWordObjByWord(word) {
-	var wordObj = userData.custom.find(item => item.word === word);
+	var wordList = fullWordList();
+	var fullListClone = wordList.slice(0);
+	var wordObj = fullListClone.find(item => item.word === word);
 	if (wordObj) {
 		return wordObj;
 	} else {
