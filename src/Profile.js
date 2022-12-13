@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import WordsInterface from './utils/words-interface';
+import { CONFIG } from './config';
 
 function Profile(props) {
 	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
@@ -88,7 +89,7 @@ function Profile(props) {
 			headers: {'Content-type': 'application/json'},
 			body: JSON.stringify({ email, password })
 		};
-		var response = await fetch('https://words-rest.toewsweb.net/login', options);
+		var response = await fetch(`${CONFIG.domain}/login`, options);
 		var data = await response.json();
 		var user_id = data.user_id;
 		if (user_id == -1) {

@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import WordsInterface from './utils/words-interface';
+import { CONFIG } from './config';
 
 async function initCustom(user_id) {
 	var options = {
@@ -12,7 +13,7 @@ async function initCustom(user_id) {
 		headers: {'Content-type': 'application/json'},
 		body: JSON.stringify({ user_id })
 	};
-	var response = await fetch('https://words-rest.toewsweb.net/loadcustom', options);
+	var response = await fetch(`${CONFIG.domain}/loadcustom`, options);
 	var custom = await response.json();
 	if (!custom) custom = [];
 	WordsInterface.initializeCustom(custom);

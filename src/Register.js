@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import DataSource from './utils/data-source';
 import WordsInterface from './utils/words-interface';
+import { CONFIG } from './config';
+
 const userLocalData = DataSource.retrieveUserLocalData();
 
 function Register(props) {
@@ -50,7 +52,7 @@ function Register(props) {
 			headers: {'Content-type': 'application/json'},
 			body: JSON.stringify({ email, password })
 		};
-		var response = await fetch('https://words-rest.toewsweb.net/login', options);
+		var response = await fetch(`${CONFIG.domain}/login`, options);
 		var data = await response.json();
 		console.log('login from Registration', data);
 		var user_id = data.user_id;
@@ -71,7 +73,7 @@ function Register(props) {
 			headers: { 'Content-type': 'application/json' },
 			body: JSON.stringify(payload)
 		};
-		var response = await fetch('https://words-rest.toewsweb.net/register', options);
+		var response = await fetch(`${CONFIG.domain}/register`, options);
 		var data = await response.json();
 		console.log('register', data);
 		if (data.status) {

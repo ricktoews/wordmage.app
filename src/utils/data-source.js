@@ -9,8 +9,10 @@
 		spotlight: <boolean>
 	]
 }
-
  */
+
+import { CONFIG } from '../config';
+
 const starter = JSON.stringify({
 	"custom": []
 });
@@ -77,7 +79,7 @@ async function saveUserData(userData) {
 				header: { 'Content-type': 'application/json' },
 				body: JSON.stringify({ user_id: profile_user_id, custom })
 			};
-			var response = fetch('https://words-rest.toewsweb.net/savecustom', options);
+			var response = fetch(`${CONFIG.domain}/savecustom`, options);
 		} catch (e) {
 			console.log('Problem saving', userData, e);
 		}
