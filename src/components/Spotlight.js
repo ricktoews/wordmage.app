@@ -15,8 +15,10 @@ function Spotlight(props) {
 		// Not random if word was passed via URL or state.
 		if (spotlightWord) {
 			scrambledItem = WordsInterface.getWordObjByWord(spotlightWord);
-		} else {
+		} else if (state) {
 			scrambledItem = state.wordObj;
+		} else {
+			scrambledItem = WordsInterface.getSpotlightItem();
 		}
 	}
 	else {
