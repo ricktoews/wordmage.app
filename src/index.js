@@ -8,11 +8,13 @@ import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
 
 async function initCustom(user_id) {
+	console.log('====> initcustom', user_id);
 	var options = {
 		method: 'POST',
 		headers: {'Content-type': 'application/json'},
 		body: JSON.stringify({ user_id })
 	};
+	console.log('====> initcustom fetch', `${CONFIG.domain}/loadcustom`);
 	var response = await fetch(`${CONFIG.domain}/loadcustom`, options);
 	var custom = await response.json();
 	if (!custom) custom = [];

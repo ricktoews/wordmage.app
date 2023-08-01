@@ -17,18 +17,15 @@ function BrowseWords(props) {
 
 	const fullWordObjList = WordsInterface.fullWordList();
 	const fullWordList = fullWordObjList.map(item => item.word);
-	const [ wordObjList, setWordObjList ] = useState(fullWordObjList);
-	const [ wordList, setWordList ] = useState(fullWordList);
-	const [ wordListSubset, setWordListSubset ] = useState([]);
-	const [ startingLetters, setStartingLetters ] = useState(props.match.params.start || '');
-	const [ startingNdx, setStartingNdx ] = useState(0);
-	const [ browseMode, setBrowseMode ] = useState('built-in');
+	const [wordObjList, setWordObjList] = useState(fullWordObjList);
+	const [wordList, setWordList] = useState(fullWordList);
+	const [startingLetters, setStartingLetters] = useState(props.match.params.start || '');
+	const [startingNdx, setStartingNdx] = useState(0);
+	const [browseMode, setBrowseMode] = useState('built-in');
 	const [showTags, setShowTags] = useState(false);
-	const [ tagList, setTagList ] = useState(WordsInterface.getTagList());
-	const [ tagFilter, setTagFilter ] = useState('');
-	const scrollerRef = useRef(null);
-	const sentinelRef = useRef(null);
-  const tagFilterRef = useRef(null);
+	const [tagList, setTagList] = useState(WordsInterface.getTagList());
+	const [tagFilter, setTagFilter] = useState('');
+	const tagFilterRef = useRef(null);
 
 
 	// Separate this into its own function, since it's used in a couple of places.
@@ -46,15 +43,15 @@ function BrowseWords(props) {
 		}
 	}
 
-  // Here is where we respond to document click.
-  // contextValue is set in App.js when document.click is detected.
+	// Here is where we respond to document click.
+	// contextValue is set in App.js when document.click is detected.
 	useEffect(() => {
-    // In addition to checking popup visibility, we verify a click outside of the popup before hiding.
-    if (showTags) {
-      if (tagFilterRef.current.contains(contextValue.targetEl) === false) {
-        setShowTags(false);
-      }
-    }
+		// In addition to checking popup visibility, we verify a click outside of the popup before hiding.
+		if (showTags) {
+			if (tagFilterRef.current.contains(contextValue.targetEl) === false) {
+				setShowTags(false);
+			}
+		}
 	}, [contextValue]);
 
 	// First step in updating word list on add / delete custom word.
@@ -79,14 +76,14 @@ function BrowseWords(props) {
 	function tagSelection(discard, tag, checked, closeTagList) {
 		console.log('tagSelection', tag, checked, closeTagList);
 		setTagFilter(tag);
-		
+
 		// Stolen code. Coopted for showing tagged words.
 		let filteredWordObjList = fullWordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1);
-console.log('tagSelection, filteredWordList', filteredWordObjList);
+		console.log('tagSelection, filteredWordList', filteredWordObjList);
 		setWordObjList(filteredWordObjList);
 		setStartingNdx(0);
 		setBrowseMode('tagged');
-//		scrollerRef.current.attributes.browseMode = 'tagged';
+		//		scrollerRef.current.attributes.browseMode = 'tagged';
 		// End stolen code.
 
 		if (closeTagList) {
@@ -105,7 +102,7 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 			clearTimeout(partialWordTimer);
 		}
 		partialWordTimer = setTimeout(() => {
-			window.scrollTo(0,0);
+			window.scrollTo(0, 0);
 			// For some reason, we seem to have to set this state, even though we're pushing to history.
 			setWordObjList(fullWordObjList);
 			setBrowseMode('built-in');
@@ -137,22 +134,22 @@ console.log('tagSelection, filteredWordList', filteredWordObjList);
 	}
 
 	return (
-	<div className="browse-container">
-	  <div className="browse">
-	{/* Word search field */}
-	    <input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+		<div className="browse-container">
+			<div className="browse">
+				{/* Word search field */}
+				<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
 
-	{/* Tag filtering UI: Selected tag, tag selection button */}
-	    <div className="browse-filter-buttons">
-	      { tagFilter ? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>) : null } <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
-	    </div>
-	  </div>
+				{/* Tag filtering UI: Selected tag, tag selection button */}
+				<div className="browse-filter-buttons">
+					{tagFilter ? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>) : null} <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
+				</div>
+			</div>
 
-	  <div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
-      <TagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} />
-    </div>
-	  <WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
-	</div>
+			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
+				<TagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} />
+			</div>
+			<WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
+		</div>
 	);
 }
 
