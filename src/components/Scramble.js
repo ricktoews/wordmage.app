@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { scramble } from '../utils/spotlight';
+import { WordMageContext } from '../WordMageContext';
 
 function initLetters(scrambled) {
     var letterStates = [];
@@ -10,7 +11,10 @@ function initLetters(scrambled) {
     return letterStates;
 }
 
+
 function Scramble(props) {
+    const { contextValue, setContextValue } = useContext(WordMageContext);
+
     const [scrambled, setScrambled] = useState(scramble(props.word));
     const [letterStates, setLetterStates] = useState(initLetters(scrambled));
     const [unscrambled, setUnscrambled] = useState('');
@@ -24,6 +28,35 @@ function Scramble(props) {
         setUnscrambled('');
         setFinished(false);
     }, [props.word]);
+
+    useEffect(() => {
+        if (/[A-Z]/.test(contextValue.capturedKey)) {
+            const letter = contextValue.capturedKey.toLowerCase();
+            processLetter(letter);
+        }
+    }, [contextValue.capturedKey])
+
+    useEffect(() => {
+        if (unscrambled === props.word) {
+            setFinished(true);
+            setShowWord(false);
+            setScrambled(scramble(props.word));
+        }
+    }, [unscrambled]);
+
+    useEffect(() => {
+        setLetterStates(initLetters(scrambled));
+    }, [scrambled]);
+
+    const processLetter = (letter) => {
+        let letterStatesClone = letterStates.slice(0);
+        const ndx = letterStates.findIndex(item => item[letter] === false);
+        if (ndx !== -1) {
+            letterStatesClone[ndx][letter] = true;
+            setLetterStates(letterStatesClone);
+            setUnscrambled(unscrambled + letter);
+        }
+    }
 
     const selectLetter = e => {
         var el = e.target;

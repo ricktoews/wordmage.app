@@ -6,7 +6,8 @@ import { cloneJSON } from './helpers';
 import DataSource from './data-source';
 import { CONFIG } from '../config';
 
-const userData = { custom: [] };
+const custom = DataSource.retrieveUserLocalData();
+const userData = { custom };
 
 const WORD_POOL = [];
 

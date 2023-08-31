@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
+import KeyCapture from './KeyCapture';
 // Import WordMageContext to set Context for app.
 import { WordMageContext } from './WordMageContext';
 
@@ -168,35 +169,37 @@ function App(props) {
             {wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div />}
 
             <WordMageContext.Provider value={contextProviderValue}>
-                <Switch>
-                    <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                    />} />
-                    <Route exact path={['/learn']} render={props => (<Learn
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                    />)} />
-                    <Route exact path='/spotlight/:word' render={props => <Spotlight
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                    />} />
-                    <Route exact path='/spotlight' render={props => <Spotlight
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                    />} />
-                    <Route path="/spotlight-list" render={props => (<SpotlightList
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                        toggleSpotlight={toggleSpotlight}
-                    />)} />
-                    <Route path="/browse/:start?" render={props => (<BrowseWords
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                        toggleSpotlight={toggleSpotlight}
-                    />)} />
-                    <Route exact path={['/', '/random']} render={props => (<Random
-                        popupWordForm={wordId => { popupWordForm(wordId); }}
-                        toggleSpotlight={toggleSpotlight}
-                    />)} />
-                    <Route path="/profile" component={Profile} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/about" component={About} />
-                </Switch>
+                <KeyCapture>
+                    <Switch>
+                        <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                        />} />
+                        <Route exact path={['/learn']} render={props => (<Learn
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                        />)} />
+                        <Route exact path='/spotlight/:word' render={props => <Spotlight
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                        />} />
+                        <Route exact path='/spotlight' render={props => <Spotlight
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                        />} />
+                        <Route path="/spotlight-list" render={props => (<SpotlightList
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                        />)} />
+                        <Route path="/browse/:start?" render={props => (<BrowseWords
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                        />)} />
+                        <Route exact path={['/', '/random']} render={props => (<Random
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                        />)} />
+                        <Route path="/profile" component={Profile} />
+                        <Route path="/register" component={Register} />
+                        <Route path="/about" component={About} />
+                    </Switch>
+                </KeyCapture>
             </WordMageContext.Provider>
         </div>
     );
