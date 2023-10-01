@@ -13,9 +13,7 @@
 
 import { CONFIG } from '../config';
 
-const starter = JSON.stringify({
-    "custom": []
-});
+const starter = JSON.stringify([]);
 
 //localStorage.removeItem('my-words');
 
@@ -30,7 +28,7 @@ function retrieveUserLocalData() {
         console.log('Oops', myWords, e);
         userData = JSON.parse(starter);
     }
-
+    console.log('====> retrieveUserLocalData', userData);
     return userData;
 }
 
