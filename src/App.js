@@ -11,7 +11,8 @@ import WordsInterface from './utils/words-interface';
 // Import components
 import Hamburger from './components/Hamburger';
 import AddIcon from './components/icons/AddIcon';
-import WordForm from './components/WordForm';
+import PopupWordForm from './components/PopupWordForm';
+import Popup from './components/Popup';
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import Learn from './components/Learn';
@@ -37,6 +38,7 @@ function App(props) {
     const [hamburgerClass, setHamburgerClass] = useState('hamburger-nav');
 
     const [wordFormState, setWordFormState] = useState(false);
+    const [wordShareState, setWordShareState] = useState(false);
 
     const hamburgerRef = useRef(null);
 
@@ -51,7 +53,7 @@ function App(props) {
             }
         }
         if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
-            setWordFormState(false);
+            //setWordFormState(false);
         }
         setContextValue({ ...contextValue, targetEl: el });
     }
@@ -125,18 +127,20 @@ function App(props) {
         }
     };
 
-
     const popupWordForm = wordId => {
         setWordId(wordId);
         setWordFormState(true);
     }
 
     const cancelWordForm = () => {
-        console.log('cancelWordForm');
         setWordFormState(false);
     }
 
     const saveWordForm = () => {
+        setWordFormState(false);
+    }
+
+    const handleBackgroundClick = () => {
         setWordFormState(false);
     }
 
@@ -146,6 +150,7 @@ function App(props) {
 
     return (
         <div className="App">
+
             <nav ref={hamburgerRef} className={hamburgerClass}>
                 <ul>
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
@@ -159,16 +164,24 @@ function App(props) {
             </nav>
 
             <header className="App-header">
-                <div className="header-content">
+                <div className="hamburger-icon-container">
                     <Hamburger onClick={hamburgerClick} />
+                </div>
+
+                <div className="header-content">
                     <div className="header-title">WordMage - {view}</div>
-                    <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
                 </div>
             </header>
 
-            {wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div />}
+            {/*false && wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div />*/}
 
             <WordMageContext.Provider value={contextProviderValue}>
+                <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
+
+                <div className="add-word-icon-container">
+                    <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
+                </div>
+
                 <KeyCapture>
                     <Switch>
                         <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
@@ -201,6 +214,7 @@ function App(props) {
                     </Switch>
                 </KeyCapture>
             </WordMageContext.Provider>
+
         </div>
     );
 }

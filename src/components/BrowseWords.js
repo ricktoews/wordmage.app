@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { WordMageContext } from '../WordMageContext';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
+import Popup from './Popup';
+import PopupTagFilter from './PopupTagFilter';
 import TagFilter from './TagFilter';
 
 const INFINITE_SCROLLING_ON = 'list-loading-container';
@@ -110,7 +112,7 @@ function BrowseWords(props) {
 			setStartingLetters(partial);
 			props.history.push('/browse/' + partial);
 			el.blur();
-		}, 1000);
+		}, 2500);
 	};
 
 	const handleCancelTagFilter = e => {
@@ -133,6 +135,10 @@ function BrowseWords(props) {
 		}
 	}
 
+	const handleBackgroundClick = () => {
+		setShowTags(false);
+	}
+
 	return (
 		<div className="browse-container">
 			<div className="browse">
@@ -141,12 +147,16 @@ function BrowseWords(props) {
 
 				{/* Tag filtering UI: Selected tag, tag selection button */}
 				<div className="browse-filter-buttons">
-					{tagFilter ? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>) : null} <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
+					{
+						tagFilter
+							? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>)
+							: null
+					} <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
 				</div>
 			</div>
 
 			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
-				<TagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} />
+				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>
 			</div>
 			<WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
 		</div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 function Tag(props) {
-	const checkBoxRef =useRef(null);
+	const checkBoxRef = useRef(null);
 
 	useEffect(() => {
 		var checked = false;
@@ -17,7 +17,7 @@ function Tag(props) {
 	}
 
 	return (
-	<div><input ref={checkBoxRef} type="checkbox" onClick={handleCheckboxClick} data-tag={props.label} /> {props.label}</div>
+		<div><input ref={checkBoxRef} type="checkbox" onClick={handleCheckboxClick} data-tag={props.label} /> {props.label}</div>
 	);
 }
 
@@ -58,7 +58,7 @@ function TagList(props) {
 				tagListRef.current.classList.remove('element-show');
 				tagListRef.current.classList.add('element-hide');
 			}
-		}	
+		}
 	}
 
 	function handleCheckClick(e) {
@@ -83,32 +83,35 @@ function TagList(props) {
 	}
 
 	return (
-	<div ref={tagListRef} className="clicked-word-container tag-list-popup element-hide">
-	  <div className="word-item-word">{props.wordObj.word}</div>
-	  <div className="tag-list">
-	    <div className="instructions">Select one or more tags to associate with this word.</div>
-        <div className="tag-wrapper">
-	    { tags ? tags.map((item, ndx) => {
-	        return <Tag key={ndx} label={item} wordTags={props.wordObj.tags} tagClick={handleTagClick} />
-	    }) : null}
-        </div>
+		<div ref={tagListRef} className="clicked-word-container element-hide">
+			<div className="popup-header">Tag This Word</div>
 
-	    <div className="instructions">To use a new tag, enter it here.</div>
-	    { isAddTag ? (<div className="tag-wrapper">
-	      <div><input ref={newTagRef} type="text" placeholder="New Tag" /></div>
-	      <hr />
-	      </div>) : null }
+			<div className="popup-body">
+				<div className="tag-list-popup">
+					<div className="word-item-word">{props.wordObj.word}</div>
+					<div className="tag-list">
+						<div className="tag-wrapper">
+							{tags ? tags.map((item, ndx) => {
+								return <Tag key={ndx} label={item} wordTags={props.wordObj.tags} tagClick={handleTagClick} />
+							}) : null}
+						</div>
 
-	  </div>
+						{isAddTag ? (<div className="tag-wrapper">
+							<div><input ref={newTagRef} type="text" placeholder="New Tag" /></div>
+							<hr />
+						</div>) : null}
 
-	  { isAddTag ? (
-	  <div className="tag-list-button-wrapper">
-		<div className="badge tag-button tag-button-cancel" onClick={handleClickCancel}><i className="glyphicon glyphicon-remove"></i> Cancel</div>
-	    <div className="badge tag-button" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i> Save</div>
-	  </div>
-	  ) : null }
+					</div>
 
-	</div>
+					{isAddTag ? (
+						<div className="button-wrapper">
+							<button className="badge" onClick={handleClickCancel}><i className="glyphicon glyphicon-remove"></i> Cancel</button>
+							<button className="badge" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i> Save</button>
+						</div>
+					) : null}
+				</div>
+			</div>
+		</div>
 	);
 }
 

@@ -8,6 +8,7 @@ const learnOffClass = 'badge-learn-filter-off';
 const learnOnClass = 'badge-learn-filter-on';
 const taggedOnClass = 'badge-tag-filter-on';
 const taggedOffClass = 'badge-tag-filter-off';
+const shareClass = 'badge-like-filter-off';
 
 function toggleClass(el, toggleClasses) {
 	let classes = Array.from(el.classList);
@@ -27,7 +28,7 @@ function thumbsUpHandler(e) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-	var {liked, word} = data;
+	var { liked, word } = data;
 	toggleClass(el, [likeOnClass, likeOffClass]);
 	WordsInterface.toggleSpotlight(word);
 }
@@ -38,7 +39,7 @@ function learnHandler(e) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-	var {learn, word} = data;
+	var { learn, word } = data;
 	toggleClass(el, [learnOnClass, learnOffClass]);
 	WordsInterface.toggleLearn(word);
 }
@@ -49,13 +50,13 @@ function thumbsDownHandler(e) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-	var {disliked, word} = data;
+	var { disliked, word } = data;
 	toggleClass(el, [dislikeOnClass, dislikeOffClass]);
 	WordsInterface.toggleDislike(word);
 }
 
 function WordEntryButtons(props) {
-	const { wordObj, listType, popupTags } = props;
+	const { buttonGroup, wordObj, listType, popupTags, popupWordShare } = props;
 	var buttons;
 	var learnClass = wordObj.learn ? learnOnClass : learnOffClass;
 	var likeClass = wordObj.spotlight ? likeOnClass : likeOffClass;
@@ -71,32 +72,54 @@ function WordEntryButtons(props) {
 		popupTags(wordObj, el);
 		// Popup tag list.
 	}
-	
-	switch (listType) {
-		case 'liked':
-			buttons = (<div className="word-item-buttons">
-                <button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
-                <button className={'badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp;Like</button>
-                <button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
-              </div>);
-			break;
-		case 'learn':
-			buttons = (<div className="word-item-buttons">
-                <button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
-                <button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp;Like</button>
-                <button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp;Meh</button>
-                <button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
-              </div>);
-			break;
-		default:
-			buttons = (<div className="word-item-buttons">
-                <button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
-                <button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i> &nbsp;Like</button>
-                <button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i> &nbsp;Meh</button>
-                <button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
-              </div>);
+
+	function wordShareHandler(e) {
+		const el = e.target;
+		popupWordShare(wordObj);
 	}
-		
+
+	if (buttonGroup === 'left') {
+		switch (listType) {
+			case 'liked':
+				buttons = (<div className="word-item-buttons">
+					<button className={'badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+				</div>);
+				break;
+			case 'learn':
+				buttons = (<div className="word-item-buttons">
+					<button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+					<button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
+				</div>);
+				break;
+			default:
+				buttons = (<div className="word-item-buttons">
+					<button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+					<button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
+					<button className={'badge ' + shareClass} data-word={wordObj.word} onClick={wordShareHandler}><i className="glyphicon glyphicon-share"></i></button>
+				</div>);
+		}
+	}
+	else {
+		switch (listType) {
+			case 'liked':
+				buttons = (<div className="word-item-buttons">
+					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
+					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
+				</div>);
+				break;
+			case 'learn':
+				buttons = (<div className="word-item-buttons">
+					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
+					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
+				</div>);
+				break;
+			default:
+				buttons = (<div className="word-item-buttons">
+					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
+					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
+				</div>);
+		}
+	}
 	return buttons;
 }
 

@@ -1,5 +1,212 @@
 @import url('https://fonts.googleapis.com/css2?family=Cardo&family=Lato:wght@300;400&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
-@import './WordForm.scss';
+
+//$word-form-background: #5887AA;
+$word-form-background: #fff;
+$word-form-heading: #666;
+$word-form-heading-size: 16pt;
+
+$site-green: #008800;
+$site-red: #de3c4b;
+
+$btn-font-size: 14pt;
+$btn-background: #45425a;
+$btn-color: white;
+$btn-save-background: #09f;
+$btn-cancel-background: #09f;
+
+$maxwidth: 400px;
+$header-height: 50px;
+$spotlight-width: 380px;
+$spotlight-height: 200px;
+
+$font-family: Roboto;
+
+$lovable-font: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+$lovable-word-size: 18px;
+$lovable-def-size: 14px;
+
+.add-word-icon-container {
+	position: fixed;
+	bottom: 2px;
+	right: 2px;
+	z-index: 100;
+}
+
+.popup-container {
+	backdrop-filter: blur(2px);
+	position: fixed;
+	top: 0;
+	z-index: 1000;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.popup .confirm-action {
+	position: absolute;
+	width: 200px;
+	height: 100px;
+	z-index: 100;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: white;
+
+	.confirmation-text {
+		font-size: x-large;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+
+	.confirmation-buttons {
+		display: flex;
+		gap: 10px;
+	}
+}
+
+.confirm-action.no-confirmation-needed {
+	display: none;
+}
+
+.confirm-action.confirmation-needed {
+	display: flex;
+}
+
+.popup-container .popup {
+	position: relative;
+	margin-top: 3rem;
+	min-width: 380px;
+	max-width: 380px;
+	border: 1px solid rgb(128, 128, 128);
+	border-radius: 1rem;
+	background-color: white;
+	height: auto;
+	min-height: 0;
+	max-height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.popup-container h2 {
+	margin: 0;
+}
+
+.popup-container .popup-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 1rem 1rem 0 0;
+	padding: .5rem 1rem;
+	width: 100%;
+	background-color: white;
+	color: rgb(128, 128, 128);
+	font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+	font-size: 2rem;
+	font-weight: bold;
+
+	.close-icon {
+		display: flex;
+		align-items: center;
+		height: 16px;
+		width: 16px;
+		cursor: pointer;
+	}
+}
+
+.popup-container .popup-body {
+	padding: 2rem;
+}
+
+.popup-container .button-wrapper {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+
+	.btn {
+		padding: 1rem 2rem;
+		font-size: 1.5rem;
+		font-weight: 700;
+		font-family: futura;
+		//width: 100%;
+		font-weight: bold;
+		border: 1px solid rgb(128, 128, 128);
+		border-radius: .5rem;
+		color: rgb(128, 128, 128);
+		background-color: white;
+		margin-top: 20px;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+
+		.share-btn-label {
+			display: flex;
+			gap: 1rem;
+		}
+	}
+
+	.btn-share {
+		text-align: left;
+	}
+
+}
+
+.popup-container .button-wrapper.stack-buttons {
+	flex-direction: column;
+}
+
+.popup .popup-word-form {
+	width: 100%;
+}
+
+.word-form-container {
+	backdrop-filter: blur(2px);
+	position: fixed;
+	top: 0;
+	z-index: 1000;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+
+.word-form-container .word-form-wrapper {
+	position: relative;
+	top: 50px;
+	width: $spotlight-width;
+
+	.word-form {
+		border: 2px solid #ccc;
+		background-color: $word-form-background;
+
+		.header {
+			border-radius: 5px;
+			font-size: 14pt;
+			font-weight: bold;
+			text-align: center;
+			min-height: 20px;
+			padding: 5px;
+			color: #ddd;
+		}
+
+		.field-wrapper {
+			padding: 10px;
+
+			.word {
+				color: $word-form-heading;
+				font-size: $word-form-heading-size;
+				margin: 0;
+			}
+		}
+	}
+
+}
+
 
 /*
   COLORS
@@ -21,10 +228,12 @@ $button-background-another: $button-purple;
 $btn-add-background: $button-purple;
 $learning-word-background: $experimental-green;
 
-$header-background-color: rgb(60, 0, 80);
+$header-background-color: rgb(0, 0, 0);
+
 
 $word-tab-background: rgb(0, 0, 0);
-$word-header-background: rgb(0, 0, 0);
+$wordmage-background: #f9fafb;
+$word-header-background: rgb(255, 255, 255);
 $word-item-padding: 0;
 $word-item-bottom-border: rgb(0, 0, 0);
 $word-scramble-button: #666;
@@ -141,20 +350,11 @@ body {
 }
 
 .badge-add {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-	width: 40px;
-	height: 40px;
-	background: $btn-add-background;
-	color: white;
-	/* letter-spacing: normal here to cancel letter-spacing from header. 
-	   Otherwise, the icon in this button is thrown off center. */
-	letter-spacing: normal;
-	font-size: 12pt;
-	margin: 2px;
-	cursor: pointer;
+	min-height: 40px;
+	font-size: 14pt;
+	background-color: $btn-add-background;
+	color: #fff;
+
 }
 
 .badge-delete {
@@ -194,6 +394,11 @@ body {
 
 .badge-ok i {
 	color: #0f0;
+}
+
+.badge-edit {
+	background: $word-control-button-color;
+	color: $word-control-label-color;
 }
 
 .badge-learn-filter-off {
@@ -245,12 +450,25 @@ body {
 }
 
 .badge-tag {
-	background: $button-purple;
-	color: #fff;
+	background: white;
+	border-radius: 5px;
+	color: rgb(60, 60, 60);
 	line-height: 16px;
-	font-size: 16px;
+	font-size: 12px;
 	padding: 10px;
+	border: 1px solid rgb(60, 60, 60);
 	cursor: pointer;
+}
+
+.add-tags .badge-tag {
+	background: white;
+	color: rgb(60, 60, 60);
+	font-size: 12px;
+	border: 1px solid rgb(60, 60, 60);
+}
+
+.add-tags .tag-selected {
+	background: rgb(200, 200, 200);
 }
 
 .badge-scramble {
@@ -358,6 +576,14 @@ body {
 	left: 0;
 }
 
+.hamburger-icon-container {
+	position: absolute;
+	width: 50px;
+	height: 46px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 .App-header {
 	position: fixed;
@@ -372,7 +598,7 @@ body {
 		height: $header-height - 8;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
 		padding: 0 5px;
 		color: white;
 		text-transform: uppercase;
@@ -694,6 +920,7 @@ body {
 .word-list-scroller {
 	position: relative;
 	top: 100px;
+	background-color: $wordmage-background;
 }
 
 .word-item {
@@ -701,35 +928,46 @@ body {
 	flex-direction: row;
 	flex-wrap: wrap;
 	padding-top: $word-item-padding;
-	margin-bottom: 40px;
+	/*margin-bottom: 40px;*/
 	background-color: $word-header-background;
-	border-top: 1px solid #999;
+	border: 1px solid #999;
+	border-radius: 10px;
+	margin: 10px;
 }
 
 .word-item-word-container {
 	display: flex;
+	padding: 5px;
 }
 
 .word-item-word {
-	font-family: Futura;
-	font-size: 1.3em;
+	font-family: $lovable-font;
+	font-size: $lovable-word-size;
+	font-weight: 500;
+	//	font-size: 1.3em;
 	min-width: 100px;
-	padding: 1px 15px 1px 5px;
-	/*margin-right: 5px;*/
-	color: white;
-	background-color: $word-tab-background;
+	padding: 1px 15px 1px 0px;
 
 	&.deleted {
 		background-color: gray;
 	}
 }
 
-.word-item-word-container .word-item-word {
+.word-list-scroller .word-item-word {
+	//color: white;
+	//background-color: $word-tab-background;
+}
+
+.word-item-word-scroller .word-item-word {
 	margin-left: 5px;
 	border-radius: 10px 10px 0 0;
 }
 
+.tag-list-popup .word-item-word {}
+
 .word-item-def {
+	font-family: $lovable-font;
+	font-size: $lovable-def-size;
 	color: black;
 	font-weight: 200;
 	margin-bottom: 5px;
@@ -744,13 +982,15 @@ body {
 	width: 100%;
 	padding: 5px;
 	color: black;
-	background-color: white;
+	//background-color: white;
 }
 
+/*
 .word-list-scroller .word-item-def-container {
 	border-top: 2px solid $word-item-bottom-border;
 	border-bottom: 2px solid $word-item-bottom-border;
 }
+*/
 
 .word-item-source {
 	font-style: italic;
@@ -799,10 +1039,11 @@ body {
 	width: 100%;
 	padding-left: 30px;
 	margin-bottom: 10px;
-	height: 30px;
+	height: 40px;
 	border: none;
 	border-bottom: 1px solid #eee;
 	outline: none;
+	font-size: 1.5rem;
 }
 
 .form textarea {
@@ -823,14 +1064,14 @@ body {
 	color: #ccc;
 }
 
+/*
 .form button {
 	font-size: 14pt;
 	font-weight: bold;
 	width: 100%;
-	height: 40px;
 	margin-top: 20px;
 }
-
+*/
 input[type="checkbox"] {
 	width: 20px;
 	height: 20px;
@@ -931,6 +1172,7 @@ input[type="checkbox"] {
 }
 
 .tag-list>.tag-wrapper {
+	max-width: 380px;
 	padding: 6px;
 }
 

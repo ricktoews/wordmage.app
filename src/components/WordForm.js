@@ -11,13 +11,13 @@ function WordForm(props) {
 		// If word already exists, set spotlight flag to false;
 		if (WordsInterface.isSpotlightEntry(props.word)) {
 			var { source = '' } = WordsInterface.getSpotlightEntry(props.word);
-		} 
+		}
 		if (original) originalDef = original;
 	}
 
-	const [ newWord, setNewWord ] = useState(word);
-	const [ newDef, setNewDef ] = useState(def);
-	const [ newSource, setNewSource ] = useState(source);
+	const [newWord, setNewWord] = useState(word);
+	const [newDef, setNewDef] = useState(def);
+	const [newSource, setNewSource] = useState(source);
 
 	const handleChange = e => {
 		var el = e.target;
@@ -63,42 +63,36 @@ function WordForm(props) {
 	};
 
 	return (
-	<div className="word-form-container">
-	  <div className="word-form-wrapper">
-	    <div className="word-form">
+		<div className="word-form-container">
+			<div className="word-form-wrapper">
+				<div className="word-form">
 
-	      {/* Word Form Heading: Built-in, or Custom word */}
-{/*
-	      <div className="header">
-	        Add Word
-	      </div>
-*/}
-		  <div className="form field-wrapper">
-		      {/* Word input field (custom), or word displayed only (built-in) */}
-		      <div className="input-field">
-		        <input placeholder="Word" onChange={handleWord} type="text" id="new-word" size="20" value={newWord} />
-		      </div>
+					<div className="form field-wrapper">
+						{/* Word input field (custom), or word displayed only (built-in) */}
+						<div className="input-field">
+							<input placeholder="Word" onChange={handleWord} type="text" id="new-word" size="20" value={newWord} />
+						</div>
 
-		      {/* Definition input field */}
-		      <div className="input-field">
-		        <textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
-		      </div>
+						{/* Definition input field */}
+						<div className="input-field">
+							<textarea placeholder="Definition" onChange={handleDef} id="new-def" value={newDef}></textarea>
+						</div>
 
-		      {/* Source. For ... ? */}
-		      <div className="input-field">
-		        <input placeholder="Source" onChange={handleSource} type="text" id="new-notes" size="20" value={newSource} />
-		      </div>
+						{/* Source. For ... ? */}
+						<div className="input-field">
+							<input placeholder="Source" onChange={handleSource} type="text" id="new-notes" size="20" value={newSource} />
+						</div>
 
-		      {/* Cancel / Save buttons */}
-		      <div className="button-wrapper">
-		        <button className="cancel" onClick={cancelWord}>Cancel</button>
-		        <button className="save" onClick={saveWord}>Save</button>
-	          </div>
-	      </div>
+						{/* Cancel / Save buttons */}
+						<div className="button-wrapper">
+							<button className="cancel" onClick={cancelWord}>Cancel</button>
+							<button className="save" onClick={saveWord}>Save</button>
+						</div>
+					</div>
 
-	    </div>
-	  </div>
-	</div>
+				</div>
+			</div>
+		</div>
 	);
 }
 

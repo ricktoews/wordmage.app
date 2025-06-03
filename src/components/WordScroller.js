@@ -4,16 +4,19 @@ import { withRouter } from 'react-router-dom';
 import { WordMageContext } from '../WordMageContext';
 import WordsInterface from '../utils/words-interface';
 import WordEntry from './WordEntry';
-import TagList from './TagList';
+import Popup from './Popup';
+import PopupTagList from './PopupTagList';
+import PopupWordShare from './PopupWordShare';
 
 function WordScroller(props) {
-  const { contextValue, setContextValue } = useContext(WordMageContext);
+	const { contextValue, setContextValue } = useContext(WordMageContext);
 
 	const { history } = props;
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
-  const tagListRef = useRef(null);
 	const [showTags, setShowTags] = useState(false);
+	const [showWordShare, setShowWordShare] = useState(false);
+	const [shareWord, setShareWord] = useState(null);
 	const [tagWordObj, setTagWordObj] = useState({});
 	const [tagList, setTagList] = useState(WordsInterface.getTagList());
 	const [tagToggle, setTagToggle] = useState(null);
@@ -21,17 +24,18 @@ function WordScroller(props) {
 	const taggedOnClass = 'badge-tag-filter-on';
 	const taggedOffClass = 'badge-tag-filter-off';
 
-  // This useEffect works with the Context established at the top level of the app.
-  // It checks for a document.click event and detects whether that occurred outside
-  // the Tags popup. If it did, it turns off the popup display.
-  useEffect(() => {
-    if (showTags) {
-      if (tagListRef.current.contains(contextValue.targetEl) === false) {
-        setShowTags(false);
-      }
-    }
-  }, [contextValue]);
-
+	// This useEffect works with the Context established at the top level of the app.
+	// It checks for a document.click event and detects whether that occurred outside
+	// the Tags popup. If it did, it turns off the popup display.
+	/*
+	useEffect(() => {
+		if (showTags) {
+			if (tagListRef.current.contains(contextValue.targetEl) === false) {
+				setShowTags(false);
+			}
+		}
+	}, [contextValue]);
+*/
 	function tagWord(wordObj, tag, add, closeTagList) {
 		if (Array.isArray(wordObj.tags) === false) { wordObj.tags = []; }
 		if (tag) {
@@ -47,7 +51,6 @@ function WordScroller(props) {
 			else {
 				wordObj.tags.splice(ndx, 1);
 				// unhighlight Tag button
-				console.log('wordObj.tags', wordObj.tags);
 				if (wordObj.tags.length === 0) {
 					tagToggle.classList.remove(taggedOnClass);
 					tagToggle.classList.add(taggedOffClass);
@@ -73,13 +76,24 @@ function WordScroller(props) {
 		setTagToggle(tagButtonEl);
 	}
 
+	function popupWordShare(wordObj) {
+		setShareWord(wordObj);
+		setShowWordShare(true);
+	}
+
+	const handleBackgroundClick = () => {
+		setShowWordShare(false);
+		setShowTags(false);
+	}
+
+
 	function loadItems(quant) {
 		let counter = scrollerRef.current.startingNdx || 0;
 		for (let i = 0; i < quant && counter < scrollerRef.current.pool.length; i++) {
 			let wordItem = scrollerRef.current.pool[counter++];
 			let item = document.createElement('div');
 			item.classList.add('word-item-container');
-			ReactDOM.render(<WordEntry popupTags={popupTags} wordObj={wordItem} listType={props.listType} history={props.history} popupWordForm={props.popupWordForm} />, item);
+			ReactDOM.render(<WordEntry popupTags={popupTags} popupWordShare={popupWordShare} wordObj={wordItem} listType={props.listType} history={props.history} popupWordForm={props.popupWordForm} />, item);
 			scrollerRef.current.appendChild(item);
 		}
 		scrollerRef.current.startingNdx = counter;
@@ -132,14 +146,14 @@ function WordScroller(props) {
 	}
 
 	return (
-	  <div className="word-list-container">
-      <div ref={tagListRef}>
-        <TagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} closeTagPopup={closeTagPopup} tagWord={tagWord} />
-      </div>
-	    <div className="word-list-scroller" ref={scrollerRef}>
-	      <div id="sentinel" ref={sentinelRef}></div>
-	    </div>
-	  </div>
+		<div className="word-list-container">
+			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}><PopupWordShare shareWord={shareWord} wordId={142} /></Popup>
+			<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} closeTagPopup={closeTagPopup} tagWord={tagWord} /></Popup>
+
+			<div className="word-list-scroller" ref={scrollerRef}>
+				<div id="sentinel" ref={sentinelRef}></div>
+			</div>
+		</div>
 	);
 }
 
