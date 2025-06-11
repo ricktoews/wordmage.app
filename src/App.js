@@ -48,6 +48,7 @@ function App(props) {
     const [wordFormState, setWordFormState] = useState(false);
     const [wordShareState, setWordShareState] = useState(false);
     const [envVar, setEnvVar] = useState(null);
+    const [botpressClientId, setBotpressClientId] = useState(null);
 
     const hamburgerRef = useRef(null);
 
@@ -61,11 +62,12 @@ function App(props) {
             .catch((error) => {
                 console.error('Error fetching environment variable:', error);
             });
-        fetch('/functions/eldritch')
+        fetch('/.netlify/functions/botpress')
             .then((res) => res.json())
             .then((data) => {
-                console.log('Test environment string received:', data);
-                setEnvVar(data);
+                console.log(`Botpress client ID received. ... Oh, you thought I'd divulge it here for diagnostic purposes? Hahahaha! You're funny!`);
+                const clientId = data.clientId;
+                setBotpressClientId(clientId);
             })
             .catch((error) => {
                 console.error('Error fetching environment variable:', error);
@@ -211,7 +213,7 @@ function App(props) {
                 <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
                 <div data-env={envVar} className="add-word-icon-container">
                     <Webchat
-                        clientId={process.env.BOTPRESS_CLIENT_ID} // Your client ID here
+                        clientId={botpressClientId} // Your client ID here
                         configuration={{ botName: 'WordMage Wizard' }}
                         style={{
                             width: '300px',
