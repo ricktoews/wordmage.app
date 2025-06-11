@@ -27,6 +27,7 @@ import About from './About';
 import './App.scss';
 
 function App(props) {
+    console.log('====> Testing environment', process.env.ELDRITCH);
     const [isWebchatOpen, setIsWebchatOpen] = useState(false)
     const toggleWebchat = () => {
         setIsWebchatOpen((prevState) => !prevState)
