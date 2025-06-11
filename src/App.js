@@ -27,7 +27,6 @@ import About from './About';
 import './App.scss';
 
 function App(props) {
-    console.log('====> Testing environment', process.env.ELDRITCH);
     const [isWebchatOpen, setIsWebchatOpen] = useState(false)
     const toggleWebchat = () => {
         setIsWebchatOpen((prevState) => !prevState)
@@ -48,8 +47,18 @@ function App(props) {
 
     const [wordFormState, setWordFormState] = useState(false);
     const [wordShareState, setWordShareState] = useState(false);
+    const [envVar, setEnvVar] = useState(null);
 
     const hamburgerRef = useRef(null);
+
+    useEffect(() => {
+        fetch('/.netlify/functions/eldritch')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('Test environment string received:', data);
+                setEnvVar(data);
+            });
+    }, []);
 
     const handleDocumentClicked = e => {
         // Check if clicked outside hambuger menu.
@@ -188,7 +197,7 @@ function App(props) {
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
 
                 <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
-                <div className="add-word-icon-container">
+                <div data-env={envVar} className="add-word-icon-container">
                     <Webchat
                         clientId={process.env.BOTPRESS_CLIENT_ID} // Your client ID here
                         configuration={{ botName: 'WordMage Wizard' }}
