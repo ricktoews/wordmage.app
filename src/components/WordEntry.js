@@ -33,30 +33,6 @@ function WordEntry(props) {
 		history.push('/spotlight', { wordObj: wordObj });
 	}
 
-	function FacebookShare(wordObj) {
-		return (
-			<FacebookShareButton
-				url={'https://wordmage.app/spotlight/' + wordObj.word}
-				quote={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
-				className={'share-btn'}>
-				<FacebookIcon size={32} round={true} />
-			</FacebookShareButton>
-		);
-
-	}
-
-	function TwitterShare(wordObj) {
-		return (
-			<TwitterShareButton
-				url={'https://wordmage.app/spotlight/' + wordObj.word}
-				title={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
-				hashtags={['wordmage']}
-				className={'share-btn'}>
-				<XIcon size={32} round={true} />
-			</TwitterShareButton>
-		);
-	}
-
 	return wordObj.divider ? <hr className="rejects" /> : (
 		<div className="word-item">
 			<div className="word-item-word-container">

@@ -1,3 +1,5 @@
+import { Fab, Webchat } from '@botpress/webchat'
+
 import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
@@ -25,6 +27,12 @@ import About from './About';
 import './App.scss';
 
 function App(props) {
+    const [isWebchatOpen, setIsWebchatOpen] = useState(false)
+    const toggleWebchat = () => {
+        setIsWebchatOpen((prevState) => !prevState)
+    }
+
+
     // Set up Context for app. WordMageContext.Provider will wrap everything.
     const [contextValue, setContextValue] = useState({ targetEl: null });
     const contextProviderValue = useMemo(() => ({ contextValue, setContextValue }), [contextValue, setContextValue]);
@@ -178,8 +186,21 @@ function App(props) {
             <WordMageContext.Provider value={contextProviderValue}>
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
 
+                <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
                 <div className="add-word-icon-container">
-                    <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
+                    <Webchat
+                        clientId={process.env.REACT_APP_BOTPRESS_CLIENT_ID} // Your client ID here
+                        configuration={{ botName: 'WordMage Wizard' }}
+                        style={{
+                            width: '300px',
+                            height: '400px',
+                            display: isWebchatOpen ? 'flex' : 'none',
+                            position: 'fixed',
+                            bottom: '90px',
+                            right: '20px',
+                        }}
+                    />
+                    <Fab onClick={() => toggleWebchat()} style={{ width: '40px', height: '40px', position: 'fixed', bottom: '20px', right: '20px' }} />
                 </div>
 
                 <KeyCapture>

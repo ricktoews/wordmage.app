@@ -25,10 +25,18 @@ $lovable-font: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe
 $lovable-word-size: 18px;
 $lovable-def-size: 14px;
 
-.add-word-icon-container {
+.add-button-container {
 	position: fixed;
 	bottom: 2px;
-	right: 2px;
+	z-index: 100;
+}
+
+.add-word-icon-container {
+	position: fixed;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	bottom: 2px;
 	z-index: 100;
 }
 
@@ -583,6 +591,11 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.App {
+	display: flex;
+	justify-content: center;
 }
 
 .App-header {

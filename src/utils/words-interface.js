@@ -266,6 +266,9 @@ function toggleSpotlight(word) {
     }
     var wordObj = userData.custom[wordObjIndex];
     wordObj.spotlight = !wordObj.spotlight;
+    if (wordObj.spotlight) {
+        wordObj.dislike = false;
+    }
     DataSource.saveUserData(userData);
     // Create array of words from userData.active, which is an array of { word: notes }.
     var newSpotlightList = userData.custom.filter(item => item.spotlight);
@@ -284,11 +287,9 @@ function toggleLearn(word) {
     }
     var wordObj = userData.custom[wordObjIndex];
     wordObj.learn = !wordObj.learn;
-    console.log('calling saveUserData', userData);
     DataSource.saveUserData(userData);
     // Create array of words from userData.active, which is an array of { word: notes }.
     var newLearnList = userData.custom.filter(item => item.learn);
-    console.log('newLearnList', newLearnList);
     return newLearnList;
 }
 
@@ -304,11 +305,12 @@ function toggleDislike(word) {
     }
     var wordObj = userData.custom[wordObjIndex];
     wordObj.dislike = !wordObj.dislike;
-    console.log('calling saveUserData', userData);
+    if (wordObj.dislike) {
+        wordObj.spotlight = false;
+    }
     DataSource.saveUserData(userData);
     // Create array of words from userData.active, which is an array of { word: notes }.
     var newDislikeList = userData.custom.filter(item => item.dislike);
-    console.log('newDislikeList', newDislikeList);
     return newDislikeList;
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Updated import
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
@@ -22,18 +22,19 @@ async function initCustom(user_id) {
 (async () => {
 	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
 	if (profile_user_id) {
-		var response = await initCustom(profile_user_id);
+		await initCustom(profile_user_id); // Ensure this completes before rendering
 	}
 	await WordsInterface.initializeWordPool();
-	ReactDOM.render(
+
+	// Use createRoot instead of ReactDOM.render
+	const root = createRoot(document.getElementById('root'));
+	root.render(
 		<React.StrictMode>
-			<BrowserRouter><App /></BrowserRouter>
-		</React.StrictMode>,
-		document.getElementById('root')
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</React.StrictMode>
 	);
 })();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

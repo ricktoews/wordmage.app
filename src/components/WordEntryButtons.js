@@ -10,6 +10,8 @@ const taggedOnClass = 'badge-tag-filter-on';
 const taggedOffClass = 'badge-tag-filter-off';
 const shareClass = 'badge-like-filter-off';
 
+const SHARE_ICON = false;
+
 function toggleClass(el, toggleClasses) {
 	let classes = Array.from(el.classList);
 	if (classes.indexOf(toggleClasses[0]) !== -1) {
@@ -28,9 +30,36 @@ function thumbsUpHandler(e) {
 		el = el.parentNode;
 	}
 	var data = el.dataset;
-	var { liked, word } = data;
+	var { word } = data;
+	const classes = Array.from(el.classList);
+	const liked = classes.indexOf(likeOnClass) !== -1;
+	if (!liked) {
+		console.log('====> Turn on thumbs up; turn off thumbs down.');
+		const thumbsDown = el.closest('.word-item-buttons').querySelector('.thumbs-down');
+		thumbsDown.classList.remove(dislikeOnClass);
+		thumbsDown.classList.add(dislikeOffClass);
+	}
 	toggleClass(el, [likeOnClass, likeOffClass]);
 	WordsInterface.toggleSpotlight(word);
+}
+
+function thumbsDownHandler(e) {
+	var el = e.target;
+	if (!el.dataset.word) {
+		el = el.parentNode;
+	}
+	var data = el.dataset;
+	var { word } = data;
+	const classes = Array.from(el.classList);
+	const disliked = classes.indexOf(dislikeOnClass) !== -1;
+	if (!disliked) {
+		console.log('====> Turn on thumbs down; turn off thumbs up.');
+		const thumbsDown = el.closest('.word-item-buttons').querySelector('.thumbs-up');
+		thumbsDown.classList.remove(likeOnClass);
+		thumbsDown.classList.add(likeOffClass);
+	}
+	toggleClass(el, [dislikeOnClass, dislikeOffClass]);
+	WordsInterface.toggleDislike(word);
 }
 
 function learnHandler(e) {
@@ -42,17 +71,6 @@ function learnHandler(e) {
 	var { learn, word } = data;
 	toggleClass(el, [learnOnClass, learnOffClass]);
 	WordsInterface.toggleLearn(word);
-}
-
-function thumbsDownHandler(e) {
-	var el = e.target;
-	if (!el.dataset.word) {
-		el = el.parentNode;
-	}
-	var data = el.dataset;
-	var { disliked, word } = data;
-	toggleClass(el, [dislikeOnClass, dislikeOffClass]);
-	WordsInterface.toggleDislike(word);
 }
 
 function WordEntryButtons(props) {
@@ -82,20 +100,21 @@ function WordEntryButtons(props) {
 		switch (listType) {
 			case 'liked':
 				buttons = (<div className="word-item-buttons">
-					<button className={'badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+					<button className={'thumbs-up badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
 				</div>);
 				break;
 			case 'learn':
 				buttons = (<div className="word-item-buttons">
-					<button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
-					<button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
+					<button className={'thumbs-up badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
 				</div>);
 				break;
 			default:
 				buttons = (<div className="word-item-buttons">
-					<button className={'badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
-					<button className={'badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
-					<button className={'badge ' + shareClass} data-word={wordObj.word} onClick={wordShareHandler}><i className="glyphicon glyphicon-share"></i></button>
+					<button className={'thumbs-up badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
+					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
+					{SHARE_ICON && <button className={'share badge ' + shareClass} data-word={wordObj.word} onClick={wordShareHandler}><i className="glyphicon glyphicon-share"></i></button>}
 				</div>);
 		}
 	}

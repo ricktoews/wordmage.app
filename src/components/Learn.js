@@ -11,17 +11,14 @@ function sortWords(a, b) {
 
 function Learn(props) {
 	const learnList = WordsInterface.getWordList('learn').sort(sortWords);
-	const toggleFocus = word => {
-		props.toggleFocus(word);
-	}
 
 	return (
-	<div className="learn-list-container">
-      <div className="browse">
-		<p>When you play the Unscramble game, this is the list the words are taken from.</p>
-      </div>
-	  <WordScroller pool={learnList} startingNdx={0} listType={'learn'} popupWordForm={props.popupWordForm} />
-	</div>
+		<div className="learn-list-container">
+			<div className="browse">
+				<p>When you play the Unscramble game, this is the list the words are taken from.</p>
+			</div>
+			<WordScroller pool={learnList} startingNdx={0} listType={'learn'} popupWordForm={props.popupWordForm} />
+		</div>
 	);
 }
 

@@ -28,7 +28,7 @@ function retrieveUserLocalData() {
         console.log('Oops', myWords, e);
         userData = JSON.parse(starter);
     }
-    console.log('====> retrieveUserLocalData', userData);
+
     return userData;
 }
 
@@ -46,10 +46,14 @@ function retrieveUserData() {
 
 function cleanCustomWords(custom) {
     custom = custom.map(item => {
+        // Don't know why this was done, but it's removing the definition when we trigger a Save from the Learn / Like page.
+        // 2025-06-04: Comment out until / unless we can defend it and find an alternate approach.
+        /*
         if (!item.myown) {
             delete item.def;
             delete item.source;
         }
+        */
         if (item.tags && item.tags.length === 0) {
             delete item.tags;
         }

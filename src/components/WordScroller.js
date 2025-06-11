@@ -1,7 +1,5 @@
-import ReactDOM from 'react-dom';
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { WordMageContext } from '../WordMageContext';
 import WordsInterface from '../utils/words-interface';
 import WordEntry from './WordEntry';
 import Popup from './Popup';
@@ -9,9 +7,6 @@ import PopupTagList from './PopupTagList';
 import PopupWordShare from './PopupWordShare';
 
 function WordScroller(props) {
-	const { contextValue, setContextValue } = useContext(WordMageContext);
-
-	const { history } = props;
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
 	const [showTags, setShowTags] = useState(false);
@@ -20,37 +15,26 @@ function WordScroller(props) {
 	const [tagWordObj, setTagWordObj] = useState({});
 	const [tagList, setTagList] = useState(WordsInterface.getTagList());
 	const [tagToggle, setTagToggle] = useState(null);
+	const [visibleItems, setVisibleItems] = useState([]);
+	const loadedCountRef = useRef(0);
 
 	const taggedOnClass = 'badge-tag-filter-on';
 	const taggedOffClass = 'badge-tag-filter-off';
 
-	// This useEffect works with the Context established at the top level of the app.
-	// It checks for a document.click event and detects whether that occurred outside
-	// the Tags popup. If it did, it turns off the popup display.
-	/*
-	useEffect(() => {
-		if (showTags) {
-			if (tagListRef.current.contains(contextValue.targetEl) === false) {
-				setShowTags(false);
-			}
-		}
-	}, [contextValue]);
-*/
 	function tagWord(wordObj, tag, add, closeTagList) {
-		if (Array.isArray(wordObj.tags) === false) { wordObj.tags = []; }
+		if (!Array.isArray(wordObj.tags)) {
+			wordObj.tags = [];
+		}
 		if (tag) {
 			let ndx = wordObj.tags.indexOf(tag);
 			if (add) {
 				if (ndx === -1) {
 					wordObj.tags.push(tag);
-					// highlight Tag button
 					tagToggle.classList.remove(taggedOffClass);
 					tagToggle.classList.add(taggedOnClass);
 				}
-			}
-			else {
+			} else {
 				wordObj.tags.splice(ndx, 1);
-				// unhighlight Tag button
 				if (wordObj.tags.length === 0) {
 					tagToggle.classList.remove(taggedOnClass);
 					tagToggle.classList.add(taggedOffClass);
@@ -60,7 +44,6 @@ function WordScroller(props) {
 		WordsInterface.updateTags(wordObj.word, wordObj.tags);
 		if (closeTagList) {
 			setShowTags(false);
-			console.log('getTagList', WordsInterface.getTagList());
 			setTagList(WordsInterface.getTagList());
 		}
 	}
@@ -70,7 +53,6 @@ function WordScroller(props) {
 	}
 
 	function popupTags(wordObj, tagButtonEl) {
-		//console.log('popupTags', wordObj, tagButtonEl);
 		setShowTags(true);
 		setTagWordObj(wordObj);
 		setTagToggle(tagButtonEl);
@@ -84,74 +66,126 @@ function WordScroller(props) {
 	const handleBackgroundClick = () => {
 		setShowWordShare(false);
 		setShowTags(false);
-	}
+	};
 
-
-	function loadItems(quant) {
-		let counter = scrollerRef.current.startingNdx || 0;
-		for (let i = 0; i < quant && counter < scrollerRef.current.pool.length; i++) {
-			let wordItem = scrollerRef.current.pool[counter++];
-			let item = document.createElement('div');
-			item.classList.add('word-item-container');
-			ReactDOM.render(<WordEntry popupTags={popupTags} popupWordShare={popupWordShare} wordObj={wordItem} listType={props.listType} history={props.history} popupWordForm={props.popupWordForm} />, item);
-			scrollerRef.current.appendChild(item);
+	function loadItems(quant, append = true) {
+		const pool = props.pool || [];
+		const currentIndex = append ? loadedCountRef.current : props.startingNdx || 0;
+		if (currentIndex >= pool.length) {
+			console.log('No more items to load - pool exhausted');
+			return false;
 		}
-		scrollerRef.current.startingNdx = counter;
+		const newItems = pool
+			.slice(currentIndex, currentIndex + quant)
+			.map((wordItem, index) => ({
+				key: `word-${currentIndex + index}-${wordItem.word || index}`,
+				wordItem,
+			}));
+		if (newItems.length === 0) {
+			console.log('No new items added - empty slice');
+			return false;
+		}
+		setVisibleItems((prev) => {
+			const updated = append ? [...prev, ...newItems] : newItems;
+			//console.log('Set visibleItems:', updated.map((item) => item.wordItem.word));
+			return updated;
+		});
+		loadedCountRef.current = currentIndex + newItems.length;
+		//console.log('Updated loadedCountRef:', loadedCountRef.current);
+		return true;
 	}
 
 	function populateScroller(clearFirst = false) {
+		//console.log('populateScroller:', { clearFirst, poolLength: props.pool?.length });
 		if (clearFirst) {
-			while (scrollerRef.current.firstChild) {
-				scrollerRef.current.removeChild(scrollerRef.current.firstChild);
-			}
+			setVisibleItems([]);
+			loadedCountRef.current = props.startingNdx || 0;
+			loadItems(15, false);
+		} else {
+			loadItems(10);
+			scrollerRef.current.appendChild(sentinelRef.current);
+			loadItems(10);
 		}
-		loadItems(10);
-		scrollerRef.current.appendChild(sentinelRef.current);
-		loadItems(5);
 	}
 
 	const myObserverCallback = (entries) => {
-		if (entries.some(entry => entry.isIntersecting)) {
-			populateScroller();
-		}
+		//console.log('myObserverCallback visibleItems:', visibleItems.map((item) => item.wordItem.word));
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				console.log('Sentinel intersecting, loading more items');
+				loadItems(10);
+			}
+		});
 	};
 
 	useEffect(() => {
 		scrollerRef.current.startingNdx = props.startingNdx;
 		scrollerRef.current.pool = props.pool;
 		populateScroller(true);
-	}, [props.pool]);
+	}, [props.pool, props.startingNdx]);
 
 	useEffect(() => {
-		scrollerRef.current.startingNdx = props.startingNdx;
-		scrollerRef.current.pool = props.pool;
-		populateScroller(true);
-	}, [props.startingNdx]);
-
-	useEffect(() => {
-		var intersectionObserver = new IntersectionObserver(myObserverCallback);
-		intersectionObserver.observe(sentinelRef.current);
-
-		return () => { console.log('disconnect observer'); intersectionObserver.disconnect(); }
+		if (!sentinelRef.current) {
+			console.error('sentinelRef is not set on mount');
+			return;
+		}
+		const observer = new IntersectionObserver(myObserverCallback);
+		//console.log('Setting up observer for sentinel:', sentinelRef.current);
+		observer.observe(sentinelRef.current);
+		return () => {
+			console.log('Disconnecting observer');
+			observer.disconnect();
+		};
 	}, []);
 
-	const tagListEl = ref => {
-		let el = ref.current;
-		let classes = Array.from(el.classList);
-		let isPopupActive = classes.indexOf('element-hide') === -1;
-		if (isPopupActive) {
-			console.log('Should hide popup');
+	const tagListEl = (ref) => {
+		if (ref.current) {
+			const el = ref.current;
+			const classes = Array.from(el.classList);
+			const isPopupActive = !classes.includes('element-hide');
+			if (isPopupActive) {
+				console.log('Should hide popup');
+			}
 		}
-
-	}
+	};
 
 	return (
 		<div className="word-list-container">
-			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}><PopupWordShare shareWord={shareWord} wordId={142} /></Popup>
-			<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagList showTags={showTags} tagListEl={tagListEl} tagList={tagList} wordObj={tagWordObj} closeTagPopup={closeTagPopup} tagWord={tagWord} /></Popup>
+			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}>
+				<PopupWordShare shareWord={shareWord} wordId={142} />
+			</Popup>
+			<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}>
+				<PopupTagList
+					showTags={showTags}
+					tagListEl={tagListEl}
+					tagList={tagList}
+					wordObj={tagWordObj}
+					closeTagPopup={closeTagPopup}
+					tagWord={tagWord}
+				/>
+			</Popup>
 
-			<div className="word-list-scroller" ref={scrollerRef}>
-				<div id="sentinel" ref={sentinelRef}></div>
+			<div
+				className="word-list-scroller"
+				ref={scrollerRef}
+			>
+				{visibleItems.map(({ key, wordItem }) => (
+					<div key={key} className="word-item-container">
+						<WordEntry
+							popupTags={popupTags}
+							popupWordShare={popupWordShare}
+							wordObj={wordItem}
+							listType={props.listType}
+							history={props.history}
+							popupWordForm={props.popupWordForm}
+						/>
+					</div>
+				))}
+				<div
+					id="sentinel"
+					ref={sentinelRef}
+					style={{ height: '20px', background: 'transparent' }}
+				/>
 			</div>
 		</div>
 	);
