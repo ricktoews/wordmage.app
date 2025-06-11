@@ -189,7 +189,7 @@ function App(props) {
                 <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
                 <div className="add-word-icon-container">
                     <Webchat
-                        clientId={process.env.REACT_APP_BOTPRESS_CLIENT_ID} // Your client ID here
+                        clientId={process.env.BOTPRESS_CLIENT_ID} // Your client ID here
                         configuration={{ botName: 'WordMage Wizard' }}
                         style={{
                             width: '300px',
