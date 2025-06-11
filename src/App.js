@@ -211,7 +211,7 @@ function App(props) {
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
 
                 <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
-                <div data-env={envVar} className="add-word-icon-container">
+                {botpressClientId && (<div data-env={envVar} className="add-word-icon-container">
                     <Webchat
                         clientId={botpressClientId} // Your client ID here
                         configuration={{ botName: 'WordMage Wizard' }}
@@ -225,7 +225,7 @@ function App(props) {
                         }}
                     />
                     <Fab onClick={() => toggleWebchat()} style={{ width: '40px', height: '40px', position: 'fixed', bottom: '20px', right: '20px' }} />
-                </div>
+                </div>)}
 
                 <KeyCapture>
                     <Switch>
