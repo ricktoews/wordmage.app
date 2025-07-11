@@ -11,7 +11,6 @@ function WordEntry(props) {
 		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
 		var classes = Array.from(wordEl.classList);
 		if (classes.indexOf('deleted') === -1) {
-			console.log('====> deleteWordToggle, wordObj._id', wordObj._id);
 			wordEl.classList.add('deleted');
 			WordsInterface.deleteCustomWord(wordObj._id);
 		}

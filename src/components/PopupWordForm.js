@@ -68,7 +68,7 @@ function PopupWordForm(props) {
 
             WordsInterface.deleteCustomWord(props.wordId);
         }
-        console.log('====> deleteWord props.wordId', isDeletionConfirmed, props.wordId);
+        props.cancelWordForm();
     }
 
     return (

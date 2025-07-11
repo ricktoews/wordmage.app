@@ -34,7 +34,6 @@ function thumbsUpHandler(e) {
 	const classes = Array.from(el.classList);
 	const liked = classes.indexOf(likeOnClass) !== -1;
 	if (!liked) {
-		console.log('====> Turn on thumbs up; turn off thumbs down.');
 		const thumbsDown = el.closest('.word-item-buttons').querySelector('.thumbs-down');
 		thumbsDown.classList.remove(dislikeOnClass);
 		thumbsDown.classList.add(dislikeOffClass);
@@ -53,7 +52,6 @@ function thumbsDownHandler(e) {
 	const classes = Array.from(el.classList);
 	const disliked = classes.indexOf(dislikeOnClass) !== -1;
 	if (!disliked) {
-		console.log('====> Turn on thumbs down; turn off thumbs up.');
 		const thumbsDown = el.closest('.word-item-buttons').querySelector('.thumbs-up');
 		thumbsDown.classList.remove(likeOnClass);
 		thumbsDown.classList.add(likeOffClass);
