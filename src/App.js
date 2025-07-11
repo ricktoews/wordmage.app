@@ -53,19 +53,9 @@ function App(props) {
     const hamburgerRef = useRef(null);
 
     useEffect(() => {
-        fetch('/.netlify/functions/eldritch')
-            .then((res) => res.json())
-            .then((data) => {
-                console.log('Test environment string received:', data);
-                setEnvVar(data);
-            })
-            .catch((error) => {
-                console.error('Error fetching environment variable:', error);
-            });
         fetch('/.netlify/functions/botpress')
             .then((res) => res.json())
             .then((data) => {
-                console.log(`Botpress client ID received. ... Oh, you thought I'd divulge it here for diagnostic purposes? Hahahaha! You're funny!`);
                 const clientId = data.clientId;
                 setBotpressClientId(clientId);
             })
