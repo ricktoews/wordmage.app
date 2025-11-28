@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { scramble } from '../utils/spotlight';
 import { WordMageContext } from '../WordMageContext';
 
@@ -20,6 +20,8 @@ function Scramble(props) {
     const [unscrambled, setUnscrambled] = useState('');
     const [finished, setFinished] = useState(false);
     const [showWord, setShowWord] = useState(false);
+    const hintTimeoutsRef = useRef([]);
+    const hintInProgressRef = useRef(false);
 
     useEffect(() => {
         let newScrambled = scramble(props.word);
@@ -87,17 +89,69 @@ function Scramble(props) {
     };
 
     const handleHint = e => {
-        var ndx = unscrambled.length;
-        var nextLetter = props.word[ndx];
-        var position = scrambled.split('').indexOf(nextLetter);
-        var els = Array.from(document.querySelectorAll('.letter'));
-        els.forEach(el => {
-            if (el.dataset.ndx == position) {
-                console.log('found', el);
-                el.classList.add('hinted');
+        if (finished || hintInProgressRef.current) return;
+        hintInProgressRef.current = true;
+
+        // Clear any existing hinted classes
+        const existingEls = Array.from(document.querySelectorAll('.letter'));
+        existingEls.forEach(el => el.classList.remove('hinted'));
+
+        const scrambledArr = scrambled.split('');
+        const usedIndices = new Set();
+        // Mark already-selected letters as used so hints don't reuse them
+        letterStates.forEach((obj, idx) => {
+            const letter = scrambledArr[idx];
+            if (obj[letter]) usedIndices.add(idx);
+        });
+
+        const sequence = props.word.slice(unscrambled.length).split('');
+        let delay = 0;
+        const highlightDuration = 600; // ms each letter is highlighted
+
+        sequence.forEach((target, seqIdx) => {
+            // find first matching index that is not used
+            let pos = -1;
+            for (let i = 0; i < scrambledArr.length; i++) {
+                if (scrambledArr[i] === target && !usedIndices.has(i)) {
+                    pos = i;
+                    break;
+                }
             }
+            if (pos === -1) return; // no available match
+            usedIndices.add(pos);
+
+            // schedule highlight
+            const showTimeout = setTimeout(() => {
+                const el = document.querySelector(`.letter[data-ndx="${pos}"]`);
+                if (el) el.classList.add('hinted');
+            }, delay);
+            hintTimeoutsRef.current.push(showTimeout);
+
+            // schedule remove
+            const hideTimeout = setTimeout(() => {
+                const el = document.querySelector(`.letter[data-ndx="${pos}"]`);
+                if (el) el.classList.remove('hinted');
+                // when last item processed, clear state
+                if (seqIdx === sequence.length - 1) {
+                    hintInProgressRef.current = false;
+                    hintTimeoutsRef.current = [];
+                }
+            }, delay + highlightDuration);
+            hintTimeoutsRef.current.push(hideTimeout);
+
+            delay += highlightDuration + 150; // short pause between highlights
         });
     }
+
+    useEffect(() => {
+        return () => {
+            // cleanup any pending timeouts on unmount
+            if (hintTimeoutsRef.current && hintTimeoutsRef.current.length) {
+                hintTimeoutsRef.current.forEach(tid => clearTimeout(tid));
+                hintTimeoutsRef.current = [];
+            }
+        }
+    }, []);
 
     const handleShowWord = e => {
         setShowWord(true);
