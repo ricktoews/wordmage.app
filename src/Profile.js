@@ -26,6 +26,66 @@ function Profile(props) {
 		}
 	}, []);
 
+	// If redirected back from Google, the callback includes a base64 payload
+	// in the `google_user` query param. Read it, populate localStorage and
+	// initialize profile state.
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const gu = params.get('google_user');
+		if (gu) {
+			try {
+				const decoded = JSON.parse(decodeURIComponent(atob(gu)));
+				if (decoded && decoded.email) {
+					setProfileUser({ user_id: decoded.provider_id, email: decoded.email });
+					localStorage.setItem('wordmage-profile-user_id', decoded.provider_id);
+					localStorage.setItem('wordmage-profile-email', decoded.email);
+					setMessage('Signed in with Google');
+
+					// Attempt to load the user's customizations from the server
+					// by calling the same login endpoint used for email/password logins.
+					// We send a `google: true` flag so the backend can treat this as
+					// an OAuth-based lookup. Backend must support this behavior; if it
+					// doesn't, you'll need to add a server endpoint that returns custom
+					// data for the provided email when authenticated via Google.
+					(async () => {
+						try {
+							const resp = await fetch(`${CONFIG.domain}/login`, {
+								method: 'POST',
+								headers: { 'Content-type': 'application/json' },
+								body: JSON.stringify({ email: decoded.email, google: true })
+							});
+							const data = await resp.json();
+							if (data.custom) {
+								setCustomData(data.custom);
+								setMessage('Signed in with Google — customizations loaded');
+							} else {
+								setMessage('Signed in with Google');
+							}
+							if (data.user_id) {
+								// If backend returns a user_id, ensure local state matches it
+								setProfileUser({ user_id: data.user_id, email: decoded.email });
+								localStorage.setItem('wordmage-profile-user_id', data.user_id);
+							}
+						} catch (err) {
+							console.error('Failed to load customizations after Google sign-in', err);
+							setMessage('Signed in with Google (failed to load customizations)');
+						}
+					})();
+				}
+			} catch (err) {
+				console.error('Failed to parse google_user payload', err);
+			}
+			// Remove the param from the URL using router history (avoid global `history`)
+			params.delete('google_user');
+			const newUrl = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '');
+			if (props && props.history && typeof props.history.replace === 'function') {
+				props.history.replace(newUrl);
+			} else {
+				window.history.replaceState({}, '', newUrl);
+			}
+		}
+	}, []);
+
 	useEffect(() => {
 		if (profileFormRef.current) {
 			console.log('profile form', profileFormRef.current);
@@ -80,6 +140,33 @@ function Profile(props) {
 		localStorage.removeItem('wordmage-profile-user_id');
 		localStorage.removeItem('wordmage-profile-email');
 		console.log('Removed user ID');
+	}
+
+	const exportCustom = () => {
+		try {
+			// Export only user-created custom words (marked with myown: true)
+			const customWords = (WordsInterface.getCustom() || []).filter(w => w.myown === true);
+			if (!customWords.length) {
+				setMessage('No custom words to export.');
+				return;
+			}
+			const dataStr = JSON.stringify(customWords, null, 2);
+			const blob = new Blob([dataStr], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+			const filename = `wordmage-custom-${date}.json`;
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			URL.revokeObjectURL(url);
+			setMessage(`Exported ${customWords.length} custom words.`);
+		} catch (err) {
+			console.error('exportCustom error', err);
+			setMessage('Failed to export custom words.');
+		}
 	}
 
 	const login = async () => {
@@ -139,6 +226,11 @@ function Profile(props) {
 					<div className="button-wrapper">
 						<button className={'login-btn'} onClick={login}>Log in</button>
 					</div>
+					<div className="button-wrapper">
+						<button className={'google-signin-btn'} onClick={() => { window.location.href = '/.netlify/functions/auth-google'; }}>
+							<img src="/icons/google.svg" alt="" style={{ height: '18px', marginRight: '8px' }} /> Sign in with Google
+						</button>
+					</div>
 					<div className="link-wrapper"><a href="/register">Not registered?</a></div>
 				</div>
 			) : (
@@ -146,6 +238,7 @@ function Profile(props) {
 					<div>Logged in as {profileUser.email}</div>
 					<div className="button-wrapper">
 						<button className={'logout-btn'} onClick={logout}>Log out</button>
+						<button className={'export-btn'} onClick={exportCustom}>Export Custom</button>
 					</div>
 
 					<div className="my-profile-content">

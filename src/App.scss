@@ -897,7 +897,12 @@ body {
 
 			&.hinted {
 				background-color: #f90;
+				transform: scale(1.04);
+				box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 			}
+
+			// Smoothly animate highlight changes (fade in / fade out)
+			transition: background-color 320ms ease, transform 220ms ease, box-shadow 220ms ease, opacity 320ms ease;
 		}
 	}
 
