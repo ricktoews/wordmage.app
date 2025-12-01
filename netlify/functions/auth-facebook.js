@@ -1,23 +1,23 @@
 const crypto = require('crypto');
 
 exports.handler = async function (event, context) {
-    // Redirects the user to Google's OAuth 2.0 authorization endpoint.
-    // Requires these environment variables set in Netlify: GOOGLE_CLIENT_ID and BASE_URL
-    const clientId = process.env.GOOGLE_CLIENT_ID;
+    // Redirects the user to Facebook's OAuth 2.0 authorization endpoint.
+    // Requires these environment variables set in Netlify: FACEBOOK_APP_ID and BASE_URL
+    const appId = process.env.FACEBOOK_APP_ID;
     const baseUrl = process.env.BASE_URL || '';
-    if (!clientId || !baseUrl) {
+    if (!appId || !baseUrl) {
         return {
             statusCode: 500,
-            body: 'Missing GOOGLE_CLIENT_ID or BASE_URL environment variables',
+            body: 'Missing FACEBOOK_APP_ID or BASE_URL environment variables',
         };
     }
 
     const state = crypto.randomBytes(16).toString('hex');
-    const redirectUri = `${baseUrl}/.netlify/functions/auth-google-callback`;
-    const scope = encodeURIComponent('openid email profile');
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
-        clientId
-    )}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=${state}&access_type=offline&prompt=consent`;
+    const redirectUri = `${baseUrl}/.netlify/functions/auth-facebook-callback`;
+    const scope = encodeURIComponent('email,public_profile');
+    const authUrl = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${encodeURIComponent(
+        appId
+    )}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=${state}`;
 
     // Set a cookie with state to validate callback (not secure beyond this demo)
     // Do not add the 'Secure' flag when running on an http (localhost) BASE_URL,

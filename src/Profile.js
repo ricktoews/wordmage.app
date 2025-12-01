@@ -1,11 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
+import { WordMageContext } from './WordMageContext';
 
 function Profile(props) {
 	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
 	var profile_email = localStorage.getItem('wordmage-profile-email');
+	// Fallback: if profile email not set (client-side GSI flow stores authUser),
+	// attempt to read it from the `authUser` object persisted by client sign-in.
+	if ((!profile_email || profile_email === 'null') && localStorage.getItem('authUser')) {
+		try {
+			const au = JSON.parse(localStorage.getItem('authUser'));
+			if (au && au.email) profile_email = au.email;
+			if (!profile_user_id && (au && (au.id || au.sub))) profile_user_id = au.id || au.sub;
+		} catch (e) {
+			// ignore parse errors
+		}
+	}
 	var profileObj = { user_id: profile_user_id, email: profile_email };
+	const { authUser } = useContext(WordMageContext) || {};
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordConf, setPasswordConf] = useState('');
@@ -20,6 +33,8 @@ function Profile(props) {
 	const clickedWordRef = useRef(null);
 	const profileFormRef = useRef(null);
 
+	// authUser is provided via WordMageContext; no local authUser state needed here.
+
 	useEffect(() => {
 		if (emailRef.current) {
 			emailRef.current.focus();
@@ -27,64 +42,7 @@ function Profile(props) {
 	}, []);
 
 	// If redirected back from Google, the callback includes a base64 payload
-	// in the `google_user` query param. Read it, populate localStorage and
-	// initialize profile state.
-	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const gu = params.get('google_user');
-		if (gu) {
-			try {
-				const decoded = JSON.parse(decodeURIComponent(atob(gu)));
-				if (decoded && decoded.email) {
-					setProfileUser({ user_id: decoded.provider_id, email: decoded.email });
-					localStorage.setItem('wordmage-profile-user_id', decoded.provider_id);
-					localStorage.setItem('wordmage-profile-email', decoded.email);
-					setMessage('Signed in with Google');
 
-					// Attempt to load the user's customizations from the server
-					// by calling the same login endpoint used for email/password logins.
-					// We send a `google: true` flag so the backend can treat this as
-					// an OAuth-based lookup. Backend must support this behavior; if it
-					// doesn't, you'll need to add a server endpoint that returns custom
-					// data for the provided email when authenticated via Google.
-					(async () => {
-						try {
-							const resp = await fetch(`${CONFIG.domain}/login`, {
-								method: 'POST',
-								headers: { 'Content-type': 'application/json' },
-								body: JSON.stringify({ email: decoded.email, google: true })
-							});
-							const data = await resp.json();
-							if (data.custom) {
-								setCustomData(data.custom);
-								setMessage('Signed in with Google — customizations loaded');
-							} else {
-								setMessage('Signed in with Google');
-							}
-							if (data.user_id) {
-								// If backend returns a user_id, ensure local state matches it
-								setProfileUser({ user_id: data.user_id, email: decoded.email });
-								localStorage.setItem('wordmage-profile-user_id', data.user_id);
-							}
-						} catch (err) {
-							console.error('Failed to load customizations after Google sign-in', err);
-							setMessage('Signed in with Google (failed to load customizations)');
-						}
-					})();
-				}
-			} catch (err) {
-				console.error('Failed to parse google_user payload', err);
-			}
-			// Remove the param from the URL using router history (avoid global `history`)
-			params.delete('google_user');
-			const newUrl = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '');
-			if (props && props.history && typeof props.history.replace === 'function') {
-				props.history.replace(newUrl);
-			} else {
-				window.history.replaceState({}, '', newUrl);
-			}
-		}
-	}, []);
 
 	useEffect(() => {
 		if (profileFormRef.current) {
@@ -227,17 +185,14 @@ function Profile(props) {
 						<button className={'login-btn'} onClick={login}>Log in</button>
 					</div>
 					<div className="button-wrapper">
-						<button className={'google-signin-btn'} onClick={() => { window.location.href = '/.netlify/functions/auth-google'; }}>
-							<img src="/icons/google.svg" alt="" style={{ height: '18px', marginRight: '8px' }} /> Sign in with Google
-						</button>
+						{/* Google sign-in removed from Profile page; use /login page instead */}
 					</div>
 					<div className="link-wrapper"><a href="/register">Not registered?</a></div>
 				</div>
 			) : (
 				<div className="form">
-					<div>Logged in as {profileUser.email}</div>
+					<div>Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
 					<div className="button-wrapper">
-						<button className={'logout-btn'} onClick={logout}>Log out</button>
 						<button className={'export-btn'} onClick={exportCustom}>Export Custom</button>
 					</div>
 

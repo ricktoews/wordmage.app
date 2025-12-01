@@ -6,6 +6,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import KeyCapture from './KeyCapture';
 // Import WordMageContext to set Context for app.
 import { WordMageContext } from './WordMageContext';
+import Login from './Login';
 
 // Import WordsInterface - data, utilities.
 import WordsInterface from './utils/words-interface';
@@ -35,7 +36,19 @@ function App(props) {
 
     // Set up Context for app. WordMageContext.Provider will wrap everything.
     const [contextValue, setContextValue] = useState({ targetEl: null });
-    const contextProviderValue = useMemo(() => ({ contextValue, setContextValue }), [contextValue, setContextValue]);
+    const [authUser, setAuthUser] = useState(null);
+    const contextProviderValue = useMemo(() => ({ contextValue, setContextValue, authUser, setAuthUser }), [contextValue, setContextValue, authUser, setAuthUser]);
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem('authUser');
+            if (stored) {
+                setAuthUser(JSON.parse(stored));
+            }
+        } catch (err) {
+            console.warn('Error reading authUser from localStorage', err);
+        }
+    }, []);
 
     //---------------------------------------------
     const wordHash = WordsInterface.fullWordList();
@@ -51,6 +64,8 @@ function App(props) {
     const [botpressClientId, setBotpressClientId] = useState(null);
 
     const hamburgerRef = useRef(null);
+    const accountRef = useRef(null);
+    const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
     useEffect(() => {
         fetch('/.netlify/functions/botpress')
@@ -74,6 +89,12 @@ function App(props) {
                 setHamburgerClass('hamburger-nav');
             }
         }
+        // Close account menu if clicking outside it
+        try {
+            if (accountRef.current && !accountRef.current.contains(el)) {
+                setAccountMenuOpen(false);
+            }
+        } catch (e) { }
         if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
             //setWordFormState(false);
         }
@@ -140,6 +161,30 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
+    const navToLogin = () => {
+        var history = props.history;
+        history.push('/login');
+        setHamburgerClass('hamburger-nav');
+    }
+
+    const signOut = () => {
+        // Attempt to disable Google auto-select / revoke if available
+        try {
+            if (window.google && window.google.accounts && window.google.accounts.id) {
+                // Disable auto-select for One Tap
+                try { window.google.accounts.id.disableAutoSelect(); } catch (e) { }
+                // Try revoke by email (best-effort)
+                try { if (authUser && authUser.email) window.google.accounts.id.revoke(authUser.email, () => { }); } catch (e) { }
+            }
+        } catch (e) { }
+        setAuthUser(null);
+        try { localStorage.removeItem('authUser'); } catch (e) { }
+    }
+
+    const toggleAccountMenu = () => {
+        setAccountMenuOpen(prev => !prev);
+    }
+
     const hamburgerClick = () => {
         console.log('hamburger clicked', hamburgerClass);
         if (hamburgerClass === 'hamburger-nav') {
@@ -193,6 +238,27 @@ function App(props) {
                 <div className="header-content">
                     <div className="header-title">WordMage - {view}</div>
                 </div>
+                <div className="header-right">
+                    {!authUser ? (
+                        <button className="btn login-btn" onClick={navToLogin}>Log In</button>
+                    ) : (
+                        <div className="account-wrapper" ref={accountRef}>
+                            <button className="account-button" onClick={toggleAccountMenu} aria-haspopup="true" aria-expanded={accountMenuOpen}>
+                                {authUser.avatarUrl ? (
+                                    <img className="account-avatar" src={authUser.avatarUrl} alt={authUser.name || 'Account'} />
+                                ) : (
+                                    <div className="account-initial">{(authUser.name || authUser.email || 'U')[0].toUpperCase()}</div>
+                                )}
+                            </button>
+                            {accountMenuOpen && (
+                                <div className="account-menu" role="menu">
+                                    <button className="account-menu-item" onClick={() => { navToProfile(); setAccountMenuOpen(false); }}>Profile</button>
+                                    <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); signOut(); }}>Sign out</button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
             </header>
 
             {/*false && wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div />*/}
@@ -244,6 +310,7 @@ function App(props) {
                             toggleSpotlight={toggleSpotlight}
                         />)} />
                         <Route path="/profile" component={Profile} />
+                        <Route path="/login" component={Login} />
                         <Route path="/register" component={Register} />
                         <Route path="/about" component={About} />
                     </Switch>
