@@ -10,6 +10,7 @@ const custom = DataSource.retrieveUserLocalData();
 const userData = { custom };
 
 const WORD_POOL = [];
+const COLLECTIVE = [];
 
 function initializeCustom(custom) {
     userData.custom = custom;
@@ -20,10 +21,13 @@ function getCustom() {
 }
 
 async function initializeWordPool() {
-    var response = await fetch(CONFIG.domain);
+    var response = await fetch(CONFIG.domain + '/get-words');
     var data = await response.json();
-    WORD_POOL.push(...data);
-    return data;
+    WORD_POOL.push(...data.wordPool);
+    if (data.collective) {
+        COLLECTIVE.push(...data.collective);
+    }
+    return data.wordPool;
 }
 
 /**
@@ -59,6 +63,13 @@ function separateDisliked(list) {
     var dislikedList = list.filter(wordObj => wordObj.dislike);
     var notDislikedList = list.filter(wordObj => !wordObj.dislike);
     return [notDislikedList, dislikedList];
+}
+
+function collectiveWordList() {
+    // Filter out any invalid items and sort by term
+    return COLLECTIVE.slice()
+        .filter(item => item && item.term)
+        .sort((a, b) => a.term.localeCompare(b.term));
 }
 
 /**
@@ -368,6 +379,7 @@ const WordsInterface = {
     getRandomPool,
     getWordList,
     fullWordList,
+    collectiveWordList,
     isCustom,
     saveCustomWord,
     deleteCustomWord,

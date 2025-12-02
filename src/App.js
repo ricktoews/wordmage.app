@@ -18,6 +18,7 @@ import PopupWordForm from './components/PopupWordForm';
 import Popup from './components/Popup';
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
+import CollectiveWords from './components/CollectiveWords';
 import Learn from './components/Learn';
 import SpotlightList from './components/SpotlightList';
 import Random from './components/Random';
@@ -140,6 +141,13 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
+    const navToCollective = () => {
+        var history = props.history;
+        history.push('/collective');
+        setView('Collective');
+        setHamburgerClass('hamburger-nav');
+    }
+
     const navToProfile = () => {
         var history = props.history;
         history.push('/profile');
@@ -225,6 +233,7 @@ function App(props) {
                     <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
                     <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
                     <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
+                    <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
                     <li onClick={navToProfile}><i className="glyphicon glyphicon-user"></i> Profile</li>
                     <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
                 </ul>
@@ -302,6 +311,10 @@ function App(props) {
                             toggleSpotlight={toggleSpotlight}
                         />)} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                        />)} />
+                        <Route path="/collective/:start?" render={props => (<CollectiveWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                         />)} />
