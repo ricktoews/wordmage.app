@@ -774,6 +774,43 @@ body {
 	}
 }
 
+.collective-featured {
+	position: relative;
+	top: 100px;
+	margin: 20px auto;
+	max-width: 800px;
+	padding: 20px;
+	background-color: #fff9e6;
+	border-left: 4px solid #ff6600;
+	border-radius: 8px;
+
+	.collective-featured-label {
+		font-size: 0.85rem;
+		color: #666;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-bottom: 10px;
+		font-weight: 600;
+	}
+
+	.collective-featured-item {
+		background-color: white;
+		
+		.word-item-word {
+			font-size: 1.3rem;
+			color: #ff6600;
+		}
+
+		.word-item-def {
+			font-size: 1.05rem;
+			
+			strong {
+				color: #007bff;
+			}
+		}
+	}
+}
+
 .app-container {
 	position: relative;
 	top: $header-height;

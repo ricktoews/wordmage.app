@@ -15,6 +15,16 @@ function CollectiveWords(props) {
     const [displayList, setDisplayList] = useState([]);
     const [sortBy, setSortBy] = useState('individual'); // 'individual' or 'term'
     const [showHighlightOnly, setShowHighlightOnly] = useState(true);
+    const [featuredItem, setFeaturedItem] = useState(null);
+
+    // Select a random highlighted item on mount
+    useEffect(() => {
+        const highlightedItems = fullWordObjList.filter(item => item.highlight);
+        if (highlightedItems.length > 0) {
+            const randomIndex = Math.floor(Math.random() * highlightedItems.length);
+            setFeaturedItem(highlightedItems[randomIndex]);
+        }
+    }, []);
 
     // Sort the list based on current sort option
     const sortList = (list, sortOption) => {
@@ -93,6 +103,23 @@ function CollectiveWords(props) {
                     </button>
                 </div>
             </div>
+
+            {featuredItem && (
+                <div className="collective-featured">
+                    <div className="collective-featured-label">Featured Collective Noun</div>
+                    <div className="word-item collective-featured-item">
+                        <div className="word-item-word-container">
+                            <div className="word-item-word">{featuredItem.refersTo}</div>
+                        </div>
+                        <div className="word-item-def-container">
+                            <div className="word-item-def">
+                                <strong>{featuredItem.term}</strong>: {featuredItem.expression}
+                                {featuredItem.source && <span> ({featuredItem.source})</span>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <div className="collective-list">
                 {displayList.map((item, index) => (
