@@ -14,6 +14,7 @@ function CollectiveWords(props) {
     const [startingNdx, setStartingNdx] = useState(0);
     const [displayList, setDisplayList] = useState([]);
     const [sortBy, setSortBy] = useState('individual'); // 'individual' or 'term'
+    const [showHighlightOnly, setShowHighlightOnly] = useState(true);
 
     // Sort the list based on current sort option
     const sortList = (list, sortOption) => {
@@ -29,7 +30,10 @@ function CollectiveWords(props) {
 
     // Build the display list based on starting index
     const buildDisplayList = () => {
-        const sorted = sortList(wordObjList, sortBy);
+        let filteredList = showHighlightOnly
+            ? wordObjList.filter(item => item.highlight)
+            : wordObjList;
+        const sorted = sortList(filteredList, sortBy);
         let ndx = -1;
         for (let i = 0; i < wordList.length && ndx === -1; i++) {
             if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
@@ -43,7 +47,7 @@ function CollectiveWords(props) {
 
     useEffect(() => {
         buildDisplayList();
-    }, [startingLetters, wordObjList, sortBy]);
+    }, [startingLetters, wordObjList, sortBy, showHighlightOnly]);
 
     useEffect(() => {
         setWordObjList(fullWordObjList);
@@ -69,17 +73,23 @@ function CollectiveWords(props) {
         <div className="browse-container">
             <div className="browse">
                 <div className="collective-sort-buttons">
-                    <button 
+                    <button
                         className={`btn ${sortBy === 'individual' ? 'btn-active' : ''}`}
                         onClick={() => setSortBy('individual')}
                     >
                         Individual
                     </button>
-                    <button 
+                    <button
                         className={`btn ${sortBy === 'term' ? 'btn-active' : ''}`}
                         onClick={() => setSortBy('term')}
                     >
                         Term
+                    </button>
+                    <button
+                        className={`btn ${showHighlightOnly ? 'btn-active' : ''}`}
+                        onClick={() => setShowHighlightOnly(!showHighlightOnly)}
+                    >
+                        ⭐ Highlights
                     </button>
                 </div>
             </div>
