@@ -38,12 +38,41 @@ function CollectiveWords(props) {
         return sorted;
     };
 
+    // Combine items with the same term and merge their sources
+    const combineTerms = (list) => {
+        const termMap = new Map();
+        
+        list.forEach(item => {
+            // Normalize for comparison (lowercase)
+            const key = `${(item.term || '').toLowerCase()}|${(item.refersTo || '').toLowerCase()}|${(item.expression || '').toLowerCase()}`;
+            
+            if (termMap.has(key)) {
+                const existing = termMap.get(key);
+                if (item.source && !existing.sources.includes(item.source)) {
+                    existing.sources.push(item.source);
+                }
+                // Keep highlight if any instance is highlighted
+                if (item.highlight) {
+                    existing.highlight = true;
+                }
+            } else {
+                termMap.set(key, {
+                    ...item,
+                    sources: item.source ? [item.source] : []
+                });
+            }
+        });
+        
+        return Array.from(termMap.values());
+    };
+
     // Build the display list based on starting index
     const buildDisplayList = () => {
         let filteredList = showHighlightOnly
             ? wordObjList.filter(item => item.highlight)
             : wordObjList;
-        const sorted = sortList(filteredList, sortBy);
+        const combined = combineTerms(filteredList);
+        const sorted = sortList(combined, sortBy);
         let ndx = -1;
         for (let i = 0; i < wordList.length && ndx === -1; i++) {
             if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
@@ -114,7 +143,9 @@ function CollectiveWords(props) {
                         <div className="word-item-def-container">
                             <div className="word-item-def">
                                 <strong>{featuredItem.term}</strong>: {featuredItem.expression}
-                                {featuredItem.source && <span> ({featuredItem.source})</span>}
+                                {featuredItem.sources && featuredItem.sources.length > 0 && (
+                                    <span> ({featuredItem.sources.join(', ')})</span>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -132,7 +163,9 @@ function CollectiveWords(props) {
                         <div className="word-item-def-container">
                             <div className="word-item-def">
                                 {item.expression}
-                                {item.source && <span> ({item.source})</span>}
+                                {item.sources && item.sources.length > 0 && (
+                                    <span> ({item.sources.join(', ')})</span>
+                                )}
                             </div>
                         </div>
                     </div>
