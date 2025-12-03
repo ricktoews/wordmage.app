@@ -747,6 +747,33 @@ body {
 	background-color: $wordmage-background;
 }
 
+.collective-sort-buttons {
+	display: inline-flex;
+	gap: 8px;
+	margin-left: 12px;
+
+	.btn {
+		padding: 4px 12px;
+		font-size: 13px;
+		border-radius: 4px;
+		border: 1px solid #b3d9ff;
+		background-color: #e6f2ff;
+		color: #333;
+		cursor: pointer;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: #cce5ff;
+		}
+
+		&.btn-active {
+			background-color: #007bff;
+			color: white;
+			border-color: #007bff;
+		}
+	}
+}
+
 .app-container {
 	position: relative;
 	top: $header-height;
