@@ -275,22 +275,26 @@ function App(props) {
             <WordMageContext.Provider value={contextProviderValue}>
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
 
-                <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
-                {botpressClientId && (<div data-env={envVar} className="add-word-icon-container">
-                    <Webchat
-                        clientId={botpressClientId} // Your client ID here
-                        configuration={{ botName: 'WordMage Wizard' }}
-                        style={{
-                            width: '300px',
-                            height: '400px',
-                            display: isWebchatOpen ? 'flex' : 'none',
-                            position: 'fixed',
-                            bottom: '90px',
-                            right: '20px',
-                        }}
-                    />
-                    <Fab onClick={() => toggleWebchat()} style={{ width: '40px', height: '40px', position: 'fixed', bottom: '20px', right: '20px' }} />
-                </div>)}
+                {!props.location.pathname.startsWith('/collective') && (
+                    <>
+                        <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
+                        {botpressClientId && (<div data-env={envVar} className="add-word-icon-container">
+                            <Webchat
+                                clientId={botpressClientId} // Your client ID here
+                                configuration={{ botName: 'WordMage Wizard' }}
+                                style={{
+                                    width: '300px',
+                                    height: '400px',
+                                    display: isWebchatOpen ? 'flex' : 'none',
+                                    position: 'fixed',
+                                    bottom: '90px',
+                                    right: '20px',
+                                }}
+                            />
+                            <Fab onClick={() => toggleWebchat()} style={{ width: '40px', height: '40px', position: 'fixed', bottom: '20px', right: '20px' }} />
+                        </div>)}
+                    </>
+                )}
 
                 <KeyCapture>
                     <Switch>

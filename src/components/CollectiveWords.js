@@ -58,17 +58,19 @@ function CollectiveWords(props) {
             </div>
 
             <div className="collective-list">
-                <ul className="word-list">
-                    {displayList.map((item, index) => (
-                        <li key={index} className="word-entry">
-                            <div className="collective-term">
-                                <strong>{item.term}</strong>
-                                {item.modern && <span className="collective-modern"> ({item.modern})</span>}
+                {displayList.map((item, index) => (
+                    <div key={index} className="word-item">
+                        <div className="word-item-word-container">
+                            <div className="word-item-word">{item.refersTo}</div>
+                        </div>
+                        <div className="word-item-def-container">
+                            <div className="word-item-def">
+                                {item.expression}
+                                {item.source && <span> ({item.source})</span>}
                             </div>
-                            <div className="collective-refers-to">{item.refersTo}</div>
-                        </li>
-                    ))}
-                </ul>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

@@ -737,6 +737,16 @@ body {
 	filter: brightness(0) invert(1);
 }
 
+/* Collective Nouns styles */
+.collective-list {
+	position: relative;
+	top: 100px;
+	padding: 20px;
+	max-width: 800px;
+	margin: 0 auto;
+	background-color: $wordmage-background;
+}
+
 .app-container {
 	position: relative;
 	top: $header-height;

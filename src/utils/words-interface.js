@@ -66,10 +66,10 @@ function separateDisliked(list) {
 }
 
 function collectiveWordList() {
-    // Filter out any invalid items and sort by term
+    // Filter out any invalid items and sort by refersTo
     return COLLECTIVE.slice()
         .filter(item => item && item.term)
-        .sort((a, b) => a.term.localeCompare(b.term));
+        .sort((a, b) => (a.refersTo || '').localeCompare(b.refersTo || ''));
 }
 
 /**
