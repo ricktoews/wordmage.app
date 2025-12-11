@@ -110,51 +110,61 @@ function CollectiveWords(props) {
 
     return (
         <div className="browse-container">
-            <div className="browse">
-                <div className="collective-sort-buttons">
+            <div className="collective-toolbar">
+                <div className="collective-toolbar-title">Collective Nouns</div>
+                <div className="collective-toolbar-buttons">
                     <button
-                        className={`btn ${sortBy === 'individual' ? 'btn-active' : ''}`}
-                        onClick={() => setSortBy('individual')}
-                    >
-                        Individual
-                    </button>
-                    <button
-                        className={`btn ${sortBy === 'term' ? 'btn-active' : ''}`}
-                        onClick={() => setSortBy('term')}
-                    >
-                        Term
-                    </button>
-                    <button
-                        className={`btn ${showHighlightOnly ? 'btn-active' : ''}`}
+                        className={`badge ${showHighlightOnly ? 'badge-active' : ''}`}
                         onClick={() => setShowHighlightOnly(!showHighlightOnly)}
+                        title="Toggle Highlights"
                     >
-                        ⭐ Highlights
+                        <i className="glyphicon glyphicon-star"></i>
                     </button>
                 </div>
             </div>
 
             {featuredItem && (
                 <div className="collective-featured">
-                    <div className="collective-featured-label">Featured Collective Noun</div>
-                    <div className="word-item collective-featured-item">
-                        <div className="word-item-word-container">
-                            <div className="word-item-word">{featuredItem.refersTo}</div>
-                        </div>
-                        <div className="word-item-def-container">
-                            <div className="word-item-def">
-                                <strong>{featuredItem.term}</strong>: {featuredItem.expression}
-                                {featuredItem.sources && featuredItem.sources.length > 0 && (
-                                    <span> ({featuredItem.sources.join(', ')})</span>
-                                )}
+                    <div className="collective-featured-header">
+                        <div className="collective-featured-label">Featured Collective Noun</div>
+                    </div>
+                    <div className="collective-featured-content">
+                        <div className="word-item collective-featured-item">
+                            <div className="word-item-word-container">
+                                <span className="featured-word-dot">•</span>
+                                <div className="word-item-word">{featuredItem.term}</div>
+                            </div>
+                            <div className="word-item-def-container">
+                                <div className="word-item-def">
+                                    <strong>{featuredItem.refersTo}</strong>: {featuredItem.expression}
+                                    {featuredItem.sources && featuredItem.sources.length > 0 && (
+                                        <span> ({featuredItem.sources.join(', ')})</span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
 
+            <div className="collective-sort-section">
+                <button
+                    className={`btn ${sortBy === 'individual' ? 'btn-active' : ''}`}
+                    onClick={() => setSortBy('individual')}
+                >
+                    Individual
+                </button>
+                <button
+                    className={`btn ${sortBy === 'term' ? 'btn-active' : ''}`}
+                    onClick={() => setSortBy('term')}
+                >
+                    Term
+                </button>
+            </div>
+
             <div className="collective-list">
                 {displayList.map((item, index) => (
-                    <div key={index} className="word-item">
+                    <div key={index} className="word-item collective-word-item">
                         <div className="word-item-word-container">
                             <div className="word-item-word">
                                 {sortBy === 'term' ? item.term : item.refersTo}

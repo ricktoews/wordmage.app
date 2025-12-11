@@ -7,6 +7,9 @@ import Scramble from './Scramble';
 function Spotlight(props) {
     const [introMessage, setIntroMessage] = useState('');
     const [randomeWordSelected, setRandomWordSelected] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [hintTrigger, setHintTrigger] = useState(0);
+    const [showWordTrigger, setShowWordTrigger] = useState(0);
 
     // Check state for selected scrambled word.
     const state = props.location.state;
@@ -45,21 +48,46 @@ function Spotlight(props) {
         setItem(anotherItem);
     };
 
+    const handleRefresh = e => {
+        setRefreshTrigger(prev => prev + 1);
+    };
+
+    const handleHint = e => {
+        setHintTrigger(prev => prev + 1);
+    };
+
+    const handleShowWord = e => {
+        setShowWordTrigger(prev => prev + 1);
+    };
+
     return (
         <div className="spotlight-container">
             {item.word > '' ? (
                 <div className="spotlight-wrapper">
-                    <div className="spotlight">
-                        <div className="word-item-def-container">
-                            <div aria-label="def" className="word-item-def">
-                                {item.def}
-                            </div>
+                    <div className="unscramble-toolbar">
+                        <div className="unscramble-toolbar-title">Unscramble</div>
+                        <div className="unscramble-toolbar-buttons">
+                            <button className="badge" onClick={handleRefresh} title="Reset"><i className="glyphicon glyphicon-random"></i></button>
+                            <button className="badge" onClick={handleHint} title="Hint"><i className="glyphicon glyphicon-question-sign"></i></button>
+                            <button className="badge" onClick={handleShowWord} title="Show Word"><i className="glyphicon glyphicon-eye-open"></i></button>
+                            <button className="badge" onClick={handleAnother} title="Another"><i className="glyphicon glyphicon-forward"></i></button>
                         </div>
-                        <Scramble item={item} word={item.word} />
-
                     </div>
-                    <div className="button-wrapper">
-                        <button className={'badge badge-another'} onClick={handleAnother}><i className="glyphicon glyphicon-play"></i> Another</button>
+                    
+                    <div className="unscramble-definition-card">
+                        <div className="word-item-def">
+                            {item.def}
+                        </div>
+                    </div>
+                    
+                    <div className="spotlight">
+                        <Scramble 
+                            item={item} 
+                            word={item.word} 
+                            refreshTrigger={refreshTrigger}
+                            hintTrigger={hintTrigger}
+                            showWordTrigger={showWordTrigger}
+                        />
                     </div>
                 </div>)
                 : (

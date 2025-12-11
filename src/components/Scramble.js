@@ -50,6 +50,24 @@ function Scramble(props) {
         setLetterStates(initLetters(scrambled));
     }, [scrambled]);
 
+    useEffect(() => {
+        if (props.refreshTrigger > 0) {
+            handleRefresh();
+        }
+    }, [props.refreshTrigger]);
+
+    useEffect(() => {
+        if (props.hintTrigger > 0) {
+            handleHint();
+        }
+    }, [props.hintTrigger]);
+
+    useEffect(() => {
+        if (props.showWordTrigger > 0) {
+            setShowWord(true);
+        }
+    }, [props.showWordTrigger]);
+
     const processLetter = (letter) => {
         let letterStatesClone = letterStates.slice(0);
         const ndx = letterStates.findIndex(item => item[letter] === false);
@@ -159,14 +177,6 @@ function Scramble(props) {
 
     return (
         <div className="scrambled-wrapper">
-
-            <div className="word-scramble-buttons">
-                <button className={'badge badge-scramble' + (props.finished ? ' hide-section' : '')} onClick={handleRefresh}><i className="glyphicon glyphicon-repeat"></i> Reset</button>
-                <div className="scramble-hint">
-                    <button className={'badge badge-scramble' + (props.finished ? ' hide-section' : '')} onClick={handleHint}><i className="glyphicon glyphicon-question-sign"></i> Hint</button>
-                    <button className={'badge badge-scramble' + (props.finished ? ' hide-section' : '')} onClick={handleShowWord}><i className="glyphicon glyphicon-info-sign"></i> Show Word</button>
-                </div>
-            </div>
 
             {showWord ? (<div className="show-word">
                 {props.word.split('').map((letter, key) => <span key={key}>{letter}</span>)}

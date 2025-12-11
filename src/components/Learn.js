@@ -14,8 +14,8 @@ function Learn(props) {
 
 	return (
 		<div className="learn-list-container">
-			<div className="browse">
-				<p>When you play the Unscramble game, this is the list the words are taken from.</p>
+			<div className="learn-toolbar">
+				<div className="learn-toolbar-title">Learn</div>
 			</div>
 			<WordScroller pool={learnList} startingNdx={0} listType={'learn'} popupWordForm={props.popupWordForm} />
 		</div>

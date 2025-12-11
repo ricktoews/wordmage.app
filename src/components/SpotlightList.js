@@ -19,10 +19,10 @@ function SpotlightList(props) {
 	}
 
 	return (
-	<div className="spotlight-list-container">
-      <div className="browse">
-		<p>These are words you want to make special note of, for whatever reason.</p>
-      </div>
+	<div className="spotlight-list-container favorites-page">
+	  <div className="favorites-toolbar">
+	    <div className="favorites-toolbar-title">Favorites</div>
+	  </div>
 	  <WordScroller pool={spotlightWordList} startingNdx={0} listType={'liked'} popupWordForm={props.popupWordForm} />
 	</div>
 	);

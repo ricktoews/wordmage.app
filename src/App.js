@@ -229,7 +229,7 @@ function App(props) {
             <nav ref={hamburgerRef} className={hamburgerClass}>
                 <ul>
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
-                    <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Liked</li>
+                    <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>
                     <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
                     <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
                     <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
@@ -245,7 +245,7 @@ function App(props) {
                 </div>
 
                 <div className="header-content">
-                    <div className="header-title">{view === 'Random' ? 'WordMage' : `WordMage - ${view}`}</div>
+                    <div className="header-title">{(view === 'Random' || view === 'Favorites' || view === 'Browse' || view === 'Learn' || view === 'Solve' || view === 'Collective') ? 'WordMage' : `WordMage - ${view}`}</div>
                 </div>
                 <div className="header-right">
                     {!authUser ? (
@@ -277,21 +277,19 @@ function App(props) {
 
                 {props.location.pathname.startsWith('/browse') && (
                     <>
-                        <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
-                        {botpressClientId && (<div data-env={envVar} className="add-word-icon-container">
+                        {botpressClientId && isWebchatOpen && (<div data-env={envVar} className="add-word-icon-container">
                             <Webchat
                                 clientId={botpressClientId} // Your client ID here
                                 configuration={{ botName: 'WordMage Wizard' }}
                                 style={{
                                     width: '300px',
                                     height: '400px',
-                                    display: isWebchatOpen ? 'flex' : 'none',
+                                    display: 'flex',
                                     position: 'fixed',
                                     bottom: '90px',
                                     right: '20px',
                                 }}
                             />
-                            <Fab onClick={() => toggleWebchat()} style={{ width: '40px', height: '40px', position: 'fixed', bottom: '20px', right: '20px' }} />
                         </div>)}
                     </>
                 )}
@@ -317,6 +315,8 @@ function App(props) {
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
+                            botpressButton={botpressClientId}
+                            toggleWebchat={toggleWebchat}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}

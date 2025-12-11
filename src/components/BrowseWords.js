@@ -140,18 +140,21 @@ function BrowseWords(props) {
 	}
 
 	return (
-		<div className="browse-container">
-			<div className="browse">
-				{/* Word search field */}
-				<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
-
-				{/* Tag filtering UI: Selected tag, tag selection button */}
+		<div className="browse-container browse-page">
+			<div className="browse-toolbar">
+				<div className="browse-toolbar-title">Browse</div>
+				<div className="browse-toolbar-search">
+					<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+				</div>
 				<div className="browse-filter-buttons">
 					{
 						tagFilter
 							? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>)
 							: null
-					} <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
+					}
+					<button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
+					<button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>
+					{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
 				</div>
 			</div>
 
