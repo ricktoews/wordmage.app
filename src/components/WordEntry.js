@@ -51,12 +51,11 @@ function WordEntry(props) {
 					onUpdate={() => setUpdateToggle(!updateToggle)}
 				/>
 			</div>
-			<div className="word-item-def-container">
-				<div className="source-def-container">
-					<div className="word-item-def">{wordObj.def}</div>
-					<span className="word-item-source">(source: {wordObj.source})</span>
-				</div>
+		<div className="word-item-def-container">
+			<div className="source-def-container">
+				<div className="word-item-def">{wordObj.def}</div>
 			</div>
+		</div>
 		</div>
 	);
 }
