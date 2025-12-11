@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import WordsInterface from '../utils/words-interface';
 import WordEntryButtons from './WordEntryButtons';
+import WordCardMenu from './WordCardMenu';
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import { TwitterShareButton, XIcon } from "react-share";
 
 function WordEntry(props) {
 	const { history } = props;
 	const { wordObj, listType } = props;
+	const [updateToggle, setUpdateToggle] = useState(false);
 
 	function deleteWordToggle(wordObj, e) {
 		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
@@ -41,15 +44,17 @@ function WordEntry(props) {
 				</div>
 				<div className="word-item-word">{wordObj.word}</div>
 				<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
+				<WordCardMenu 
+					wordObj={wordObj} 
+					listType={listType} 
+					popupTags={props.popupTags}
+					onUpdate={() => setUpdateToggle(!updateToggle)}
+				/>
 			</div>
 			<div className="word-item-def-container">
 				<div className="source-def-container">
 					<div className="word-item-def">{wordObj.def}</div>
 					<span className="word-item-source">(source: {wordObj.source})</span>
-				</div>
-				<div style={{ display: 'flex', 'justifyContent': 'space-between' }}>
-					<WordEntryButtons buttonGroup='left' wordObj={wordObj} listType={listType} popupWordShare={props.popupWordShare} popupTags={props.popupTags} />
-					<WordEntryButtons buttonGroup='right' wordObj={wordObj} listType={listType} popupTags={props.popupTags} />
 				</div>
 			</div>
 		</div>

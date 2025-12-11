@@ -245,7 +245,7 @@ function App(props) {
                 </div>
 
                 <div className="header-content">
-                    <div className="header-title">WordMage - {view}</div>
+                    <div className="header-title">{view === 'Random' ? 'WordMage' : `WordMage - ${view}`}</div>
                 </div>
                 <div className="header-right">
                     {!authUser ? (
@@ -275,7 +275,7 @@ function App(props) {
             <WordMageContext.Provider value={contextProviderValue}>
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
 
-                {!props.location.pathname.startsWith('/collective') && (
+                {props.location.pathname.startsWith('/browse') && (
                     <>
                         <AddIcon className="btn btn-danger" onClick={() => { popupWordForm(); }} />
                         {botpressClientId && (<div data-env={envVar} className="add-word-icon-container">
