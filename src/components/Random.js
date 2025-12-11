@@ -48,7 +48,7 @@ function Random(props) {
 	  {featuredWord && (
 	    <div className="random-featured-card">
 	      <div className="random-featured-header">
-	        <div className="random-featured-label">FEATURED LIKED WORD</div>
+	        <div className="random-featured-label">FEATURED FAVORITE WORD</div>
 	      </div>
 	      <div className="random-featured-content">
 	        <div className="word-item-word-container">

@@ -76,7 +76,7 @@ function WordCardMenu(props) {
                         onClick={handleBookmark}
                     >
                         <i className={`glyphicon glyphicon-thumbs-${isBookmarked ? 'down' : 'up'}`}></i>
-                        <span>{isBookmarked ? 'Remove Bookmark' : 'Bookmark word'}</span>
+                        <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>
                     </button>
                     
                     <button 

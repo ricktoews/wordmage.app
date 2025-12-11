@@ -245,7 +245,7 @@ function App(props) {
                 </div>
 
                 <div className="header-content">
-                    <div className="header-title">{(view === 'Random' || view === 'Favorites' || view === 'Browse' || view === 'Learn' || view === 'Solve' || view === 'Collective') ? 'WordMage' : `WordMage - ${view}`}</div>
+                    <div className="header-title">{(view === 'Random' || view === 'Favorites' || view === 'Browse' || view === 'Learn' || view === 'Solve' || view === 'Collective' || view === 'About') ? 'WordMage' : `WordMage - ${view}`}</div>
                 </div>
                 <div className="header-right">
                     {!authUser ? (
