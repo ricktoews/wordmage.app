@@ -270,9 +270,12 @@ function Login() {
     const clientId = GOOGLE_CONFIG.googleClientId;
 
     return (
-        <div className="plain-content">
-            <div style={{ padding: 20, maxWidth: 600, margin: '0 auto' }}>
-                <h2>Log In</h2>
+        <>
+            <div className="login-toolbar">
+                <div className="page-title">Login</div>
+            </div>
+            <div className="plain-content login-content">
+                <div style={{ padding: 20, maxWidth: 600, margin: '0 auto' }}>
                 {clientId ? (
                     <>
                         <div ref={buttonRef} />
@@ -289,6 +292,7 @@ function Login() {
                 )}
             </div>
         </div>
+        </>
     );
 }
 

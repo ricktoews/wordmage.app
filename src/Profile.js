@@ -23,10 +23,12 @@ function Profile(props) {
 	const [password, setPassword] = useState('');
 	const [passwordConf, setPasswordConf] = useState('');
 	const [message, setMessage] = useState('');
+	const [showNotification, setShowNotification] = useState(false);
 	const [profileUser, setProfileUser] = useState(profileObj);
 	const [custom, setCustom] = useState(getMyWords());
 	const [clickedWord, setClickedWord] = useState('');
 	const [clickedDef, setClickedDef] = useState('');
+	const [selectedDownload, setSelectedDownload] = useState('');
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -121,9 +123,11 @@ function Profile(props) {
 			a.remove();
 			URL.revokeObjectURL(url);
 			setMessage(`Exported ${customWords.length} custom words.`);
+			setShowNotification(true);
 		} catch (err) {
 			console.error('exportCustom error', err);
 			setMessage('Failed to export custom words.');
+			setShowNotification(true);
 		}
 	}
 
@@ -160,18 +164,78 @@ function Profile(props) {
 		console.log('handleWordClick', word, def);
 	}
 
-	return (
-		<div ref={profileFormRef} className="profile-form plain-content container">
-			<div ref={clickedWordRef} className="clicked-word-container element-hide">
-				<div className="clicked-word-item">
-					<div className="clicked-word">{clickedWord}</div>
-					<div className="clicked-def">{clickedDef}</div>
-				</div>
-			</div>
-			<h3>Profile</h3>
-			{message === '' ? null : <div className="profile-form-message">{message}</div>}
+	const closeNotification = () => {
+		setShowNotification(false);
+		setMessage('');
+	}
 
-			{!profileUser.user_id ? (
+	const handleDownload = () => {
+		try {
+			let wordsToExport = [];
+			const allCustom = WordsInterface.getCustom() || [];
+
+			if (selectedDownload === 'favorites') {
+				wordsToExport = allCustom.filter(w => w.spotlight);
+			} else if (selectedDownload === 'learn') {
+				wordsToExport = allCustom.filter(w => w.learn);
+			} else if (selectedDownload === 'custom') {
+				wordsToExport = allCustom.filter(w => w.myown === true);
+			}
+
+			if (!wordsToExport.length) {
+				setMessage('No words selected to download.');
+				setShowNotification(true);
+				return;
+			}
+
+			const dataStr = JSON.stringify(wordsToExport, null, 2);
+			const blob = new Blob([dataStr], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+			const filename = `wordmage-download-${date}.json`;
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			URL.revokeObjectURL(url);
+			setMessage(`Downloaded ${wordsToExport.length} words.`);
+			setShowNotification(true);
+		} catch (err) {
+			console.error('handleDownload error', err);
+			setMessage('Failed to download words.');
+			setShowNotification(true);
+		}
+	}
+
+	return (
+		<>
+			{showNotification && (
+				<div className="notification-panel">
+					<div className="notification-content">{message}</div>
+					<button className="notification-close" onClick={closeNotification}>
+						<i className="glyphicon glyphicon-remove"></i>
+					</button>
+				</div>
+			)}
+			<div className="profile-toolbar">
+				<div className="page-title">Profile</div>
+				{profileUser.user_id && (
+					<button className="badge" onClick={exportCustom} title="Export custom words">
+						<i className="glyphicon glyphicon-export"></i>
+					</button>
+				)}
+			</div>
+			<div ref={profileFormRef} className="profile-form plain-content container">
+				<div ref={clickedWordRef} className="clicked-word-container element-hide">
+					<div className="clicked-word-item">
+						<div className="clicked-word">{clickedWord}</div>
+						<div className="clicked-def">{clickedDef}</div>
+					</div>
+				</div>
+
+				{!profileUser.user_id ? (
 				<div className="form">
 					<div className="input-field">
 						<div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
@@ -191,25 +255,30 @@ function Profile(props) {
 				</div>
 			) : (
 				<div className="form">
-					<div>Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
-					<div className="button-wrapper">
-						<button className={'export-btn'} onClick={exportCustom}>Export Custom</button>
-					</div>
+					<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
 
-					<div className="my-profile-content">
-						<h4>Words You're Learning</h4>
-						{custom.length > 0 ? (
-							<div className="my-words">
-								{custom.map((item, ndx) => {
-									return <div key={ndx} onClick={handleWordClick} data-word={item.word} data-def={item.def} className="my-word">{item.word}</div>
-								})}
-							</div>
-						) : <div>Nothing yet...</div>}
+					<div className="downloads-section">
+						<h4 className="downloads-heading">Downloads</h4>
+						<div className="download-options">
+							<label className="download-checkbox-label" onClick={() => setSelectedDownload('favorites')}>
+								<span className={`custom-checkbox ${selectedDownload === 'favorites' ? 'checked' : ''}`}></span>
+								<span className="checkbox-text">Favorites</span>
+							</label>
+							<label className="download-checkbox-label" onClick={() => setSelectedDownload('learn')}>
+								<span className={`custom-checkbox ${selectedDownload === 'learn' ? 'checked' : ''}`}></span>
+								<span className="checkbox-text">Learn</span>
+							</label>
+							<label className="download-checkbox-label" onClick={() => setSelectedDownload('custom')}>
+								<span className={`custom-checkbox ${selectedDownload === 'custom' ? 'checked' : ''}`}></span>
+								<span className="checkbox-text">Custom</span>
+							</label>
+						</div>
+						<button className="download-btn" onClick={handleDownload}>Download</button>
 					</div>
-
 				</div>
 			)}
-		</div>
+			</div>
+		</>
 	);
 }
 

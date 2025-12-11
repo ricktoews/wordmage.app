@@ -130,7 +130,7 @@ function App(props) {
     const navToSpotlightList = () => {
         var history = props.history;
         history.push('/spotlight-list');
-        setView('Liked');
+        setView('Favorites');
         setHamburgerClass('hamburger-nav');
     }
 
@@ -172,6 +172,7 @@ function App(props) {
     const navToLogin = () => {
         var history = props.history;
         history.push('/login');
+        setView('Login');
         setHamburgerClass('hamburger-nav');
     }
 
@@ -245,11 +246,13 @@ function App(props) {
                 </div>
 
                 <div className="header-content">
-                    <div className="header-title">{(view === 'Random' || view === 'Favorites' || view === 'Browse' || view === 'Learn' || view === 'Solve' || view === 'Collective' || view === 'About') ? 'WordMage' : `WordMage - ${view}`}</div>
+                    <div className="header-title">{(view === 'Random' || view === 'Favorites' || view === 'Browse' || view === 'Learn' || view === 'Solve' || view === 'Collective' || view === 'About' || view === 'Profile' || view === 'Login') ? 'WordMage' : `WordMage - ${view}`}</div>
                 </div>
                 <div className="header-right">
                     {!authUser ? (
-                        <button className="btn login-btn" onClick={navToLogin}>Log In</button>
+                        <button className="header-login-btn" onClick={navToLogin} title="Log In">
+                            <i className="glyphicon glyphicon-user"></i>
+                        </button>
                     ) : (
                         <div className="account-wrapper" ref={accountRef}>
                             <button className="account-button" onClick={toggleAccountMenu} aria-haspopup="true" aria-expanded={accountMenuOpen}>

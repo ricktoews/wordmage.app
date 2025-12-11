@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cardo&family=Lato:wght@300;400&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo&family=Lato:wght@300;400&family=Libre+Baskerville:wght@400;700&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
 
 //$word-form-background: #5887AA;
 $word-form-background: #fff;
@@ -633,6 +633,29 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 8px;
+}
+
+.header-login-btn {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	background-color: rgba(0, 0, 0, 0.05);
+	border: none;
+	color: #666;
+	cursor: pointer;
+	transition: background-color 0.2s;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.08);
+	}
+
+	.glyphicon {
+		font-size: 16px;
+	}
 }
 
 .login-btn {
@@ -1756,9 +1779,10 @@ body {
 }
 
 .word-item-word {
-	font-family: $lovable-font;
-	font-size: $lovable-word-size;
-	font-weight: 500;
+	font-family: 'Libre Baskerville', Georgia, serif;
+	font-size: 0.95rem;
+	letter-spacing: 0.2px;
+	font-weight: 400;
 	//	font-size: 1.3em;
 	min-width: 100px;
 	padding: 1px 15px 1px 0px;
@@ -1920,14 +1944,301 @@ body {
 	border-top: 3px solid red;
 }
 
+.profile-toolbar {
+	position: fixed;
+	z-index: 99;
+	top: $header-height;
+	width: 100%;
+	max-width: 100vw;
+	min-height: 50px;
+	background: linear-gradient(to bottom, #f4f2ec, #eeeae2);
+	border-bottom: 1px solid #e0e0e0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 12px;
+
+	.page-title {
+		font-family: "Georgia", "Times New Roman", serif;
+		font-size: 24px;
+		font-weight: 600;
+		color: #2c2c2c;
+		letter-spacing: 0.3px;
+		
+		&::after {
+			content: " ❧";
+			opacity: 0.55;
+			margin-left: 4px;
+		}
+	}
+
+	.badge {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		background-color: rgba(0, 0, 0, 0.05);
+		border: none;
+		color: #666;
+		cursor: pointer;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.08);
+		}
+
+		.glyphicon {
+			font-size: 16px;
+		}
+	}
+}
+
+.login-toolbar {
+	position: fixed;
+	z-index: 99;
+	top: $header-height;
+	width: 100%;
+	max-width: 100vw;
+	min-height: 50px;
+	background: linear-gradient(to bottom, #f4f2ec, #eeeae2);
+	border-bottom: 1px solid #e0e0e0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 12px;
+
+	.page-title {
+		font-family: "Georgia", "Times New Roman", serif;
+		font-size: 24px;
+		font-weight: 600;
+		color: #2c2c2c;
+		letter-spacing: 0.3px;
+		
+		&::after {
+			content: " ❧";
+			opacity: 0.55;
+			margin-left: 4px;
+		}
+	}
+}
+
+.login-content {
+	position: relative;
+	top: 60px;
+}
+
+.notification-panel {
+	position: fixed;
+	top: calc(#{$header-height} + 50px);
+	left: 50%;
+	transform: translateX(-50%);
+	max-width: 500px;
+	width: 90%;
+	background: linear-gradient(to bottom, #f4f2ec, #eeeae2);
+	border: 1px solid #d0c8b0;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	padding: 16px 48px 16px 20px;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	animation: slideDown 0.3s ease-out;
+
+	.notification-content {
+		color: #2c2416;
+		font-size: 15px;
+		line-height: 1.4;
+	}
+
+	.notification-close {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: none;
+		background-color: rgba(0, 0, 0, 0.05);
+		color: #666;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+
+		.glyphicon {
+			font-size: 12px;
+		}
+	}
+}
+
+@keyframes slideDown {
+	from {
+		top: calc(#{$header-height} + 20px);
+		opacity: 0;
+	}
+	to {
+		top: calc(#{$header-height} + 50px);
+		opacity: 1;
+	}
+}
+
+.profile-form {
+	position: relative;
+	top: 60px;
+}
+
 .profile-form label {
 	position: relative;
 	display: block;
 	font-size: .75em;
 }
 
+.logged-in-message {
+	font-size: 0.85rem;
+	color: #666;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.downloads-section {
+	margin-top: 50px;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+
+	.downloads-heading {
+		font-family: "Georgia", "Times New Roman", serif;
+		font-size: 18px;
+		font-weight: 600;
+		color: #2c2416;
+		text-align: center;
+		margin-bottom: 0;
+		padding: 12px 20px;
+		background: linear-gradient(to bottom, #f9f7f2, #f4f0e8);
+		border: 1px solid #e8e4dc;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.download-options {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 20px;
+		background: #fdfcfa;
+		border: 1px solid #e8e4dc;
+		border-top: none;
+		border-radius: 0 0 8px 8px;
+	}
+
+	.download-checkbox-label {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		cursor: pointer;
+		font-size: 15px;
+		color: #2c2416;
+		padding: 8px;
+		border-radius: 4px;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.02);
+		}
+
+		.custom-checkbox {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			min-width: 20px;
+			min-height: 20px;
+			border: 2px solid #999;
+			border-radius: 3px;
+			background-color: white;
+			position: relative;
+			transition: all 0.2s;
+			flex-shrink: 0;
+
+			&.checked {
+				background-color: #4A3A2A;
+				border-color: #4A3A2A;
+
+				&::after {
+					content: "✓";
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					color: white;
+					font-size: 14px;
+					font-weight: bold;
+					line-height: 1;
+				}
+			}
+		}
+
+		.checkbox-text {
+			user-select: none;
+		}
+	}
+
+	.download-btn {
+		width: auto;
+		min-width: 120px;
+		padding: 8px 16px;
+		border: none;
+		border-radius: 20px;
+		background-color: rgba(0, 0, 0, 0.05);
+		color: #2c2416;
+		cursor: pointer;
+		font-size: 14px;
+		transition: all 0.2s;
+		outline: none;
+		display: block;
+		margin: 20px auto 20px;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
 .profile-form-message {
 	color: #c00;
+}
+
+.export-custom-btn {
+	width: auto;
+	min-width: 120px;
+	padding: 8px 16px;
+	border: none;
+	border-radius: 20px;
+	background-color: rgba(0, 0, 0, 0.05);
+	color: #2c2416;
+	cursor: pointer;
+	font-size: 14px;
+	transition: all 0.2s;
+	outline: none;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	&:focus {
+		outline: none;
+	}
 }
 
 .form input,
