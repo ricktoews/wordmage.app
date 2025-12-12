@@ -170,16 +170,17 @@ function WordScroller(props) {
 				ref={scrollerRef}
 			>
 				{visibleItems.map(({ key, wordItem }) => (
-					<div key={key} className="word-item-container">
-						<WordEntry
-							popupTags={popupTags}
-							popupWordShare={popupWordShare}
-							wordObj={wordItem}
-							listType={props.listType}
-							history={props.history}
-							popupWordForm={props.popupWordForm}
-						/>
-					</div>
+				<div key={key} className="word-item-container">
+					<WordEntry
+						popupTags={popupTags}
+						popupWordShare={popupWordShare}
+						wordObj={wordItem}
+						listType={props.listType}
+						history={props.history}
+						popupWordForm={props.popupWordForm}
+						onAIExplain={props.onAIExplain}
+					/>
+				</div>
 				))}
 				<div
 					id="sentinel"

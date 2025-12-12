@@ -151,17 +151,15 @@ function BrowseWords(props) {
 						tagFilter
 							? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>)
 							: null
-					}
-					<button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
-					<button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>
-					{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
-				</div>
+				}
+				<button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
+				<button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>
+				{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
 			</div>
-
-			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
+		</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
 				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>
 			</div>
-			<WordScroller pool={wordObjList} startingNdx={startingNdx} popupWordForm={props.popupWordForm} />
+			<WordScroller pool={wordObjList} startingNdx={startingNdx} listType={'browse'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />
 		</div>
 	);
 }

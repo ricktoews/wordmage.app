@@ -4,11 +4,10 @@ import WordsInterface from '../utils/words-interface';
 function WordCardMenu(props) {
     const { wordObj, listType, popupTags } = props;
     const [isOpen, setIsOpen] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(wordObj.spotlight);
+    const [isLearning, setIsLearning] = useState(wordObj.learn);
+    const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
     const menuRef = useRef(null);
-
-    const isBookmarked = wordObj.spotlight;
-    const isLearning = wordObj.learn;
-    const isDiscarded = wordObj.dislike;
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -33,6 +32,7 @@ function WordCardMenu(props) {
 
     const handleBookmark = (e) => {
         e.stopPropagation();
+        setIsBookmarked(!isBookmarked);
         WordsInterface.toggleSpotlight(wordObj.word);
         setIsOpen(false);
         // Force parent to re-render
@@ -41,13 +41,16 @@ function WordCardMenu(props) {
 
     const handleLearn = (e) => {
         e.stopPropagation();
+        setIsLearning(!isLearning);
         WordsInterface.toggleLearn(wordObj.word);
         setIsOpen(false);
+        // Force parent to re-render
         if (props.onUpdate) props.onUpdate();
     };
 
     const handleDiscard = (e) => {
         e.stopPropagation();
+        setIsDiscarded(!isDiscarded);
         WordsInterface.toggleDislike(wordObj.word);
         setIsOpen(false);
         if (props.onUpdate) props.onUpdate();

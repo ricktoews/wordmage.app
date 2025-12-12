@@ -23,7 +23,7 @@ function SpotlightList(props) {
 	  <div className="favorites-toolbar">
 	    <div className="favorites-toolbar-title">Favorites</div>
 	  </div>
-	  <WordScroller pool={spotlightWordList} startingNdx={0} listType={'liked'} popupWordForm={props.popupWordForm} />
+	  <WordScroller pool={spotlightWordList} startingNdx={0} listType={'liked'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />
 	</div>
 	);
 }

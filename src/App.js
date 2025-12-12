@@ -15,6 +15,7 @@ import WordsInterface from './utils/words-interface';
 import Hamburger from './components/Hamburger';
 import AddIcon from './components/icons/AddIcon';
 import PopupWordForm from './components/PopupWordForm';
+import PopupAIExplain from './components/PopupAIExplain';
 import Popup from './components/Popup';
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
@@ -29,11 +30,13 @@ import About from './About';
 import './App.scss';
 
 function App(props) {
-    const [isWebchatOpen, setIsWebchatOpen] = useState(false)
+    const [aiExplainWord, setAiExplainWord] = useState(null);
+    const [isWebchatOpen, setIsWebchatOpen] = useState(false);
+    const [botpressClientId, setBotpressClientId] = useState(null);
+    
     const toggleWebchat = () => {
         setIsWebchatOpen((prevState) => !prevState)
     }
-
 
     // Set up Context for app. WordMageContext.Provider will wrap everything.
     const [contextValue, setContextValue] = useState({ targetEl: null });
@@ -61,11 +64,10 @@ function App(props) {
 
     const [wordFormState, setWordFormState] = useState(false);
     const [wordShareState, setWordShareState] = useState(false);
-    const [envVar, setEnvVar] = useState(null);
-    const [botpressClientId, setBotpressClientId] = useState(null);
 
     const hamburgerRef = useRef(null);
     const accountRef = useRef(null);
+    const webchatRef = useRef(null);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
     useEffect(() => {
@@ -94,6 +96,15 @@ function App(props) {
         try {
             if (accountRef.current && !accountRef.current.contains(el)) {
                 setAccountMenuOpen(false);
+            }
+        } catch (e) { }
+        // Close webchat if clicking outside it
+        try {
+            if (webchatRef.current && !webchatRef.current.contains(el)) {
+                // Don't close if clicking the webchat toggle button
+                if (!elClass.includes('badge-botpress') && !parentElClass.includes('badge-botpress')) {
+                    setIsWebchatOpen(false);
+                }
             }
         } catch (e) { }
         if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
@@ -224,6 +235,11 @@ function App(props) {
         var newSpotlightList = WordsInterface.toggleSpotlight(word);
     }
 
+    const handleAIExplain = (word, definition) => {
+        setAiExplainWord({ word, definition });
+        console.log(`AI Explain requested for: ${word}`);
+    }
+
     return (
         <div className="App">
 
@@ -235,7 +251,6 @@ function App(props) {
                     <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
                     <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
                     <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
-                    <li onClick={navToProfile}><i className="glyphicon glyphicon-user"></i> Profile</li>
                     <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
                 </ul>
             </nav>
@@ -264,7 +279,6 @@ function App(props) {
                             </button>
                             {accountMenuOpen && (
                                 <div className="account-menu" role="menu">
-                                    <button className="account-menu-item" onClick={() => { navToProfile(); setAccountMenuOpen(false); }}>Profile</button>
                                     <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); signOut(); }}>Sign out</button>
                                 </div>
                             )}
@@ -278,11 +292,21 @@ function App(props) {
             <WordMageContext.Provider value={contextProviderValue}>
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
 
+                {aiExplainWord && (
+                    <Popup isVisible={true} handleBackgroundClick={() => setAiExplainWord(null)}>
+                        <PopupAIExplain 
+                            word={aiExplainWord.word} 
+                            definition={aiExplainWord.definition}
+                            onClose={() => setAiExplainWord(null)} 
+                        />
+                    </Popup>
+                )}
+
                 {props.location.pathname.startsWith('/browse') && (
                     <>
-                        {botpressClientId && isWebchatOpen && (<div data-env={envVar} className="add-word-icon-container">
+                        {botpressClientId && isWebchatOpen && (<div ref={webchatRef} className="add-word-icon-container">
                             <Webchat
-                                clientId={botpressClientId} // Your client ID here
+                                clientId={botpressClientId}
                                 configuration={{ botName: 'WordMage Wizard' }}
                                 style={{
                                     width: '300px',
@@ -304,6 +328,7 @@ function App(props) {
                         />} />
                         <Route exact path={['/learn']} render={props => (<Learn
                             popupWordForm={wordId => { popupWordForm(wordId); }}
+                            onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path='/spotlight/:word' render={props => <Spotlight
                             popupWordForm={wordId => { popupWordForm(wordId); }}
@@ -314,20 +339,24 @@ function App(props) {
                         <Route path="/spotlight-list" render={props => (<SpotlightList
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
+                            onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                             botpressButton={botpressClientId}
                             toggleWebchat={toggleWebchat}
+                            onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
+                            onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
+                            onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/profile" component={Profile} />
                         <Route path="/login" component={Login} />

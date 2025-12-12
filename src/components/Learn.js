@@ -17,7 +17,7 @@ function Learn(props) {
 			<div className="learn-toolbar">
 				<div className="learn-toolbar-title">Learn</div>
 			</div>
-			<WordScroller pool={learnList} startingNdx={0} listType={'learn'} popupWordForm={props.popupWordForm} />
+			<WordScroller pool={learnList} startingNdx={0} listType={'learn'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />
 		</div>
 	);
 }

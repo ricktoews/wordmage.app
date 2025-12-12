@@ -1776,6 +1776,13 @@ body {
 	position: relative;
 	width: 100%;
 	align-items: center;
+
+	.featured-word-dot {
+		color: #9b59b6;
+		font-size: 0.9rem;
+		margin-right: 8px;
+		line-height: 1;
+	}
 }
 
 .word-item-word {
@@ -1854,7 +1861,41 @@ body {
 
 .word-card-menu {
 	position: relative;
+}
+
+.word-card-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	margin-left: auto;
+}
+
+.word-card-ai-button {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	background-color: rgba(74, 58, 42, 0.08);
+	border: none;
+	color: #4A3A2A;
+	cursor: pointer;
+	transition: all 0.2s;
+
+	&:hover {
+		background-color: rgba(74, 58, 42, 0.15);
+		transform: scale(1.05);
+	}
+
+	.glyphicon {
+		font-size: 14px;
+	}
+}
+
+.word-card-menu {
+	position: relative;
 	display: flex;
 	align-items: center;
 }
@@ -2111,102 +2152,55 @@ body {
 
 .downloads-section {
 	margin-top: 50px;
-	max-width: 400px;
-	margin-left: auto;
-	margin-right: auto;
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
 
 	.downloads-heading {
 		font-family: "Georgia", "Times New Roman", serif;
-		font-size: 18px;
-		font-weight: 600;
+		font-size: 20px;
+		font-weight: 400;
 		color: #2c2416;
-		text-align: center;
-		margin-bottom: 0;
-		padding: 12px 20px;
-		background: linear-gradient(to bottom, #f9f7f2, #f4f0e8);
-		border: 1px solid #e8e4dc;
-		border-radius: 8px 8px 0 0;
+		text-align: left;
+		margin: 0;
+		padding: 15px 12px;
+		background: rgba(232, 228, 220, 0.4);
+		border: none;
+		position: relative;
 	}
 
 	.download-options {
 		display: flex;
-		flex-direction: column;
 		gap: 12px;
 		padding: 20px;
-		background: #fdfcfa;
-		border: 1px solid #e8e4dc;
-		border-top: none;
-		border-radius: 0 0 8px 8px;
+		background: transparent;
+		border: none;
 	}
 
-	.download-checkbox-label {
-		display: flex;
-		align-items: center;
-		gap: 12px;
+	.download-pill-btn {
+		padding: 10px 24px;
+		border: 2px solid #e8e4dc;
+		border-radius: 25px;
+		background-color: #fdfcfa;
+		color: #2c2416;
 		cursor: pointer;
 		font-size: 15px;
-		color: #2c2416;
-		padding: 8px;
-		border-radius: 4px;
-		transition: background-color 0.2s;
-
-		&:hover {
-			background-color: rgba(0, 0, 0, 0.02);
-		}
-
-		.custom-checkbox {
-			display: inline-block;
-			width: 20px;
-			height: 20px;
-			min-width: 20px;
-			min-height: 20px;
-			border: 2px solid #999;
-			border-radius: 3px;
-			background-color: white;
-			position: relative;
-			transition: all 0.2s;
-			flex-shrink: 0;
-
-			&.checked {
-				background-color: #4A3A2A;
-				border-color: #4A3A2A;
-
-				&::after {
-					content: "✓";
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -50%);
-					color: white;
-					font-size: 14px;
-					font-weight: bold;
-					line-height: 1;
-				}
-			}
-		}
-
-		.checkbox-text {
-			user-select: none;
-		}
-	}
-
-	.download-btn {
-		width: auto;
-		min-width: 120px;
-		padding: 8px 16px;
-		border: none;
-		border-radius: 20px;
-		background-color: rgba(0, 0, 0, 0.05);
-		color: #2c2416;
-		cursor: pointer;
-		font-size: 14px;
+		font-family: inherit;
 		transition: all 0.2s;
 		outline: none;
-		display: block;
-		margin: 20px auto 20px;
 
 		&:hover {
-			background-color: rgba(0, 0, 0, 0.1);
+			border-color: #4A3A2A;
+			background-color: #f9f7f2;
+		}
+
+		&.active {
+			background-color: #4A3A2A;
+			border-color: #4A3A2A;
+			color: white;
 		}
 
 		&:focus {
@@ -2400,4 +2394,143 @@ input[type="checkbox"] {
 .tag-button-cancel {
 	color: #999;
 	border: 1px solid #999;
+}
+
+/* AI Explanation Popup */
+.ai-explain-popup {
+	.ai-explain-content {
+		background: #fefaf5;
+		border-radius: 8px;
+		max-width: 500px;
+		width: 90vw;
+		max-height: 80vh;
+		display: flex;
+		flex-direction: column;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	}
+
+	.ai-explain-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px;
+		border-bottom: 1px solid rgba(74, 58, 42, 0.1);
+
+		h3 {
+			margin: 0;
+			font-size: 1.2rem;
+			color: #4A3A2A;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+
+			.glyphicon-flash {
+				color: #FF6B35;
+			}
+		}
+
+		.ai-explain-word {
+			color: #FF6B35;
+			font-weight: bold;
+		}
+	}
+
+	.ai-explain-close {
+		background: none;
+		border: none;
+		font-size: 1.5rem;
+		color: #999;
+		cursor: pointer;
+		padding: 0;
+		width: 32px;
+		height: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: rgba(74, 58, 42, 0.1);
+			color: #4A3A2A;
+		}
+	}
+
+	.ai-explain-body {
+		padding: 20px;
+		overflow-y: auto;
+		flex: 1;
+	}
+
+	.ai-explain-loading {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 40px 20px;
+		color: #666;
+
+		p {
+			margin-top: 15px;
+			font-size: 0.95rem;
+		}
+	}
+
+	.ai-loading-spinner {
+		width: 40px;
+		height: 40px;
+		border: 3px solid rgba(74, 58, 42, 0.1);
+		border-top-color: #FF6B35;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.ai-explain-error {
+		text-align: center;
+		padding: 20px;
+		color: #d32f2f;
+
+		.glyphicon {
+			font-size: 2rem;
+			margin-bottom: 10px;
+		}
+
+		p {
+			margin: 10px 0 20px;
+		}
+	}
+
+	.ai-retry-btn {
+		background-color: #FF6B35;
+		color: white;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 20px;
+		cursor: pointer;
+		font-size: 0.95rem;
+		transition: all 0.2s;
+
+		&:hover {
+			background-color: #e55a2b;
+			transform: translateY(-1px);
+		}
+	}
+
+	.ai-explain-text {
+		line-height: 1.6;
+		color: #333;
+		font-size: 1rem;
+		
+		p {
+			margin-bottom: 12px;
+			
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
 }

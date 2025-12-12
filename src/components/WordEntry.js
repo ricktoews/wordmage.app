@@ -35,15 +35,24 @@ function WordEntry(props) {
 		history.push('/spotlight', { wordObj: wordObj });
 	}
 
+	const handleAIExplain = (e) => {
+		e.stopPropagation();
+		if (props.onAIExplain) {
+			props.onAIExplain(wordObj.word, wordObj.def);
+		}
+	};
+
 	return wordObj.divider ? <hr className="rejects" /> : (
 		<div className="word-item">
 			<div className="word-item-word-container">
 				<div className="word-edit-btn" style={{ display: 'flex' }}>
-					{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null}
-					{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></button> : null}
-				</div>
-				<div className="word-item-word">{wordObj.word}</div>
-				<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
+			{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null}
+			{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></button> : null}
+		</div>
+		{listType === 'browse' && wordObj.spotlight && <span className="featured-word-dot">•</span>}
+		<div className="word-item-word">{wordObj.word}</div>
+		<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
+			<div className="word-card-actions">
 				<WordCardMenu 
 					wordObj={wordObj} 
 					listType={listType} 
@@ -51,6 +60,7 @@ function WordEntry(props) {
 					onUpdate={() => setUpdateToggle(!updateToggle)}
 				/>
 			</div>
+		</div>
 		<div className="word-item-def-container">
 			<div className="source-def-container">
 				<div className="word-item-def">{wordObj.def}</div>

@@ -52,7 +52,7 @@ function Random(props) {
 	      </div>
 	      <div className="random-featured-content">
 	        <div className="word-item-word-container">
-	          <span className="featured-word-dot">●</span>
+	          <span className="featured-word-dot">•</span>
 	          <div className="word-item-word">{featuredWord.word}</div>
 	        </div>
 	        <div className="word-item-def-container">
@@ -62,7 +62,7 @@ function Random(props) {
 	    </div>
 	  )}
 
-	  <WordScroller pool={randomWords} popupWordForm={props.popupWordForm} startingNdx={0} />
+	  <WordScroller pool={randomWords} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
 	</div>
 	) : null;
 }

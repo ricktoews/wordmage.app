@@ -124,6 +124,11 @@ function Profile(props) {
 			URL.revokeObjectURL(url);
 			setMessage(`Exported ${customWords.length} custom words.`);
 			setShowNotification(true);
+			// Auto-hide notification after 3 seconds
+			setTimeout(() => {
+				setShowNotification(false);
+				setMessage('');
+			}, 3000);
 		} catch (err) {
 			console.error('exportCustom error', err);
 			setMessage('Failed to export custom words.');
@@ -169,21 +174,21 @@ function Profile(props) {
 		setMessage('');
 	}
 
-	const handleDownload = () => {
+	const handleDownload = (type) => {
 		try {
 			let wordsToExport = [];
 			const allCustom = WordsInterface.getCustom() || [];
 
-			if (selectedDownload === 'favorites') {
+			if (type === 'favorites') {
 				wordsToExport = allCustom.filter(w => w.spotlight);
-			} else if (selectedDownload === 'learn') {
+			} else if (type === 'learn') {
 				wordsToExport = allCustom.filter(w => w.learn);
-			} else if (selectedDownload === 'custom') {
+			} else if (type === 'custom') {
 				wordsToExport = allCustom.filter(w => w.myown === true);
 			}
 
 			if (!wordsToExport.length) {
-				setMessage('No words selected to download.');
+				setMessage('No words available to download.');
 				setShowNotification(true);
 				return;
 			}
@@ -192,7 +197,7 @@ function Profile(props) {
 			const blob = new Blob([dataStr], { type: 'application/json' });
 			const url = URL.createObjectURL(blob);
 			const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-			const filename = `wordmage-download-${date}.json`;
+			const filename = `wordmage-${type}-${date}.json`;
 			const a = document.createElement('a');
 			a.href = url;
 			a.download = filename;
@@ -202,6 +207,11 @@ function Profile(props) {
 			URL.revokeObjectURL(url);
 			setMessage(`Downloaded ${wordsToExport.length} words.`);
 			setShowNotification(true);
+			// Auto-hide notification after 3 seconds
+			setTimeout(() => {
+				setShowNotification(false);
+				setMessage('');
+			}, 3000);
 		} catch (err) {
 			console.error('handleDownload error', err);
 			setMessage('Failed to download words.');
@@ -221,11 +231,6 @@ function Profile(props) {
 			)}
 			<div className="profile-toolbar">
 				<div className="page-title">Profile</div>
-				{profileUser.user_id && (
-					<button className="badge" onClick={exportCustom} title="Export custom words">
-						<i className="glyphicon glyphicon-export"></i>
-					</button>
-				)}
 			</div>
 			<div ref={profileFormRef} className="profile-form plain-content container">
 				<div ref={clickedWordRef} className="clicked-word-container element-hide">
@@ -256,27 +261,33 @@ function Profile(props) {
 			) : (
 				<div className="form">
 					<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
-
-					<div className="downloads-section">
-						<h4 className="downloads-heading">Downloads</h4>
-						<div className="download-options">
-							<label className="download-checkbox-label" onClick={() => setSelectedDownload('favorites')}>
-								<span className={`custom-checkbox ${selectedDownload === 'favorites' ? 'checked' : ''}`}></span>
-								<span className="checkbox-text">Favorites</span>
-							</label>
-							<label className="download-checkbox-label" onClick={() => setSelectedDownload('learn')}>
-								<span className={`custom-checkbox ${selectedDownload === 'learn' ? 'checked' : ''}`}></span>
-								<span className="checkbox-text">Learn</span>
-							</label>
-							<label className="download-checkbox-label" onClick={() => setSelectedDownload('custom')}>
-								<span className={`custom-checkbox ${selectedDownload === 'custom' ? 'checked' : ''}`}></span>
-								<span className="checkbox-text">Custom</span>
-							</label>
-						</div>
-						<button className="download-btn" onClick={handleDownload}>Download</button>
-					</div>
 				</div>
 			)}
+
+				<div className="downloads-section">
+					<h4 className="downloads-heading">Downloads</h4>
+					<div className="download-options">
+						<button 
+							className={`download-pill-btn ${selectedDownload === 'favorites' ? 'active' : ''}`}
+							onClick={() => handleDownload('favorites')}
+						>
+							Favorites
+						</button>
+						<button 
+							className={`download-pill-btn ${selectedDownload === 'learn' ? 'active' : ''}`}
+							onClick={() => handleDownload('learn')}
+						>
+							Learn
+						</button>
+						<button 
+							className={`download-pill-btn ${selectedDownload === 'custom' ? 'active' : ''}`}
+							onClick={() => handleDownload('custom')}
+						>
+							Custom
+						</button>
+					</div>
+				</div>
+
 			</div>
 		</>
 	);
