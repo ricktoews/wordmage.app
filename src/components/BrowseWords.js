@@ -120,6 +120,23 @@ function BrowseWords(props) {
 		setWordObjList(fullWordObjList);
 	}
 
+	const handleRandomJump = () => {
+		// Generate a random 5-letter string
+		const letters = 'abcdefghijklmnopqrstuvwxyz';
+		let randomString = '';
+		for (let i = 0; i < 5; i++) {
+			randomString += letters.charAt(Math.floor(Math.random() * letters.length));
+		}
+		
+		// Use the same logic as handlePartialWord
+		window.scrollTo(0, 0);
+		setWordObjList(fullWordObjList);
+		setBrowseMode('built-in');
+		setTagFilter('');
+		setStartingLetters(randomString);
+		props.history.push('/browse/' + randomString);
+	}
+
 	const handleTagFilter = e => {
 		setShowTags(!showTags);
 	}
@@ -142,19 +159,22 @@ function BrowseWords(props) {
 	return (
 		<div className="browse-container browse-page">
 			<div className="browse-toolbar">
-				<div className="browse-toolbar-title">Browse</div>
-				<div className="browse-toolbar-search">
-					<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
-				</div>
+		<div className="browse-toolbar-title">Browse</div>
+		<div className="browse-toolbar-search">
+			<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+		</div>
 				<div className="browse-filter-buttons">
 					{
 						tagFilter
 							? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>)
 							: null
 				}
-				<button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>
-				<button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>
-				{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
+			{false && <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>}
+			{false && <button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>}
+			<button className="badge badge-random-jump" onClick={handleRandomJump} title="Jump to a random location">
+				<i className="glyphicon glyphicon-random"></i>
+			</button>
+			{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
 			</div>
 		</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
 				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>

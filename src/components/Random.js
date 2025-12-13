@@ -62,7 +62,7 @@ function Random(props) {
 	    </div>
 	  )}
 
-	  <WordScroller pool={randomWords} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
+	  <WordScroller pool={randomWords} listType={'random'} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
 	</div>
 	) : null;
 }

@@ -9,6 +9,7 @@ function WordEntry(props) {
 	const { history } = props;
 	const { wordObj, listType } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
+	const [isSpotlighted, setIsSpotlighted] = useState(wordObj.spotlight);
 
 	function deleteWordToggle(wordObj, e) {
 		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
@@ -49,7 +50,7 @@ function WordEntry(props) {
 			{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null}
 			{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></button> : null}
 		</div>
-		{listType === 'browse' && wordObj.spotlight && <span className="featured-word-dot">•</span>}
+		{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}
 		<div className="word-item-word">{wordObj.word}</div>
 		<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
 			<div className="word-card-actions">
@@ -57,7 +58,10 @@ function WordEntry(props) {
 					wordObj={wordObj} 
 					listType={listType} 
 					popupTags={props.popupTags}
-					onUpdate={() => setUpdateToggle(!updateToggle)}
+					onUpdate={() => { 
+						setUpdateToggle(!updateToggle);
+						setIsSpotlighted(!isSpotlighted);
+					}}
 				/>
 			</div>
 		</div>
