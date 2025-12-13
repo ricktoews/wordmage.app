@@ -13,6 +13,7 @@ import WordsInterface from './utils/words-interface';
 
 // Import components
 import Hamburger from './components/Hamburger';
+import WMLogo from './components/icons/WMLogo';
 import AddIcon from './components/icons/AddIcon';
 import PopupWordForm from './components/PopupWordForm';
 import PopupAIExplain from './components/PopupAIExplain';
@@ -266,7 +267,7 @@ function App(props) {
 
         <header className="App-header">
             <div className="hamburger-icon-container">
-                <Hamburger onClick={hamburgerClick} />
+                <WMLogo onClick={hamburgerClick} />
             </div>                <div className="header-content">
                 </div>
                 
