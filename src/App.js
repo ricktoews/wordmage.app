@@ -21,6 +21,7 @@ import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import CollectiveWords from './components/CollectiveWords';
 import Learn from './components/Learn';
+import Train from './components/Train';
 import SpotlightList from './components/SpotlightList';
 import Random from './components/Random';
 import Register from './Register';
@@ -152,6 +153,13 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
+    const navToTrain = () => {
+        var history = props.history;
+        history.push('/train');
+        setView('Train');
+        setHamburgerClass('hamburger-nav');
+    }
+
     const navToCollective = () => {
         var history = props.history;
         history.push('/collective');
@@ -247,22 +255,33 @@ function App(props) {
                 <ul>
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
                     <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>
-                    <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
-                    <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
-                    <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
-                    <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
+                <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
+                <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
+                {/* <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li> */}
+                <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
+                <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
                     <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
                 </ul>
             </nav>
 
-            <header className="App-header">
-                <div className="hamburger-icon-container">
-                    <Hamburger onClick={hamburgerClick} />
+        <header className="App-header">
+            <div className="hamburger-icon-container">
+                <Hamburger onClick={hamburgerClick} />
+            </div>                <div className="header-content">
+                </div>
+                
+                <div className="header-nav-buttons">
+                    <button className="header-nav-btn" onClick={navToRandom} title="Random">
+                        <i className="glyphicon glyphicon-random"></i>
+                    </button>
+                    <button className="header-nav-btn" onClick={navToSpotlightList} title="Favorites">
+                        <i className="glyphicon glyphicon-thumbs-up"></i>
+                    </button>
+                    <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
+                        <i className="glyphicon glyphicon-sunglasses"></i>
+                    </button>
                 </div>
 
-                <div className="header-content">
-                    <div className="header-title">{(view === 'Random' || view === 'Favorites' || view === 'Browse' || view === 'Learn' || view === 'Solve' || view === 'Collective' || view === 'About' || view === 'Profile' || view === 'Login') ? 'WordMage' : `WordMage - ${view}`}</div>
-                </div>
                 <div className="header-right">
                     {!authUser ? (
                         <button className="header-login-btn" onClick={navToLogin} title="Log In">
@@ -327,6 +346,10 @@ function App(props) {
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
                         <Route exact path={['/learn']} render={props => (<Learn
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            onAIExplain={handleAIExplain}
+                        />)} />
+                        <Route exact path={['/train']} render={props => (<Train
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />

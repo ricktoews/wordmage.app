@@ -14,9 +14,12 @@ async function initCustom(user_id) {
 		body: JSON.stringify({ user_id })
 	};
 	var response = await fetch(`${CONFIG.domain}/loadcustom`, options);
-	var custom = await response.json();
-	if (!custom) custom = [];
-	WordsInterface.initializeCustom(custom);
+	var data = await response.json();
+	if (!data) data = { custom: [], training: [] };
+	if (!data.custom) data.custom = [];
+	if (!data.training) data.training = [];
+	WordsInterface.initializeCustom(data.custom);
+	// TODO: Handle training data when needed
 }
 
 (async () => {
