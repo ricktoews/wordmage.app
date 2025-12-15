@@ -2,6 +2,7 @@ import { useState } from 'react';
 import WordsInterface from '../utils/words-interface';
 import WordEntryButtons from './WordEntryButtons';
 import WordCardMenu from './WordCardMenu';
+import InfoIcon from './icons/InfoIcon';
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import { TwitterShareButton, XIcon } from "react-share";
 
@@ -10,6 +11,7 @@ function WordEntry(props) {
 	const { wordObj, listType } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [isSpotlighted, setIsSpotlighted] = useState(wordObj.spotlight);
+	const [showInfo, setShowInfo] = useState(false);
 
 	function deleteWordToggle(wordObj, e) {
 		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
@@ -43,6 +45,11 @@ function WordEntry(props) {
 		}
 	};
 
+	const handleInfoClick = (e) => {
+		e.stopPropagation();
+		setShowInfo(!showInfo);
+	};
+
 	return wordObj.divider ? <hr className="rejects" /> : (
 		<div className="word-item">
 			<div className="word-item-word-container">
@@ -54,6 +61,13 @@ function WordEntry(props) {
 		<div className="word-item-word">{wordObj.word}</div>
 		<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
 			<div className="word-card-actions">
+				<button 
+					className="word-info-button"
+					onClick={handleInfoClick}
+					aria-label="Word information"
+				>
+					<InfoIcon />
+				</button>
 				<WordCardMenu 
 					wordObj={wordObj} 
 					listType={listType} 
@@ -66,8 +80,35 @@ function WordEntry(props) {
 			</div>
 		</div>
 		<div className="word-item-def-container">
+			{showInfo && (
+				<div className="word-info-popup">
+					{wordObj.sources ? (
+						<>
+							{wordObj.sources.map((source, index) => (
+								source && <div key={index}><strong>Source {index + 1}:</strong> {source}</div>
+							))}
+						</>
+					) : wordObj.source ? (
+						<>
+							<strong>Source:</strong> {wordObj.source}
+						</>
+					) : (
+						<span>No source information available</span>
+					)}
+				</div>
+			)}
 			<div className="source-def-container">
-				<div className="word-item-def">{wordObj.def}</div>
+				{wordObj.definitions ? (
+					<>
+						{wordObj.definitions.map((def, index) => (
+							<div key={index} className="word-item-def">
+								{index + 1}. {def}
+							</div>
+						))}
+					</>
+				) : (
+					<div className="word-item-def">{wordObj.def}</div>
+				)}
 			</div>
 		</div>
 		</div>

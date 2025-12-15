@@ -156,8 +156,15 @@ function App(props) {
 
     const navToTrain = () => {
         var history = props.history;
-        history.push('/train');
-        setView('Train');
+        history.push('/training-room');
+        setView('TrainingRoom');
+        setHamburgerClass('hamburger-nav');
+    }
+
+    const navToTrainingRoom = () => {
+        var history = props.history;
+        history.push('/training-room');
+        setView('TrainingRoom');
         setHamburgerClass('hamburger-nav');
     }
 
@@ -258,7 +265,7 @@ function App(props) {
                     <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>
                 <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
                 <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
-                {/* <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li> */}
+                {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
                 <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
                 <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
                     <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
@@ -346,11 +353,19 @@ function App(props) {
                         <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
-                        <Route exact path={['/learn']} render={props => (<Learn
+                        <Route exact path={['/what-to-train']} render={props => (<Train
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route exact path={['/train']} render={props => (<Train
+                        <Route exact path={['/training-room']} render={props => (<Train
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            onAIExplain={handleAIExplain}
+                        />)} />
+                        <Route exact path={['/what-to-train']} render={props => (<Train
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            onAIExplain={handleAIExplain}
+                        />)} />
+                        <Route exact path={['/training-room']} render={props => (<Train
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />

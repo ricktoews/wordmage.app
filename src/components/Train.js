@@ -6,6 +6,7 @@ import WordScroller from './WordScroller';
 function Train(props) {
 	const [trainList, setTrainList] = useState([]);
 	const [wordToTrain, setWordToTrain] = useState('');
+	const [definition, setDefinition] = useState('');
 	const [trainingMode, setTrainingMode] = useState(null); // 'usage' or 'spelling' or null
 	const [archnemesis, setArchnemesis] = useState('');
 	const [examples, setExamples] = useState('');
@@ -13,6 +14,12 @@ function Train(props) {
 	const [usageSentences, setUsageSentences] = useState([]);
 	const [isLoadingUsage, setIsLoadingUsage] = useState(false);
 	const [usageError, setUsageError] = useState(null);
+	const [currentTrainingWord, setCurrentTrainingWord] = useState(null);
+	const [editingIndex, setEditingIndex] = useState(null);
+	const [userSentence, setUserSentence] = useState('');
+
+	const isWhatToTrain = props.location.pathname === '/what-to-train';
+	const isTrainingRoom = props.location.pathname === '/training-room';
 
 	useEffect(() => {
 		// Load training words from localStorage
@@ -26,7 +33,16 @@ function Train(props) {
 			console.error('Error loading training room data:', e);
 		}
 		setTrainList(trainingWords);
-	}, []);
+
+		// Select a random usage training word for Training Room
+		if (isTrainingRoom) {
+			const usageWords = trainingWords.filter(item => item.train === 'usage');
+			if (usageWords.length > 0) {
+				const randomIndex = Math.floor(Math.random() * usageWords.length);
+				setCurrentTrainingWord(usageWords[randomIndex]);
+			}
+		}
+	}, [isTrainingRoom]);
 
 	const handleWordInput = (e) => {
 		const word = e.target.value;
@@ -37,6 +53,10 @@ function Train(props) {
 
 	const handleArchnemesisInput = (e) => {
 		setArchnemesis(e.target.value);
+	};
+
+	const handleDefinitionInput = (e) => {
+		setDefinition(e.target.value);
 	};
 
 	const handleExamplesInput = (e) => {
@@ -62,6 +82,7 @@ function Train(props) {
 
 		const trainingData = {
 			word: wordToTrain.trim(),
+			definition: definition.trim() || null,
 			train: 'spelling',
 			details: template
 		};
@@ -77,18 +98,25 @@ function Train(props) {
 			console.error('Error reading training room data:', e);
 		}
 
-		// Add new entry
-		trainingRoom.push(trainingData);
+		if (editingIndex !== null) {
+			// Update existing entry
+			trainingRoom[editingIndex] = trainingData;
+		} else {
+			// Add new entry
+			trainingRoom.push(trainingData);
+		}
 
 		// Save back to localStorage
 		try {
 			localStorage.setItem('my-training-room', JSON.stringify(trainingRoom));
 			// Update the displayed list immediately
 			setTrainList(trainingRoom);
-			alert('Spelling template saved successfully!');
+			alert(editingIndex !== null ? 'Spelling template updated successfully!' : 'Spelling template saved successfully!');
 			// Clear form
 			setWordToTrain('');
+			setDefinition('');
 			setLetterStates([]);
+			setEditingIndex(null);
 		} catch (e) {
 			console.error('Error saving training room data:', e);
 			alert('Failed to save spelling template');
@@ -160,6 +188,7 @@ function Train(props) {
 
 		const trainingData = {
 			word: wordToTrain.trim(),
+			definition: definition.trim() || null,
 			archnemesis: archnemesis.trim() || null,
 			train: trainingMode,
 			details: examples.trim()
@@ -176,30 +205,95 @@ function Train(props) {
 			console.error('Error reading training room data:', e);
 		}
 
-		// Add new entry
-		trainingRoom.push(trainingData);
+		if (editingIndex !== null) {
+			// Update existing entry
+			trainingRoom[editingIndex] = trainingData;
+		} else {
+			// Add new entry
+			trainingRoom.push(trainingData);
+		}
 
 		// Save back to localStorage
 		try {
 			localStorage.setItem('my-training-room', JSON.stringify(trainingRoom));
 			// Update the displayed list immediately
 			setTrainList(trainingRoom);
-			alert('Training material saved successfully!');
+			alert(editingIndex !== null ? 'Training material updated successfully!' : 'Training material saved successfully!');
 			// Clear form
 			setWordToTrain('');
+			setDefinition('');
 			setArchnemesis('');
 			setExamples('');
+			setEditingIndex(null);
 		} catch (e) {
 			console.error('Error saving training room data:', e);
 			alert('Failed to save training material');
 		}
 	};
 
+	const handleTrainingItemClick = (item, index) => {
+		setWordToTrain(item.word);
+		setDefinition(item.definition || '');
+		setTrainingMode(item.train);
+		setEditingIndex(index);
+
+		if (item.train === 'usage') {
+			setArchnemesis(item.archnemesis || '');
+			setExamples(item.details || '');
+		} else if (item.train === 'spelling') {
+			const pattern = item.details || '';
+			const letters = item.word.split('');
+			const states = letters.map((letter, i) => pattern[i] === '-');
+			setLetterStates(states);
+		}
+	};
+
+	const handleNavigate = () => {
+		if (isTrainingRoom) {
+			props.history.push('/what-to-train');
+		} else {
+			props.history.push('/training-room');
+		}
+	};
+
 	return (
 		<div className="browse-container train-page">
 			<div className="train-toolbar">
-				<div className="train-toolbar-title">Training Room</div>
+				<div className="train-toolbar-title">{isWhatToTrain ? 'What To Train' : 'Training Room'}</div>
+				<button className="train-nav-button" onClick={handleNavigate}>
+					{isTrainingRoom ? 'Setup' : 'Train'}
+				</button>
 			</div>
+			{isTrainingRoom && currentTrainingWord && (
+				<div className="training-room-content">
+					<div className="training-word-card">
+						<div className="word-item-word-container">
+							<div className="word-item-word">{currentTrainingWord.word}</div>
+						</div>
+						{currentTrainingWord.definition && (
+							<div className="word-item-def-container">
+								<div className="word-item-def">{currentTrainingWord.definition}</div>
+							</div>
+						)}
+					</div>
+					<div className="training-details-section">
+						<div className="training-details">{currentTrainingWord.details}</div>
+					</div>
+					<div className="training-input-section">
+						<label htmlFor="user-sentence-input">Write your own sentence using "{currentTrainingWord.word}":</label>
+						<textarea
+							id="user-sentence-input"
+							className="training-sentence-input"
+							value={userSentence}
+							onChange={(e) => setUserSentence(e.target.value)}
+							placeholder="Type your sentence here..."
+							rows="3"
+						/>
+					</div>
+				</div>
+			)}
+			{isWhatToTrain && (
+				<>
 			<div className="train-input-section">
 				<label htmlFor="train-word-input">Word to train</label>
 				<input 
@@ -210,6 +304,18 @@ function Train(props) {
 					value={wordToTrain}
 					onChange={handleWordInput} 
 					placeholder="Enter word" 
+				/>
+			</div>
+			<div className="train-definition-section">
+				<label htmlFor="train-definition-input">Definition</label>
+				<input 
+					id="train-definition-input"
+					type="text" 
+					autoCapitalize="off" 
+					className="train-definition-input" 
+					value={definition}
+					onChange={handleDefinitionInput} 
+					placeholder="Enter definition" 
 				/>
 			</div>
 			<div className="train-mode-section">
@@ -258,7 +364,7 @@ placeholder="Enter example sentences..."
 className="train-update-btn"
 onClick={handleUpdateTrainingMaterial}
 >
-Update Training Material
+{editingIndex !== null ? 'Save' : 'Update Training Material'}
 </button>
 </div>
 				</>
@@ -283,7 +389,7 @@ Update Training Material
 				className="train-update-btn"
 				onClick={handleSaveSpellingTemplate}
 			>
-				Save Spelling Template
+				{editingIndex !== null ? 'Save' : 'Save Spelling Template'}
 			</button>
 		</div>
 	</>
@@ -310,7 +416,12 @@ Update Training Material
 			{trainList.length > 0 ? (
 				<div className="train-words-list">
 					{trainList.map((item, index) => (
-				<div key={index} className="train-word-item">
+				<div 
+					key={index} 
+					className="train-word-item"
+					onClick={() => handleTrainingItemClick(item, index)}
+					style={{ cursor: 'pointer' }}
+				>
 					<span className="train-word-text">{item.word}</span>
 					{item.train === 'spelling' && item.details && (
 						<span className="train-word-details"> ({item.details})</span>
@@ -325,6 +436,8 @@ Update Training Material
 				<div style={{ padding: '100px 20px', textAlign: 'center', color: '#666' }}>
 					<p>No training words yet.</p>
 				</div>
+			)}
+				</>
 			)}
 		</div>
 	);

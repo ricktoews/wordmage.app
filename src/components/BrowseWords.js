@@ -18,8 +18,26 @@ function BrowseWords(props) {
 	const { contextValue, setContextValue } = useContext(WordMageContext);
 
 	const fullWordObjList = WordsInterface.fullWordList();
-	const fullWordList = fullWordObjList.map(item => item.word);
-	const [wordObjList, setWordObjList] = useState(fullWordObjList);
+	
+	// Merge duplicate words - combine definitions and sources
+	const mergedWordObjList = fullWordObjList.reduce((acc, wordObj) => {
+		const existing = acc.find(item => item.word === wordObj.word);
+		if (existing) {
+			// Word already exists, merge definitions and sources
+			if (!existing.definitions) {
+				existing.definitions = [existing.def];
+				existing.sources = [existing.source];
+			}
+			existing.definitions.push(wordObj.def);
+			existing.sources.push(wordObj.source);
+		} else {
+			acc.push({ ...wordObj });
+		}
+		return acc;
+	}, []);
+
+	const fullWordList = mergedWordObjList.map(item => item.word);
+	const [wordObjList, setWordObjList] = useState(mergedWordObjList);
 	const [wordList, setWordList] = useState(fullWordList);
 	const [startingLetters, setStartingLetters] = useState(props.match.params.start || '');
 	const [startingNdx, setStartingNdx] = useState(0);
@@ -59,8 +77,22 @@ function BrowseWords(props) {
 	// First step in updating word list on add / delete custom word.
 	// Update wordObjList, wordList, which changes the wordList.length and gets to second step, below.
 	useEffect(() => {
-		setWordObjList(fullWordObjList);
-		setWordList(fullWordList);
+		const mergedList = fullWordObjList.reduce((acc, wordObj) => {
+			const existing = acc.find(item => item.word === wordObj.word);
+			if (existing) {
+				if (!existing.definitions) {
+					existing.definitions = [existing.def];
+					existing.sources = [existing.source];
+				}
+				existing.definitions.push(wordObj.def);
+				existing.sources.push(wordObj.source);
+			} else {
+				acc.push({ ...wordObj });
+			}
+			return acc;
+		}, []);
+		setWordObjList(mergedList);
+		setWordList(mergedList.map(item => item.word));
 	}, [fullWordObjList.length]);
 
 	// Second step in updating word list on add / delete custom word.
