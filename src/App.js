@@ -215,6 +215,8 @@ function App(props) {
         } catch (e) { }
         setAuthUser(null);
         try { localStorage.removeItem('authUser'); } catch (e) { }
+        try { localStorage.removeItem('my-words'); } catch (e) { }
+        try { localStorage.removeItem('my-training-room'); } catch (e) { }
     }
 
     const toggleAccountMenu = () => {

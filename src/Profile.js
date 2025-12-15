@@ -99,6 +99,8 @@ function Profile(props) {
 		setProfileUser({});
 		localStorage.removeItem('wordmage-profile-user_id');
 		localStorage.removeItem('wordmage-profile-email');
+		localStorage.removeItem('my-words');
+		localStorage.removeItem('my-training-room');
 		console.log('Removed user ID');
 	}
 
