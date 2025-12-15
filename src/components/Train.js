@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
+import DataSource from '../utils/data-source';
 
 function Train(props) {
 	const [trainList, setTrainList] = useState([]);
@@ -111,6 +112,8 @@ function Train(props) {
 			localStorage.setItem('my-training-room', JSON.stringify(trainingRoom));
 			// Update the displayed list immediately
 			setTrainList(trainingRoom);
+			// Save to database if logged in
+			DataSource.saveTrainingData();
 			alert(editingIndex !== null ? 'Spelling template updated successfully!' : 'Spelling template saved successfully!');
 			// Clear form
 			setWordToTrain('');
@@ -218,6 +221,8 @@ function Train(props) {
 			localStorage.setItem('my-training-room', JSON.stringify(trainingRoom));
 			// Update the displayed list immediately
 			setTrainList(trainingRoom);
+			// Save to database if logged in
+			DataSource.saveTrainingData();
 			alert(editingIndex !== null ? 'Training material updated successfully!' : 'Training material saved successfully!');
 			// Clear form
 			setWordToTrain('');

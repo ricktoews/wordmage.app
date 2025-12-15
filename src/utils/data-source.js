@@ -88,6 +88,26 @@ async function saveUserData(userData) {
     }
 }
 
-const DataSource = { retrieveUserLocalData, retrieveUserData, saveUserData };
+async function saveTrainingData() {
+    var training = JSON.parse(localStorage.getItem('my-training-room') || '[]');
+
+    // If logged in profile, save training list to database.
+    var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
+    if (profile_user_id) {
+        try {
+            var options = {
+                method: 'post',
+                header: { 'Content-type': 'application/json' },
+                body: JSON.stringify({ user_id: profile_user_id, training })
+            };
+            var response = fetch(`${CONFIG.domain}/savetraining`, options);
+        } catch (e) {
+            console.log('Problem saving training data', e);
+        }
+    }
+}
+
+const DataSource = { retrieveUserLocalData, retrieveUserData, saveUserData, saveTrainingData };
 
 export default DataSource;
+
