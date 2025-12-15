@@ -19,7 +19,8 @@ async function initCustom(user_id) {
 	if (!data.custom) data.custom = [];
 	if (!data.training) data.training = [];
 	WordsInterface.initializeCustom(data.custom);
-	// TODO: Handle training data when needed
+	// Save training data to localStorage
+	localStorage.setItem('my-training-room', JSON.stringify(data.training));
 }
 
 (async () => {
