@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
@@ -18,6 +18,13 @@ function Train(props) {
 	const [currentTrainingWord, setCurrentTrainingWord] = useState(null);
 	const [editingIndex, setEditingIndex] = useState(null);
 	const [userSentence, setUserSentence] = useState('');
+	const [showDetailsPopup, setShowDetailsPopup] = useState(false);
+	const [notification, setNotification] = useState(null);
+	const [checkResult, setCheckResult] = useState(null);
+	const [spellingInputs, setSpellingInputs] = useState({});
+	const [trainingFilter, setTrainingFilter] = useState('both'); // 'spelling', 'usage', or 'both'
+	const [usedWords, setUsedWords] = useState({}); // Track which words have been used
+	const firstInputRef = useRef(null);
 
 	const isWhatToTrain = props.location.pathname === '/what-to-train';
 	const isTrainingRoom = props.location.pathname === '/training-room';
@@ -35,24 +42,42 @@ function Train(props) {
 		}
 		setTrainList(trainingWords);
 
-		// Select a random usage training word for Training Room
+		// Select a random training word for Training Room
 		if (isTrainingRoom) {
-			const usageWords = trainingWords.filter(item => item.train === 'usage');
-			if (usageWords.length > 0) {
-				const randomIndex = Math.floor(Math.random() * usageWords.length);
-				setCurrentTrainingWord(usageWords[randomIndex]);
+			let filteredWords = trainingWords;
+			if (trainingFilter === 'spelling') {
+				filteredWords = trainingWords.filter(word => word.train === 'spelling');
+			} else if (trainingFilter === 'usage') {
+				filteredWords = trainingWords.filter(word => word.train === 'usage');
 			}
+			if (filteredWords.length > 0) {
+				const randomIndex = Math.floor(Math.random() * filteredWords.length);
+				setCurrentTrainingWord(filteredWords[randomIndex]);
+				setUsedWords({ [filteredWords[randomIndex].word]: true });
+			} else {
+			setCurrentTrainingWord(null);
 		}
-	}, [isTrainingRoom]);
+	}
+}, [isTrainingRoom, trainingFilter]);
 
-	const handleWordInput = (e) => {
-		const word = e.target.value;
-		setWordToTrain(word);
-		// Initialize letter states for spelling mode
-		setLetterStates(word.split('').map(() => false));
-	};
+// Focus on first input field when a spelling word is displayed
+useEffect(() => {
+	if (isTrainingRoom && currentTrainingWord && currentTrainingWord.train === 'spelling') {
+		// Small delay to ensure DOM is ready
+		setTimeout(() => {
+			if (firstInputRef.current) {
+				firstInputRef.current.focus();
+			}
+		}, 100);
+	}
+}, [isTrainingRoom, currentTrainingWord]);
 
-	const handleArchnemesisInput = (e) => {
+const handleWordInput = (e) => {
+	const word = e.target.value;
+	setWordToTrain(word);
+	// Initialize letter states for spelling mode
+	setLetterStates(word.split('').map(() => false));
+};	const handleArchnemesisInput = (e) => {
 		setArchnemesis(e.target.value);
 	};
 
@@ -114,7 +139,7 @@ function Train(props) {
 			setTrainList(trainingRoom);
 			// Save to database if logged in
 			DataSource.saveTrainingData();
-			alert(editingIndex !== null ? 'Spelling template updated successfully!' : 'Spelling template saved successfully!');
+			showNotification(editingIndex !== null ? 'Spelling template updated successfully!' : 'Spelling template saved successfully!');
 			// Clear form
 			setWordToTrain('');
 			setDefinition('');
@@ -223,7 +248,7 @@ function Train(props) {
 			setTrainList(trainingRoom);
 			// Save to database if logged in
 			DataSource.saveTrainingData();
-			alert(editingIndex !== null ? 'Training material updated successfully!' : 'Training material saved successfully!');
+			showNotification(editingIndex !== null ? 'Training material updated successfully!' : 'Training material saved successfully!');
 			// Clear form
 			setWordToTrain('');
 			setDefinition('');
@@ -261,40 +286,340 @@ function Train(props) {
 		}
 	};
 
+	const selectNewWord = () => {
+		let filteredWords = trainList;
+		if (trainingFilter === 'spelling') {
+			filteredWords = trainList.filter(word => word.train === 'spelling');
+		} else if (trainingFilter === 'usage') {
+			filteredWords = trainList.filter(word => word.train === 'usage');
+		}
+		
+		if (filteredWords.length === 0) return;
+		
+		// If only one word, just use it
+		if (filteredWords.length === 1) {
+			setCurrentTrainingWord(filteredWords[0]);
+			setUserSentence('');
+			setSpellingInputs({});
+			return;
+		}
+		
+		// Get unused words
+		let availableWords = filteredWords.filter(word => !usedWords[word.word]);
+		
+		// If all words have been used, reset the flags
+		if (availableWords.length === 0) {
+			setUsedWords({});
+			availableWords = filteredWords;
+		}
+		
+		// Select random word from available words
+		const randomIndex = Math.floor(Math.random() * availableWords.length);
+		const selectedWord = availableWords[randomIndex];
+		
+		setCurrentTrainingWord(selectedWord);
+		setUserSentence('');
+		setSpellingInputs({});
+		
+		// Mark this word as used
+		setUsedWords(prev => ({
+			...prev,
+			[selectedWord.word]: true
+		}));
+	};
+
+	const showNotification = (message) => {
+		setNotification(message);
+		setTimeout(() => {
+			setNotification(null);
+		}, 3000);
+	};
+
+	const showCheckResult = (message, isSuccess) => {
+		setCheckResult({ message, isSuccess });
+		setTimeout(() => {
+			setCheckResult(null);
+		}, 4000);
+	};
+
+	const handleCheckSentence = () => {
+		if (!userSentence.trim()) {
+			showCheckResult('Please write a sentence first.', false);
+			return;
+		}
+
+		const words = userSentence.trim().split(/\s+/);
+		const wordCount = words.length;
+		const containsWord = userSentence.toLowerCase().includes(currentTrainingWord.word.toLowerCase());
+
+		if (wordCount < 3) {
+			showCheckResult('Your sentence should be at least three words long.', false);
+			return;
+		}
+
+		if (!containsWord) {
+			showCheckResult(`Your sentence should contain the word "${currentTrainingWord.word}".`, false);
+			return;
+		}
+
+		showCheckResult('Great job! Your sentence meets the criteria.', true);
+		setTimeout(() => {
+			selectNewWord();
+		}, 2000);
+	};
+
+	const handleCheckSpelling = () => {
+		if (!currentTrainingWord) return;
+
+		const segments = getSpellingSegments(currentTrainingWord.word, currentTrainingWord.details);
+		let allCorrect = true;
+		let hasInput = false;
+
+		segments.forEach((segment, index) => {
+			if (segment.type === 'input') {
+				const userInput = (spellingInputs[index] || '').toLowerCase().trim();
+				const correctAnswer = segment.value.toLowerCase();
+				
+				if (userInput) {
+					hasInput = true;
+				}
+				
+				if (userInput !== correctAnswer) {
+					allCorrect = false;
+				}
+			}
+		});
+
+		if (!hasInput) {
+			showCheckResult('Please fill in the missing letters first.', false);
+			return;
+		}
+
+		if (allCorrect) {
+			showCheckResult('Perfect! You spelled it correctly.', true);
+			setTimeout(() => {
+				selectNewWord();
+			}, 2000);
+		} else {
+			showCheckResult('Not quite right. Try again!', false);
+		}
+	};
+
+	const handleSpellingInputChange = (index, value) => {
+		setSpellingInputs(prev => ({
+			...prev,
+			[index]: value
+		}));
+	};
+
+	const getDisplayWord = (word, template) => {
+		if (!template) return word;
+		
+		let result = '';
+		let i = 0;
+		while (i < template.length) {
+			if (template[i] === '-') {
+				// Count consecutive hyphens
+				let hyphenCount = 0;
+				while (i < template.length && template[i] === '-') {
+					hyphenCount++;
+					i++;
+				}
+				result += '_';
+			} else {
+				result += template[i];
+				i++;
+			}
+		}
+		return result;
+	};
+
+	const getSpellingSegments = (word, template) => {
+		if (!template) return [{ type: 'letter', value: word }];
+		
+		const segments = [];
+		let i = 0;
+		while (i < template.length) {
+			if (template[i] === '-') {
+				// Collect consecutive hyphens and their corresponding letters
+				let letters = '';
+				while (i < template.length && template[i] === '-') {
+					letters += word[i];
+					i++;
+				}
+				segments.push({ type: 'input', value: letters, length: letters.length });
+			} else {
+				// Collect consecutive non-hyphen letters
+				let letters = '';
+				while (i < template.length && template[i] !== '-') {
+					letters += template[i];
+					i++;
+				}
+				segments.push({ type: 'letter', value: letters });
+			}
+		}
+		return segments;
+	};
+
 	return (
 		<div className="browse-container train-page">
+			{notification && (
+				<div className="train-notification">
+					{notification}
+				</div>
+			)}
+			{checkResult && (
+				<div className={`train-check-result ${checkResult.isSuccess ? 'success' : 'error'}`}>
+					{checkResult.message}
+				</div>
+			)}
 			<div className="train-toolbar">
 				<div className="train-toolbar-title">{isWhatToTrain ? 'What To Train' : 'Training Room'}</div>
 				<button className="train-nav-button" onClick={handleNavigate}>
 					{isTrainingRoom ? 'Setup' : 'Train'}
 				</button>
 			</div>
+			{isTrainingRoom && (
+				<div className="training-filter-section">
+					<button 
+						className={`training-filter-btn ${trainingFilter === 'spelling' ? 'active' : ''}`}
+						onClick={() => setTrainingFilter('spelling')}
+					>
+						Spelling
+					</button>
+					<button 
+						className={`training-filter-btn ${trainingFilter === 'usage' ? 'active' : ''}`}
+						onClick={() => setTrainingFilter('usage')}
+					>
+						Usage
+					</button>
+					<button 
+						className={`training-filter-btn ${trainingFilter === 'both' ? 'active' : ''}`}
+						onClick={() => setTrainingFilter('both')}
+					>
+						Both
+					</button>
+					{currentTrainingWord && (
+						<button 
+							className="training-filter-btn training-next-btn"
+							onClick={selectNewWord}
+						>
+							Next
+						</button>
+					)}
+				</div>
+			)}
 			{isTrainingRoom && currentTrainingWord && (
 				<div className="training-room-content">
-					<div className="training-word-card">
-						<div className="word-item-word-container">
-							<div className="word-item-word">{currentTrainingWord.word}</div>
+				<div className="training-word-card">
+					<div className="word-item-word-container">
+						<div className="word-item-word">
+							{currentTrainingWord.train === 'spelling' 
+								? getDisplayWord(currentTrainingWord.word, currentTrainingWord.details)
+								: currentTrainingWord.word
+							}
 						</div>
+						{currentTrainingWord.train === 'usage' && (
+							<button 
+								className="training-details-button"
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									setShowDetailsPopup(!showDetailsPopup);
+								}}
+								title="Show example sentences"
+								type="button"
+							>
+								<i className="glyphicon glyphicon-info-sign"></i>
+							</button>
+						)}
+					</div>
 						{currentTrainingWord.definition && (
 							<div className="word-item-def-container">
 								<div className="word-item-def">{currentTrainingWord.definition}</div>
 							</div>
 						)}
 					</div>
-					<div className="training-details-section">
-						<div className="training-details">{currentTrainingWord.details}</div>
-					</div>
-					<div className="training-input-section">
-						<label htmlFor="user-sentence-input">Write your own sentence using "{currentTrainingWord.word}":</label>
-						<textarea
-							id="user-sentence-input"
-							className="training-sentence-input"
-							value={userSentence}
-							onChange={(e) => setUserSentence(e.target.value)}
-							placeholder="Type your sentence here..."
-							rows="3"
-						/>
-					</div>
+					{currentTrainingWord.train === 'spelling' && (
+						<>
+							<div className="training-spelling-practice">
+								<div className="training-spelling-segments">
+									{getSpellingSegments(currentTrainingWord.word, currentTrainingWord.details).map((segment, index) => {
+										// Find the index of the first input field
+										const inputIndex = getSpellingSegments(currentTrainingWord.word, currentTrainingWord.details)
+											.slice(0, index + 1)
+											.filter(s => s.type === 'input')
+											.length - 1;
+										
+										return segment.type === 'input' ? (
+											<input
+												key={index}
+												ref={inputIndex === 0 ? firstInputRef : null}
+												type="text"
+												className="training-spelling-input"
+												maxLength={segment.length}
+												style={{ width: `${segment.length * 1.2}em` }}
+												placeholder={segment.value.split('').map(() => '_').join('')}
+												value={spellingInputs[index] || ''}
+												onChange={(e) => handleSpellingInputChange(index, e.target.value)}
+											/>
+										) : (
+											<span key={index} className="training-spelling-letter-display">
+												{segment.value}
+											</span>
+										);
+									})}
+								</div>
+							</div>
+							<button 
+								className="train-check-btn"
+								onClick={handleCheckSpelling}
+								type="button"
+							>
+								Check
+							</button>
+						</>
+					)}
+					{showDetailsPopup && currentTrainingWord.train === 'usage' && (
+						<div 
+							className="training-details-popup"
+							onClick={() => setShowDetailsPopup(false)}
+						>
+							<div 
+								className="training-details-content"
+								onClick={(e) => e.stopPropagation()}
+							>
+								<button 
+									className="training-details-close"
+									onClick={() => setShowDetailsPopup(false)}
+								>
+									×
+								</button>
+								<h3>Example Sentences</h3>
+								<div className="training-details">{currentTrainingWord.details}</div>
+							</div>
+						</div>
+					)}
+					{currentTrainingWord.train === 'usage' && (
+						<div className="training-input-section">
+							<label htmlFor="user-sentence-input">Write your own sentence using "{currentTrainingWord.word}":</label>
+							<textarea
+								id="user-sentence-input"
+								className="training-sentence-input"
+								value={userSentence}
+								onChange={(e) => setUserSentence(e.target.value)}
+								placeholder="Type your sentence here..."
+								rows="3"
+							/>
+							<button 
+								className="train-check-btn"
+								onClick={handleCheckSentence}
+								type="button"
+							>
+								Check
+							</button>
+						</div>
+					)}
 				</div>
 			)}
 			{isWhatToTrain && (

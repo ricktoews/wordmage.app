@@ -214,9 +214,7 @@ function App(props) {
             }
         } catch (e) { }
         setAuthUser(null);
-        try { localStorage.removeItem('authUser'); } catch (e) { }
-        try { localStorage.removeItem('my-words'); } catch (e) { }
-        try { localStorage.removeItem('my-training-room'); } catch (e) { }
+        try { localStorage.clear(); } catch (e) { }
     }
 
     const toggleAccountMenu = () => {
@@ -264,11 +262,11 @@ function App(props) {
             <nav ref={hamburgerRef} className={hamburgerClass}>
                 <ul>
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
-                    <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>
+                    {authUser && <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>}
                 <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
-                <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>
+                {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
                 {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
-                <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>
+                {authUser && <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>}
                 <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
                     <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
                 </ul>
@@ -284,9 +282,11 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToRandom} title="Random">
                         <i className="glyphicon glyphicon-random"></i>
                     </button>
-                    <button className="header-nav-btn" onClick={navToSpotlightList} title="Favorites">
-                        <i className="glyphicon glyphicon-thumbs-up"></i>
-                    </button>
+                    {authUser && (
+                        <button className="header-nav-btn" onClick={navToSpotlightList} title="Favorites">
+                            <i className="glyphicon glyphicon-thumbs-up"></i>
+                        </button>
+                    )}
                     <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
                         <i className="glyphicon glyphicon-sunglasses"></i>
                     </button>

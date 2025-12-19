@@ -97,10 +97,7 @@ function Profile(props) {
 
 	const logout = () => {
 		setProfileUser({});
-		localStorage.removeItem('wordmage-profile-user_id');
-		localStorage.removeItem('wordmage-profile-email');
-		localStorage.removeItem('my-words');
-		localStorage.removeItem('my-training-room');
+		localStorage.clear();
 		console.log('Removed user ID');
 	}
 
