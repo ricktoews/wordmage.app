@@ -532,7 +532,6 @@ function Train(props) {
 					<div className="training-word-card">
 						{currentTrainingWord.train === 'usage' && (
 							<div className="training-input-section" style={{ marginBottom: '1em' }}>
-								<label htmlFor="user-sentence-input">Write your own sentence using "{currentTrainingWord.word}":</label>
 								<textarea
 									id="user-sentence-input"
 									className="training-sentence-input"
