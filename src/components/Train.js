@@ -530,6 +530,26 @@ function Train(props) {
 			{isTrainingRoom && currentTrainingWord && (
 				<div className="training-room-content">
 					<div className="training-word-card">
+						{currentTrainingWord.train === 'usage' && (
+							<div className="training-input-section" style={{ marginBottom: '1em' }}>
+								<label htmlFor="user-sentence-input">Write your own sentence using "{currentTrainingWord.word}":</label>
+								<textarea
+									id="user-sentence-input"
+									className="training-sentence-input"
+									value={userSentence}
+									onChange={(e) => setUserSentence(e.target.value)}
+									placeholder="Type your sentence here..."
+									rows="3"
+								/>
+								<button
+									className="train-check-btn"
+									onClick={handleCheckSentence}
+									type="button"
+								>
+									Check
+								</button>
+							</div>
+						)}
 						{currentTrainingWord.definition && (
 							<div className="word-item-def-container">
 								<div className="word-item-def">{currentTrainingWord.definition}</div>
@@ -609,26 +629,7 @@ function Train(props) {
 							</div>
 						</div>
 					)}
-					{currentTrainingWord.train === 'usage' && (
-						<div className="training-input-section">
-							<label htmlFor="user-sentence-input">Write your own sentence using "{currentTrainingWord.word}":</label>
-							<textarea
-								id="user-sentence-input"
-								className="training-sentence-input"
-								value={userSentence}
-								onChange={(e) => setUserSentence(e.target.value)}
-								placeholder="Type your sentence here..."
-								rows="3"
-							/>
-							<button
-								className="train-check-btn"
-								onClick={handleCheckSentence}
-								type="button"
-							>
-								Check
-							</button>
-						</div>
-					)}
+					{/* Removed duplicate example sentence input field and Check button */}
 				</div>
 			)}
 			{isWhatToTrain && (
