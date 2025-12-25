@@ -19,6 +19,19 @@ function Train(props) {
 	const [editingIndex, setEditingIndex] = useState(null);
 	const [userSentence, setUserSentence] = useState('');
 	const [showDetailsPopup, setShowDetailsPopup] = useState(false);
+	const [showMenu, setShowMenu] = useState(false);
+	const menuDropdownRef = useRef(null);
+	// Close menu when clicking outside
+	useEffect(() => {
+		if (!showMenu) return;
+		function handleDocumentClicked(e) {
+			if (menuDropdownRef.current && !menuDropdownRef.current.contains(e.target)) {
+				setShowMenu(false);
+			}
+		}
+		document.addEventListener('mousedown', handleDocumentClicked);
+		return () => document.removeEventListener('mousedown', handleDocumentClicked);
+	}, [showMenu]);
 	const [notification, setNotification] = useState(null);
 	const [checkResult, setCheckResult] = useState(null);
 	const [spellingInputs, setSpellingInputs] = useState({});
@@ -55,29 +68,29 @@ function Train(props) {
 				setCurrentTrainingWord(filteredWords[randomIndex]);
 				setUsedWords({ [filteredWords[randomIndex].word]: true });
 			} else {
-			setCurrentTrainingWord(null);
-		}
-	}
-}, [isTrainingRoom, trainingFilter]);
-
-// Focus on first input field when a spelling word is displayed
-useEffect(() => {
-	if (isTrainingRoom && currentTrainingWord && currentTrainingWord.train === 'spelling') {
-		// Small delay to ensure DOM is ready
-		setTimeout(() => {
-			if (firstInputRef.current) {
-				firstInputRef.current.focus();
+				setCurrentTrainingWord(null);
 			}
-		}, 100);
-	}
-}, [isTrainingRoom, currentTrainingWord]);
+		}
+	}, [isTrainingRoom, trainingFilter]);
 
-const handleWordInput = (e) => {
-	const word = e.target.value;
-	setWordToTrain(word);
-	// Initialize letter states for spelling mode
-	setLetterStates(word.split('').map(() => false));
-};	const handleArchnemesisInput = (e) => {
+	// Focus on first input field when a spelling word is displayed
+	useEffect(() => {
+		if (isTrainingRoom && currentTrainingWord && currentTrainingWord.train === 'spelling') {
+			// Small delay to ensure DOM is ready
+			setTimeout(() => {
+				if (firstInputRef.current) {
+					firstInputRef.current.focus();
+				}
+			}, 100);
+		}
+	}, [isTrainingRoom, currentTrainingWord]);
+
+	const handleWordInput = (e) => {
+		const word = e.target.value;
+		setWordToTrain(word);
+		// Initialize letter states for spelling mode
+		setLetterStates(word.split('').map(() => false));
+	}; const handleArchnemesisInput = (e) => {
 		setArchnemesis(e.target.value);
 	};
 
@@ -102,7 +115,7 @@ const handleWordInput = (e) => {
 		}
 
 		// Build template string with hyphens for toggled letters
-		const template = wordToTrain.split('').map((letter, index) => 
+		const template = wordToTrain.split('').map((letter, index) =>
 			letterStates[index] ? '-' : letter
 		).join('');
 
@@ -167,7 +180,7 @@ const handleWordInput = (e) => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ 
+				body: JSON.stringify({
 					word: wordToTrain.trim(),
 					archnemesis: archnemesis.trim() || null
 				}),
@@ -175,7 +188,7 @@ const handleWordInput = (e) => {
 
 			const text = await response.text();
 			let data;
-			
+
 			try {
 				data = JSON.parse(text);
 			} catch (e) {
@@ -293,9 +306,9 @@ const handleWordInput = (e) => {
 		} else if (trainingFilter === 'usage') {
 			filteredWords = trainList.filter(word => word.train === 'usage');
 		}
-		
+
 		if (filteredWords.length === 0) return;
-		
+
 		// If only one word, just use it
 		if (filteredWords.length === 1) {
 			setCurrentTrainingWord(filteredWords[0]);
@@ -303,24 +316,24 @@ const handleWordInput = (e) => {
 			setSpellingInputs({});
 			return;
 		}
-		
+
 		// Get unused words
 		let availableWords = filteredWords.filter(word => !usedWords[word.word]);
-		
+
 		// If all words have been used, reset the flags
 		if (availableWords.length === 0) {
 			setUsedWords({});
 			availableWords = filteredWords;
 		}
-		
+
 		// Select random word from available words
 		const randomIndex = Math.floor(Math.random() * availableWords.length);
 		const selectedWord = availableWords[randomIndex];
-		
+
 		setCurrentTrainingWord(selectedWord);
 		setUserSentence('');
 		setSpellingInputs({});
-		
+
 		// Mark this word as used
 		setUsedWords(prev => ({
 			...prev,
@@ -379,11 +392,11 @@ const handleWordInput = (e) => {
 			if (segment.type === 'input') {
 				const userInput = (spellingInputs[index] || '').toLowerCase().trim();
 				const correctAnswer = segment.value.toLowerCase();
-				
+
 				if (userInput) {
 					hasInput = true;
 				}
-				
+
 				if (userInput !== correctAnswer) {
 					allCorrect = false;
 				}
@@ -414,7 +427,7 @@ const handleWordInput = (e) => {
 
 	const getDisplayWord = (word, template) => {
 		if (!template) return word;
-		
+
 		let result = '';
 		let i = 0;
 		while (i < template.length) {
@@ -436,7 +449,7 @@ const handleWordInput = (e) => {
 
 	const getSpellingSegments = (word, template) => {
 		if (!template) return [{ type: 'letter', value: word }];
-		
+
 		const segments = [];
 		let i = 0;
 		while (i < template.length) {
@@ -475,68 +488,64 @@ const handleWordInput = (e) => {
 			)}
 			<div className="train-toolbar">
 				<div className="train-toolbar-title">{isWhatToTrain ? 'What To Train' : 'Training Room'}</div>
-				<button className="train-nav-button" onClick={handleNavigate}>
-					{isTrainingRoom ? 'Setup' : 'Train'}
-				</button>
-			</div>
-			{isTrainingRoom && (
-				<div className="training-filter-section">
-					<button 
-						className={`training-filter-btn ${trainingFilter === 'spelling' ? 'active' : ''}`}
-						onClick={() => setTrainingFilter('spelling')}
-					>
-						Spelling
+				<div className="train-menu-container">
+					<button className="train-menu-btn" onClick={() => setShowMenu(prev => !prev)}>
+						<span className="train-menu-dots">&#8942;</span>
 					</button>
-					<button 
-						className={`training-filter-btn ${trainingFilter === 'usage' ? 'active' : ''}`}
-						onClick={() => setTrainingFilter('usage')}
-					>
-						Usage
-					</button>
-					<button 
-						className={`training-filter-btn ${trainingFilter === 'both' ? 'active' : ''}`}
-						onClick={() => setTrainingFilter('both')}
-					>
-						Both
-					</button>
-					{currentTrainingWord && (
-						<button 
-							className="training-filter-btn training-next-btn"
-							onClick={selectNewWord}
-						>
-							Next
-						</button>
+					{showMenu && (
+						<div className="train-menu-dropdown" ref={menuDropdownRef}>
+							{isWhatToTrain ? (
+								<button className="train-menu-item" onClick={() => { setShowMenu(false); props.history.push('/training-room'); }}>Train</button>
+							) : (
+								<>
+									<button className="train-menu-item" onClick={() => { setShowMenu(false); handleNavigate(); }}>Setup</button>
+									<button className="train-menu-item" onClick={() => { setShowMenu(false); setTrainingFilter('spelling'); }}>Spelling</button>
+									<button className="train-menu-item" onClick={() => { setShowMenu(false); setTrainingFilter('usage'); }}>Usage</button>
+									<button className="train-menu-item" onClick={() => { setShowMenu(false); setTrainingFilter('both'); }}>Both</button>
+								</>
+							)}
+						</div>
 					)}
+				</div>
+			</div>
+			{isTrainingRoom && currentTrainingWord && (
+				<div className="word-item-word-container" style={{ width: '100%', maxWidth: '400px', margin: '0 auto 0 auto' }}>
+					<div className="word-item-word" style={{ fontSize: '2rem', fontWeight: 'bold', flex: 1 }}>
+						{currentTrainingWord.train === 'spelling'
+							? getDisplayWord(currentTrainingWord.word, currentTrainingWord.details)
+							: currentTrainingWord.word
+						}
+					</div>
+					<button
+						className="training-next-circle-btn"
+						onClick={selectNewWord}
+						title="Next"
+						type="button"
+						style={{ position: 'static', marginLeft: '16px' }}
+					>
+						<i className="glyphicon glyphicon-forward"></i>
+					</button>
 				</div>
 			)}
 			{isTrainingRoom && currentTrainingWord && (
 				<div className="training-room-content">
-				<div className="training-word-card">
-					<div className="word-item-word-container">
-						<div className="word-item-word">
-							{currentTrainingWord.train === 'spelling' 
-								? getDisplayWord(currentTrainingWord.word, currentTrainingWord.details)
-								: currentTrainingWord.word
-							}
-						</div>
-						{currentTrainingWord.train === 'usage' && (
-							<button 
-								className="training-details-button"
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									setShowDetailsPopup(!showDetailsPopup);
-								}}
-								title="Show example sentences"
-								type="button"
-							>
-								<i className="glyphicon glyphicon-info-sign"></i>
-							</button>
-						)}
-					</div>
+					<div className="training-word-card">
 						{currentTrainingWord.definition && (
 							<div className="word-item-def-container">
 								<div className="word-item-def">{currentTrainingWord.definition}</div>
+							</div>
+						)}
+						{currentTrainingWord.train === 'usage' && currentTrainingWord.details && (
+							<div className="word-item-examples-container">
+								<div className="word-item-examples-label">Example Sentences:</div>
+								<div className="word-item-examples">
+									{currentTrainingWord.details.split(/\r?\n|\r|\u2028|\u2029|\.|\!|\?/)
+										.map(sentence => sentence.trim())
+										.filter(sentence => sentence.length > 0)
+										.map((sentence, idx) => (
+											<p key={idx}>{sentence}</p>
+										))}
+								</div>
 							</div>
 						)}
 					</div>
@@ -550,7 +559,7 @@ const handleWordInput = (e) => {
 											.slice(0, index + 1)
 											.filter(s => s.type === 'input')
 											.length - 1;
-										
+
 										return segment.type === 'input' ? (
 											<input
 												key={index}
@@ -571,7 +580,7 @@ const handleWordInput = (e) => {
 									})}
 								</div>
 							</div>
-							<button 
+							<button
 								className="train-check-btn"
 								onClick={handleCheckSpelling}
 								type="button"
@@ -581,15 +590,15 @@ const handleWordInput = (e) => {
 						</>
 					)}
 					{showDetailsPopup && currentTrainingWord.train === 'usage' && (
-						<div 
+						<div
 							className="training-details-popup"
 							onClick={() => setShowDetailsPopup(false)}
 						>
-							<div 
+							<div
 								className="training-details-content"
 								onClick={(e) => e.stopPropagation()}
 							>
-								<button 
+								<button
 									className="training-details-close"
 									onClick={() => setShowDetailsPopup(false)}
 								>
@@ -611,7 +620,7 @@ const handleWordInput = (e) => {
 								placeholder="Type your sentence here..."
 								rows="3"
 							/>
-							<button 
+							<button
 								className="train-check-btn"
 								onClick={handleCheckSentence}
 								type="button"
@@ -624,149 +633,149 @@ const handleWordInput = (e) => {
 			)}
 			{isWhatToTrain && (
 				<>
-			<div className="train-input-section">
-				<label htmlFor="train-word-input">Word to train</label>
-				<input 
-					id="train-word-input"
-					type="text" 
-					autoCapitalize="off" 
-					className="train-word-input" 
-					value={wordToTrain}
-					onChange={handleWordInput} 
-					placeholder="Enter word" 
-				/>
-			</div>
-			<div className="train-definition-section">
-				<label htmlFor="train-definition-input">Definition</label>
-				<input 
-					id="train-definition-input"
-					type="text" 
-					autoCapitalize="off" 
-					className="train-definition-input" 
-					value={definition}
-					onChange={handleDefinitionInput} 
-					placeholder="Enter definition" 
-				/>
-			</div>
-			<div className="train-mode-section">
-				<label>How to train</label>
-				<div className="train-mode-buttons">
-					<button 
-						className={`train-mode-pill ${trainingMode === 'usage' ? 'active' : ''}`}
-						onClick={() => handleTrainingModeChange('usage')}
-					>
-						Usage
-					</button>
-					<button 
-						className={`train-mode-pill ${trainingMode === 'spelling' ? 'active' : ''}`}
-						onClick={() => handleTrainingModeChange('spelling')}
-					>
-						Spelling
-					</button>
-				</div>
-			</div>
-			{trainingMode === 'usage' && (
-				<>
-					<div className="train-usage-controls">
-						<label htmlFor="archnemesis-input">Archnemesis (opt)</label>
-						<input 
-							id="archnemesis-input"
-							type="text" 
-							autoCapitalize="off" 
-							className="train-archnemesis-input" 
-							value={archnemesis}
-							onChange={handleArchnemesisInput} 
-							placeholder="Enter optional word" 
+					<div className="train-input-section">
+						<label htmlFor="train-word-input">Word to train</label>
+						<input
+							id="train-word-input"
+							type="text"
+							autoCapitalize="off"
+							className="train-word-input"
+							value={wordToTrain}
+							onChange={handleWordInput}
+							placeholder="Enter word"
 						/>
 					</div>
-<div className="train-examples-section">
-<label htmlFor="examples-input">Example(s)</label>
-<textarea 
-id="examples-input"
-className="train-examples-textarea" 
-value={examples}
-onChange={handleExamplesInput} 
-placeholder="Enter example sentences..." 
-/>
-</div>
-<div className="train-update-section">
-<button 
-className="train-update-btn"
-onClick={handleUpdateTrainingMaterial}
->
-{editingIndex !== null ? 'Save' : 'Update Training Material'}
-</button>
-</div>
-				</>
-			)}
-{trainingMode === 'spelling' && (
-	<>
-		<div className="train-spelling-section">
-			<div className="train-spelling-letters">
-				{wordToTrain.split('').map((letter, index) => (
-					<span 
-						key={index} 
-						className={`train-spelling-letter ${letterStates[index] ? 'selected' : ''}`}
-						onClick={() => toggleLetter(index)}
-					>
-						{letter}
-					</span>
-				))}
-			</div>
-		</div>
-		<div className="train-update-section">
-			<button 
-				className="train-update-btn"
-				onClick={handleSaveSpellingTemplate}
-			>
-				{editingIndex !== null ? 'Save' : 'Save Spelling Template'}
-			</button>
-		</div>
-	</>
-)}
-			{trainingMode === 'usage' && (
-				<div className="train-usage-section">
-					{isLoadingUsage && (
-						<div className="train-usage-loading">Generating usage examples...</div>
+					<div className="train-definition-section">
+						<label htmlFor="train-definition-input">Definition</label>
+						<input
+							id="train-definition-input"
+							type="text"
+							autoCapitalize="off"
+							className="train-definition-input"
+							value={definition}
+							onChange={handleDefinitionInput}
+							placeholder="Enter definition"
+						/>
+					</div>
+					<div className="train-mode-section">
+						<label>How to train</label>
+						<div className="train-mode-buttons">
+							<button
+								className={`train-mode-pill ${trainingMode === 'usage' ? 'active' : ''}`}
+								onClick={() => handleTrainingModeChange('usage')}
+							>
+								Usage
+							</button>
+							<button
+								className={`train-mode-pill ${trainingMode === 'spelling' ? 'active' : ''}`}
+								onClick={() => handleTrainingModeChange('spelling')}
+							>
+								Spelling
+							</button>
+						</div>
+					</div>
+					{trainingMode === 'usage' && (
+						<>
+							<div className="train-usage-controls">
+								<label htmlFor="archnemesis-input">Archnemesis (opt)</label>
+								<input
+									id="archnemesis-input"
+									type="text"
+									autoCapitalize="off"
+									className="train-archnemesis-input"
+									value={archnemesis}
+									onChange={handleArchnemesisInput}
+									placeholder="Enter optional word"
+								/>
+							</div>
+							<div className="train-examples-section">
+								<label htmlFor="examples-input">Example(s)</label>
+								<textarea
+									id="examples-input"
+									className="train-examples-textarea"
+									value={examples}
+									onChange={handleExamplesInput}
+									placeholder="Enter example sentences..."
+								/>
+							</div>
+							<div className="train-update-section">
+								<button
+									className="train-update-btn"
+									onClick={handleUpdateTrainingMaterial}
+								>
+									{editingIndex !== null ? 'Save' : 'Update Training Material'}
+								</button>
+							</div>
+						</>
 					)}
-					{usageError && (
-						<div className="train-usage-error">{usageError}</div>
+					{trainingMode === 'spelling' && (
+						<>
+							<div className="train-spelling-section">
+								<div className="train-spelling-letters">
+									{wordToTrain.split('').map((letter, index) => (
+										<span
+											key={index}
+											className={`train-spelling-letter ${letterStates[index] ? 'selected' : ''}`}
+											onClick={() => toggleLetter(index)}
+										>
+											{letter}
+										</span>
+									))}
+								</div>
+							</div>
+							<div className="train-update-section">
+								<button
+									className="train-update-btn"
+									onClick={handleSaveSpellingTemplate}
+								>
+									{editingIndex !== null ? 'Save' : 'Save Spelling Template'}
+								</button>
+							</div>
+						</>
 					)}
-					{usageSentences.length > 0 && (
-						<div className="train-usage-sentences">
-							{usageSentences.map((sentence, index) => (
-								<div key={index} className="train-usage-sentence">
-									{index + 1}. {sentence}
+					{trainingMode === 'usage' && (
+						<div className="train-usage-section">
+							{isLoadingUsage && (
+								<div className="train-usage-loading">Generating usage examples...</div>
+							)}
+							{usageError && (
+								<div className="train-usage-error">{usageError}</div>
+							)}
+							{usageSentences.length > 0 && (
+								<div className="train-usage-sentences">
+									{usageSentences.map((sentence, index) => (
+										<div key={index} className="train-usage-sentence">
+											{index + 1}. {sentence}
+										</div>
+									))}
+								</div>
+							)}
+						</div>
+					)}
+					{trainList.length > 0 ? (
+						<div className="train-words-list">
+							{trainList.map((item, index) => (
+								<div
+									key={index}
+									className="train-word-item"
+									onClick={() => handleTrainingItemClick(item, index)}
+									style={{ cursor: 'pointer' }}
+								>
+									<span className="train-word-text">{item.word}</span>
+									{item.train === 'spelling' && item.details && (
+										<span className="train-word-details"> ({item.details})</span>
+									)}
+									{item.archnemesis && (
+										<span className="train-word-archnemesis"> vs {item.archnemesis}</span>
+									)}
 								</div>
 							))}
 						</div>
+					) : (
+						<div style={{ padding: '100px 20px', textAlign: 'center', color: '#666' }}>
+							<p>No training words yet.</p>
+						</div>
 					)}
-				</div>
-			)}
-			{trainList.length > 0 ? (
-				<div className="train-words-list">
-					{trainList.map((item, index) => (
-				<div 
-					key={index} 
-					className="train-word-item"
-					onClick={() => handleTrainingItemClick(item, index)}
-					style={{ cursor: 'pointer' }}
-				>
-					<span className="train-word-text">{item.word}</span>
-					{item.train === 'spelling' && item.details && (
-						<span className="train-word-details"> ({item.details})</span>
-					)}
-					{item.archnemesis && (
-							<span className="train-word-archnemesis"> vs {item.archnemesis}</span>
-						)}
-					</div>
-				))}
-				</div>
-			) : (
-				<div style={{ padding: '100px 20px', textAlign: 'center', color: '#666' }}>
-					<p>No training words yet.</p>
-				</div>
-			)}
 				</>
 			)}
 		</div>
