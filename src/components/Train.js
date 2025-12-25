@@ -537,7 +537,7 @@ function Train(props) {
 									className="training-sentence-input"
 									value={userSentence}
 									onChange={(e) => setUserSentence(e.target.value)}
-									placeholder="Type your sentence here..."
+									placeholder={`Use "${currentTrainingWord.word}" in a sentence.`}
 									rows="3"
 								/>
 								<button
