@@ -1986,9 +1986,13 @@ body {
 	}
 }
 
+.train-setup-form {
+	position: relative;
+	top: 20px;
+}
+
 .train-input-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2022,7 +2026,6 @@ body {
 
 .train-definition-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2056,7 +2059,6 @@ body {
 
 .train-mode-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2101,7 +2103,6 @@ body {
 
 .train-usage-controls {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2135,7 +2136,6 @@ body {
 
 .train-examples-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2171,7 +2171,6 @@ body {
 
 .train-update-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2202,7 +2201,6 @@ body {
 
 .train-spelling-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 15px;
@@ -2245,7 +2243,6 @@ body {
 
 .train-words-list {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 15px;
@@ -2295,7 +2292,6 @@ body {
 
 .train-generate-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;
@@ -2327,7 +2323,6 @@ body {
 
 .train-usage-section {
 	position: relative;
-	top: 105px;
 	margin: 0 auto 20px;
 	max-width: 800px;
 	padding: 0 15px;

@@ -632,7 +632,7 @@ function Train(props) {
 				</div>
 			)}
 			{isWhatToTrain && (
-				<>
+				<div className="train-setup-form">
 					<div className="train-input-section">
 						<label htmlFor="train-word-input">Word to train</label>
 						<input
@@ -776,7 +776,7 @@ function Train(props) {
 							<p>No training words yet.</p>
 						</div>
 					)}
-				</>
+				</div>
 			)}
 		</div>
 	);
