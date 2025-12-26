@@ -383,6 +383,7 @@ function App(props) {
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/learn" render={props => (<Learn
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                         />)} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
