@@ -23,7 +23,23 @@ function getCustom() {
 async function initializeWordPool() {
     var response = await fetch(CONFIG.domain + '/get-words');
     var data = await response.json();
-    WORD_POOL.push(...data.wordPool);
+    const mergedWordObjList = data.wordPool.reduce((acc, wordObj) => {
+        const existing = acc.find(item => item.word === wordObj.word);
+        if (existing) {
+            // Word already exists, merge definitions and sources
+            if (!existing.definitions) {
+                existing.definitions = [existing.def];
+                existing.sources = [existing.source];
+            }
+            existing.definitions.push(wordObj.def);
+            existing.sources.push(wordObj.source);
+        } else {
+            acc.push({ ...wordObj });
+        }
+        return acc;
+    }, []);
+
+    WORD_POOL.push(...mergedWordObjList);
     if (data.collective) {
         COLLECTIVE.push(...data.collective);
     }

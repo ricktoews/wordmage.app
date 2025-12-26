@@ -87,16 +87,13 @@ function WordScroller(props) {
 		}
 		setVisibleItems((prev) => {
 			const updated = append ? [...prev, ...newItems] : newItems;
-			//console.log('Set visibleItems:', updated.map((item) => item.wordItem.word));
 			return updated;
 		});
 		loadedCountRef.current = currentIndex + newItems.length;
-		//console.log('Updated loadedCountRef:', loadedCountRef.current);
 		return true;
 	}
 
 	function populateScroller(clearFirst = false) {
-		//console.log('populateScroller:', { clearFirst, poolLength: props.pool?.length });
 		if (clearFirst) {
 			setVisibleItems([]);
 			loadedCountRef.current = props.startingNdx || 0;
@@ -109,7 +106,6 @@ function WordScroller(props) {
 	}
 
 	const myObserverCallback = (entries) => {
-		//console.log('myObserverCallback visibleItems:', visibleItems.map((item) => item.wordItem.word));
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
 				console.log('Sentinel intersecting, loading more items');
@@ -130,7 +126,6 @@ function WordScroller(props) {
 			return;
 		}
 		const observer = new IntersectionObserver(myObserverCallback);
-		//console.log('Setting up observer for sentinel:', sentinelRef.current);
 		observer.observe(sentinelRef.current);
 		return () => {
 			console.log('Disconnecting observer');
@@ -170,17 +165,17 @@ function WordScroller(props) {
 				ref={scrollerRef}
 			>
 				{visibleItems.map(({ key, wordItem }) => (
-				<div key={key} className="word-item-container">
-					<WordEntry
-						popupTags={popupTags}
-						popupWordShare={popupWordShare}
-						wordObj={wordItem}
-						listType={props.listType}
-						history={props.history}
-						popupWordForm={props.popupWordForm}
-						onAIExplain={props.onAIExplain}
-					/>
-				</div>
+					<div key={key} className="word-item-container">
+						<WordEntry
+							popupTags={popupTags}
+							popupWordShare={popupWordShare}
+							wordObj={wordItem}
+							listType={props.listType}
+							history={props.history}
+							popupWordForm={props.popupWordForm}
+							onAIExplain={props.onAIExplain}
+						/>
+					</div>
 				))}
 				<div
 					id="sentinel"

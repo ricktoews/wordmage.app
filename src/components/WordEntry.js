@@ -54,13 +54,14 @@ function WordEntry(props) {
 		<div className="word-item">
 			<div className="word-item-word-container">
 				<div className="word-edit-btn" style={{ display: 'flex' }}>
-			{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null}
-			{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></button> : null}
-		</div>
-		{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}
-		<div className="word-item-word">{wordObj.word}</div>
-		<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
-			<div className="word-card-actions">
+					{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null}
+					{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></button> : null}
+				</div>
+				{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}
+				<div className="word-item-word">{wordObj.word}</div>
+				<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
+				<div className="word-card-actions">
+					{/*}
 				<button 
 					className="word-info-button"
 					onClick={handleInfoClick}
@@ -68,49 +69,50 @@ function WordEntry(props) {
 				>
 					<InfoIcon />
 				</button>
-				<WordCardMenu 
-					wordObj={wordObj} 
-					listType={listType} 
-					popupTags={props.popupTags}
-					onUpdate={() => { 
-						setUpdateToggle(!updateToggle);
-						setIsSpotlighted(!isSpotlighted);
-					}}
-				/>
+				*/}
+					<WordCardMenu
+						wordObj={wordObj}
+						listType={listType}
+						popupTags={props.popupTags}
+						onUpdate={() => {
+							setUpdateToggle(!updateToggle);
+							setIsSpotlighted(!isSpotlighted);
+						}}
+					/>
+				</div>
 			</div>
-		</div>
-		<div className="word-item-def-container">
-			{showInfo && (
-				<div className="word-info-popup">
-					{wordObj.sources ? (
+			<div className="word-item-def-container">
+				{showInfo && (
+					<div className="word-info-popup">
+						{wordObj.sources ? (
+							<>
+								{wordObj.sources.map((source, index) => (
+									source && <div key={index}><strong>Source {index + 1}:</strong> {source}</div>
+								))}
+							</>
+						) : wordObj.source ? (
+							<>
+								<strong>Source:</strong> {wordObj.source}
+							</>
+						) : (
+							<span>No source information available</span>
+						)}
+					</div>
+				)}
+				<div className="source-def-container">
+					{wordObj.definitions ? (
 						<>
-							{wordObj.sources.map((source, index) => (
-								source && <div key={index}><strong>Source {index + 1}:</strong> {source}</div>
+							{wordObj.definitions.map((def, index) => (
+								<div key={index} className="word-item-def">
+									{index + 1}. {def}
+								</div>
 							))}
 						</>
-					) : wordObj.source ? (
-						<>
-							<strong>Source:</strong> {wordObj.source}
-						</>
 					) : (
-						<span>No source information available</span>
+						<div className="word-item-def">{wordObj.def}</div>
 					)}
 				</div>
-			)}
-			<div className="source-def-container">
-				{wordObj.definitions ? (
-					<>
-						{wordObj.definitions.map((def, index) => (
-							<div key={index} className="word-item-def">
-								{index + 1}. {def}
-							</div>
-						))}
-					</>
-				) : (
-					<div className="word-item-def">{wordObj.def}</div>
-				)}
 			</div>
-		</div>
 		</div>
 	);
 }

@@ -18,26 +18,8 @@ function BrowseWords(props) {
 	const { contextValue, setContextValue } = useContext(WordMageContext);
 
 	const fullWordObjList = WordsInterface.fullWordList();
-	
-	// Merge duplicate words - combine definitions and sources
-	const mergedWordObjList = fullWordObjList.reduce((acc, wordObj) => {
-		const existing = acc.find(item => item.word === wordObj.word);
-		if (existing) {
-			// Word already exists, merge definitions and sources
-			if (!existing.definitions) {
-				existing.definitions = [existing.def];
-				existing.sources = [existing.source];
-			}
-			existing.definitions.push(wordObj.def);
-			existing.sources.push(wordObj.source);
-		} else {
-			acc.push({ ...wordObj });
-		}
-		return acc;
-	}, []);
-
-	const fullWordList = mergedWordObjList.map(item => item.word);
-	const [wordObjList, setWordObjList] = useState(mergedWordObjList);
+	const fullWordList = fullWordObjList.map(item => item.word);
+	const [wordObjList, setWordObjList] = useState(fullWordObjList);
 	const [wordList, setWordList] = useState(fullWordList);
 	const [startingLetters, setStartingLetters] = useState(props.match.params.start || '');
 	const [startingNdx, setStartingNdx] = useState(0);
@@ -108,12 +90,10 @@ function BrowseWords(props) {
 	}, [startingLetters, browseMode]);
 
 	function tagSelection(discard, tag, checked, closeTagList) {
-		console.log('tagSelection', tag, checked, closeTagList);
 		setTagFilter(tag);
 
 		// Stolen code. Coopted for showing tagged words.
 		let filteredWordObjList = fullWordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1);
-		console.log('tagSelection, filteredWordList', filteredWordObjList);
 		setWordObjList(filteredWordObjList);
 		setStartingNdx(0);
 		setBrowseMode('tagged');
@@ -159,7 +139,7 @@ function BrowseWords(props) {
 		for (let i = 0; i < 5; i++) {
 			randomString += letters.charAt(Math.floor(Math.random() * letters.length));
 		}
-		
+
 		// Use the same logic as handlePartialWord
 		window.scrollTo(0, 0);
 		setWordObjList(fullWordObjList);
@@ -191,24 +171,24 @@ function BrowseWords(props) {
 	return (
 		<div className="browse-container browse-page">
 			<div className="browse-toolbar">
-		<div className="browse-toolbar-title">Browse</div>
-		<div className="browse-toolbar-search">
-			<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
-		</div>
+				<div className="browse-toolbar-title">Browse</div>
+				<div className="browse-toolbar-search">
+					<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
+				</div>
 				<div className="browse-filter-buttons">
 					{
 						tagFilter
 							? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>)
 							: null
-				}
-			{false && <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>}
-			{false && <button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>}
-			<button className="badge badge-random-jump" onClick={handleRandomJump} title="Jump to a random location">
-				<i className="glyphicon glyphicon-random"></i>
-			</button>
-			{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
-			</div>
-		</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
+					}
+					{false && <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>}
+					{false && <button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>}
+					<button className="badge badge-random-jump" onClick={handleRandomJump} title="Jump to a random location">
+						<i className="glyphicon glyphicon-random"></i>
+					</button>
+					{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
+				</div>
+			</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
 				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>
 			</div>
 			<WordScroller pool={wordObjList} startingNdx={startingNdx} listType={'browse'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />

@@ -35,7 +35,7 @@ function App(props) {
     const [aiExplainWord, setAiExplainWord] = useState(null);
     const [isWebchatOpen, setIsWebchatOpen] = useState(false);
     const [botpressClientId, setBotpressClientId] = useState(null);
-    
+
     const toggleWebchat = () => {
         setIsWebchatOpen((prevState) => !prevState)
     }
@@ -263,21 +263,21 @@ function App(props) {
                 <ul>
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
                     {authUser && <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>}
-                <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
-                {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
-                {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
-                {authUser && <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>}
-                <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
+                    <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
+                    {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
+                    {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
+                    {authUser && <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>}
+                    <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
                     <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
                 </ul>
             </nav>
 
-        <header className="App-header">
-            <div className="hamburger-icon-container">
-                <WMLogo onClick={hamburgerClick} />
-            </div>                <div className="header-content">
+            <header className="App-header">
+                <div className="hamburger-icon-container">
+                    <WMLogo onClick={hamburgerClick} />
+                </div>                <div className="header-content">
                 </div>
-                
+
                 <div className="header-nav-buttons">
                     <button className="header-nav-btn" onClick={navToRandom} title="Random">
                         <i className="glyphicon glyphicon-random"></i>
@@ -323,10 +323,10 @@ function App(props) {
 
                 {aiExplainWord && (
                     <Popup isVisible={true} handleBackgroundClick={() => setAiExplainWord(null)}>
-                        <PopupAIExplain 
-                            word={aiExplainWord.word} 
+                        <PopupAIExplain
+                            word={aiExplainWord.word}
                             definition={aiExplainWord.definition}
-                            onClose={() => setAiExplainWord(null)} 
+                            onClose={() => setAiExplainWord(null)}
                         />
                     </Popup>
                 )}
@@ -381,6 +381,9 @@ function App(props) {
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
+                        />)} />
+                        <Route path="/learn" render={props => (<Learn
+                            toggleSpotlight={toggleSpotlight}
                         />)} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
