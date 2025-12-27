@@ -290,6 +290,16 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
                         <i className="glyphicon glyphicon-sunglasses"></i>
                     </button>
+                    {authUser && (
+                        <button className="header-nav-btn" onClick={navToLearn} title="Learn">
+                            <i className="glyphicon glyphicon-leaf"></i>
+                        </button>
+                    )}
+                    {authUser && (
+                        <button className="header-nav-btn" onClick={navToTrain} title="Train">
+                            <i className="glyphicon glyphicon-education"></i>
+                        </button>
+                    )}
                 </div>
 
                 <div className="header-right">
