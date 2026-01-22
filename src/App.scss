@@ -2739,45 +2739,60 @@ body {
 
 .word-list-scroller {
 	margin-top: 15px;
+	position: relative;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 10px;
+		width: 1px;
+		height: 100%;
+		background-color: black;
+	}
 }
 
 .word-item {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	padding-top: $word-item-padding;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 10px;
 	/*margin-bottom: 40px;*/
 	border: none;
-	border-radius: 12px;
 	margin: 10px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	border-bottom: 1px solid black;
+	position: relative;
+
+	&::after {
+		content: "";
+		position: absolute;
+		bottom: -3px;
+		left: 0;
+		width: 5px;
+		height: 5px;
+		background-color: black;
+		border-radius: 50%;
+	}
 }
 
-// Alternating backgrounds for word cards in list view
-.word-list-scroller .word-item-container {
-	&:nth-child(4n+1) .word-item {
-		background-color: #faf4e6;
-	}
+.word-content-wrapper {
+	flex: 1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
 
-	&:nth-child(4n+2) .word-item {
-		background-color: #f6e8d9;
-	}
-
-	&:nth-child(4n+3) .word-item {
-		background-color: #efe0cb;
-	}
-
-	&:nth-child(4n+4) .word-item {
-		background-color: #e7dbc7;
-	}
+.word-item > :first-child {
+	flex: 1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
 }
 
 .word-item-word-container {
-	display: flex;
-	padding: 5px;
-	position: relative;
-	width: 100%;
+	display: inline;
 	align-items: center;
+	position: relative;
 
 	.featured-word-dot {
 		color: #9b59b6;
@@ -2791,10 +2806,12 @@ body {
 	font-family: 'Libre Baskerville', Georgia, serif;
 	font-size: 0.95rem;
 	letter-spacing: 0.2px;
-	font-weight: 400;
-	//	font-size: 1.3em;
-	min-width: 100px;
-	padding: 1px 15px 1px 0px;
+	font-weight: 700;
+	display: inline;
+
+	&::after {
+		content: ". ";
+	}
 
 	&.deleted {
 		background-color: gray;
@@ -2818,9 +2835,8 @@ body {
 	font-size: $lovable-def-size;
 	color: black;
 	font-weight: 200;
+	display: inline;
 	margin-bottom: 5px;
-	border-left: 3px solid #d2b48c;
-	padding-left: 12px;
 
 	&:not(:last-child) {
 		margin-bottom: 10px;
@@ -2833,9 +2849,9 @@ body {
 
 .word-item-def-container {
 	font-family: Lato;
-	width: 100%;
-	padding: 5px;
+	display: inline;
 	color: black;
+	margin-left: 0.25em;
 	//background-color: white;
 }
 
@@ -2873,7 +2889,7 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	margin-left: auto;
+	flex-shrink: 0;
 }
 
 .word-card-ai-button {
