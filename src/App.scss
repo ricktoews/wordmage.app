@@ -2748,7 +2748,33 @@ body {
 		right: 10px;
 		width: 1px;
 		height: 100%;
-		background-color: black;
+		background-color: #ccc;
+	}
+}
+
+.word-list-scroller .word-item-container {
+	position: relative;
+	padding: 10px 0;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 10px;
+		right: 10px;
+		height: 1px;
+		background-color: #ccc;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: -2.5px;
+		left: 10px;
+		width: 5px;
+		height: 5px;
+		background-color: #ccc;
+		border-radius: 50%;
 	}
 }
 
@@ -2759,27 +2785,12 @@ body {
 	padding: 10px;
 	/*margin-bottom: 40px;*/
 	border: none;
-	margin: 10px;
-	border-bottom: 1px solid black;
+	margin: 0 10px;
 	position: relative;
-
-	&::after {
-		content: "";
-		position: absolute;
-		bottom: -3px;
-		left: 0;
-		width: 5px;
-		height: 5px;
-		background-color: black;
-		border-radius: 50%;
-	}
 }
 
 .word-content-wrapper {
 	flex: 1;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
 }
 
 .word-item > :first-child {
@@ -2790,20 +2801,28 @@ body {
 }
 
 .word-item-word-container {
-	display: inline;
-	align-items: center;
+	display: block;
 	position: relative;
+
+	.word-edit-btn {
+		display: inline;
+	}
 
 	.featured-word-dot {
 		color: #9b59b6;
 		font-size: 0.9rem;
 		margin-right: 8px;
 		line-height: 1;
+		display: inline;
+	}
+
+	.scramble-btn {
+		display: inline;
 	}
 }
 
 .word-item-word {
-	font-family: 'Libre Baskerville', Georgia, serif;
+	font-family: Charter, 'Bitstream Charter', Georgia, serif;
 	font-size: 0.95rem;
 	letter-spacing: 0.2px;
 	font-weight: 700;
@@ -2853,6 +2872,10 @@ body {
 	color: black;
 	margin-left: 0.25em;
 	//background-color: white;
+}
+
+.source-def-container {
+	display: inline;
 }
 
 /*
