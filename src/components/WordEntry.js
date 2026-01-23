@@ -61,7 +61,8 @@ function WordEntry(props) {
 					{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}
 					<div className="word-item-word">{wordObj.word}</div>
 					<div style={{ display: 'none' }} className="scramble-btn" onClick={() => { scrambleWord(wordObj); }}><i className="glyphicon glyphicon-retweet"></i></div>
-					<div className="word-item-def-container">
+			</div>
+			<div className="word-item-def-container">
 				{showInfo && (
 					<div className="word-info-popup">
 						{wordObj.sources ? (
@@ -93,9 +94,8 @@ function WordEntry(props) {
 					)}
 				</div>
 			</div>
-				</div>
-			</div>
-			<div className="word-card-actions">
+		</div>
+		<div className="word-card-actions">
 				{/*}
 			<button 
 				className="word-info-button"
