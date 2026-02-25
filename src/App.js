@@ -24,6 +24,7 @@ import CollectiveWords from './components/CollectiveWords';
 import Learn from './components/Learn';
 import Train from './components/Train';
 import SpotlightList from './components/SpotlightList';
+import Moods from './components/Moods';
 import Random from './components/Random';
 import Register from './Register';
 import Profile from './Profile';
@@ -175,6 +176,13 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
+    const navToMoods = () => {
+        var history = props.history;
+        history.push('/moods');
+        setView('Moods');
+        setHamburgerClass('hamburger-nav');
+    }
+
     const navToProfile = () => {
         var history = props.history;
         history.push('/profile');
@@ -264,6 +272,7 @@ function App(props) {
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
                     {authUser && <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>}
                     <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
+                    <li onClick={navToMoods}><i className="glyphicon glyphicon-heart"></i> Moods</li>
                     {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
                     {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
                     {authUser && <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>}
@@ -289,6 +298,9 @@ function App(props) {
                     )}
                     <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
                         <i className="glyphicon glyphicon-sunglasses"></i>
+                    </button>
+                    <button className="header-nav-btn" onClick={navToMoods} title="Moods">
+                        <i className="glyphicon glyphicon-heart"></i>
                     </button>
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToLearn} title="Learn">
@@ -404,6 +416,11 @@ function App(props) {
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                            onAIExplain={handleAIExplain}
+                        />)} />
+                        <Route path={["/moods", "/mood/:slug"]} render={props => (<Moods
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}

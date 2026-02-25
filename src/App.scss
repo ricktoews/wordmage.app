@@ -3642,3 +3642,59 @@ input[type="checkbox"] {
 		}
 	}
 }
+
+.moods-grid {
+	position: relative;
+	top: calc(#{$header-height} + 50px + 12px);
+	margin: 0 10px 20px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	gap: 10px;
+	padding: 0;
+}
+
+.mood-button {
+	padding: 12px 20px;
+	background-color: #eef2f8;
+	border: 1px solid #dde5ed;
+	border-radius: 8px;
+	font-size: 1rem;
+	color: #2c2c2c;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-weight: 500;
+
+	&:hover {
+		background-color: #dde5ed;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+	}
+
+	&:active {
+		background-color: #cdd5e5;
+	}
+}
+
+.mood-words-container {
+	// No extra positioning needed - WordScroller handles it
+}
+
+.mood-back-button {
+	padding: 8px 16px;
+	background-color: transparent;
+	border: 1px solid #d0d0d0;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	color: #2c2c2c;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin-left: auto;
+
+	&:hover {
+		background-color: #f0f0f0;
+		border-color: #b0b0b0;
+	}
+
+	&:active {
+		background-color: #e0e0e0;
+	}
+}
