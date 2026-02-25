@@ -2,8 +2,13 @@ import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordScroller from './WordScroller';
 
-function sortWords(a, b) {
-	return a.word < b.word ? -1 : 1;
+function randomizeWords(array) {
+	const shuffled = [...array];
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	return shuffled;
 }
 
 function Moods(props) {
@@ -61,8 +66,8 @@ function Moods(props) {
 			const response = await fetch(`https://wordmage.toews-api.com/words/mood/${slug}`);
 			const data = await response.json();
 			if (Array.isArray(data)) {
-				const sortedWords = data.sort(sortWords);
-				setMoodWords(sortedWords);
+				const randomizedWords = randomizeWords(data);
+				setMoodWords(randomizedWords);
 			}
 		} catch (error) {
 			console.error('Error fetching mood words:', error);
@@ -84,6 +89,16 @@ function Moods(props) {
 		setMoodWords([]);
 	};
 
+	const handleRefresh = () => {
+		if (selectedMoodSlug) {
+			// Refresh the words for the current mood
+			fetchMoodWords(selectedMoodSlug);
+		} else {
+			// Refresh the moods list
+			fetchMoods();
+		}
+	};
+
 	return (
 		<div className="spotlight-list-container favorites-page">
 			<div className="favorites-toolbar">
@@ -91,13 +106,18 @@ function Moods(props) {
 					{selectedMoodLabel ? selectedMoodLabel : 'Moods'}
 				</div>
 				{selectedMoodSlug && (
-					<button
-						className="mood-back-button"
-						onClick={handleBackToMoods}
-						title="Back to Moods"
-					>
-						← Back
-					</button>
+					<div className="moods-toolbar-actions">
+						<button
+							className="mood-back-button"
+							onClick={handleBackToMoods}
+							title="Back to Moods"
+						>
+							← Back
+						</button>
+						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
+							<i className="glyphicon glyphicon-repeat"></i>
+						</button>
+					</div>
 				)}
 			</div>
 

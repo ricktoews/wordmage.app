@@ -3687,7 +3687,6 @@ input[type="checkbox"] {
 	color: #2c2c2c;
 	cursor: pointer;
 	transition: all 0.2s ease;
-	margin-left: auto;
 
 	&:hover {
 		background-color: #f0f0f0;
@@ -3696,5 +3695,39 @@ input[type="checkbox"] {
 
 	&:active {
 		background-color: #e0e0e0;
+	}
+}
+
+.moods-toolbar-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.moods-refresh-icon {
+	background: #9b59b6;
+	border: none;
+	width: 38px;
+	height: 38px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border-radius: 50%;
+	color: white;
+	padding: 7px;
+	transition: background-color 0.2s, color 0.2s;
+
+	.glyphicon {
+		font-size: 20px;
+	}
+
+	&:hover {
+		background-color: #8e44ad;
+	}
+
+	&:active {
+		background-color: #7d3c98;
 	}
 }
