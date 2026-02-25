@@ -35,7 +35,7 @@ function WordEntry(props) {
 
 	function scrambleWord(wordObj) {
 		console.log('scrambleWord', wordObj);
-		history.push('/spotlight', { wordObj: wordObj });
+		history.push('/unscramble', { wordObj: wordObj });
 	}
 
 	const handleAIExplain = (e) => {

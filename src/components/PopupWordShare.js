@@ -19,7 +19,7 @@ function WordShare(props) {
     function FacebookShare(wordObj) {
         return (
             <button className="btn btn-share"><FacebookShareButton
-                url={'https://wordmage.app/spotlight/' + wordObj.word}
+                url={'https://wordmage.app/unscramble/' + wordObj.word}
                 quote={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
                 className={'share-btn'}>
                 <div className="share-btn-label"><div><FacebookIcon size={32} round={true} /></div><div>Share on Facebook</div></div>
@@ -31,7 +31,7 @@ function WordShare(props) {
     function TwitterShare(wordObj) {
         return (
             <button className="btn btn-share"><TwitterShareButton
-                url={'https://wordmage.app/spotlight/' + wordObj.word}
+                url={'https://wordmage.app/unscramble/' + wordObj.word}
                 title={`${wordObj.word.toUpperCase()}. ${wordObj.def}`}
                 hashtags={['wordmage']}
                 className={'share-btn'}>

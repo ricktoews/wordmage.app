@@ -36,7 +36,7 @@ function Spotlight(props) {
         if (props.match.params.word && props.match.params.def) {
             let { word, def } = props.match.params;
             WordsInterface.saveCustomWord(-1, word, def);
-            props.history.push('/spotlight-list');
+            props.history.push('/favorites');
         } else if (item.word === '') {
             setIntroMessage(`Once you've marked words you want to learn, come here for the challenge of unscrambling random selections.`)
             //props.history.push('/browse');

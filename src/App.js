@@ -136,14 +136,14 @@ function App(props) {
 
     const navToSpotlight = () => {
         var history = props.history;
-        history.push('/spotlight');
+        history.push('/unscramble');
         setView('Solve');
         setHamburgerClass('hamburger-nav');
     }
 
     const navToSpotlightList = () => {
         var history = props.history;
-        history.push('/spotlight-list');
+        history.push('/favorites');
         setView('Favorites');
         setHamburgerClass('hamburger-nav');
     }
@@ -374,7 +374,7 @@ function App(props) {
 
                 <KeyCapture>
                     <Switch>
-                        <Route exact path={['/spotlight/:word/:def']} render={props => <Spotlight
+                        <Route exact path={['/unscramble/:word/:def']} render={props => <Spotlight
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
                         <Route exact path={['/what-to-train']} render={props => (<Train
@@ -393,13 +393,13 @@ function App(props) {
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route exact path='/spotlight/:word' render={props => <Spotlight
+                        <Route exact path='/unscramble/:word' render={props => <Spotlight
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
-                        <Route exact path='/spotlight' render={props => <Spotlight
+                        <Route exact path='/unscramble' render={props => <Spotlight
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
-                        <Route path="/spotlight-list" render={props => (<SpotlightList
+                        <Route path="/favorites" render={props => (<SpotlightList
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}

@@ -49,7 +49,7 @@ function WordForm(props) {
 		// Need to save custom word, spotlight, or whatever.
 		WordsInterface.saveCustomWord(props.wordId, newWord, newDef, newSource, spotlight);
 		// If on Spotlight page, add word to active.
-		if (props.location.pathname === '/spotlight') {
+		if (props.location.pathname === '/unscramble') {
 			WordsInterface.toggleActive(newWord);
 		}
 
