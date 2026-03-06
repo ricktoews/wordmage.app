@@ -1362,6 +1362,11 @@ body {
 		font-weight: 600;
 		color: #2c2c2c;
 		letter-spacing: 0.3px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		flex: 1;
+		min-width: 0;
 
 		&::after {
 			content: " ❧";
@@ -2793,7 +2798,7 @@ body {
 	flex: 1;
 }
 
-.word-item > :first-child {
+.word-item> :first-child {
 	flex: 1;
 	display: flex;
 	flex-wrap: wrap;
@@ -3711,6 +3716,21 @@ input[type="checkbox"] {
 		background-color: #d0d0d0;
 		cursor: not-allowed;
 	}
+}
+
+.custom-moods-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.custom-mood-button {
+	width: 100%;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 

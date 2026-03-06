@@ -15,12 +15,15 @@ async function initCustom(user_id) {
 	};
 	var response = await fetch(`${CONFIG.domain}/loadcustom`, options);
 	var data = await response.json();
-	if (!data) data = { custom: [], training: [] };
+	if (!data) data = { custom: [], training: [], custom_moods: [] };
 	if (!data.custom) data.custom = [];
 	if (!data.training) data.training = [];
+	if (!data.custom_moods) data.custom_moods = [];
 	WordsInterface.initializeCustom(data.custom);
 	// Save training data to localStorage
 	localStorage.setItem('my-training-room', JSON.stringify(data.training));
+	// Save moods data to localStorage
+	localStorage.setItem('my-moods', JSON.stringify(data.custom_moods));
 }
 
 (async () => {

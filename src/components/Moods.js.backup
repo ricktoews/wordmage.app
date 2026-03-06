@@ -171,12 +171,11 @@ function Moods(props) {
 				{selectedMoodSlug && (
 					<div className="moods-toolbar-actions">
 						<button
-							className="moods-refresh-icon"
+							className="mood-back-button"
 							onClick={handleBackToMoods}
 							title="Back to Moods"
-							aria-label="Back to Moods"
 						>
-							<i className="glyphicon glyphicon-chevron-left"></i>
+							← Back
 						</button>
 						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
 							<i className="glyphicon glyphicon-repeat"></i>
@@ -204,29 +203,23 @@ function Moods(props) {
 								Go
 							</button>
 						</form>
+					</div>
 
-						{customMoods.length > 0 && (
-							<div className="custom-moods-list">
+					{customMoods.length > 0 && (
+						<div className="custom-moods-list">
+							<h3>Your Custom Moods</h3>
+							<div className="moods-grid">
 								{customMoods.map((moodObj) => (
 									<button
 										key={moodObj.id}
 										className="mood-button custom-mood-button"
 										onClick={() => handleMoodClick(
-											moodObj.text.toLowerCase().replace(/\s+/g, '-'),
-											moodObj.text,
-											true
-										)}
-									>
-										{moodObj.text}
-									</button>
-								))}
-							</div>
-						)}
-					</div>
-
-					<div className="moods-grid">
-						{moods.map((mood) => (
-							<button
+										moodObj.text.toLowerCase().replace(/\s+/g, '-'),
+										moodObj.text,
+										true
+									)}
+								>
+									{moodObj.text}
 								key={mood.slug}
 								className="mood-button"
 								onClick={() => handleMoodClick(mood.slug, mood.label)}
