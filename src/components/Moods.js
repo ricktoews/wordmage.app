@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import WordScroller from './WordScroller';
 import DataSource from '../utils/data-source';
+import { CONFIG } from '../config';
 
 function randomizeWords(array) {
 	const shuffled = [...array];
@@ -162,11 +163,48 @@ function Moods(props) {
 		}
 	};
 
+	const handleSaveAlbum = async () => {
+		if (!selectedMoodLabel || !isCustomVibe || moodWords.length === 0) {
+			return;
+		}
+
+		try {
+			const wordIds = moodWords.map(word => word.id).filter(id => id != null);
+
+			const payload = {
+				title: selectedMoodLabel,
+				mood_text: selectedMoodLabel,
+				word_ids: wordIds
+			};
+
+			const response = await fetch(`${CONFIG.domain}/albums`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(payload)
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+				console.log('Album saved successfully:', result);
+				// Optionally show a success message to the user
+				alert('Album saved successfully!');
+			} else {
+				console.error('Failed to save album:', response.status);
+				alert('Failed to save album. Please try again.');
+			}
+		} catch (error) {
+			console.error('Error saving album:', error);
+			alert('Error saving album. Please try again.');
+		}
+	};
+
 	return (
 		<div className="spotlight-list-container favorites-page">
 			<div className="favorites-toolbar">
 				<div className="favorites-toolbar-title">
-					{selectedMoodLabel ? selectedMoodLabel : 'Moods'}
+					Moods
 				</div>
 				{selectedMoodSlug && (
 					<div className="moods-toolbar-actions">
@@ -181,9 +219,15 @@ function Moods(props) {
 						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
 							<i className="glyphicon glyphicon-repeat"></i>
 						</button>
+						<button className="moods-refresh-icon" onClick={handleSaveAlbum} title="Save Album" aria-label="Save Album">
+							<i className="glyphicon glyphicon-folder-open"></i>
+						</button>
 					</div>
 				)}
 			</div>
+			{selectedMoodLabel && (
+				<div className="mood-label-subtitle">{selectedMoodLabel}</div>
+			)}
 
 			{!selectedMoodSlug ? (
 				<>

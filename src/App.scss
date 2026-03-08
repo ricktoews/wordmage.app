@@ -3665,6 +3665,13 @@ input[type="checkbox"] {
 	padding: 0;
 }
 
+.albums-container {
+	position: relative;
+	top: calc(#{$header-height} + 50px + 12px);
+	margin: 0 10px 20px;
+	padding: 0;
+}
+
 .custom-mood-form {
 	display: flex;
 	gap: 8px;
@@ -3759,6 +3766,10 @@ input[type="checkbox"] {
 	// No extra positioning needed - WordScroller handles it
 }
 
+.album-words-container {
+	// No extra positioning needed - WordScroller handles it
+}
+
 .mood-back-button {
 	padding: 8px 16px;
 	background-color: transparent;
@@ -3811,4 +3822,19 @@ input[type="checkbox"] {
 	&:active {
 		background-color: #7d3c98;
 	}
+}
+
+.mood-label-subtitle {
+	font-family: $lovable-font;
+	font-size: 14px;
+	font-weight: 200;
+	color: #666;
+	padding: 4px 12px;
+	position: fixed;
+	top: calc(#{$header-height} + 50px);
+	left: 0;
+	right: 0;
+	z-index: 98;
+	background: linear-gradient(to bottom, #f4f2ec, #eeeae2);
+	border-bottom: 1px solid #e0e0e0;
 }

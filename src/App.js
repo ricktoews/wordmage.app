@@ -25,6 +25,8 @@ import Learn from './components/Learn';
 import Train from './components/Train';
 import SpotlightList from './components/SpotlightList';
 import Moods from './components/Moods';
+import Albums from './components/Albums';
+import WordAlbum from './components/WordAlbum';
 import Random from './components/Random';
 import Register from './Register';
 import Profile from './Profile';
@@ -182,7 +184,12 @@ function App(props) {
         setView('Moods');
         setHamburgerClass('hamburger-nav');
     }
-
+    const navToAlbums = () => {
+        var history = props.history;
+        history.push('/albums');
+        setView('Albums');
+        setHamburgerClass('hamburger-nav');
+    }
     const navToProfile = () => {
         var history = props.history;
         history.push('/profile');
@@ -273,6 +280,7 @@ function App(props) {
                     {authUser && <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>}
                     <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
                     <li onClick={navToMoods}><i className="glyphicon glyphicon-heart"></i> Moods</li>
+                    {authUser && <li onClick={navToAlbums}><i className="glyphicon glyphicon-folder-open"></i> Albums</li>}
                     {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
                     {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
                     {authUser && <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>}
@@ -302,7 +310,7 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToMoods} title="Moods">
                         <i className="glyphicon glyphicon-heart"></i>
                     </button>
-                    {authUser && (
+                    {/* {authUser && (
                         <button className="header-nav-btn" onClick={navToLearn} title="Learn">
                             <i className="glyphicon glyphicon-leaf"></i>
                         </button>
@@ -311,7 +319,7 @@ function App(props) {
                         <button className="header-nav-btn" onClick={navToTrain} title="Train">
                             <i className="glyphicon glyphicon-education"></i>
                         </button>
-                    )}
+                    )} */}
                 </div>
 
                 <div className="header-right">
@@ -425,6 +433,16 @@ function App(props) {
                             toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
                         />)} />
+                        <Route exact path="/albums" render={props => (<Albums
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                            onAIExplain={handleAIExplain}
+                        />)} />
+                        <Route path="/albums/:id" render={props => (<WordAlbum
+                            popupWordForm={wordId => { popupWordForm(wordId); }}
+                            toggleSpotlight={toggleSpotlight}
+                            onAIExplain={handleAIExplain}
+                        />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
@@ -438,7 +456,7 @@ function App(props) {
                 </KeyCapture>
             </WordMageContext.Provider>
 
-        </div>
+        </div >
     );
 }
 
