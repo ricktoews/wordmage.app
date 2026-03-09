@@ -34,8 +34,13 @@ function WordAlbum(props) {
     return (
         <div className="spotlight-list-container favorites-page">
             <div className="favorites-toolbar">
-                <div className="favorites-toolbar-title">
-                    Word Album
+                <div className="favorites-toolbar-content">
+                    <div className="favorites-toolbar-title">
+                        Word Album
+                    </div>
+                    {album?.title && (
+                        <div className="album-title-subtitle">{album.title}</div>
+                    )}
                 </div>
                 <div className="moods-toolbar-actions">
                     <button
@@ -48,9 +53,6 @@ function WordAlbum(props) {
                     </button>
                 </div>
             </div>
-            {album?.mood_text && (
-                <div className="mood-label-subtitle">{album.mood_text}</div>
-            )}
 
             <div className="album-words-container">
                 {loading ? (

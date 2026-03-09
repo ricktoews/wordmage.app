@@ -122,14 +122,14 @@ function retrieveMoods() {
 function saveMood(mood) {
     var moods = retrieveMoods();
     // Check if mood already exists
-    if (moods.some(m => m.mood.toLowerCase() === mood.toLowerCase())) {
+    if (moods.some(m => m.text && m.text.toLowerCase() === mood.toLowerCase())) {
         return moods;
     }
     // Generate new id
     var maxId = moods.reduce((max, m) => Math.max(max, m.id), 0);
     var newMood = {
         id: maxId + 1,
-        mood: mood
+        text: mood
     };
     moods.push(newMood);
     localStorage.setItem('my-moods', JSON.stringify(moods));
