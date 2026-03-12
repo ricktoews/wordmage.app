@@ -5,14 +5,17 @@ import WordEntry from './WordEntry';
 import Popup from './Popup';
 import PopupTagList from './PopupTagList';
 import PopupWordShare from './PopupWordShare';
+import PopupAlbumSelect from './PopupAlbumSelect';
 
 function WordScroller(props) {
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
 	const [showTags, setShowTags] = useState(false);
+	const [showAlbums, setShowAlbums] = useState(false);
 	const [showWordShare, setShowWordShare] = useState(false);
 	const [shareWord, setShareWord] = useState(null);
 	const [tagWordObj, setTagWordObj] = useState({});
+	const [albumWordObj, setAlbumWordObj] = useState({});
 	const [tagList, setTagList] = useState(WordsInterface.getTagList());
 	const [tagToggle, setTagToggle] = useState(null);
 	const [visibleItems, setVisibleItems] = useState([]);
@@ -63,9 +66,19 @@ function WordScroller(props) {
 		setShowWordShare(true);
 	}
 
+	function popupAlbums(wordObj) {
+		setShowAlbums(true);
+		setAlbumWordObj(wordObj);
+	}
+
+	function closeAlbumPopup() {
+		setShowAlbums(false);
+	}
+
 	const handleBackgroundClick = () => {
 		setShowWordShare(false);
 		setShowTags(false);
+		setShowAlbums(false);
 	};
 
 	function loadItems(quant, append = true) {
@@ -159,6 +172,13 @@ function WordScroller(props) {
 					tagWord={tagWord}
 				/>
 			</Popup>
+			<Popup isVisible={showAlbums} handleBackgroundClick={handleBackgroundClick}>
+				<PopupAlbumSelect
+					showAlbums={showAlbums}
+					wordObj={albumWordObj}
+					closeAlbumPopup={closeAlbumPopup}
+				/>
+			</Popup>
 
 			<div
 				className="word-list-scroller"
@@ -167,10 +187,11 @@ function WordScroller(props) {
 				{visibleItems.map(({ key, wordItem }) => (
 					<div key={key} className="word-item-container">
 						<WordEntry
-							popupTags={popupTags}
-							popupWordShare={popupWordShare}
+							popupTags={popupTags} popupAlbums={popupAlbums} popupWordShare={popupWordShare}
 							wordObj={wordItem}
 							listType={props.listType}
+							albumId={props.albumId}
+							onAlbumRefresh={props.onAlbumRefresh}
 							history={props.history}
 							popupWordForm={props.popupWordForm}
 							onAIExplain={props.onAIExplain}

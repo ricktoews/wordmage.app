@@ -61,28 +61,28 @@ function WordEntry(props) {
 					{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}
 					<div className="word-item-word">{wordObj.word}</div>
 					<div className="word-item-def">{wordObj.def}</div>
+				</div>
+				<div className="word-item-def-container">
+					{showInfo && (
+						<div className="word-info-popup">
+							{wordObj.sources ? (
+								<>
+									{wordObj.sources.map((source, index) => (
+										source && <div key={index}><strong>Source {index + 1}:</strong> {source}</div>
+									))}
+								</>
+							) : wordObj.source ? (
+								<>
+									<strong>Source:</strong> {wordObj.source}
+								</>
+							) : (
+								<span>No source information available</span>
+							)}
+						</div>
+					)}
+				</div>
 			</div>
-			<div className="word-item-def-container">
-				{showInfo && (
-					<div className="word-info-popup">
-						{wordObj.sources ? (
-							<>
-								{wordObj.sources.map((source, index) => (
-									source && <div key={index}><strong>Source {index + 1}:</strong> {source}</div>
-								))}
-							</>
-						) : wordObj.source ? (
-							<>
-								<strong>Source:</strong> {wordObj.source}
-							</>
-						) : (
-							<span>No source information available</span>
-						)}
-					</div>
-				)}
-			</div>
-		</div>
-		<div className="word-card-actions">
+			<div className="word-card-actions">
 				{/*}
 			<button 
 				className="word-info-button"
@@ -95,7 +95,10 @@ function WordEntry(props) {
 				<WordCardMenu
 					wordObj={wordObj}
 					listType={listType}
+					albumId={props.albumId}
+					onAlbumRefresh={props.onAlbumRefresh}
 					popupTags={props.popupTags}
+					popupAlbums={props.popupAlbums}
 					onUpdate={() => {
 						setUpdateToggle(!updateToggle);
 						setIsSpotlighted(!isSpotlighted);

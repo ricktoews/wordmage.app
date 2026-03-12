@@ -61,7 +61,9 @@ function WordAlbum(props) {
                     <WordScroller
                         pool={album.words}
                         startingNdx={0}
-                        listType={'browse'}
+                        listType={'album'}
+                        albumId={albumId}
+                        onAlbumRefresh={fetchAlbum}
                         popupWordForm={props.popupWordForm}
                         toggleSpotlight={props.toggleSpotlight}
                         onAIExplain={props.onAIExplain}

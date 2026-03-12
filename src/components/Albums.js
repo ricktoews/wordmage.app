@@ -128,13 +128,6 @@ function Albums(props) {
                                 className="album-item"
                                 onClick={() => handleAlbumClick(album.id)}
                             >
-                                {album.cover_image_path && (
-                                    <img
-                                        src={`https://wordmage.toews-api.com${album.cover_image_path}`}
-                                        alt={album.title}
-                                        className="album-cover-image"
-                                    />
-                                )}
                                 <div className="album-title">{album.title}</div>
                                 <div className="album-menu-container">
                                     <button

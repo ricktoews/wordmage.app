@@ -1,12 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import WordsInterface from '../utils/words-interface';
+import { CONFIG } from '../config';
+import Popup from './Popup';
 
 function WordCardMenu(props) {
-    const { wordObj, listType, popupTags } = props;
+    const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(wordObj.spotlight);
     const [isLearning, setIsLearning] = useState(wordObj.learn);
     const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
     const menuRef = useRef(null);
 
     useEffect(() => {
@@ -56,56 +60,121 @@ function WordCardMenu(props) {
         if (props.onUpdate) props.onUpdate();
     };
 
-    const handleTag = (e) => {
+    const handleAddToAlbum = (e) => {
         e.stopPropagation();
         setIsOpen(false);
-        popupTags(wordObj, e.target);
+        popupAlbums(wordObj, e.target);
+    };
+
+    const handleRemoveFromAlbum = (e) => {
+        e.stopPropagation();
+        setIsOpen(false);
+        setShowDeletePopup(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            const response = await fetch(`${CONFIG.domain}/albums/delete-word`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    album_id: albumId,
+                    word_id: wordObj.id
+                })
+            });
+
+            if (response.ok) {
+                setShowDeletePopup(false);
+                if (onAlbumRefresh) {
+                    onAlbumRefresh();
+                }
+            } else {
+                console.error('Failed to remove word from album:', response.status);
+                alert('Failed to remove word from album. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error removing word from album:', error);
+            alert('Error removing word from album. Please try again.');
+        }
     };
 
     return (
         <div className="word-card-menu" ref={menuRef}>
-            <button 
-                className="word-card-menu-button" 
+            <button
+                className="word-card-menu-button"
                 onClick={toggleMenu}
                 aria-label="Word options"
             >
                 <i className="glyphicon glyphicon-option-vertical"></i>
             </button>
-            
+
             {isOpen && (
                 <div className="word-card-menu-dropdown">
-                    <button 
+                    <button
                         className="word-card-menu-item"
                         onClick={handleBookmark}
                     >
                         <i className={`glyphicon glyphicon-thumbs-${isBookmarked ? 'down' : 'up'}`}></i>
                         <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>
                     </button>
-                    
-                    <button 
+
+                    <button
                         className="word-card-menu-item"
                         onClick={handleLearn}
                     >
                         <i className="glyphicon glyphicon-leaf"></i>
                         <span>{isLearning ? 'Remove from Learn' : 'Learn word'}</span>
                     </button>
-                    
-                    <button 
+
+                    <button
                         className="word-card-menu-item"
                         onClick={handleDiscard}
                     >
                         <i className="glyphicon glyphicon-trash"></i>
                         <span>{isDiscarded ? 'Restore' : 'Discard'}</span>
                     </button>
-                    
-                    <button 
+
+                    <button
                         className="word-card-menu-item"
-                        onClick={handleTag}
+                        onClick={handleAddToAlbum}
                     >
-                        <i className="glyphicon glyphicon-tag"></i>
-                        <span>Tag</span>
+                        <i className="glyphicon glyphicon-folder-open"></i>
+                        <span>+ Album</span>
                     </button>
+
+                    {listType === 'album' && albumId && (
+                        <button
+                            className="word-card-menu-item word-card-menu-item-delete"
+                            onClick={handleRemoveFromAlbum}
+                        >
+                            <i className="glyphicon glyphicon-folder-close"></i>
+                            <span>- Album</span>
+                        </button>
+                    )}
                 </div>
+            )}
+
+            {createPortal(
+                <Popup isVisible={showDeletePopup} handleBackgroundClick={() => setShowDeletePopup(false)}>
+                    <div className="popup-header">
+                        <h2>Remove from Album</h2>
+                        <div className="close-icon" onClick={() => setShowDeletePopup(false)}>
+                            <i className="glyphicon glyphicon-remove"></i>
+                        </div>
+                    </div>
+                    <div className="popup-body">
+                        <p>Are you sure you want to remove this word from the album?</p>
+                        <div className="button-wrapper">
+                            <button className="btn btn-default" onClick={() => setShowDeletePopup(false)}>
+                                Cancel
+                            </button>
+                            <button className="btn btn-primary" onClick={handleDeleteConfirm}>
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </Popup>,
+                document.body
             )}
         </div>
     );

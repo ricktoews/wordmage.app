@@ -175,6 +175,9 @@ $lovable-def-size: 14px;
 	border: 1px solid black;
 	border-radius: 5px;
 	background-color: white;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 
 	.confirmation-text {
 		font-size: x-large;

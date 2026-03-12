@@ -310,6 +310,11 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToMoods} title="Moods">
                         <i className="glyphicon glyphicon-heart"></i>
                     </button>
+                    {authUser && (
+                        <button className="header-nav-btn" onClick={navToAlbums} title="Albums">
+                            <i className="glyphicon glyphicon-folder-open"></i>
+                        </button>
+                    )}
                     {/* {authUser && (
                         <button className="header-nav-btn" onClick={navToLearn} title="Learn">
                             <i className="glyphicon glyphicon-leaf"></i>
