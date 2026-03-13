@@ -2,11 +2,14 @@ import { Fab, Webchat } from '@botpress/webchat'
 
 import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMasksTheater } from '@fortawesome/free-solid-svg-icons';
 
 import KeyCapture from './KeyCapture';
 // Import WordMageContext to set Context for app.
 import { WordMageContext } from './WordMageContext';
 import Login from './Login';
+import { CONFIG } from './config';
 
 // Import WordsInterface - data, utilities.
 import WordsInterface from './utils/words-interface';
@@ -143,10 +146,28 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const navToSpotlightList = () => {
+    const navToSpotlightList = async () => {
         var history = props.history;
-        history.push('/favorites');
-        setView('Favorites');
+        try {
+            // Fetch albums to find the Favorites album ID
+            const response = await fetch(`${CONFIG.domain}/albums`);
+            const albums = await response.json();
+            const favoritesAlbum = albums.find(album => album.title === 'Favorites');
+            
+            if (favoritesAlbum) {
+                history.push(`/albums/${favoritesAlbum.id}`);
+                setView('Favorites');
+            } else {
+                // Fallback to old behavior if Favorites album doesn't exist
+                history.push('/favorites');
+                setView('Favorites');
+            }
+        } catch (error) {
+            console.error('Error fetching Favorites album:', error);
+            // Fallback to old behavior
+            history.push('/favorites');
+            setView('Favorites');
+        }
         setHamburgerClass('hamburger-nav');
     }
 
@@ -279,7 +300,7 @@ function App(props) {
                     <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
                     {authUser && <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>}
                     <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
-                    <li onClick={navToMoods}><i className="glyphicon glyphicon-heart"></i> Moods</li>
+                    <li onClick={navToMoods}><FontAwesomeIcon icon={faMasksTheater} /> Moods</li>
                     {authUser && <li onClick={navToAlbums}><i className="glyphicon glyphicon-folder-open"></i> Albums</li>}
                     {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
                     {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
@@ -308,7 +329,7 @@ function App(props) {
                         <i className="glyphicon glyphicon-sunglasses"></i>
                     </button>
                     <button className="header-nav-btn" onClick={navToMoods} title="Moods">
-                        <i className="glyphicon glyphicon-heart"></i>
+                        <FontAwesomeIcon icon={faMasksTheater} />
                     </button>
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToAlbums} title="Albums">

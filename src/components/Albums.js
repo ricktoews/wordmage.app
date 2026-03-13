@@ -22,9 +22,17 @@ function Albums(props) {
             const response = await fetch(`${CONFIG.domain}/albums`);
             const data = await response.json();
             if (Array.isArray(data)) {
-                const sortedAlbums = data.sort((a, b) =>
-                    a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-                );
+                // Sort albums, but always put "Favorites" first and "Learn" second
+                const sortedAlbums = data.sort((a, b) => {
+                    // If either album is "Favorites", it goes first
+                    if (a.title === 'Favorites') return -1;
+                    if (b.title === 'Favorites') return 1;
+                    // If either album is "Learn", it goes second
+                    if (a.title === 'Learn') return -1;
+                    if (b.title === 'Learn') return 1;
+                    // Otherwise, sort alphabetically
+                    return a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
+                });
                 setAlbums(sortedAlbums);
             }
         } catch (error) {
@@ -129,31 +137,33 @@ function Albums(props) {
                                 onClick={() => handleAlbumClick(album.id)}
                             >
                                 <div className="album-title">{album.title}</div>
-                                <div className="album-menu-container">
-                                    <button
-                                        className="album-kebab-menu"
-                                        onClick={(e) => handleMenuClick(e, album.id)}
-                                        aria-label="Album options"
-                                    >
-                                        <i className="glyphicon glyphicon-option-vertical"></i>
-                                    </button>
-                                    {openMenuId === album.id && (
-                                        <div className="album-menu-dropdown">
-                                            <div
-                                                className="album-menu-item"
-                                                onClick={(e) => handleRenameClick(e, album)}
-                                            >
-                                                Rename
+                                {album.title !== 'Favorites' && album.title !== 'Learn' && (
+                                    <div className="album-menu-container">
+                                        <button
+                                            className="album-kebab-menu"
+                                            onClick={(e) => handleMenuClick(e, album.id)}
+                                            aria-label="Album options"
+                                        >
+                                            <i className="glyphicon glyphicon-option-vertical"></i>
+                                        </button>
+                                        {openMenuId === album.id && (
+                                            <div className="album-menu-dropdown">
+                                                <div
+                                                    className="album-menu-item"
+                                                    onClick={(e) => handleRenameClick(e, album)}
+                                                >
+                                                    Rename
+                                                </div>
+                                                <div
+                                                    className="album-menu-item album-menu-item-delete"
+                                                    onClick={(e) => handleDeleteClick(e, album)}
+                                                >
+                                                    Delete
+                                                </div>
                                             </div>
-                                            <div
-                                                className="album-menu-item album-menu-item-delete"
-                                                onClick={(e) => handleDeleteClick(e, album)}
-                                            >
-                                                Delete
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>

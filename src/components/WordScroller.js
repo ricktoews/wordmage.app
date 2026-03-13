@@ -156,7 +156,7 @@ function WordScroller(props) {
 			}
 		}
 	};
-
+	console.log('====> visible items', visibleItems.length, visibleItems);
 	return (
 		<div className="word-list-container">
 			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}>
