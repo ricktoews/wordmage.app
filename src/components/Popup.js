@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, createContext } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export const PopupContext = createContext();
 
@@ -54,10 +56,10 @@ function Popup(props) {
                     <div className="confirmation-text">Are you sure?</div>
                     <div className="confirmation-buttons">
                         <button className="btn" onClick={handleCancel}>
-                            <i className="glyphicon glyphicon-remove"></i>
+                            <FontAwesomeIcon icon={faXmark} />
                         </button>
                         <button className="btn" onClick={handleConfirm}>
-                            <i className="glyphicon glyphicon-ok"></i>
+                            <FontAwesomeIcon icon={faCheck} />
                         </button>
                     </div>
                 </div>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CONFIG } from '../config';
 
 function PopupAlbumSelect(props) {
@@ -108,7 +110,7 @@ function PopupAlbumSelect(props) {
             <div className="popup-header">
                 <h3>Add to Album</h3>
                 <button className="popup-close-button" onClick={closeAlbumPopup}>
-                    <i className="glyphicon glyphicon-remove"></i>
+                    <FontAwesomeIcon icon={faXmark} />
                 </button>
             </div>
 
@@ -161,7 +163,7 @@ function PopupAlbumSelect(props) {
                         </div>
                         <div className="create-album-button-container">
                             <button className="btn btn-create-album" onClick={handleCreateClick}>
-                                <i className="glyphicon glyphicon-plus"></i> Create New Album
+                                <FontAwesomeIcon icon={faPlus} /> Create New Album
                             </button>
                         </div>
                     </>

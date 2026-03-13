@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import PopupHeader from './Popup-Header';
 import { PopupContext } from './Popup';
@@ -94,8 +96,8 @@ function PopupWordForm(props) {
 
                     {/* Cancel / Save buttons */}
                     <div className="button-wrapper">
-                        <button className="btn" onClick={saveWord}><i className="glyphicon glyphicon-ok"></i> Save</button>
-                        {props.wordId && <button className="btn" onClick={deleteWord}><i className="glyphicon glyphicon-trash"></i></button>}
+                        <button className="btn" onClick={saveWord}><FontAwesomeIcon icon={faCheck} /> Save</button>
+                        {props.wordId && <button className="btn" onClick={deleteWord}><FontAwesomeIcon icon={faTrash} /></button>}
                     </div>
                 </div>
             </div>

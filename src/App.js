@@ -3,7 +3,19 @@ import { Fab, Webchat } from '@botpress/webchat'
 import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMasksTheater } from '@fortawesome/free-solid-svg-icons';
+import { 
+    faMasksTheater,
+    faRandom,
+    faThumbsUp,
+    faGlasses,
+    faFolderOpen,
+    faLeaf,
+    faGraduationCap,
+    faRetweet,
+    faBook,
+    faHome,
+    faUser
+} from '@fortawesome/free-solid-svg-icons';
 
 import KeyCapture from './KeyCapture';
 // Import WordMageContext to set Context for app.
@@ -297,16 +309,16 @@ function App(props) {
 
             <nav ref={hamburgerRef} className={hamburgerClass}>
                 <ul>
-                    <li onClick={navToRandom}><i className="glyphicon glyphicon-random"></i> Random</li>
-                    {authUser && <li onClick={navToSpotlightList}><i className="glyphicon glyphicon-thumbs-up"></i> Favorites</li>}
-                    <li onClick={navToBrowseWords}><i className="glyphicon glyphicon-sunglasses"></i> Browse</li>
+                    <li onClick={navToRandom}><FontAwesomeIcon icon={faRandom} /> Random</li>
+                    {authUser && <li onClick={navToSpotlightList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
+                    <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     <li onClick={navToMoods}><FontAwesomeIcon icon={faMasksTheater} /> Moods</li>
-                    {authUser && <li onClick={navToAlbums}><i className="glyphicon glyphicon-folder-open"></i> Albums</li>}
-                    {authUser && <li onClick={navToLearn}><i className="glyphicon glyphicon-leaf"></i> Learn</li>}
-                    {authUser && <li onClick={navToTrain}><i className="glyphicon glyphicon-education"></i> Train</li>}
-                    {authUser && <li onClick={navToSpotlight}><i className="glyphicon glyphicon-retweet"></i> Unscramble</li>}
-                    <li onClick={navToCollective}><i className="glyphicon glyphicon-book"></i> Collective</li>
-                    <li onClick={navToAbout}><i className="glyphicon glyphicon-home"></i> About</li>
+                    {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
+                    {authUser && <li onClick={navToLearn}><FontAwesomeIcon icon={faLeaf} /> Learn</li>}
+                    {authUser && <li onClick={navToTrain}><FontAwesomeIcon icon={faGraduationCap} /> Train</li>}
+                    {authUser && <li onClick={navToSpotlight}><FontAwesomeIcon icon={faRetweet} /> Unscramble</li>}
+                    <li onClick={navToCollective}><FontAwesomeIcon icon={faBook} /> Collective</li>
+                    <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
             </nav>
 
@@ -318,32 +330,32 @@ function App(props) {
 
                 <div className="header-nav-buttons">
                     <button className="header-nav-btn" onClick={navToRandom} title="Random">
-                        <i className="glyphicon glyphicon-random"></i>
+                        <FontAwesomeIcon icon={faRandom} />
                     </button>
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToSpotlightList} title="Favorites">
-                            <i className="glyphicon glyphicon-thumbs-up"></i>
+                            <FontAwesomeIcon icon={faThumbsUp} />
                         </button>
                     )}
                     <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
-                        <i className="glyphicon glyphicon-sunglasses"></i>
+                        <FontAwesomeIcon icon={faGlasses} />
                     </button>
                     <button className="header-nav-btn" onClick={navToMoods} title="Moods">
                         <FontAwesomeIcon icon={faMasksTheater} />
                     </button>
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToAlbums} title="Albums">
-                            <i className="glyphicon glyphicon-folder-open"></i>
+                            <FontAwesomeIcon icon={faFolderOpen} />
                         </button>
                     )}
                     {/* {authUser && (
                         <button className="header-nav-btn" onClick={navToLearn} title="Learn">
-                            <i className="glyphicon glyphicon-leaf"></i>
+                            <FontAwesomeIcon icon={faLeaf} />
                         </button>
                     )}
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToTrain} title="Train">
-                            <i className="glyphicon glyphicon-education"></i>
+                            <FontAwesomeIcon icon={faGraduationCap} />
                         </button>
                     )} */}
                 </div>
@@ -351,7 +363,7 @@ function App(props) {
                 <div className="header-right">
                     {!authUser ? (
                         <button className="header-login-btn" onClick={navToLogin} title="Log In">
-                            <i className="glyphicon glyphicon-user"></i>
+                            <FontAwesomeIcon icon={faUser} />
                         </button>
                     ) : (
                         <div className="account-wrapper" ref={accountRef}>

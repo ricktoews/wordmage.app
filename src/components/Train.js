@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faForward } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
 import DataSource from '../utils/data-source';
@@ -523,7 +525,7 @@ function Train(props) {
 						type="button"
 						style={{ position: 'static', marginLeft: '16px' }}
 					>
-						<i className="glyphicon glyphicon-forward"></i>
+						<FontAwesomeIcon icon={faForward} />
 					</button>
 				</div>
 			)}

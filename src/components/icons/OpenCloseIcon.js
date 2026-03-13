@@ -1,6 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+
 const OpenCloseIcon = props => {
 	return <button onClick={props.onClick} className={'btn btn-info btn-md ' + props.className}>
-          <span className="glyphicon glyphicon-chevron-up"></span>
+          <FontAwesomeIcon icon={faChevronUp} />
         </button>
 };
 

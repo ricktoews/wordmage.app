@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRotate } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
 
@@ -41,7 +43,7 @@ function Random(props) {
 	  <div className="random-toolbar">
 	    <div className="random-toolbar-title">Random</div>
 	    <button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words">
-	      <i className="glyphicon glyphicon-repeat"></i>
+	      <FontAwesomeIcon icon={faRotate} />
 	    </button>
 	  </div>
 

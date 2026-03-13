@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import DataSource from './utils/data-source';
 import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
@@ -91,14 +93,14 @@ function Register(props) {
             <p>Why register? No need, unless you want to be able to view your word list choices (likes, words to learn, &c.) on another device. To do that, you need to be able to identify yourself. Which can't happen unless you're registered.</p>
             <div className="form">
                 <div className="input-field">
-                    <div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
+                    <div className="icon-wrapper"><FontAwesomeIcon icon={faEnvelope} /></div>
                     <input placeholder="Email" ref={emailRef} type="email" id="register-email" className="register-email" onChange={handleChange} onFocus={handleFocus} />
                 </div>
                 {showMsg ? (<div className="profile-form-message">
                     Email already registered.
                 </div>) : null}
                 <div className="input-field">
-                    <div className="icon-wrapper"><i className="glyphicon glyphicon-lock"></i></div>
+                    <div className="icon-wrapper"><FontAwesomeIcon icon={faLock} /></div>
                     <input placeholder="Password" ref={passwordRef} type="text" id="register-password" className="register-password" onChange={handleChange} onFocus={handleFocus} />
                 </div>
                 <div className="button-wrapper">

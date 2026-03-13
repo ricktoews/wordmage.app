@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+    faChevronLeft, 
+    faRotate, 
+    faFolderOpen, 
+    faEllipsisVertical, 
+    faXmark 
+} from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import DataSource from '../utils/data-source';
 import { CONFIG } from '../config';
@@ -321,13 +329,13 @@ function Moods(props) {
 							title="Back to Moods"
 							aria-label="Back to Moods"
 						>
-							<i className="glyphicon glyphicon-chevron-left"></i>
+							<FontAwesomeIcon icon={faChevronLeft} />
 						</button>
 						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
-							<i className="glyphicon glyphicon-repeat"></i>
+							<FontAwesomeIcon icon={faRotate} />
 						</button>
 						<button className="moods-refresh-icon" onClick={handleSaveAlbum} title="Save Album" aria-label="Save Album">
-							<i className="glyphicon glyphicon-folder-open"></i>
+							<FontAwesomeIcon icon={faFolderOpen} />
 						</button>
 					</div>
 				)}
@@ -373,7 +381,7 @@ function Moods(props) {
 												onClick={(e) => handleCustomMoodMenuClick(e, moodObj.id)}
 												aria-label="Mood options"
 											>
-												<i className="glyphicon glyphicon-option-vertical"></i>
+												<FontAwesomeIcon icon={faEllipsisVertical} />
 											</button>
 											{openCustomMoodMenuId === moodObj.id && (
 												<div className="custom-mood-menu-dropdown">
@@ -437,7 +445,7 @@ function Moods(props) {
 				<div className="popup-header">
 					<h2>Create Album</h2>
 					<div className="close-icon" onClick={() => setShowAlbumTitlePopup(false)}>
-						<i className="glyphicon glyphicon-remove"></i>
+						<FontAwesomeIcon icon={faXmark} />
 					</div>
 				</div>
 				<div className="popup-body">
@@ -472,7 +480,7 @@ function Moods(props) {
 				<div className="popup-header">
 					<h2>Delete Mood</h2>
 					<div className="close-icon" onClick={() => setShowDeleteMoodPopup(false)}>
-						<i className="glyphicon glyphicon-remove"></i>
+						<FontAwesomeIcon icon={faXmark} />
 					</div>
 				</div>
 				<div className="popup-body">

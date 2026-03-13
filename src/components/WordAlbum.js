@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
@@ -49,7 +51,7 @@ function WordAlbum(props) {
                         title="Back to Albums"
                         aria-label="Back to Albums"
                     >
-                        <i className="glyphicon glyphicon-chevron-left"></i>
+                        <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                 </div>
             </div>

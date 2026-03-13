@@ -1,5 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+    faEllipsisVertical, 
+    faThumbsUp, 
+    faThumbsDown, 
+    faLeaf, 
+    faTrash, 
+    faFolderOpen, 
+    faFolder, 
+    faXmark 
+} from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
 import Popup from './Popup';
@@ -105,7 +116,7 @@ function WordCardMenu(props) {
                 onClick={toggleMenu}
                 aria-label="Word options"
             >
-                <i className="glyphicon glyphicon-option-vertical"></i>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>
 
             {isOpen && (
@@ -114,7 +125,7 @@ function WordCardMenu(props) {
                         className="word-card-menu-item"
                         onClick={handleBookmark}
                     >
-                        <i className={`glyphicon glyphicon-thumbs-${isBookmarked ? 'down' : 'up'}`}></i>
+                        <FontAwesomeIcon icon={isBookmarked ? faThumbsDown : faThumbsUp} />
                         <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>
                     </button>
 
@@ -122,7 +133,7 @@ function WordCardMenu(props) {
                         className="word-card-menu-item"
                         onClick={handleLearn}
                     >
-                        <i className="glyphicon glyphicon-leaf"></i>
+                        <FontAwesomeIcon icon={faLeaf} />
                         <span>{isLearning ? 'Remove from Learn' : 'Learn word'}</span>
                     </button>
 
@@ -130,7 +141,7 @@ function WordCardMenu(props) {
                         className="word-card-menu-item"
                         onClick={handleDiscard}
                     >
-                        <i className="glyphicon glyphicon-trash"></i>
+                        <FontAwesomeIcon icon={faTrash} />
                         <span>{isDiscarded ? 'Restore' : 'Discard'}</span>
                     </button>
 
@@ -138,7 +149,7 @@ function WordCardMenu(props) {
                         className="word-card-menu-item"
                         onClick={handleAddToAlbum}
                     >
-                        <i className="glyphicon glyphicon-folder-open"></i>
+                        <FontAwesomeIcon icon={faFolderOpen} />
                         <span>+ Album</span>
                     </button>
 
@@ -147,7 +158,7 @@ function WordCardMenu(props) {
                             className="word-card-menu-item word-card-menu-item-delete"
                             onClick={handleRemoveFromAlbum}
                         >
-                            <i className="glyphicon glyphicon-folder-close"></i>
+                            <FontAwesomeIcon icon={faFolder} />
                             <span>- Album</span>
                         </button>
                     )}
@@ -159,7 +170,7 @@ function WordCardMenu(props) {
                     <div className="popup-header">
                         <h2>Remove from Album</h2>
                         <div className="close-icon" onClick={() => setShowDeletePopup(false)}>
-                            <i className="glyphicon glyphicon-remove"></i>
+                            <FontAwesomeIcon icon={faXmark} />
                         </div>
                     </div>
                     <div className="popup-body">

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import PopupHeader from './Popup-Header';
 
 function ButtonTag(props) {
@@ -114,7 +116,7 @@ function PopupTagList(props) {
 
                     {isAddTag ? (
                         <div className="button-wrapper">
-                            <button className="btn" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i> Save</button>
+                            <button className="btn" onClick={handleCheckClick}><FontAwesomeIcon icon={faCheck} /> Save</button>
                         </div>
                     ) : null}
                 </div>

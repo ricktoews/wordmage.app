@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRandom, faCircleQuestion, faEye, faForward } from '@fortawesome/free-solid-svg-icons';
 import OpenCloseIcon from './icons/OpenCloseIcon';
 import WordsInterface from '../utils/words-interface';
 import Scramble from './Scramble';
@@ -67,10 +69,10 @@ function Spotlight(props) {
                     <div className="unscramble-toolbar">
                         <div className="unscramble-toolbar-title">Unscramble</div>
                         <div className="unscramble-toolbar-buttons">
-                            <button className="badge" onClick={handleRefresh} title="Reset"><i className="glyphicon glyphicon-random"></i></button>
-                            <button className="badge" onClick={handleHint} title="Hint"><i className="glyphicon glyphicon-question-sign"></i></button>
-                            <button className="badge" onClick={handleShowWord} title="Show Word"><i className="glyphicon glyphicon-eye-open"></i></button>
-                            <button className="badge" onClick={handleAnother} title="Another"><i className="glyphicon glyphicon-forward"></i></button>
+                            <button className="badge" onClick={handleRefresh} title="Reset"><FontAwesomeIcon icon={faRandom} /></button>
+                            <button className="badge" onClick={handleHint} title="Hint"><FontAwesomeIcon icon={faCircleQuestion} /></button>
+                            <button className="badge" onClick={handleShowWord} title="Show Word"><FontAwesomeIcon icon={faEye} /></button>
+                            <button className="badge" onClick={handleAnother} title="Another"><FontAwesomeIcon icon={faForward} /></button>
                         </div>
                     </div>
                     

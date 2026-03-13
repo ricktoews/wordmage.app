@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { CONFIG } from '../config';
 import Popup from './Popup';
 
@@ -144,7 +146,7 @@ function Albums(props) {
                                             onClick={(e) => handleMenuClick(e, album.id)}
                                             aria-label="Album options"
                                         >
-                                            <i className="glyphicon glyphicon-option-vertical"></i>
+                                            <FontAwesomeIcon icon={faEllipsisVertical} />
                                         </button>
                                         {openMenuId === album.id && (
                                             <div className="album-menu-dropdown">
@@ -174,7 +176,7 @@ function Albums(props) {
                 <div className="popup-header">
                     <h2>Rename Album</h2>
                     <div className="close-icon" onClick={() => setShowRenamePopup(false)}>
-                        <i className="glyphicon glyphicon-remove"></i>
+                        <FontAwesomeIcon icon={faXmark} />
                     </div>
                 </div>
                 <div className="popup-body">
@@ -208,7 +210,7 @@ function Albums(props) {
                 <div className="popup-header">
                     <h2>Delete Album</h2>
                     <div className="close-icon" onClick={() => setShowDeletePopup(false)}>
-                        <i className="glyphicon glyphicon-remove"></i>
+                        <FontAwesomeIcon icon={faXmark} />
                     </div>
                 </div>
                 <div className="popup-body">

@@ -1,6 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 const CancelIcon = props => {
 	return <button onClick={props.onClick} className={`btn btn-${props.type} btn-md`}>
-          <span className="glyphicon glyphicon-remove"></span>
+          <FontAwesomeIcon icon={faXmark} />
         </button>
 }
 

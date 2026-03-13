@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { WordMageContext } from '../WordMageContext';
 import WordsInterface from '../utils/words-interface';
 
@@ -118,7 +120,7 @@ function CollectiveWords(props) {
                         onClick={() => setShowHighlightOnly(!showHighlightOnly)}
                         title="Toggle Highlights"
                     >
-                        <i className="glyphicon glyphicon-star"></i>
+                        <FontAwesomeIcon icon={faStar} />
                     </button>
                 </div>
             </div>

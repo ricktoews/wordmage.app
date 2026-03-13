@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPencil } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordEntryButtons from './WordEntryButtons';
 import WordCardMenu from './WordCardMenu';
@@ -55,8 +57,8 @@ function WordEntry(props) {
 			<div className="word-content-wrapper">
 				<div className="word-item-word-container">
 					<div className="word-edit-btn">
-						{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><i className="glyphicon glyphicon-trash"></i></div> : null}
-						{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><i className="glyphicon glyphicon-pencil"></i></button> : null}
+						{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><FontAwesomeIcon icon={faTrash} /></div> : null}
+						{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><FontAwesomeIcon icon={faPencil} /></button> : null}
 					</div>
 					{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}
 					<div className="word-item-word">{wordObj.word}</div>

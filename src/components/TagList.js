@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function Tag(props) {
 	const checkBoxRef = useRef(null);
@@ -105,8 +107,8 @@ function TagList(props) {
 
 					{isAddTag ? (
 						<div className="button-wrapper">
-							<button className="badge" onClick={handleClickCancel}><i className="glyphicon glyphicon-remove"></i> Cancel</button>
-							<button className="badge" onClick={handleCheckClick}><i className="glyphicon glyphicon-ok"></i> Save</button>
+							<button className="badge" onClick={handleClickCancel}><FontAwesomeIcon icon={faXmark} /> Cancel</button>
+							<button className="badge" onClick={handleCheckClick}><FontAwesomeIcon icon={faCheck} /> Save</button>
 						</div>
 					) : null}
 				</div>

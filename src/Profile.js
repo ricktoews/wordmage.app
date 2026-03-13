@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
 import { WordMageContext } from './WordMageContext';
@@ -220,11 +222,11 @@ function Profile(props) {
 
 	return (
 		<>
-			{showNotification && (
+				{showNotification && (
 				<div className="notification-panel">
 					<div className="notification-content">{message}</div>
 					<button className="notification-close" onClick={closeNotification}>
-						<i className="glyphicon glyphicon-remove"></i>
+						<FontAwesomeIcon icon={faXmark} />
 					</button>
 				</div>
 			)}
@@ -242,11 +244,11 @@ function Profile(props) {
 				{!profileUser.user_id ? (
 				<div className="form">
 					<div className="input-field">
-						<div className="icon-wrapper"><i className="glyphicon glyphicon-envelope"></i></div>
+						<div className="icon-wrapper"><FontAwesomeIcon icon={faEnvelope} /></div>
 						<input placeholder="Email" ref={emailRef} type="text" id="email" className="email" onChange={handleChange} onFocus={handleFocus} />
 					</div>
 					<div className="input-field">
-						<div className="icon-wrapper"><i className="glyphicon glyphicon-lock"></i></div>
+						<div className="icon-wrapper"><FontAwesomeIcon icon={faLock} /></div>
 						<input placeholder="Password" ref={passwordRef} type="text" id="password" className="password" onChange={handleChange} onFocus={handleFocus} />
 					</div>
 					<div className="button-wrapper">

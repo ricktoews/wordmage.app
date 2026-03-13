@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom';
 import { useEffect, useState, useRef, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faTag, faPlus, faRandom, faComment } from '@fortawesome/free-solid-svg-icons';
 import { WordMageContext } from '../WordMageContext';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
@@ -178,15 +180,15 @@ function BrowseWords(props) {
 				<div className="browse-filter-buttons">
 					{
 						tagFilter
-							? (<span><button onClick={handleCancelTagFilter} className="badge"><i className="glyphicon glyphicon-remove"></i></button> {tagFilter}</span>)
+							? (<span><button onClick={handleCancelTagFilter} className="badge"><FontAwesomeIcon icon={faXmark} /></button> {tagFilter}</span>)
 							: null
 					}
-					{false && <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><i className="glyphicon glyphicon-tag"></i></button>}
-					{false && <button className="badge badge-add-word" onClick={() => props.popupWordForm()}><i className="glyphicon glyphicon-plus"></i></button>}
+					{false && <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><FontAwesomeIcon icon={faTag} /></button>}
+					{false && <button className="badge badge-add-word" onClick={() => props.popupWordForm()}><FontAwesomeIcon icon={faPlus} /></button>}
 					<button className="badge badge-random-jump" onClick={handleRandomJump} title="Jump to a random location">
-						<i className="glyphicon glyphicon-random"></i>
+						<FontAwesomeIcon icon={faRandom} />
 					</button>
-					{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><i className="glyphicon glyphicon-comment"></i></button>}
+					{props.botpressButton && <button className="badge badge-botpress" onClick={props.toggleWebchat}><FontAwesomeIcon icon={faComment} /></button>}
 				</div>
 			</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
 				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>

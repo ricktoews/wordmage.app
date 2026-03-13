@@ -1,3 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+    faThumbsUp, 
+    faThumbsDown, 
+    faLeaf, 
+    faTag, 
+    faShare 
+} from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 
 const likeOffClass = 'badge-like-filter-off';
@@ -98,21 +106,21 @@ function WordEntryButtons(props) {
 		switch (listType) {
 			case 'liked':
 				buttons = (<div className="word-item-buttons">
-					<button className={'thumbs-up badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
-					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
+					<button className={'thumbs-up badge ' + likeOnClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><FontAwesomeIcon icon={faThumbsUp} /></button>
+					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><FontAwesomeIcon icon={faThumbsDown} /></button>
 				</div>);
 				break;
 			case 'learn':
 				buttons = (<div className="word-item-buttons">
-					<button className={'thumbs-up badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
-					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
+					<button className={'thumbs-up badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><FontAwesomeIcon icon={faThumbsUp} /></button>
+					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><FontAwesomeIcon icon={faThumbsDown} /></button>
 				</div>);
 				break;
 			default:
 				buttons = (<div className="word-item-buttons">
-					<button className={'thumbs-up badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><i className="glyphicon glyphicon-thumbs-up"></i></button>
-					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><i className="glyphicon glyphicon-thumbs-down"></i></button>
-					{SHARE_ICON && <button className={'share badge ' + shareClass} data-word={wordObj.word} onClick={wordShareHandler}><i className="glyphicon glyphicon-share"></i></button>}
+					<button className={'thumbs-up badge ' + likeClass} data-liked={wordObj.spotlight} data-word={wordObj.word} onClick={thumbsUpHandler}><FontAwesomeIcon icon={faThumbsUp} /></button>
+					<button className={'thumbs-down badge ' + dislikeClass} data-disliked={wordObj.dislike} data-word={wordObj.word} onClick={thumbsDownHandler}><FontAwesomeIcon icon={faThumbsDown} /></button>
+					{SHARE_ICON && <button className={'share badge ' + shareClass} data-word={wordObj.word} onClick={wordShareHandler}><FontAwesomeIcon icon={faShare} /></button>}
 				</div>);
 		}
 	}
@@ -120,20 +128,20 @@ function WordEntryButtons(props) {
 		switch (listType) {
 			case 'liked':
 				buttons = (<div className="word-item-buttons">
-					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
-					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
+					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><FontAwesomeIcon icon={faLeaf} /> &nbsp;Learn</button>
+					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><FontAwesomeIcon icon={faTag} /> &nbsp;Tag</button>
 				</div>);
 				break;
 			case 'learn':
 				buttons = (<div className="word-item-buttons">
-					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
-					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
+					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><FontAwesomeIcon icon={faLeaf} /> &nbsp;Learn</button>
+					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><FontAwesomeIcon icon={faTag} /> &nbsp;Tag</button>
 				</div>);
 				break;
 			default:
 				buttons = (<div className="word-item-buttons">
-					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><i className="glyphicon glyphicon-leaf"></i> &nbsp;Learn</button>
-					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><i className="glyphicon glyphicon-tag"></i> &nbsp;Tag</button>
+					<button className={'badge ' + learnClass} data-liked={wordObj.learn} data-word={wordObj.word} onClick={learnHandler}><FontAwesomeIcon icon={faLeaf} /> &nbsp;Learn</button>
+					<button className={'badge ' + tagClass} data-tagged={wordObj.tagged} data-word={wordObj.word} onClick={tagPopupHandler}><FontAwesomeIcon icon={faTag} /> &nbsp;Tag</button>
 				</div>);
 		}
 	}

@@ -1,6 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 const DeleteIcon = props => {
 	return <button onClick={props.onClick} className="badge badge-circle badge-delete">
-          <span className="glyphicon glyphicon-trash"></span>
+          <FontAwesomeIcon icon={faTrash} />
         </button>
 }
 

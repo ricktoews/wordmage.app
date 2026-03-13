@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBolt, faXmark, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 function PopupAIExplain(props) {
     const { word, definition, onClose } = props;
@@ -47,11 +49,11 @@ function PopupAIExplain(props) {
             <div className="ai-explain-content">
                 <div className="ai-explain-header">
                     <h3>
-                        <i className="glyphicon glyphicon-flash"></i> 
+                        <FontAwesomeIcon icon={faBolt} /> 
                         {' '}Explaining: <span className="ai-explain-word">{word}</span>
                     </h3>
                     <button className="ai-explain-close" onClick={onClose}>
-                        <i className="glyphicon glyphicon-remove"></i>
+                        <FontAwesomeIcon icon={faXmark} />
                     </button>
                 </div>
                 <div className="ai-explain-body">
@@ -63,7 +65,7 @@ function PopupAIExplain(props) {
                     )}
                     {error && (
                         <div className="ai-explain-error">
-                            <i className="glyphicon glyphicon-exclamation-sign"></i>
+                            <FontAwesomeIcon icon={faTriangleExclamation} />
                             <p>{error}</p>
                             <button className="ai-retry-btn" onClick={fetchExplanation}>
                                 Try Again
