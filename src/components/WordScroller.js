@@ -20,7 +20,6 @@ function WordScroller(props) {
 	const [tagToggle, setTagToggle] = useState(null);
 	const [visibleItems, setVisibleItems] = useState([]);
 	const loadedCountRef = useRef(0);
-
 	const taggedOnClass = 'badge-tag-filter-on';
 	const taggedOffClass = 'badge-tag-filter-off';
 
@@ -156,7 +155,7 @@ function WordScroller(props) {
 			}
 		}
 	};
-	console.log('====> visible items', visibleItems.length, visibleItems);
+
 	return (
 		<div className="word-list-container">
 			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}>

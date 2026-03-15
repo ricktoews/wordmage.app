@@ -12,19 +12,19 @@ function sortSpotlight(a, b) {
 }
 
 function SpotlightList(props) {
-	const wordList = WordsInterface.getWordList('spotlight').map(item => item.word).sort();
-	const spotlightWordList = WordsInterface.getWordList('spotlight').sort(sortSpotlight);
+	const wordList = WordsInterface.getWordList('favorites').map(item => item.word).sort();
+	const spotlightWordList = WordsInterface.getWordList('favorites').sort(sortSpotlight);
 	const toggleSpotlight = word => {
 		props.toggleSpotlight(word);
 	}
 
 	return (
-	<div className="spotlight-list-container favorites-page">
-	  <div className="favorites-toolbar">
-	    <div className="favorites-toolbar-title">Favorites</div>
-	  </div>
-	  <WordScroller pool={spotlightWordList} startingNdx={0} listType={'liked'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />
-	</div>
+		<div className="spotlight-list-container favorites-page">
+			<div className="favorites-toolbar">
+				<div className="favorites-toolbar-title">Favorites</div>
+			</div>
+			<WordScroller pool={spotlightWordList} startingNdx={0} listType={'liked'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />
+		</div>
 	);
 }
 

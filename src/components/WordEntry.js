@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPencil, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPencil, faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordEntryButtons from './WordEntryButtons';
 import WordCardMenu from './WordCardMenu';
@@ -14,6 +14,9 @@ function WordEntry(props) {
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [isSpotlighted, setIsSpotlighted] = useState(wordObj.spotlight);
 	const [showInfo, setShowInfo] = useState(false);
+
+	// Check if word is in favorites list (liked array)
+	const isFavorited = WordsInterface.isWordLiked(wordObj);
 
 	function deleteWordToggle(wordObj, e) {
 		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
@@ -60,7 +63,9 @@ function WordEntry(props) {
 						{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><FontAwesomeIcon icon={faTrash} /></div> : null}
 						{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><FontAwesomeIcon icon={faPencil} /></button> : null}
 					</div>
-					{(listType === 'browse' || listType === 'random') && isSpotlighted && <span className="featured-word-dot">•</span>}				{!!wordObj.is_locked && <span className="word-lock-icon"><FontAwesomeIcon icon={faLock} /></span>}					<div className="word-item-word">{wordObj.word}</div>
+					{(listType === 'browse' || listType === 'random') && isFavorited && <span className="featured-word-icon"><FontAwesomeIcon icon={faThumbsUp} /></span>}
+					{!!wordObj.is_locked && <span className="word-lock-icon"><FontAwesomeIcon icon={faLock} /></span>}
+					<div className="word-item-word">{wordObj.word}</div>
 					<div className="word-item-def">{wordObj.def}</div>
 				</div>
 				<div className="word-item-def-container">

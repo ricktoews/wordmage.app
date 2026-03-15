@@ -20,7 +20,7 @@ import Popup from './Popup';
 function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
     const [isOpen, setIsOpen] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(wordObj.spotlight);
+    const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj));
     const [isLearning, setIsLearning] = useState(wordObj.learn);
     const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
@@ -48,13 +48,64 @@ function WordCardMenu(props) {
         setIsOpen(!isOpen);
     };
 
-    const handleBookmark = (e) => {
+    const handleBookmark = async (e) => {
         e.stopPropagation();
-        setIsBookmarked(!isBookmarked);
-        WordsInterface.toggleSpotlight(wordObj.word);
+        const newBookmarkedState = !isBookmarked;
         setIsOpen(false);
-        // Force parent to re-render
-        if (props.onUpdate) props.onUpdate();
+
+        try {
+            const albumIds = WordsInterface.getAlbumIds();
+            const favoritesAlbumId = albumIds.Favorites;
+
+            if (!favoritesAlbumId) {
+                console.error('Favorites album ID not found');
+                alert('Favorites album not configured. Please try again.');
+                return;
+            }
+
+            if (newBookmarkedState) {
+                // Add word to Favorites album
+                const response = await fetch(`${CONFIG.domain}/albums/add-word`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        album_id: favoritesAlbumId,
+                        word_id: wordObj.id
+                    })
+                });
+
+                if (response.ok) {
+                    setIsBookmarked(true);
+                    WordsInterface.addToLiked(wordObj);
+                    if (props.onUpdate) props.onUpdate();
+                } else {
+                    console.error('Failed to add word to Favorites');
+                    alert('Failed to add word to Favorites. Please try again.');
+                }
+            } else {
+                // Remove word from Favorites album
+                const response = await fetch(`${CONFIG.domain}/albums/delete-word`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        album_id: favoritesAlbumId,
+                        word_id: wordObj.id
+                    })
+                });
+
+                if (response.ok) {
+                    setIsBookmarked(false);
+                    WordsInterface.removeFromLiked(wordObj);
+                    if (props.onUpdate) props.onUpdate();
+                } else {
+                    console.error('Failed to remove word from Favorites');
+                    alert('Failed to remove word from Favorites. Please try again.');
+                }
+            }
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
+            alert('Error toggling favorite. Please try again.');
+        }
     };
 
     const handleLearn = (e) => {

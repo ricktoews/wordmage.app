@@ -7,17 +7,27 @@ import DataSource from './data-source';
 import { CONFIG } from '../config';
 
 const custom = DataSource.retrieveUserLocalData();
-const userData = { custom };
+const userData = { custom, liked: [], albumIds: {} };
 
 const WORD_POOL = [];
 const COLLECTIVE = [];
 
-function initializeCustom(custom) {
+function initializeCustom(custom, liked = [], albumIds = {}) {
     userData.custom = custom;
+    userData.albumIds = albumIds;
+    // Map liked to use 'def' instead of 'definition' to match custom data format
+    userData.liked = liked.map(fav => ({
+        ...fav,
+        def: fav.definition
+    }));
 }
 
 function getCustom() {
     return userData.custom;
+}
+
+function getAlbumIds() {
+    return userData.albumIds;
 }
 
 async function initializeWordPool() {
@@ -94,8 +104,15 @@ function collectiveWordList() {
  */
 function fullWordList() {
     var universal = cloneJSON(WORD_POOL);
+    console.log('====> fullWordList - userData', userData);
     var custom = userData.custom;
+    const liked = userData.liked || [];
     var revisedCustom = [];
+    liked.forEach(fav => {
+        let ndx = universal.findIndex(item => item.word === fav.word);
+        universal[ndx].favorite = true;
+    });
+
     custom.forEach(wordObj => {
         let ndx = universal.findIndex(item => item.word === wordObj.word);
         if (ndx === -1) {
@@ -132,8 +149,8 @@ function fullWordList() {
 function getWordList(type) {
     var list = [];
     switch (type) {
-        case 'spotlight':
-            list = userData.custom.filter(item => item.spotlight);
+        case 'favorites':
+            list = userData.liked || [];
             break;
         case 'dislike':
             list = userData.custom.filter(item => item.dislike);
@@ -387,9 +404,32 @@ function getUserData() {
     return userData;
 }
 
+function isWordLiked(wordObj) {
+    const wordToCheck = wordObj.word || '';
+    if (!wordToCheck) return false;
+    return userData.liked.some(word => word.word === wordToCheck);
+}
+
+function addToLiked(wordObj) {
+    if (!isWordLiked(wordObj)) {
+        // Store with 'def' property for consistency with liked array format
+        userData.liked.push({
+            ...wordObj,
+            def: wordObj.definition || wordObj.def
+        });
+    }
+}
+
+function removeFromLiked(wordObj) {
+    const wordToRemove = wordObj.word || '';
+    if (!wordToRemove) return;
+    userData.liked = userData.liked.filter(word => word.word !== wordToRemove);
+}
+
 
 const WordsInterface = {
     getCustom,
+    getAlbumIds,
     initializeCustom,
     initializeWordPool,
     getRandomPool,
@@ -413,6 +453,9 @@ const WordsInterface = {
     getWordObj,
     getSpotlightItem,
     getUserData,
+    isWordLiked,
+    addToLiked,
+    removeFromLiked,
 };
 
 export default WordsInterface;

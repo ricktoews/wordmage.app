@@ -16,9 +16,9 @@ function Random(props) {
 			setRefresh(false);
 			var randomPool = WordsInterface.getRandomPool();
 			setRandomWords(randomPool);
-			
+
 			// Select a random word from spotlight/liked list if there are more than 5 items
-			const spotlightWords = WordsInterface.getWordList('spotlight');
+			const spotlightWords = WordsInterface.getWordList('favorites');
 			if (spotlightWords.length > 5) {
 				const randomIndex = Math.floor(Math.random() * spotlightWords.length);
 				setFeaturedWord(spotlightWords[randomIndex]);
@@ -39,33 +39,33 @@ function Random(props) {
 	}
 
 	return randomWords.length > 0 ? (
-	<div className="browse-container random-page">
-	  <div className="random-toolbar">
-	    <div className="random-toolbar-title">Random</div>
-	    <button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words">
-	      <FontAwesomeIcon icon={faRotate} />
-	    </button>
-	  </div>
+		<div className="browse-container random-page">
+			<div className="random-toolbar">
+				<div className="random-toolbar-title">Random</div>
+				<button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words">
+					<FontAwesomeIcon icon={faRotate} />
+				</button>
+			</div>
 
-	  {featuredWord && (
-	    <div className="random-featured-card">
-	      <div className="random-featured-header">
-	        <div className="random-featured-label">FEATURED FAVORITE WORD</div>
-	      </div>
-	      <div className="random-featured-content">
-	        <div className="word-item-word-container">
-	          <span className="featured-word-dot">•</span>
-	          <div className="word-item-word">{featuredWord.word}</div>
-	        </div>
-	        <div className="word-item-def-container">
-	          <div className="word-item-def">{featuredWord.def}</div>
-	        </div>
-	      </div>
-	    </div>
-	  )}
+			{featuredWord && (
+				<div className="random-featured-card">
+					<div className="random-featured-header">
+						<div className="random-featured-label">FEATURED FAVORITE WORD</div>
+					</div>
+					<div className="random-featured-content">
+						<div className="word-item-word-container">
+							<span className="featured-word-dot">•</span>
+							<div className="word-item-word">{featuredWord.word}</div>
+						</div>
+						<div className="word-item-def-container">
+							<div className="word-item-def">{featuredWord.def}</div>
+						</div>
+					</div>
+				</div>
+			)}
 
-	  <WordScroller pool={randomWords} listType={'random'} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
-	</div>
+			<WordScroller pool={randomWords} listType={'random'} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
+		</div>
 	) : null;
 }
 
