@@ -98,6 +98,8 @@ function WordEntry(props) {
 					wordObj={wordObj}
 					listType={listType}
 					albumId={props.albumId}
+					hasMoodText={props.hasMoodText}
+					onWordLockToggle={props.onWordLockToggle}
 					onAlbumRefresh={props.onAlbumRefresh}
 					popupTags={props.popupTags}
 					popupAlbums={props.popupAlbums}

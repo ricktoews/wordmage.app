@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faXmark, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CONFIG } from '../config';
 import Popup from './Popup';
+
+function randomizeWords(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 
 function Albums(props) {
     const [albums, setAlbums] = useState([]);
@@ -11,8 +20,12 @@ function Albums(props) {
     const [openMenuId, setOpenMenuId] = useState(null);
     const [showRenamePopup, setShowRenamePopup] = useState(false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [showCreatePopup, setShowCreatePopup] = useState(false);
     const [selectedAlbum, setSelectedAlbum] = useState(null);
     const [newTitle, setNewTitle] = useState('');
+    const [createTitle, setCreateTitle] = useState('');
+    const [moodPrompt, setMoodPrompt] = useState('');
+    const [isCreating, setIsCreating] = useState(false);
 
     useEffect(() => {
         fetchAlbums();
@@ -119,16 +132,96 @@ function Albums(props) {
         }
     };
 
+    const handleCreateAlbumClick = () => {
+        setCreateTitle('');
+        setMoodPrompt('');
+        setShowCreatePopup(true);
+    };
+
+    const fetchVibeWords = async (vibe) => {
+        try {
+            const response = await fetch(`${CONFIG.domain}/custom-mood`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    mood_text: vibe
+                })
+            });
+            const data = await response.json();
+            if (Array.isArray(data)) {
+                return randomizeWords(data);
+            }
+            return [];
+        } catch (error) {
+            console.error('Error fetching vibe words:', error);
+            throw error;
+        }
+    };
+
+    const handleCreateAlbumSubmit = async () => {
+        if (!createTitle.trim()) {
+            return;
+        }
+
+        setIsCreating(true);
+        try {
+            let wordIds = [];
+
+            // If mood prompt is provided, fetch words based on it
+            if (moodPrompt.trim()) {
+                const moodWords = await fetchVibeWords(moodPrompt.trim());
+                wordIds = moodWords.map(word => word.id).filter(id => id != null);
+            }
+
+            const payload = {
+                title: createTitle.trim(),
+                ...(moodPrompt.trim() && { mood_text: moodPrompt.trim() }),
+                word_ids: wordIds
+            };
+
+            const response = await fetch(`${CONFIG.domain}/albums`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                setShowCreatePopup(false);
+                setCreateTitle('');
+                setMoodPrompt('');
+                fetchAlbums();
+            } else {
+                alert('Failed to create album. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error creating album:', error);
+            alert('Error creating album. Please try again.');
+        } finally {
+            setIsCreating(false);
+        }
+    };
+
     return (
         <div className="spotlight-list-container favorites-page">
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-title">Albums</div>
+                <div className="favorites-toolbar-actions">
+                    <button
+                        className="btn btn-primary create-album-btn"
+                        onClick={handleCreateAlbumClick}
+                        title="Create Album"
+                    >
+                        <FontAwesomeIcon icon={faPlus} /> Create Album
+                    </button>
+                </div>
             </div>
 
             <div className="albums-container">
-                {loading ? (
-                    <div className="loading">Loading albums...</div>
-                ) : albums.length === 0 ? (
+                {loading ? null : albums.length === 0 ? (
                     <div className="empty-state">No albums yet. Create one from a mood!</div>
                 ) : (
                     <div className="albums-list">
@@ -223,6 +316,64 @@ function Albums(props) {
                             Delete
                         </button>
                     </div>
+                </div>
+            </Popup>
+
+            <Popup isVisible={showCreatePopup} handleBackgroundClick={() => !isCreating && setShowCreatePopup(false)}>
+                <div className="popup-header">
+                    <h2>Create Album</h2>
+                    <div className="close-icon" onClick={() => !isCreating && setShowCreatePopup(false)}>
+                        <FontAwesomeIcon icon={faXmark} />
+                    </div>
+                </div>
+                <div className="popup-body">
+                    <form onSubmit={(e) => { e.preventDefault(); handleCreateAlbumSubmit(); }}>
+                        <div className="form-group">
+                            <label htmlFor="album-create-title">Album Title <span className="required">*</span></label>
+                            <input
+                                id="album-create-title"
+                                type="text"
+                                className="form-control"
+                                value={createTitle}
+                                onChange={(e) => setCreateTitle(e.target.value.slice(0, 35))}
+                                maxLength={35}
+                                placeholder="Enter album title"
+                                autoFocus
+                                disabled={isCreating}
+                            />
+                            <div className="character-count">{createTitle.length}/35</div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="mood-prompt">Mood Prompt (optional)</label>
+                            <input
+                                id="mood-prompt"
+                                type="text"
+                                className="form-control"
+                                value={moodPrompt}
+                                onChange={(e) => setMoodPrompt(e.target.value)}
+                                placeholder="e.g., melancholic, joyful, mysterious"
+                                disabled={isCreating}
+                            />
+                            <small className="form-text">If provided, words matching this mood will be added to the album</small>
+                        </div>
+                        <div className="button-wrapper">
+                            <button
+                                type="button"
+                                className="btn btn-default"
+                                onClick={() => setShowCreatePopup(false)}
+                                disabled={isCreating}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={!createTitle.trim() || isCreating}
+                            >
+                                {isCreating ? 'Creating...' : 'Create Album'}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </Popup>
         </div>

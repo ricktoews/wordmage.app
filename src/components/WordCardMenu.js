@@ -1,26 +1,29 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    faEllipsisVertical, 
-    faThumbsUp, 
-    faThumbsDown, 
-    faLeaf, 
-    faTrash, 
-    faFolderOpen, 
-    faFolder, 
-    faXmark 
+import {
+    faEllipsisVertical,
+    faThumbsUp,
+    faThumbsDown,
+    faLeaf,
+    faTrash,
+    faFolderOpen,
+    faFolder,
+    faXmark,
+    faLock,
+    faLockOpen
 } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
 import Popup from './Popup';
 
 function WordCardMenu(props) {
-    const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums } = props;
+    const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(wordObj.spotlight);
     const [isLearning, setIsLearning] = useState(wordObj.learn);
     const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
+    const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const menuRef = useRef(null);
 
@@ -81,6 +84,35 @@ function WordCardMenu(props) {
         e.stopPropagation();
         setIsOpen(false);
         setShowDeletePopup(true);
+    };
+
+    const handleToggleLock = async (e) => {
+        e.stopPropagation();
+        const newLockedState = !isLocked;
+        setIsOpen(false);
+
+        try {
+            const response = await fetch(`${CONFIG.domain}/albums/${albumId}/words/${wordObj.id}/lock`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    is_locked: newLockedState
+                })
+            });
+
+            if (response.ok) {
+                setIsLocked(newLockedState);
+                if (onWordLockToggle) {
+                    onWordLockToggle(wordObj.id, newLockedState);
+                }
+            } else {
+                console.error('Failed to toggle lock status:', response.status);
+                alert('Failed to toggle lock status. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error toggling lock status:', error);
+            alert('Error toggling lock status. Please try again.');
+        }
     };
 
     const handleDeleteConfirm = async () => {
@@ -152,6 +184,16 @@ function WordCardMenu(props) {
                         <FontAwesomeIcon icon={faFolderOpen} />
                         <span>+ Album</span>
                     </button>
+
+                    {listType === 'album' && albumId && hasMoodText && (
+                        <button
+                            className="word-card-menu-item"
+                            onClick={handleToggleLock}
+                        >
+                            <FontAwesomeIcon icon={isLocked ? faLockOpen : faLock} />
+                            <span>{isLocked ? 'Unlock' : 'Lock'}</span>
+                        </button>
+                    )}
 
                     {listType === 'album' && albumId && (
                         <button

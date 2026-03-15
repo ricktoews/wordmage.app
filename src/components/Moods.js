@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    faChevronLeft, 
-    faRotate, 
-    faFolderOpen, 
-    faEllipsisVertical, 
-    faXmark 
+import {
+	faChevronLeft,
+	faRotate,
+	faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import DataSource from '../utils/data-source';
@@ -31,9 +29,6 @@ function Moods(props) {
 	const [loading, setLoading] = useState(false);
 	const [customMood, setCustomMood] = useState('');
 	const [isCustomVibe, setIsCustomVibe] = useState(false);
-	const [showAlbumTitlePopup, setShowAlbumTitlePopup] = useState(false);
-	const [albumTitle, setAlbumTitle] = useState('');
-	const [showSuccessNotification, setShowSuccessNotification] = useState(false);
 	const [openCustomMoodMenuId, setOpenCustomMoodMenuId] = useState(null);
 	const [showDeleteMoodPopup, setShowDeleteMoodPopup] = useState(false);
 	const [selectedCustomMood, setSelectedCustomMood] = useState(null);
@@ -264,57 +259,6 @@ function Moods(props) {
 		}
 	};
 
-	const handleSaveAlbum = () => {
-		if (!selectedMoodLabel || !isCustomVibe || moodWords.length === 0) {
-			return;
-		}
-		setAlbumTitle(selectedMoodLabel);
-		setShowAlbumTitlePopup(true);
-	};
-
-	const handleAlbumTitleSubmit = async () => {
-		if (!albumTitle.trim()) {
-			return;
-		}
-
-		try {
-			const wordIds = moodWords.map(word => word.id).filter(id => id != null);
-
-			const payload = {
-				title: albumTitle.trim(),
-				mood_text: selectedMoodLabel,
-				word_ids: wordIds
-			};
-
-			const response = await fetch(`${CONFIG.domain}/albums`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(payload)
-			});
-
-			if (response.ok) {
-				const result = await response.json();
-				console.log('Album saved successfully:', result);
-				setShowAlbumTitlePopup(false);
-				setAlbumTitle('');
-
-				// Show success notification
-				setShowSuccessNotification(true);
-				setTimeout(() => {
-					setShowSuccessNotification(false);
-				}, 2000);
-			} else {
-				console.error('Failed to save album:', response.status);
-				alert('Failed to save album. Please try again.');
-			}
-		} catch (error) {
-			console.error('Error saving album:', error);
-			alert('Error saving album. Please try again.');
-		}
-	};
-
 	return (
 		<div className="spotlight-list-container favorites-page">
 			<div className="favorites-toolbar">
@@ -334,84 +278,18 @@ function Moods(props) {
 						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
 							<FontAwesomeIcon icon={faRotate} />
 						</button>
-						<button className="moods-refresh-icon" onClick={handleSaveAlbum} title="Save Album" aria-label="Save Album">
-							<FontAwesomeIcon icon={faFolderOpen} />
-						</button>
 					</div>
 				)}
 			</div>
 
 			{!selectedMoodSlug ? (
 				<>
-					<div className="custom-mood-section">
-						<form onSubmit={handleCustomMoodSubmit} className="custom-mood-form">
-							<input
-								type="text"
-								value={customMood}
-								onChange={(e) => setCustomMood(e.target.value)}
-								placeholder="Enter a custom mood..."
-								className="custom-mood-input"
-							/>
-							<button
-								type="submit"
-								className="custom-mood-submit"
-								disabled={!customMood.trim()}
-							>
-								Go
-							</button>
-						</form>
-
-						{customMoods.length > 0 && (
-							<div className="custom-moods-list">
-								{customMoods.map((moodObj) => (
-									<div key={moodObj.id} className="custom-mood-item">
-										<button
-											className="mood-button custom-mood-button"
-											onClick={() => handleMoodClick(
-												moodObj.text.toLowerCase().replace(/\s+/g, '-'),
-												moodObj.text,
-												true
-											)}
-										>
-											{moodObj.text}
-										</button>
-										<div className="custom-mood-menu-container">
-											<button
-												className="custom-mood-kebab-menu"
-												onClick={(e) => handleCustomMoodMenuClick(e, moodObj.id)}
-												aria-label="Mood options"
-											>
-												<FontAwesomeIcon icon={faEllipsisVertical} />
-											</button>
-											{openCustomMoodMenuId === moodObj.id && (
-												<div className="custom-mood-menu-dropdown">
-													<div
-														className="custom-mood-menu-item"
-														onClick={(e) => handleEditMoodClick(e, moodObj)}
-													>
-														Edit
-													</div>
-													<div
-														className="custom-mood-menu-item custom-mood-menu-item-delete"
-														onClick={(e) => handleDeleteMoodClick(e, moodObj)}
-													>
-														Delete
-													</div>
-												</div>
-											)}
-										</div>
-									</div>
-								))}
-							</div>
-						)}
-					</div>
-
 					<div className="moods-grid">
 						{moods.map((mood) => (
 							<button
 								key={mood.slug}
 								className="mood-button"
-								onClick={() => handleMoodClick(mood.slug, mood.label)}
+								onClick={() => handleMoodClick(mood.slug, mood.label, false)}
 							>
 								{mood.label}
 							</button>
@@ -434,47 +312,6 @@ function Moods(props) {
 					)}
 				</div>
 			)}
-
-			{showSuccessNotification && (
-				<div className="success-notification">
-					Album created successfully!
-				</div>
-			)}
-
-			<Popup isVisible={showAlbumTitlePopup} handleBackgroundClick={() => setShowAlbumTitlePopup(false)}>
-				<div className="popup-header">
-					<h2>Create Album</h2>
-					<div className="close-icon" onClick={() => setShowAlbumTitlePopup(false)}>
-						<FontAwesomeIcon icon={faXmark} />
-					</div>
-				</div>
-				<div className="popup-body">
-					<form onSubmit={(e) => { e.preventDefault(); handleAlbumTitleSubmit(); }}>
-						<div className="form-group">
-							<label htmlFor="album-title">Album Title</label>
-							<input
-								id="album-title"
-								type="text"
-								className="form-control"
-								value={albumTitle}
-								onChange={(e) => setAlbumTitle(e.target.value.slice(0, 35))}
-								maxLength={35}
-								placeholder="Enter album title (max 35 characters)"
-								autoFocus
-							/>
-							<div className="character-count">{albumTitle.length}/35</div>
-						</div>
-						<div className="button-wrapper">
-							<button type="button" className="btn btn-default" onClick={() => setShowAlbumTitlePopup(false)}>
-								Cancel
-							</button>
-							<button type="submit" className="btn btn-primary" disabled={!albumTitle.trim()}>
-								Create Album
-							</button>
-						</div>
-					</form>
-				</div>
-			</Popup>
 
 			<Popup isVisible={showDeleteMoodPopup} handleBackgroundClick={() => setShowDeleteMoodPopup(false)}>
 				<div className="popup-header">

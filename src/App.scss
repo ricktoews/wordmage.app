@@ -1425,6 +1425,26 @@ body {
 			}
 		}
 	}
+
+	.favorites-toolbar-actions {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+
+		.create-album-btn {
+			padding: 6px 12px;
+			font-size: 14px;
+			border-radius: 4px;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			white-space: nowrap;
+
+			svg {
+				font-size: 12px;
+			}
+		}
+	}
 }
 
 .browse-page {
@@ -4172,6 +4192,15 @@ input[type="checkbox"] {
 		text-align: center;
 		color: #666;
 		padding: 20px;
+	}
+
+	.loading {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 24px;
+		color: #666;
 	}
 
 	.create-album-button-container {

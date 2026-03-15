@@ -190,8 +190,7 @@ function WordScroller(props) {
 							popupTags={popupTags} popupAlbums={popupAlbums} popupWordShare={popupWordShare}
 							wordObj={wordItem}
 							listType={props.listType}
-							albumId={props.albumId}
-							onAlbumRefresh={props.onAlbumRefresh}
+							albumId={props.albumId} hasMoodText={props.hasMoodText} onWordLockToggle={props.onWordLockToggle} onAlbumRefresh={props.onAlbumRefresh}
 							history={props.history}
 							popupWordForm={props.popupWordForm}
 							onAIExplain={props.onAIExplain}
