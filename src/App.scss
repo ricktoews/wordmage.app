@@ -1400,6 +1400,42 @@ body {
 		gap: 8px;
 		align-items: center;
 
+		.album-quick-btn {
+			padding: 6px 12px;
+			font-size: 14px;
+			border-radius: 4px;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			white-space: nowrap;
+			flex: 0 0 auto;
+			min-width: 100px;
+
+			svg {
+				font-size: 12px;
+			}
+		}
+
+		.btn-favorites {
+			background-color: #4a90e2;
+			color: white;
+			border: 1px solid #3a7bc8;
+
+			&:hover {
+				background-color: #3a7bc8;
+			}
+		}
+
+		.btn-learn {
+			background-color: #52c41a;
+			color: white;
+			border: 1px solid #389e0d;
+
+			&:hover {
+				background-color: #389e0d;
+			}
+		}
+
 		.create-album-btn {
 			padding: 6px 12px;
 			font-size: 14px;
@@ -3657,6 +3693,49 @@ input[type="checkbox"] {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
+
+.album-quick-access {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 12px;
+	justify-content: space-between;
+
+	.album-quick-btn {
+		flex: 1;
+		justify-content: center;
+		padding: 6px 12px;
+		font-size: 14px;
+		border-radius: 4px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		white-space: nowrap;
+
+		svg {
+			font-size: 12px;
+		}
+	}
+
+	.btn-favorites {
+		background-color: #4a90e2;
+		color: white;
+		border: 1px solid #3a7bc8;
+
+		&:hover {
+			background-color: #3a7bc8;
+		}
+	}
+
+	.btn-learn {
+		background-color: #52c41a;
+		color: white;
+		border: 1px solid #389e0d;
+
+		&:hover {
+			background-color: #389e0d;
+		}
+	}
 }
 
 .album-item {
