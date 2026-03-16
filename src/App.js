@@ -33,7 +33,7 @@ import AddIcon from './components/icons/AddIcon';
 import PopupWordForm from './components/PopupWordForm';
 import PopupAIExplain from './components/PopupAIExplain';
 import Popup from './components/Popup';
-import Spotlight from './components/Spotlight';
+import UnscrambleGame from './components/UnscrambleGame';
 import BrowseWords from './components/BrowseWords';
 import CollectiveWords from './components/CollectiveWords';
 import Train from './components/Train';
@@ -414,7 +414,7 @@ function App(props) {
 
                 <KeyCapture>
                     <Switch>
-                        <Route exact path={['/unscramble/:word/:def']} render={props => <Spotlight
+                        <Route exact path={['/unscramble/:word/:def']} render={props => <UnscrambleGame
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
                         <Route exact path={['/what-to-train']} render={props => (<Train
@@ -433,10 +433,10 @@ function App(props) {
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route exact path='/unscramble/:word' render={props => <Spotlight
+                        <Route exact path='/unscramble/:word' render={props => <UnscrambleGame
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
-                        <Route exact path='/unscramble' render={props => <Spotlight
+                        <Route exact path='/unscramble' render={props => <UnscrambleGame
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords

@@ -6,7 +6,7 @@ import OpenCloseIcon from './icons/OpenCloseIcon';
 import WordsInterface from '../utils/words-interface';
 import Scramble from './Scramble';
 
-function Spotlight(props) {
+function UnscrambleGame(props) {
     const [introMessage, setIntroMessage] = useState('');
     const [randomeWordSelected, setRandomWordSelected] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -75,17 +75,17 @@ function Spotlight(props) {
                             <button className="badge" onClick={handleAnother} title="Another"><FontAwesomeIcon icon={faForward} /></button>
                         </div>
                     </div>
-                    
+
                     <div className="unscramble-definition-card">
                         <div className="word-item-def">
                             {item.def}
                         </div>
                     </div>
-                    
+
                     <div className="spotlight">
-                        <Scramble 
-                            item={item} 
-                            word={item.word} 
+                        <Scramble
+                            item={item}
+                            word={item.word}
                             refreshTrigger={refreshTrigger}
                             hintTrigger={hintTrigger}
                             showWordTrigger={showWordTrigger}
@@ -101,4 +101,4 @@ function Spotlight(props) {
     );
 }
 
-export default withRouter(Spotlight);
+export default withRouter(UnscrambleGame);
