@@ -36,7 +36,6 @@ import Popup from './components/Popup';
 import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import CollectiveWords from './components/CollectiveWords';
-import Learn from './components/Learn';
 import Train from './components/Train';
 import SpotlightList from './components/SpotlightList';
 import Moods from './components/Moods';
@@ -185,8 +184,15 @@ function App(props) {
 
     const navToLearn = () => {
         var history = props.history;
-        history.push('/learn');
-        setView('Learn');
+        const albumIds = WordsInterface.getAlbumIds();
+        const learnAlbumId = albumIds.Learn;
+        if (learnAlbumId) {
+            history.push(`/albums/${learnAlbumId}`);
+            setView('Learn');
+        } else {
+            history.push('/albums');
+            setView('Albums');
+        }
         setHamburgerClass('hamburger-nav');
     }
 
@@ -449,10 +455,6 @@ function App(props) {
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
-                        />)} />
-                        <Route path="/learn" render={props => (<Learn
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                         />)} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}

@@ -161,7 +161,7 @@ function getWordList(type) {
             list = userData.custom.filter(item => item.dislike);
             break;
         case 'learn':
-            list = userData.custom.filter(item => item.learn);
+            list = userData.learn || [];
             break;
         default:
             list = fullWordList();
