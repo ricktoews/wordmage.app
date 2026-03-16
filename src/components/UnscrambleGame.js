@@ -16,21 +16,21 @@ function UnscrambleGame(props) {
     // Check state for selected scrambled word.
     const state = props.location.state;
     // Check for word to be scrambled, passed in with URL.
-    const spotlightWord = props.match?.params?.word;
-    const [randomPick, setRandomPick] = useState(!spotlightWord && state === undefined ? true : false);
+    const likedWord = props.match?.params?.word;
+    const [randomPick, setRandomPick] = useState(!likedWord && state === undefined ? true : false);
     var scrambledItem;
     if (randomPick === false) {
         // Not random if word was passed via URL or state.
-        if (spotlightWord) {
-            scrambledItem = WordsInterface.getWordObjByWord(spotlightWord);
+        if (likedWord) {
+            scrambledItem = WordsInterface.getWordObjByWord(likedWord);
         } else if (state) {
             scrambledItem = state.wordObj;
         } else {
-            scrambledItem = WordsInterface.getSpotlightItem();
+            scrambledItem = WordsInterface.getUnscrambleItem();
         }
     }
     else {
-        scrambledItem = WordsInterface.getSpotlightItem();
+        scrambledItem = WordsInterface.getUnscrambleItem();
     }
     const [item, setItem] = useState(scrambledItem);
 
@@ -46,7 +46,7 @@ function UnscrambleGame(props) {
     }, []);
 
     const handleAnother = e => {
-        var anotherItem = WordsInterface.getSpotlightItem();
+        var anotherItem = WordsInterface.getUnscrambleItem();
         setItem(anotherItem);
     };
 
@@ -63,9 +63,9 @@ function UnscrambleGame(props) {
     };
 
     return (
-        <div className="spotlight-container">
+        <div className="unscramble-container">
             {item.word > '' ? (
-                <div className="spotlight-wrapper">
+                <div className="unscramble-wrapper">
                     <div className="unscramble-toolbar">
                         <div className="unscramble-toolbar-title">Unscramble</div>
                         <div className="unscramble-toolbar-buttons">

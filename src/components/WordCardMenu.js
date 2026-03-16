@@ -20,7 +20,7 @@ import Popup from './Popup';
 function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
     const [isOpen, setIsOpen] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj));
+    const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj.word));
     const [isLearning, setIsLearning] = useState(WordsInterface.isWordInLearn(wordObj));
     const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);

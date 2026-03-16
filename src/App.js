@@ -125,9 +125,6 @@ function App(props) {
                 }
             }
         } catch (e) { }
-        if (elClass.indexOf('word-form-container') !== -1 || elClass.indexOf('word-form-wrapper') !== -1) {
-            //setWordFormState(false);
-        }
         setContextValue({ ...contextValue, targetEl: el });
     }
 
@@ -149,14 +146,14 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const navToSpotlight = () => {
+    const navToUnscramble = () => {
         var history = props.history;
         history.push('/unscramble');
         setView('Solve');
         setHamburgerClass('hamburger-nav');
     }
 
-    const navToSpotlightList = () => {
+    const navToFavoritesList = () => {
         var history = props.history;
         const albumIds = WordsInterface.getAlbumIds();
         const favoritesAlbumId = albumIds.Favorites;
@@ -289,10 +286,6 @@ function App(props) {
         setWordFormState(false);
     }
 
-    const toggleSpotlight = word => {
-        var newSpotlightList = WordsInterface.toggleSpotlight(word);
-    }
-
     const handleAIExplain = (word, definition) => {
         setAiExplainWord({ word, definition });
         console.log(`AI Explain requested for: ${word}`);
@@ -304,13 +297,13 @@ function App(props) {
             <nav ref={hamburgerRef} className={hamburgerClass}>
                 <ul>
                     <li onClick={navToRandom}><FontAwesomeIcon icon={faRandom} /> Random</li>
-                    {authUser && <li onClick={navToSpotlightList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
+                    {authUser && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     <li onClick={navToMoods}><FontAwesomeIcon icon={faMasksTheater} /> Moods</li>
                     {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
                     {authUser && <li onClick={navToLearn}><FontAwesomeIcon icon={faLeaf} /> Learn</li>}
                     {authUser && <li onClick={navToTrain}><FontAwesomeIcon icon={faGraduationCap} /> Train</li>}
-                    {authUser && <li onClick={navToSpotlight}><FontAwesomeIcon icon={faRetweet} /> Unscramble</li>}
+                    {authUser && <li onClick={navToUnscramble}><FontAwesomeIcon icon={faRetweet} /> Unscramble</li>}
                     <li onClick={navToCollective}><FontAwesomeIcon icon={faBook} /> Collective</li>
                     <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
@@ -327,7 +320,7 @@ function App(props) {
                         <FontAwesomeIcon icon={faRandom} />
                     </button>
                     {authUser && (
-                        <button className="header-nav-btn" onClick={navToSpotlightList} title="Favorites">
+                        <button className="header-nav-btn" onClick={navToFavoritesList} title="Favorites">
                             <FontAwesomeIcon icon={faThumbsUp} />
                         </button>
                     )}
@@ -377,8 +370,6 @@ function App(props) {
                     )}
                 </div>
             </header>
-
-            {/*false && wordFormState ? <WordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /> : <div />*/}
 
             <WordMageContext.Provider value={contextProviderValue}>
                 <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
@@ -441,34 +432,28 @@ function App(props) {
                         />} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                             botpressButton={botpressClientId}
                             toggleWebchat={toggleWebchat}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path={["/moods", "/mood/:slug"]} render={props => (<Moods
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path="/albums" render={props => (<Albums
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/albums/:id" render={props => (<WordAlbum
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/profile" component={Profile} />

@@ -127,8 +127,8 @@ $btn-cancel-background: #09f;
 
 $maxwidth: 400px;
 $header-height: 50px;
-$spotlight-width: 380px;
-$spotlight-height: 200px;
+$unscramble-width: 380px;
+$unscramble-height: 200px;
 
 $font-family: Roboto;
 
@@ -320,49 +320,6 @@ $lovable-def-size: 14px;
 	width: 100%;
 }
 
-.word-form-container {
-	backdrop-filter: blur(2px);
-	position: fixed;
-	top: 0;
-	z-index: 1000;
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-}
-
-.word-form-container .word-form-wrapper {
-	position: relative;
-	top: 50px;
-	width: $spotlight-width;
-
-	.word-form {
-		border: 2px solid #ccc;
-		background-color: $word-form-background;
-
-		.header {
-			border-radius: 5px;
-			font-size: 14pt;
-			font-weight: bold;
-			text-align: center;
-			min-height: 20px;
-			padding: 5px;
-			color: #ddd;
-		}
-
-		.field-wrapper {
-			padding: 10px;
-
-			.word {
-				color: $word-form-heading;
-				font-size: $word-form-heading-size;
-				margin: 0;
-			}
-		}
-	}
-
-}
-
 
 /*
   COLORS
@@ -433,9 +390,8 @@ $notes-color: #000;
 
 $maxwidth: 400px;
 $header-height: 50px;
-//$spotlight-width: $maxwidth - 2*$header-height;
-$spotlight-width: 100vw;
-$spotlight-height: 200px;
+$unscramble-width: 100vw;
+$unscramble-height: 200px;
 
 
 body {
@@ -1553,16 +1509,8 @@ body {
 	}
 }
 
-.spotlight-list-container {}
-
 .browse-container ul.word-list {
 	top: 50px;
-}
-
-.spotlight-marker {
-	font-size: 10px;
-	margin-right: 4px;
-	color: #0c0;
 }
 
 ::placeholder {
@@ -1570,44 +1518,12 @@ body {
 }
 
 .browse-container,
-.spotlight-list-container,
-.learn-list-container,
+.word-list-page-container,
 .train-list-container,
-.spotlight-container {
+.unscramble-container {
 	position: absolute;
 	top: 0;
 	width: 100vw;
-
-	.learn-toolbar {
-		position: fixed;
-		z-index: 100;
-		margin-top: $header-height;
-		width: 100vw;
-		height: 50px;
-		background: linear-gradient(to bottom, #f4f2ec, #eeeae2);
-		border-bottom: 1px solid #d8d4cc;
-		display: flex;
-		align-items: center;
-		padding: 0 15px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-
-		.learn-toolbar-title {
-			font-family: Georgia, 'Times New Roman', serif;
-			font-size: 20px;
-			color: #2c2416;
-			font-weight: normal;
-			margin: 0;
-			display: flex;
-			align-items: center;
-			gap: 10px;
-
-			&::after {
-				content: '❧';
-				opacity: 0.55;
-				margin-left: 5px;
-			}
-		}
-	}
 
 	.train-notification {
 		position: fixed;
@@ -2546,7 +2462,7 @@ body {
 	justify-content: center;
 }
 
-.spotlight-container {
+.unscramble-container {
 	position: absolute;
 	width: 100vw;
 	height: 100%;
@@ -2634,11 +2550,11 @@ body {
 		}
 	}
 
-	.spotlight-wrapper {
+	.unscramble-wrapper {
 		position: relative;
 		top: 50px;
-		width: $spotlight-width;
-		min-height: $spotlight-height;
+		width: $unscramble-width;
+		min-height: $unscramble-height;
 
 		.spotlight {
 
@@ -2706,32 +2622,6 @@ body {
 		}
 	}
 }
-
-.focus-list {
-	position: fixed;
-	bottom: 25px; // Should be above bottom of screen, not this. FIX!
-	width: $spotlight-width;
-
-	ul {
-		padding: 0;
-		margin: 0;
-		list-style-type: none;
-		display: flex;
-		flex-wrap: wrap;
-		justify-conten: flex-start;
-		align-items: flex-start;
-
-		li {
-			margin: 5px;
-			padding: 5px;
-			font-size: 15pt; // FIX
-			background-color: #09f; // FIX
-			border-radius: 5px;
-			color: white;
-		}
-	}
-}
-
 
 .explanatory {
 	font-size: 10pt;

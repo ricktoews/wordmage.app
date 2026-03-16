@@ -304,42 +304,20 @@ function updateTags(word, tags) {
 }
 
 /**
- * Toggle Spotlight status for specified word.
- */
-function toggleSpotlight(word) {
-    var wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    if (wordObjIndex === -1) {
-        let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
-        addCustomWord(builtInWord);
-        wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    }
-    var wordObj = userData.custom[wordObjIndex];
-    wordObj.spotlight = !wordObj.spotlight;
-    if (wordObj.spotlight) {
-        wordObj.dislike = false;
-    }
-    DataSource.saveUserData(userData);
-    // Create array of words from userData.active, which is an array of { word: notes }.
-    var newSpotlightList = userData.custom.filter(item => item.spotlight);
-    return newSpotlightList;
-}
-
-/**
  * Toggle Learn status for specified word.
+ * 
+ * OBSOLETE: This function is only called from WordEntryButtons.js (which is unused).
+ * It was intended to toggle a word's Learn status by modifying the obsolete wordObj.learn 
+ * property in userData.custom and saving to localStorage.
+ * 
+ * The current implementation is in WordCardMenu.handleLearn(), which:
+ * - Uses the albums API (POST /albums/add-word or /albums/delete-word)
+ * - Updates userData.learn array via addToLearn() or removeFromLearn()
+ * - Refreshes the UI to reflect changes
  */
 function toggleLearn(word) {
-    var wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    if (wordObjIndex === -1) {
-        let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
-        addCustomWord(builtInWord);
-        wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    }
-    var wordObj = userData.custom[wordObjIndex];
-    wordObj.learn = !wordObj.learn;
-    DataSource.saveUserData(userData);
-    // Create array of words from userData.active, which is an array of { word: notes }.
-    var newLearnList = userData.custom.filter(item => item.learn);
-    return newLearnList;
+    console.warn('toggleLearn is obsolete. Use WordCardMenu.handleLearn() instead.');
+    return [];
 }
 
 /**
@@ -364,59 +342,37 @@ function toggleDislike(word) {
 }
 
 /**
- * Return true / false, depending on whether or not the word is Spotlighted.
+ * Get list of Learn words.
  */
-function isSpotlightEntry(word) {
-    var wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    var wordObj = wordObjIndex !== -1 ? userData.custom[wordObjIndex] : {};
-    var result = wordObj.spotlight;
-    return !!result;
+function getLearnList() {
+    return userData.learn || [];
 }
 
 /**
- * Get Spotlight word. { word: obj }
- * Do we need to revise this?
+ * Get random word from learn list for unscramble game.
  */
-function getSpotlightEntry(word) {
-    var wordObj = userData.custom.find(item => item.word === word);
-    var entry = { [word]: wordObj };
-    return entry;
-}
-
-/**
- * Get list of Spotlight words.
- */
-function getSpotlightList() {
-    var spotlightArray = userData.custom.filter(item => item.learn);
-    return spotlightArray;
-}
-
-/**
- * Get random spotlight item.
- */
-function getSpotlightItem() {
-    var spotlightItem = { word: '', def: '' };
-    var spotlightArray = getSpotlightList();
-    if (spotlightArray.length > 0) {
-        var ndx = Math.floor(Math.random() * spotlightArray.length);
-        spotlightItem = spotlightArray[ndx];
+function getUnscrambleItem() {
+    var unscrambleItem = { word: '', def: '' };
+    var learnArray = getLearnList();
+    if (learnArray.length > 0) {
+        var ndx = Math.floor(Math.random() * learnArray.length);
+        unscrambleItem = learnArray[ndx];
     }
-    console.log('getSpotlightItem', spotlightItem);
-    return spotlightItem;
+    console.log('getUnscrambleItem', unscrambleItem);
+    return unscrambleItem;
 }
 
 function getUserData() {
     return userData;
 }
 
-function isWordLiked(wordObj) {
-    const wordToCheck = wordObj.word || '';
-    if (!wordToCheck) return false;
-    return userData.liked.some(word => word.word === wordToCheck);
+function isWordLiked(word) {
+    if (!word) return false;
+    return userData.liked.some(item => item.word === word);
 }
 
 function addToLiked(wordObj) {
-    if (!isWordLiked(wordObj)) {
+    if (!isWordLiked(wordObj.word)) {
         // Store with 'def' property for consistency with liked array format
         userData.liked.push({
             ...wordObj,
@@ -469,16 +425,13 @@ const WordsInterface = {
     undeleteCustomWord,
     getTagList,
     updateTags,
-    getSpotlightList,
-    isSpotlightEntry,
-    toggleSpotlight,
+    getLearnList,
     toggleDislike,
     toggleLearn,
-    getSpotlightEntry,
     getWordObjById,
     getWordObjByWord,
     getWordObj,
-    getSpotlightItem,
+    getUnscrambleItem,
     getUserData,
     isWordLiked,
     addToLiked,

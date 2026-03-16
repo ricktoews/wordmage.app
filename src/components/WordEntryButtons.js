@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    faThumbsUp, 
-    faThumbsDown, 
-    faLeaf, 
-    faTag, 
-    faShare 
+import {
+	faThumbsUp,
+	faThumbsDown,
+	faLeaf,
+	faTag,
+	faShare
 } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 
@@ -47,7 +47,6 @@ function thumbsUpHandler(e) {
 		thumbsDown.classList.add(dislikeOffClass);
 	}
 	toggleClass(el, [likeOnClass, likeOffClass]);
-	WordsInterface.toggleSpotlight(word);
 }
 
 function thumbsDownHandler(e) {

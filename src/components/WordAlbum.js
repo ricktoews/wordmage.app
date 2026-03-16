@@ -143,7 +143,7 @@ function WordAlbum(props) {
     };
 
     return (
-        <div className="spotlight-list-container favorites-page">
+        <div className="word-list-page-container favorites-page">
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">
@@ -188,7 +188,6 @@ function WordAlbum(props) {
                         onWordLockToggle={handleWordLockToggle}
                         onAlbumRefresh={fetchAlbum}
                         popupWordForm={props.popupWordForm}
-                        toggleSpotlight={props.toggleSpotlight}
                         onAIExplain={props.onAIExplain}
                     />
                 ) : (

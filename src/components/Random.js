@@ -17,11 +17,11 @@ function Random(props) {
 			var randomPool = WordsInterface.getRandomPool();
 			setRandomWords(randomPool);
 
-			// Select a random word from spotlight/liked list if there are more than 5 items
-			const spotlightWords = WordsInterface.getWordList('favorites');
-			if (spotlightWords.length > 5) {
-				const randomIndex = Math.floor(Math.random() * spotlightWords.length);
-				setFeaturedWord(spotlightWords[randomIndex]);
+			// Select a random word from liked/favorites list if there are more than 5 items
+			const likedWords = WordsInterface.getWordList('favorites');
+			if (likedWords.length > 5) {
+				const randomIndex = Math.floor(Math.random() * likedWords.length);
+				setFeaturedWord(likedWords[randomIndex]);
 			} else {
 				setFeaturedWord(null);
 			}
@@ -31,11 +31,6 @@ function Random(props) {
 	const handleNewRandom = word => {
 		console.log('Refresh random list.');
 		setRefresh(true);
-	}
-
-	const toggleSpotlight = word => {
-		props.toggleSpotlight(word);
-		setUpdatePageToggle(!updatePageToggle);
 	}
 
 	return randomWords.length > 0 ? (

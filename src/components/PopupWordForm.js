@@ -16,10 +16,6 @@ function PopupWordForm(props) {
         if (props.wordId) {
             // get word from custom list, from active list.
             var { word, def, source = '', original } = WordsInterface.getWordObjById(props.wordId);
-            // If word already exists, set spotlight flag to false;
-            if (WordsInterface.isSpotlightEntry(props.word)) {
-                var { source = '' } = WordsInterface.getSpotlightEntry(props.word);
-            }
             if (original) originalDef = original;
             setFormHeader('Edit Word');
             setNewWord(word);

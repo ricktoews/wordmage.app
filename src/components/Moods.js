@@ -260,13 +260,16 @@ function Moods(props) {
 	};
 
 	return (
-		<div className="spotlight-list-container favorites-page">
+		<div className="word-list-page-container favorites-page">
 			<div className="favorites-toolbar">
 				<div className={selectedMoodSlug ? "favorites-toolbar-title mood-text-title" : "favorites-toolbar-title"}>
 					{selectedMoodSlug ? selectedMoodLabel : 'Moods'}
 				</div>
 				{selectedMoodSlug && (
 					<div className="moods-toolbar-actions">
+						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
+							<FontAwesomeIcon icon={faRotate} />
+						</button>
 						<button
 							className="moods-refresh-icon"
 							onClick={handleBackToMoods}
@@ -274,9 +277,6 @@ function Moods(props) {
 							aria-label="Back to Moods"
 						>
 							<FontAwesomeIcon icon={faChevronLeft} />
-						</button>
-						<button className="moods-refresh-icon" onClick={handleRefresh} aria-label="Refresh moods">
-							<FontAwesomeIcon icon={faRotate} />
 						</button>
 					</div>
 				)}
@@ -306,7 +306,6 @@ function Moods(props) {
 							startingNdx={0}
 							listType={'browse'}
 							popupWordForm={props.popupWordForm}
-							toggleSpotlight={props.toggleSpotlight}
 							onAIExplain={props.onAIExplain}
 						/>
 					)}

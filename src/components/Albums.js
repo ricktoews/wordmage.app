@@ -206,7 +206,7 @@ function Albums(props) {
     };
 
     return (
-        <div className="spotlight-list-container favorites-page">
+        <div className="word-list-page-container favorites-page">
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-title">Albums</div>
                 <div className="favorites-toolbar-actions">

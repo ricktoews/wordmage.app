@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPencil, faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
-import WordEntryButtons from './WordEntryButtons';
 import WordCardMenu from './WordCardMenu';
-import InfoIcon from './icons/InfoIcon';
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import { TwitterShareButton, XIcon } from "react-share";
 
@@ -12,11 +10,10 @@ function WordEntry(props) {
 	const { history } = props;
 	const { wordObj, listType } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
-	const [isSpotlighted, setIsSpotlighted] = useState(wordObj.spotlight);
 	const [showInfo, setShowInfo] = useState(false);
 
 	// Check if word is in favorites list (liked array)
-	const isFavorited = WordsInterface.isWordLiked(wordObj);
+	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
 
 	function deleteWordToggle(wordObj, e) {
 		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
@@ -109,7 +106,6 @@ function WordEntry(props) {
 					popupAlbums={props.popupAlbums}
 					onUpdate={() => {
 						setUpdateToggle(!updateToggle);
-						setIsSpotlighted(!isSpotlighted);
 					}}
 				/>
 			</div>
