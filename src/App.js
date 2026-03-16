@@ -3,7 +3,7 @@ import { Fab, Webchat } from '@botpress/webchat'
 import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
+import {
     faMasksTheater,
     faRandom,
     faThumbsUp,
@@ -37,7 +37,6 @@ import Spotlight from './components/Spotlight';
 import BrowseWords from './components/BrowseWords';
 import CollectiveWords from './components/CollectiveWords';
 import Train from './components/Train';
-import SpotlightList from './components/SpotlightList';
 import Moods from './components/Moods';
 import Albums from './components/Albums';
 import WordAlbum from './components/WordAlbum';
@@ -157,27 +156,16 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const navToSpotlightList = async () => {
+    const navToSpotlightList = () => {
         var history = props.history;
-        try {
-            // Fetch albums to find the Favorites album ID
-            const response = await fetch(`${CONFIG.domain}/albums`);
-            const albums = await response.json();
-            const favoritesAlbum = albums.find(album => album.title === 'Favorites');
-            
-            if (favoritesAlbum) {
-                history.push(`/albums/${favoritesAlbum.id}`);
-                setView('Favorites');
-            } else {
-                // Fallback to old behavior if Favorites album doesn't exist
-                history.push('/favorites');
-                setView('Favorites');
-            }
-        } catch (error) {
-            console.error('Error fetching Favorites album:', error);
-            // Fallback to old behavior
-            history.push('/favorites');
+        const albumIds = WordsInterface.getAlbumIds();
+        const favoritesAlbumId = albumIds.Favorites;
+        if (favoritesAlbumId) {
+            history.push(`/albums/${favoritesAlbumId}`);
             setView('Favorites');
+        } else {
+            history.push('/albums');
+            setView('Albums');
         }
         setHamburgerClass('hamburger-nav');
     }
@@ -451,11 +439,6 @@ function App(props) {
                         <Route exact path='/unscramble' render={props => <Spotlight
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                         />} />
-                        <Route path="/favorites" render={props => (<SpotlightList
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
-                            toggleSpotlight={toggleSpotlight}
-                            onAIExplain={handleAIExplain}
-                        />)} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             toggleSpotlight={toggleSpotlight}
