@@ -21,11 +21,13 @@ function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj));
-    const [isLearning, setIsLearning] = useState(wordObj.learn);
+    const [isLearning, setIsLearning] = useState(WordsInterface.isWordInLearn(wordObj));
     const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [menuPosition, setMenuPosition] = useState('bottom');
     const menuRef = useRef(null);
+    const buttonRef = useRef(null);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -34,12 +36,34 @@ function WordCardMenu(props) {
             }
         }
 
+        function handleScroll() {
+            setIsOpen(false);
+        }
+
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
+            // Close menu on scroll
+            window.addEventListener('scroll', handleScroll, true);
+
+            // Calculate if menu should open upward or downward
+            if (buttonRef.current) {
+                const buttonRect = buttonRef.current.getBoundingClientRect();
+                const menuHeight = 250; // Approximate height of menu
+                const spaceBelow = window.innerHeight - buttonRect.bottom;
+                const spaceAbove = buttonRect.top;
+
+                // If not enough space below but more space above, open upward
+                if (spaceBelow < menuHeight && spaceAbove > spaceBelow) {
+                    setMenuPosition('top');
+                } else {
+                    setMenuPosition('bottom');
+                }
+            }
         }
 
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('scroll', handleScroll, true);
         };
     }, [isOpen]);
 
@@ -78,6 +102,7 @@ function WordCardMenu(props) {
                     setIsBookmarked(true);
                     WordsInterface.addToLiked(wordObj);
                     if (props.onUpdate) props.onUpdate();
+                    if (onAlbumRefresh) onAlbumRefresh();
                 } else {
                     console.error('Failed to add word to Favorites');
                     alert('Failed to add word to Favorites. Please try again.');
@@ -97,6 +122,7 @@ function WordCardMenu(props) {
                     setIsBookmarked(false);
                     WordsInterface.removeFromLiked(wordObj);
                     if (props.onUpdate) props.onUpdate();
+                    if (onAlbumRefresh) onAlbumRefresh();
                 } else {
                     console.error('Failed to remove word from Favorites');
                     alert('Failed to remove word from Favorites. Please try again.');
@@ -108,13 +134,66 @@ function WordCardMenu(props) {
         }
     };
 
-    const handleLearn = (e) => {
+    const handleLearn = async (e) => {
         e.stopPropagation();
-        setIsLearning(!isLearning);
-        WordsInterface.toggleLearn(wordObj.word);
+        const newLearningState = !isLearning;
         setIsOpen(false);
-        // Force parent to re-render
-        if (props.onUpdate) props.onUpdate();
+
+        try {
+            const albumIds = WordsInterface.getAlbumIds();
+            const learnAlbumId = albumIds.Learn;
+
+            if (!learnAlbumId) {
+                console.error('Learn album ID not found');
+                alert('Learn album not configured. Please try again.');
+                return;
+            }
+
+            if (newLearningState) {
+                // Add word to Learn album
+                const response = await fetch(`${CONFIG.domain}/albums/add-word`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        album_id: learnAlbumId,
+                        word_id: wordObj.id
+                    })
+                });
+
+                if (response.ok) {
+                    setIsLearning(true);
+                    WordsInterface.addToLearn(wordObj);
+                    if (props.onUpdate) props.onUpdate();
+                    if (onAlbumRefresh) onAlbumRefresh();
+                } else {
+                    console.error('Failed to add word to Learn');
+                    alert('Failed to add word to Learn. Please try again.');
+                }
+            } else {
+                // Remove word from Learn album
+                const response = await fetch(`${CONFIG.domain}/albums/delete-word`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        album_id: learnAlbumId,
+                        word_id: wordObj.id
+                    })
+                });
+
+                if (response.ok) {
+                    setIsLearning(false);
+                    WordsInterface.removeFromLearn(wordObj);
+                    if (props.onUpdate) props.onUpdate();
+                    if (onAlbumRefresh) onAlbumRefresh();
+                } else {
+                    console.error('Failed to remove word from Learn');
+                    alert('Failed to remove word from Learn. Please try again.');
+                }
+            }
+        } catch (error) {
+            console.error('Error toggling learn:', error);
+            alert('Error toggling learn. Please try again.');
+        }
     };
 
     const handleDiscard = (e) => {
@@ -195,6 +274,7 @@ function WordCardMenu(props) {
     return (
         <div className="word-card-menu" ref={menuRef}>
             <button
+                ref={buttonRef}
                 className="word-card-menu-button"
                 onClick={toggleMenu}
                 aria-label="Word options"
@@ -203,7 +283,7 @@ function WordCardMenu(props) {
             </button>
 
             {isOpen && (
-                <div className="word-card-menu-dropdown">
+                <div className={`word-card-menu-dropdown word-card-menu-dropdown-${menuPosition}`}>
                     <button
                         className="word-card-menu-item"
                         onClick={handleBookmark}

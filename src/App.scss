@@ -3124,6 +3124,13 @@ body {
 	z-index: 1000;
 	margin-top: 4px;
 	overflow: hidden;
+
+	&.word-card-menu-dropdown-top {
+		top: auto;
+		bottom: 100%;
+		margin-top: 0;
+		margin-bottom: 4px;
+	}
 }
 
 .word-card-menu-item {

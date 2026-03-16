@@ -7,18 +7,23 @@ import DataSource from './data-source';
 import { CONFIG } from '../config';
 
 const custom = DataSource.retrieveUserLocalData();
-const userData = { custom, liked: [], albumIds: {} };
+const userData = { custom, liked: [], learn: [], albumIds: {} };
 
 const WORD_POOL = [];
 const COLLECTIVE = [];
 
-function initializeCustom(custom, liked = [], albumIds = {}) {
+function initializeCustom(custom, liked = [], learn = [], albumIds = {}) {
     userData.custom = custom;
     userData.albumIds = albumIds;
     // Map liked to use 'def' instead of 'definition' to match custom data format
     userData.liked = liked.map(fav => ({
         ...fav,
         def: fav.definition
+    }));
+    // Map learn to use 'def' instead of 'definition' to match custom data format
+    userData.learn = learn.map(word => ({
+        ...word,
+        def: word.definition
     }));
 }
 
@@ -426,6 +431,28 @@ function removeFromLiked(wordObj) {
     userData.liked = userData.liked.filter(word => word.word !== wordToRemove);
 }
 
+function isWordInLearn(wordObj) {
+    const wordToCheck = wordObj.word || '';
+    if (!wordToCheck) return false;
+    return userData.learn.some(word => word.word === wordToCheck);
+}
+
+function addToLearn(wordObj) {
+    if (!isWordInLearn(wordObj)) {
+        // Store with 'def' property for consistency with learn array format
+        userData.learn.push({
+            ...wordObj,
+            def: wordObj.definition || wordObj.def
+        });
+    }
+}
+
+function removeFromLearn(wordObj) {
+    const wordToRemove = wordObj.word || '';
+    if (!wordToRemove) return;
+    userData.learn = userData.learn.filter(word => word.word !== wordToRemove);
+}
+
 
 const WordsInterface = {
     getCustom,
@@ -456,6 +483,9 @@ const WordsInterface = {
     isWordLiked,
     addToLiked,
     removeFromLiked,
+    isWordInLearn,
+    addToLearn,
+    removeFromLearn,
 };
 
 export default WordsInterface;
