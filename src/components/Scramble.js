@@ -1,6 +1,19 @@
 import { useContext, useEffect, useState, useRef } from 'react';
-import { scramble } from '../utils/spotlight';
 import { WordMageContext } from '../WordMageContext';
+
+function scrambleWord(word) {
+    var letters = word.split('');
+    var itemCount = letters.length;
+    var scrambled = '';
+    var safety = 100;
+    while (itemCount > 0 && safety > 0) {
+        var rnd = Math.floor(Math.random() * itemCount);
+        scrambled += letters.splice(rnd, 1);
+        itemCount = letters.length;
+        safety--;
+    }
+    return scrambled;
+}
 
 function initLetters(scrambled) {
     var letterStates = [];
@@ -15,7 +28,7 @@ function initLetters(scrambled) {
 function Scramble(props) {
     const { contextValue, setContextValue } = useContext(WordMageContext);
 
-    const [scrambled, setScrambled] = useState(scramble(props.word));
+    const [scrambled, setScrambled] = useState(scrambleWord(props.word));
     const [letterStates, setLetterStates] = useState(initLetters(scrambled));
     const [unscrambled, setUnscrambled] = useState('');
     const [finished, setFinished] = useState(false);
@@ -24,7 +37,7 @@ function Scramble(props) {
     const hintInProgressRef = useRef(false);
 
     useEffect(() => {
-        let newScrambled = scramble(props.word);
+        let newScrambled = scrambleWord(props.word);
         setScrambled(newScrambled);
         setLetterStates(initLetters(newScrambled));
         setUnscrambled('');
@@ -42,7 +55,7 @@ function Scramble(props) {
         if (unscrambled === props.word) {
             setFinished(true);
             setShowWord(false);
-            setScrambled(scramble(props.word));
+            setScrambled(scrambleWord(props.word));
         }
     }, [unscrambled]);
 
@@ -69,6 +82,7 @@ function Scramble(props) {
     }, [props.showWordTrigger]);
 
     const processLetter = (letter) => {
+        console.log('====> processLetter, letterStates:', letterStates);
         let letterStatesClone = letterStates.slice(0);
         const ndx = letterStates.findIndex(item => item[letter] === false);
         if (ndx !== -1) {
@@ -81,15 +95,15 @@ function Scramble(props) {
     const selectLetter = e => {
         var el = e.target;
         var letter = el.textContent;
-        var ndx = el.dataset.ndx;
-        var letterStatesClone = Object.assign({}, letterStates);
+        var ndx = parseInt(el.dataset.ndx);
+        var letterStatesClone = letterStates.slice(0);
         if (letterStatesClone[ndx][letter]) {
-            letterStatesClone[ndx][letter] = !letterStatesClone[ndx][letter];
+            letterStatesClone[ndx] = { ...letterStatesClone[ndx], [letter]: false };
             setLetterStates(letterStatesClone);
             let letterNdx = unscrambled.lastIndexOf(letter);
             setUnscrambled(unscrambled.substr(0, letterNdx) + unscrambled.substr(letterNdx + 1));
         } else {
-            letterStatesClone[ndx][letter] = !letterStatesClone[ndx][letter];
+            letterStatesClone[ndx] = { ...letterStatesClone[ndx], [letter]: true };
             setLetterStates(letterStatesClone);
             setUnscrambled(unscrambled + letter);
             if (unscrambled + letter === props.word) {
@@ -103,7 +117,7 @@ function Scramble(props) {
         setLetterStates(initLetters(props.word));
         setFinished(false);
         setUnscrambled('');
-        setScrambled(scramble(props.word));
+        setScrambled(scrambleWord(props.word));
     };
 
     const handleHint = e => {

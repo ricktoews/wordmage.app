@@ -2592,7 +2592,7 @@ body {
 		width: $unscramble-width;
 		min-height: $unscramble-height;
 
-		.spotlight {
+		.scramble {
 
 			.word {
 				display: flex;
@@ -2665,7 +2665,7 @@ body {
 	color: white;
 }
 
-.spotlight {
+.scramble {
 	.scrambled {
 		display: flex;
 		justify-content: center;
@@ -2877,7 +2877,7 @@ body {
 	}
 }
 
-.spotlight .word-item-def {
+.scramble .word-item-def {
 	font-size: 1.5em;
 }
 

@@ -284,6 +284,16 @@ function WordCardMenu(props) {
 
             {isOpen && (
                 <div className={`word-card-menu-dropdown word-card-menu-dropdown-${menuPosition}`}>
+                    {listType === 'album' && albumId && hasMoodText && (
+                        <button
+                            className="word-card-menu-item"
+                            onClick={handleToggleLock}
+                        >
+                            <FontAwesomeIcon icon={isLocked ? faLockOpen : faLock} />
+                            <span>{isLocked ? 'Unlock' : 'Lock'}</span>
+                        </button>
+                    )}
+
                     <button
                         className="word-card-menu-item"
                         onClick={handleBookmark}
@@ -302,29 +312,11 @@ function WordCardMenu(props) {
 
                     <button
                         className="word-card-menu-item"
-                        onClick={handleDiscard}
-                    >
-                        <FontAwesomeIcon icon={faTrash} />
-                        <span>{isDiscarded ? 'Restore' : 'Discard'}</span>
-                    </button>
-
-                    <button
-                        className="word-card-menu-item"
                         onClick={handleAddToAlbum}
                     >
                         <FontAwesomeIcon icon={faFolderOpen} />
                         <span>+ Album</span>
                     </button>
-
-                    {listType === 'album' && albumId && hasMoodText && (
-                        <button
-                            className="word-card-menu-item"
-                            onClick={handleToggleLock}
-                        >
-                            <FontAwesomeIcon icon={isLocked ? faLockOpen : faLock} />
-                            <span>{isLocked ? 'Unlock' : 'Lock'}</span>
-                        </button>
-                    )}
 
                     {listType === 'album' && albumId && (
                         <button
@@ -334,7 +326,17 @@ function WordCardMenu(props) {
                             <FontAwesomeIcon icon={faFolder} />
                             <span>- Album</span>
                         </button>
+
                     )}
+
+                    <button
+                        className="word-card-menu-item"
+                        onClick={handleDiscard}
+                    >
+                        <FontAwesomeIcon icon={faTrash} />
+                        <span>{isDiscarded ? 'Restore' : 'Discard'}</span>
+                    </button>
+
                 </div>
             )}
 

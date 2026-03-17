@@ -257,40 +257,40 @@ function Albums(props) {
                         </div>
                         <div className="albums-list">
                             {albums.filter(album => album.title !== 'Favorites' && album.title !== 'Learn').map((album) => (
-                            <div
-                                key={album.id}
-                                className="album-item"
-                                onClick={() => handleAlbumClick(album.id)}
-                            >
-                                <div className="album-title">{album.title}</div>
-                                {album.title !== 'Favorites' && album.title !== 'Learn' && (
-                                    <div className="album-menu-container">
-                                        <button
-                                            className="album-kebab-menu"
-                                            onClick={(e) => handleMenuClick(e, album.id)}
-                                            aria-label="Album options"
-                                        >
-                                            <FontAwesomeIcon icon={faEllipsisVertical} />
-                                        </button>
-                                        {openMenuId === album.id && (
-                                            <div className="album-menu-dropdown">
-                                                <div
-                                                    className="album-menu-item"
-                                                    onClick={(e) => handleRenameClick(e, album)}
-                                                >
-                                                    Rename
+                                <div
+                                    key={album.id}
+                                    className="album-item"
+                                    onClick={() => handleAlbumClick(album.id)}
+                                >
+                                    <div className="album-title">{album.title}</div>
+                                    {album.title !== 'Favorites' && album.title !== 'Learn' && (
+                                        <div className="album-menu-container">
+                                            <button
+                                                className="album-kebab-menu"
+                                                onClick={(e) => handleMenuClick(e, album.id)}
+                                                aria-label="Album options"
+                                            >
+                                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                                            </button>
+                                            {openMenuId === album.id && (
+                                                <div className="album-menu-dropdown">
+                                                    <div
+                                                        className="album-menu-item"
+                                                        onClick={(e) => handleRenameClick(e, album)}
+                                                    >
+                                                        Rename
+                                                    </div>
+                                                    <div
+                                                        className="album-menu-item album-menu-item-delete"
+                                                        onClick={(e) => handleDeleteClick(e, album)}
+                                                    >
+                                                        Delete
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    className="album-menu-item album-menu-item-delete"
-                                                    onClick={(e) => handleDeleteClick(e, album)}
-                                                >
-                                                    Delete
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             ))}
                         </div>
                     </>

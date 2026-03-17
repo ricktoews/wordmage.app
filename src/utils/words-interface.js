@@ -134,9 +134,7 @@ function fullWordList() {
                 wordObj.source = universal[ndx].source;
             }
             universal[ndx].tags = wordObj.tags;
-            universal[ndx].spotlight = wordObj.spotlight;
             universal[ndx].dislike = wordObj.dislike;
-            universal[ndx].learn = wordObj.learn;
         }
     });
     var [notDislikedList, dislikedList] = separateDisliked(universal);
@@ -178,9 +176,7 @@ function addCustomWord(newWordObj) {
         word: newWordObj.word,
         def: newWordObj.def,
         source: newWordObj.source,
-        spotlight: newWordObj.spotlight,
-        dislike: newWordObj.dislike,
-        learn: newWordObj.learn
+        dislike: newWordObj.dislike
     };
     if (newWordObj.myown) {
         wordObj.myown = true;
@@ -193,16 +189,15 @@ function addCustomWord(newWordObj) {
  * If custom word isn't already listed, add it.
  * Maybe this needs to include the _id, to allow for modification of the word itself.
  */
-function saveCustomWord(id, word, def, source, spotlight) {
+function saveCustomWord(id, word, def, source) {
     var wordObjIndex = userData.custom.findIndex(item => item._id === id);
     if (wordObjIndex === -1) {
-        addCustomWord({ word, def, source, spotlight: true, myown: true });
+        addCustomWord({ word, def, source, myown: true });
     } else {
         let wordObj = userData.custom[wordObjIndex];
         wordObj.word = word;
         wordObj.def = def;
         wordObj.source = source;
-        wordObj.spotlight = spotlight;
     }
     DataSource.saveUserData(userData);
 }
@@ -332,9 +327,6 @@ function toggleDislike(word) {
     }
     var wordObj = userData.custom[wordObjIndex];
     wordObj.dislike = !wordObj.dislike;
-    if (wordObj.dislike) {
-        wordObj.spotlight = false;
-    }
     DataSource.saveUserData(userData);
     // Create array of words from userData.active, which is an array of { word: notes }.
     var newDislikeList = userData.custom.filter(item => item.dislike);

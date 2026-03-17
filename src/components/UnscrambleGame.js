@@ -82,7 +82,7 @@ function UnscrambleGame(props) {
                         </div>
                     </div>
 
-                    <div className="spotlight">
+                    <div className="scramble">
                         <Scramble
                             item={item}
                             word={item.word}

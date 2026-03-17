@@ -60,7 +60,7 @@ function cleanCustomWords(custom) {
         return item;
     });
     custom = custom.filter(item => {
-        if (item.myown || item.tags || item.spotlight || item.learn || item.dislike) {
+        if (item.myown || item.tags || item.dislike) {
             return true;
         }
     });

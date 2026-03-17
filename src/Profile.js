@@ -178,13 +178,14 @@ function Profile(props) {
 	const handleDownload = (type) => {
 		try {
 			let wordsToExport = [];
-			const allCustom = WordsInterface.getCustom() || [];
+			const userData = WordsInterface.getUserData();
 
 			if (type === 'favorites') {
-				wordsToExport = allCustom.filter(w => w.spotlight);
+				wordsToExport = userData.liked || [];
 			} else if (type === 'learn') {
-				wordsToExport = allCustom.filter(w => w.learn);
+				wordsToExport = userData.learn || [];
 			} else if (type === 'custom') {
+				const allCustom = WordsInterface.getCustom() || [];
 				wordsToExport = allCustom.filter(w => w.myown === true);
 			}
 
@@ -222,7 +223,7 @@ function Profile(props) {
 
 	return (
 		<>
-				{showNotification && (
+			{showNotification && (
 				<div className="notification-panel">
 					<div className="notification-content">{message}</div>
 					<button className="notification-close" onClick={closeNotification}>
@@ -242,45 +243,45 @@ function Profile(props) {
 				</div>
 
 				{!profileUser.user_id ? (
-				<div className="form">
-					<div className="input-field">
-						<div className="icon-wrapper"><FontAwesomeIcon icon={faEnvelope} /></div>
-						<input placeholder="Email" ref={emailRef} type="text" id="email" className="email" onChange={handleChange} onFocus={handleFocus} />
+					<div className="form">
+						<div className="input-field">
+							<div className="icon-wrapper"><FontAwesomeIcon icon={faEnvelope} /></div>
+							<input placeholder="Email" ref={emailRef} type="text" id="email" className="email" onChange={handleChange} onFocus={handleFocus} />
+						</div>
+						<div className="input-field">
+							<div className="icon-wrapper"><FontAwesomeIcon icon={faLock} /></div>
+							<input placeholder="Password" ref={passwordRef} type="text" id="password" className="password" onChange={handleChange} onFocus={handleFocus} />
+						</div>
+						<div className="button-wrapper">
+							<button className={'login-btn'} onClick={login}>Log in</button>
+						</div>
+						<div className="button-wrapper">
+							{/* Google sign-in removed from Profile page; use /login page instead */}
+						</div>
+						<div className="link-wrapper"><a href="/register">Not registered?</a></div>
 					</div>
-					<div className="input-field">
-						<div className="icon-wrapper"><FontAwesomeIcon icon={faLock} /></div>
-						<input placeholder="Password" ref={passwordRef} type="text" id="password" className="password" onChange={handleChange} onFocus={handleFocus} />
+				) : (
+					<div className="form">
+						<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
 					</div>
-					<div className="button-wrapper">
-						<button className={'login-btn'} onClick={login}>Log in</button>
-					</div>
-					<div className="button-wrapper">
-						{/* Google sign-in removed from Profile page; use /login page instead */}
-					</div>
-					<div className="link-wrapper"><a href="/register">Not registered?</a></div>
-				</div>
-			) : (
-				<div className="form">
-					<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
-				</div>
-			)}
+				)}
 
 				<div className="downloads-section">
 					<h4 className="downloads-heading">Downloads</h4>
 					<div className="download-options">
-						<button 
+						<button
 							className={`download-pill-btn ${selectedDownload === 'favorites' ? 'active' : ''}`}
 							onClick={() => handleDownload('favorites')}
 						>
 							Favorites
 						</button>
-						<button 
+						<button
 							className={`download-pill-btn ${selectedDownload === 'learn' ? 'active' : ''}`}
 							onClick={() => handleDownload('learn')}
 						>
 							Learn
 						</button>
-						<button 
+						<button
 							className={`download-pill-btn ${selectedDownload === 'custom' ? 'active' : ''}`}
 							onClick={() => handleDownload('custom')}
 						>

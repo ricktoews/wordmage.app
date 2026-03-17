@@ -49,8 +49,8 @@ function PopupWordForm(props) {
     }
 
     const saveWord = () => {
-        // Need to save custom word, spotlight, or whatever.
-        WordsInterface.saveCustomWord(props.wordId, newWord, newDef, newSource, spotlight);
+        // Need to save custom word.
+        WordsInterface.saveCustomWord(props.wordId, newWord, newDef, newSource);
         // If on Spotlight page, add word to active.
         if (props.location.pathname === '/unscramble') {
             WordsInterface.toggleActive(newWord);
