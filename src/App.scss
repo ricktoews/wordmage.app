@@ -1392,6 +1392,10 @@ body {
 			&::after {
 				content: none;
 			}
+
+			.mood-prefix {
+				font-weight: 400;
+			}
 		}
 	}
 
@@ -4116,6 +4120,75 @@ input[type="checkbox"] {
 
 	&:active {
 		background-color: #7d3c98;
+	}
+}
+
+.mood-description-container {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	margin-left: 8px;
+}
+
+.mood-description-button {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 4px 6px;
+	font-size: 14px;
+	color: #9b59b6;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+
+	&:hover {
+		color: #8e44ad;
+	}
+}
+
+.mood-description-popup {
+	position: fixed;
+	top: 120px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: white;
+	border: 1px solid #dde5ed;
+	border-radius: 8px;
+	padding: 16px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	z-index: 1000;
+	width: calc(100vw - 40px);
+	max-width: 450px;
+}
+
+.mood-description-close {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 4px;
+	font-size: 16px;
+	color: #666;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover {
+		color: #333;
+	}
+}
+
+.mood-description-content {
+	font-size: 14px;
+	line-height: 1.5;
+	color: #333;
+	padding-right: 24px;
+
+	strong {
+		font-weight: 600;
 	}
 }
 

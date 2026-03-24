@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faChevronLeft,
+	faChevronDown,
 	faRotate,
 	faXmark
 } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +26,7 @@ function Moods(props) {
 	const [customMoods, setCustomMoods] = useState([]);
 	const [selectedMoodSlug, setSelectedMoodSlug] = useState(null);
 	const [selectedMoodLabel, setSelectedMoodLabel] = useState(null);
+	const [selectedMoodDescription, setSelectedMoodDescription] = useState(null);
 	const [moodWords, setMoodWords] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [customMood, setCustomMood] = useState('');
@@ -33,6 +35,7 @@ function Moods(props) {
 	const [showDeleteMoodPopup, setShowDeleteMoodPopup] = useState(false);
 	const [selectedCustomMood, setSelectedCustomMood] = useState(null);
 	const [isEditingMood, setIsEditingMood] = useState(false);
+	const [showDescriptionPopup, setShowDescriptionPopup] = useState(false);
 
 	// Fetch moods on component mount
 	useEffect(() => {
@@ -70,6 +73,7 @@ function Moods(props) {
 			const mood = moods.find(m => m.slug === selectedMoodSlug);
 			if (mood) {
 				setSelectedMoodLabel(mood.label);
+				setSelectedMoodDescription(mood.description || '');
 			}
 		}
 	}, [selectedMoodSlug, selectedMoodLabel, moods, isCustomVibe]);
@@ -262,8 +266,38 @@ function Moods(props) {
 	return (
 		<div className="word-list-page-container favorites-page">
 			<div className="favorites-toolbar">
-				<div className={selectedMoodSlug ? "favorites-toolbar-title mood-text-title" : "favorites-toolbar-title"}>
-					{selectedMoodSlug ? selectedMoodLabel : 'Moods'}
+				<div className="favorites-toolbar-title">
+					{selectedMoodSlug ? (
+						<>
+							<strong>{selectedMoodLabel}</strong>
+							{selectedMoodDescription && (
+								<div className="mood-description-container">
+									<button
+										className="mood-description-button"
+										onClick={() => setShowDescriptionPopup(!showDescriptionPopup)}
+										title="Show description"
+										aria-label="Show description"
+									>
+										<FontAwesomeIcon icon={faChevronDown} />
+									</button>
+									{showDescriptionPopup && (
+										<div className="mood-description-popup">
+											<button
+												className="mood-description-close"
+												onClick={() => setShowDescriptionPopup(false)}
+												aria-label="Close"
+											>
+												<FontAwesomeIcon icon={faXmark} />
+											</button>
+											<div className="mood-description-content">
+												<strong>{selectedMoodLabel}:</strong> {selectedMoodDescription}
+											</div>
+										</div>
+									)}
+								</div>
+							)}
+						</>
+					) : 'Moods'}
 				</div>
 				{selectedMoodSlug && (
 					<div className="moods-toolbar-actions">
