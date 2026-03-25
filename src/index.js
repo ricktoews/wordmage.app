@@ -34,7 +34,7 @@ async function initCustom(user_id) {
 	if (profile_user_id) {
 		await initCustom(profile_user_id); // Ensure this completes before rendering
 	}
-	await WordsInterface.initializeWordPool();
+	//	await WordsInterface.initializeWordPool();
 
 	// Use createRoot instead of ReactDOM.render
 	const root = createRoot(document.getElementById('root'));

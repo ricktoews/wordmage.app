@@ -121,7 +121,20 @@ function WordScroller(props) {
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
 				console.log('Sentinel intersecting, loading more items');
-				loadItems(10);
+				console.log('hasMore:', props.hasMore, 'isLoading:', props.isLoading, 'onLoadMore:', !!props.onLoadMore);
+				// Check if we're in browse mode with API pagination
+				if (props.hasMore !== undefined) {
+					// API pagination mode
+					if (props.hasMore && !props.isLoading && props.onLoadMore) {
+						console.log('Calling onLoadMore for API pagination');
+						props.onLoadMore();
+					} else {
+						console.log('Not loading: hasMore =', props.hasMore, 'isLoading =', props.isLoading);
+					}
+				} else {
+					// Local list mode
+					loadItems(10);
+				}
 			}
 		});
 	};
@@ -129,7 +142,17 @@ function WordScroller(props) {
 	useEffect(() => {
 		scrollerRef.current.startingNdx = props.startingNdx;
 		scrollerRef.current.pool = props.pool;
-		populateScroller(true);
+		// In API pagination mode, don't use local pagination
+		if (props.hasMore === undefined) {
+			populateScroller(true);
+		} else {
+			// API pagination mode - just display all items from pool
+			console.log('API mode: displaying', props.pool.length, 'items, hasMore:', props.hasMore);
+			setVisibleItems(props.pool.map((wordItem, index) => ({
+				key: `word-${index}-${wordItem.word || index}`,
+				wordItem,
+			})));
+		}
 	}, [props.pool, props.startingNdx]);
 
 	useEffect(() => {
@@ -137,13 +160,16 @@ function WordScroller(props) {
 			console.error('sentinelRef is not set on mount');
 			return;
 		}
-		const observer = new IntersectionObserver(myObserverCallback);
+		const observer = new IntersectionObserver(myObserverCallback, {
+			rootMargin: '0px 0px 800px 0px' // Trigger 800px before sentinel enters viewport
+		});
 		observer.observe(sentinelRef.current);
+		console.log('Observer set up, watching sentinel with 800px bottom margin');
 		return () => {
 			console.log('Disconnecting observer');
 			observer.disconnect();
 		};
-	}, []);
+	}, [props.hasMore, props.isLoading, props.onLoadMore]);
 
 	const tagListEl = (ref) => {
 		if (ref.current) {

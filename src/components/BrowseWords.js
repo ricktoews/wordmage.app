@@ -6,6 +6,7 @@ import { faXmark, faTag, faPlus, faRandom, faComment } from '@fortawesome/free-s
 import { WordMageContext } from '../WordMageContext';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
+import { getWordsPage } from '../utils/api';
 import Popup from './Popup';
 import PopupTagFilter from './PopupTagFilter';
 import TagFilter from './TagFilter';
@@ -19,33 +20,57 @@ const listIncrement = 30;
 function BrowseWords(props) {
 	const { contextValue, setContextValue } = useContext(WordMageContext);
 
-	const fullWordObjList = WordsInterface.fullWordList();
-	const fullWordList = fullWordObjList.map(item => item.word);
-	const [wordObjList, setWordObjList] = useState(fullWordObjList);
-	const [wordList, setWordList] = useState(fullWordList);
-	const [startingLetters, setStartingLetters] = useState(props.match.params.start || '');
-	const [startingNdx, setStartingNdx] = useState(0);
-	const [browseMode, setBrowseMode] = useState('built-in');
+	const [wordObjList, setWordObjList] = useState([]);
+	const [startingLetters, setStartingLetters] = useState(props.match.params.start || 'a');
+	const [hasMore, setHasMore] = useState(true);
+	const [nextCursor, setNextCursor] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [browseMode, setBrowseMode] = useState('api');
 	const [showTags, setShowTags] = useState(false);
 	const [tagList, setTagList] = useState(WordsInterface.getTagList());
 	const [tagFilter, setTagFilter] = useState('');
 	const tagFilterRef = useRef(null);
 
-
-	// Separate this into its own function, since it's used in a couple of places.
-	// Oh: you want to know what it actually DOES, do you? ...
-	// OK, fine. This builds a subset of words from the full list of words. It takes a slice defined by
-	// the listLength const (20) and beginning at the user-specified point (startingLetters, from the 
-	// search field) or at the beginning of the alphabet.
-	const builtInSubset = () => {
-		var ndx = -1;
-		for (let i = 0; i < wordList.length && ndx === -1; i++) {
-			if (wordList[i].toLowerCase().localeCompare(startingLetters) >= 0) {
-				ndx = i;
-				setStartingNdx(ndx);
-			}
+	// Load initial page or new starting point
+	const loadInitialPage = async (startsWith = 'a') => {
+		setIsLoading(true);
+		try {
+			const response = await getWordsPage({ starts_with: startsWith });
+			setWordObjList(response.words);
+			setHasMore(response.has_more);
+			setNextCursor(response.next_cursor);
+		} catch (error) {
+			console.error('Error loading words page:', error);
+		} finally {
+			setIsLoading(false);
 		}
-	}
+	};
+
+	// Load more words for pagination
+	const loadMoreWords = async () => {
+		console.log('loadMoreWords called - hasMore:', hasMore, 'isLoading:', isLoading, 'nextCursor:', nextCursor);
+		if (!hasMore || isLoading || !nextCursor) {
+			console.log('Skipping load - conditions not met');
+			return;
+		}
+
+		setIsLoading(true);
+		console.log('Loading more words from cursor:', nextCursor);
+		try {
+			const response = await getWordsPage({
+				starts_with: startingLetters,
+				after_word: nextCursor
+			});
+			console.log('Received', response.words.length, 'more words. has_more:', response.has_more);
+			setWordObjList(prev => [...prev, ...response.words]);
+			setHasMore(response.has_more);
+			setNextCursor(response.next_cursor);
+		} catch (error) {
+			console.error('Error loading more words:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
 	// Here is where we respond to document click.
 	// contextValue is set in App.js when document.click is detected.
@@ -58,49 +83,22 @@ function BrowseWords(props) {
 		}
 	}, [contextValue]);
 
-	// First step in updating word list on add / delete custom word.
-	// Update wordObjList, wordList, which changes the wordList.length and gets to second step, below.
+	// Load initial page when component mounts or starting letters change
 	useEffect(() => {
-		const mergedList = fullWordObjList.reduce((acc, wordObj) => {
-			const existing = acc.find(item => item.word === wordObj.word);
-			if (existing) {
-				if (!existing.definitions) {
-					existing.definitions = [existing.def];
-					existing.sources = [existing.source];
-				}
-				existing.definitions.push(wordObj.def);
-				existing.sources.push(wordObj.source);
-			} else {
-				acc.push({ ...wordObj });
-			}
-			return acc;
-		}, []);
-		setWordObjList(mergedList);
-		setWordList(mergedList.map(item => item.word));
-	}, [fullWordObjList.length]);
-
-	// Second step in updating word list on add / delete custom word.
-	// When the wordList length changes, that's the signal to rebuild the word list subset with builtInSubset().
-	useEffect(() => {
-		builtInSubset();
-	}, [wordList.length]);
-
-	useEffect(() => {
-		if (browseMode === 'built-in') {
-			builtInSubset();
+		if (browseMode === 'api') {
+			loadInitialPage(startingLetters);
 		}
 	}, [startingLetters, browseMode]);
 
 	function tagSelection(discard, tag, checked, closeTagList) {
 		setTagFilter(tag);
 
-		// Stolen code. Coopted for showing tagged words.
+		// For now, tag filtering still uses local data
+		const fullWordObjList = WordsInterface.fullWordList();
 		let filteredWordObjList = fullWordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1);
 		setWordObjList(filteredWordObjList);
-		setStartingNdx(0);
 		setBrowseMode('tagged');
-		//		scrollerRef.current.attributes.browseMode = 'tagged';
-		// End stolen code.
+		setHasMore(false); // No pagination for tagged mode
 
 		if (closeTagList) {
 			setShowTags(false);
@@ -111,17 +109,12 @@ function BrowseWords(props) {
 	const handlePartialWord = e => {
 		var el = e.target;
 		var partial = el.value.toLowerCase();
-		// Meant to fix scrolling issue. The issue seems to be caused by successive partial
-		// searches, from different timers set on the same input: e.g., from 'Let'.
-		// To test this, set the timeout to 2000 and comment out this clearTimeout line.
 		if (partialWordTimer) {
 			clearTimeout(partialWordTimer);
 		}
 		partialWordTimer = setTimeout(() => {
 			window.scrollTo(0, 0);
-			// For some reason, we seem to have to set this state, even though we're pushing to history.
-			setWordObjList(fullWordObjList);
-			setBrowseMode('built-in');
+			setBrowseMode('api');
 			setTagFilter('');
 			setStartingLetters(partial);
 			props.history.push('/browse/' + partial);
@@ -131,7 +124,8 @@ function BrowseWords(props) {
 
 	const handleCancelTagFilter = e => {
 		setTagFilter('');
-		setWordObjList(fullWordObjList);
+		setBrowseMode('api');
+		loadInitialPage(startingLetters);
 	}
 
 	const handleRandomJump = () => {
@@ -142,10 +136,8 @@ function BrowseWords(props) {
 			randomString += letters.charAt(Math.floor(Math.random() * letters.length));
 		}
 
-		// Use the same logic as handlePartialWord
 		window.scrollTo(0, 0);
-		setWordObjList(fullWordObjList);
-		setBrowseMode('built-in');
+		setBrowseMode('api');
 		setTagFilter('');
 		setStartingLetters(randomString);
 		props.history.push('/browse/' + randomString);
@@ -193,7 +185,16 @@ function BrowseWords(props) {
 			</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
 				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>
 			</div>
-			<WordScroller pool={wordObjList} startingNdx={startingNdx} listType={'browse'} popupWordForm={props.popupWordForm} onAIExplain={props.onAIExplain} />
+			<WordScroller
+				pool={wordObjList}
+				startingNdx={0}
+				listType={'browse'}
+				popupWordForm={props.popupWordForm}
+				onAIExplain={props.onAIExplain}
+				hasMore={hasMore}
+				onLoadMore={loadMoreWords}
+				isLoading={isLoading}
+			/>
 		</div>
 	);
 }

@@ -1,5 +1,5 @@
 //const base = 'https://words-rest.toewsweb.net';
-const base = 'https://memorize.toewsweb.net';
+const base = 'https://wordmage.toews-api.com';
 
 const urls = {
 	share: base + '/words.php/sendlocal',
@@ -9,10 +9,10 @@ const urls = {
 async function share(data) {
 	const response = await fetch(urls.share, {
 		method: 'POST',
-//		mode: 'no-cors',
-//		cache: 'no-cache',
-//		credentials: 'omit',
-//		referrerPolicy: 'no-referrer-when-downgrade',
+		//		mode: 'no-cors',
+		//		cache: 'no-cache',
+		//		credentials: 'omit',
+		//		referrerPolicy: 'no-referrer-when-downgrade',
 		headers: {
 			'Content-Type': 'application/json'
 		},
@@ -26,6 +26,20 @@ async function receive(code) {
 	return response.json();
 }
 
+async function getWordsPage(params = {}) {
+	const { starts_with = 'a', after_word, limit = 200 } = params;
+	const queryParams = new URLSearchParams();
 
-export { share, receive };
+	queryParams.append('starts_with', starts_with);
+	if (after_word) {
+		queryParams.append('after_word', after_word);
+	}
+	queryParams.append('limit', limit);
+
+	const response = await fetch(`${base}/get-words-page?${queryParams.toString()}`);
+	return response.json();
+}
+
+
+export { share, receive, getWordsPage };
 

@@ -58,7 +58,7 @@ function WordEntry(props) {
 				<div className="word-item-word-container">
 					<div className="word-edit-btn">
 						{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><FontAwesomeIcon icon={faTrash} /></div> : null}
-						{wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><FontAwesomeIcon icon={faPencil} /></button> : null}
+						{false && wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><FontAwesomeIcon icon={faPencil} /></button> : null}
 					</div>
 					{(listType === 'browse' || listType === 'random') && isFavorited && <span className="featured-word-icon"><FontAwesomeIcon icon={faThumbsUp} /></span>}
 					{!!wordObj.is_locked && <span className="word-lock-icon"><FontAwesomeIcon icon={faLock} /></span>}

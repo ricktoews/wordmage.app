@@ -109,13 +109,15 @@ function collectiveWordList() {
  */
 function fullWordList() {
     var universal = cloneJSON(WORD_POOL);
-    console.log('====> fullWordList - userData', userData);
+    //console.log('====> fullWordList - userData', userData);
     var custom = userData.custom;
     const liked = userData.liked || [];
     var revisedCustom = [];
     liked.forEach(fav => {
         let ndx = universal.findIndex(item => item.word === fav.word);
-        universal[ndx].favorite = true;
+        if (ndx !== -1) {
+            universal[ndx].favorite = true;
+        }
     });
 
     custom.forEach(wordObj => {
