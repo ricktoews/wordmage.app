@@ -2,43 +2,46 @@ import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
-import WordsInterface from '../utils/words-interface';
+import { getRandomPageData } from '../utils/api';
 import WordScroller from './WordScroller';
 
 function Random(props) {
 	const [randomWords, setRandomWords] = useState([]);
-	const [refresh, setRefresh] = useState(true);
-	const [updatePageToggle, setUpdatePageToggle] = useState(true);
 	const [featuredWord, setFeaturedWord] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const loadRandomData = async () => {
+		setIsLoading(true);
+		try {
+			const userId = localStorage.getItem('wordmage-profile-user_id');
+			const data = await getRandomPageData(userId);
+			
+			setRandomWords(data.words || []);
+			setFeaturedWord(data.featured_favorite || null);
+		} catch (error) {
+			console.error('Error loading random page data:', error);
+			setRandomWords([]);
+			setFeaturedWord(null);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
 	useEffect(() => {
-		if (refresh) {
-			setRefresh(false);
-			var randomPool = WordsInterface.getRandomPool();
-			setRandomWords(randomPool);
+		loadRandomData();
+	}, []);
 
-			// Select a random word from liked/favorites list if there are more than 5 items
-			const likedWords = WordsInterface.getWordList('favorites');
-			if (likedWords.length > 5) {
-				const randomIndex = Math.floor(Math.random() * likedWords.length);
-				setFeaturedWord(likedWords[randomIndex]);
-			} else {
-				setFeaturedWord(null);
-			}
-		}
-	});
-
-	const handleNewRandom = word => {
+	const handleNewRandom = () => {
 		console.log('Refresh random list.');
-		setRefresh(true);
-	}
+		loadRandomData();
+	};
 
-	return randomWords.length > 0 ? (
+	return (
 		<div className="browse-container random-page">
 			<div className="random-toolbar">
 				<div className="random-toolbar-title">Random</div>
-				<button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words">
-					<FontAwesomeIcon icon={faRotate} />
+				<button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words" disabled={isLoading}>
+					<FontAwesomeIcon icon={faRotate} spin={isLoading} />
 				</button>
 			</div>
 
@@ -53,15 +56,21 @@ function Random(props) {
 							<div className="word-item-word">{featuredWord.word}</div>
 						</div>
 						<div className="word-item-def-container">
-							<div className="word-item-def">{featuredWord.def}</div>
+							<div className="word-item-def">{featuredWord.def || featuredWord.definition}</div>
 						</div>
 					</div>
 				</div>
 			)}
 
-			<WordScroller pool={randomWords} listType={'random'} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
+			{randomWords.length > 0 && (
+				<WordScroller pool={randomWords} listType={'random'} popupWordForm={props.popupWordForm} startingNdx={0} onAIExplain={props.onAIExplain} />
+			)}
+
+			{isLoading && randomWords.length === 0 && (
+				<div className="loading-message">Loading random words...</div>
+			)}
 		</div>
-	) : null;
+	);
 }
 
 export default withRouter(Random);

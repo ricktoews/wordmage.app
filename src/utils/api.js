@@ -40,6 +40,17 @@ async function getWordsPage(params = {}) {
 	return response.json();
 }
 
+async function getRandomPageData(user_id) {
+	const response = await fetch(`${base}/get-random-page-data`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ user_id })
+	});
+	return response.json();
+}
 
-export { share, receive, getWordsPage };
+
+export { share, receive, getWordsPage, getRandomPageData };
 
