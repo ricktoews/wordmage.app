@@ -15,7 +15,7 @@ function Random(props) {
 		try {
 			const userId = localStorage.getItem('wordmage-profile-user_id');
 			const data = await getRandomPageData(userId);
-			
+
 			setRandomWords(data.words || []);
 			setFeaturedWord(data.featured_favorite || null);
 		} catch (error) {

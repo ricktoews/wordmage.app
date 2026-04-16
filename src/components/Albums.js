@@ -23,6 +23,7 @@ function Albums(props) {
     const [showCreatePopup, setShowCreatePopup] = useState(false);
     const [selectedAlbum, setSelectedAlbum] = useState(null);
     const [newTitle, setNewTitle] = useState('');
+    const [editMoodText, setEditMoodText] = useState('');
     const [createTitle, setCreateTitle] = useState('');
     const [moodPrompt, setMoodPrompt] = useState('');
     const [isCreating, setIsCreating] = useState(false);
@@ -84,6 +85,7 @@ function Albums(props) {
         e.stopPropagation();
         setSelectedAlbum(album);
         setNewTitle(album.title);
+        setEditMoodText(album.mood_text || '');
         setShowRenamePopup(true);
         setOpenMenuId(null);
     };
@@ -106,13 +108,17 @@ function Albums(props) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ title: newTitle.trim() })
+                body: JSON.stringify({
+                    title: newTitle.trim(),
+                    mood_text: editMoodText.trim()
+                })
             });
 
             if (response.ok) {
                 setShowRenamePopup(false);
                 setSelectedAlbum(null);
                 setNewTitle('');
+                setEditMoodText('');
                 fetchAlbums();
             } else {
                 alert('Failed to rename album. Please try again.');
@@ -278,7 +284,7 @@ function Albums(props) {
                                                         className="album-menu-item"
                                                         onClick={(e) => handleRenameClick(e, album)}
                                                     >
-                                                        Rename
+                                                        Edit
                                                     </div>
                                                     <div
                                                         className="album-menu-item album-menu-item-delete"
@@ -299,7 +305,7 @@ function Albums(props) {
 
             <Popup isVisible={showRenamePopup} handleBackgroundClick={() => setShowRenamePopup(false)}>
                 <div className="popup-header">
-                    <h2>Rename Album</h2>
+                    <h2>Edit Album</h2>
                     <div className="close-icon" onClick={() => setShowRenamePopup(false)}>
                         <FontAwesomeIcon icon={faXmark} />
                     </div>
@@ -317,6 +323,17 @@ function Albums(props) {
                                 maxLength={35}
                                 placeholder="Enter album title"
                                 autoFocus
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="album-edit-mood-text">Mood Text</label>
+                            <textarea
+                                id="album-edit-mood-text"
+                                className="form-control"
+                                value={editMoodText}
+                                onChange={(e) => setEditMoodText(e.target.value)}
+                                placeholder="Enter mood text"
+                                rows={3}
                             />
                         </div>
                         <div className="button-wrapper">
