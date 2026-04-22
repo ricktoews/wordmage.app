@@ -160,6 +160,7 @@ function Albums(props) {
 
     const fetchVibeWords = async (vibe) => {
         try {
+            console.log('====> fetchVibeWords', vibe);
             const response = await fetch(`${CONFIG.domain}/custom-mood`, {
                 method: 'POST',
                 headers: {
@@ -170,6 +171,7 @@ function Albums(props) {
                 })
             });
             const data = await response.json();
+            console.log('====> fetchVibeWords data', data);
             if (Array.isArray(data)) {
                 return randomizeWords(data);
             }
@@ -187,18 +189,9 @@ function Albums(props) {
 
         setIsCreating(true);
         try {
-            let wordIds = [];
-
-            // If mood prompt is provided, fetch words based on it
-            if (moodPrompt.trim()) {
-                const moodWords = await fetchVibeWords(moodPrompt.trim());
-                wordIds = moodWords.map(word => word.id).filter(id => id != null);
-            }
-
             const payload = {
                 title: createTitle.trim(),
-                ...(moodPrompt.trim() && { mood_text: moodPrompt.trim() }),
-                word_ids: wordIds
+                ...(moodPrompt.trim() && { mood_text: moodPrompt.trim() })
             };
 
             const response = await fetch(`${CONFIG.domain}/albums`, {
@@ -341,7 +334,7 @@ function Albums(props) {
                                 Cancel
                             </button>
                             <button type="submit" className="btn btn-primary" disabled={!newTitle.trim()}>
-                                Rename
+                                Update
                             </button>
                         </div>
                     </form>

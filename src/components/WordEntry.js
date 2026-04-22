@@ -62,7 +62,8 @@ function WordEntry(props) {
 					</div>
 					{(listType === 'browse' || listType === 'random') && isFavorited && <span className="featured-word-icon"><FontAwesomeIcon icon={faThumbsUp} /></span>}
 					{!!wordObj.is_locked && <span className="word-lock-icon"><FontAwesomeIcon icon={faLock} /></span>}
-					<div className="word-item-word">{wordObj.word}</div>
+					<div className="word-item-word word-item-word-no-after">{wordObj.word}</div>
+					<span className="word-item-sep">. </span>
 					<div className="word-item-def">{wordObj.def}</div>
 				</div>
 				<div className="word-item-def-container">

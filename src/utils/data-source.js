@@ -109,52 +109,7 @@ async function saveTrainingData() {
     }
 }
 
-function retrieveMoods() {
-    var moods = localStorage.getItem('my-moods') || '[]';
-    try {
-        return JSON.parse(moods);
-    } catch (e) {
-        console.log('Error retrieving moods', e);
-        return [];
-    }
-}
-
-function saveMood(mood) {
-    var moods = retrieveMoods();
-    // Check if mood already exists
-    if (moods.some(m => m.text && m.text.toLowerCase() === mood.toLowerCase())) {
-        return moods;
-    }
-    // Generate new id
-    var maxId = moods.reduce((max, m) => Math.max(max, m.id), 0);
-    var newMood = {
-        id: maxId + 1,
-        text: mood
-    };
-    moods.push(newMood);
-    localStorage.setItem('my-moods', JSON.stringify(moods));
-
-    // Save to server if logged in
-    var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
-    if (profile_user_id) {
-        try {
-            var custom = JSON.parse(localStorage.getItem('my-words') || '[]');
-            var training = JSON.parse(localStorage.getItem('my-training-room') || '[]');
-            var options = {
-                method: 'post',
-                header: { 'Content-type': 'application/json' },
-                body: JSON.stringify({ user_id: profile_user_id, custom, training, moods })
-            };
-            fetch(`${CONFIG.domain}/savecustom`, options);
-        } catch (e) {
-            console.log('Problem saving moods', e);
-        }
-    }
-
-    return moods;
-}
-
-const DataSource = { retrieveUserLocalData, retrieveUserData, saveUserData, saveTrainingData, retrieveMoods, saveMood };
+const DataSource = { retrieveUserLocalData, retrieveUserData, saveUserData, saveTrainingData };
 
 export default DataSource;
 

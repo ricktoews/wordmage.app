@@ -8,9 +8,6 @@ import {
 	faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
-import DataSource from '../utils/data-source';
-import { CONFIG } from '../config';
-import Popup from './Popup';
 
 function randomizeWords(array) {
 	const shuffled = [...array];
@@ -23,24 +20,16 @@ function randomizeWords(array) {
 
 function Moods(props) {
 	const [moods, setMoods] = useState([]);
-	const [customMoods, setCustomMoods] = useState([]);
 	const [selectedMoodSlug, setSelectedMoodSlug] = useState(null);
 	const [selectedMoodLabel, setSelectedMoodLabel] = useState(null);
 	const [selectedMoodDescription, setSelectedMoodDescription] = useState(null);
 	const [moodWords, setMoodWords] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [customMood, setCustomMood] = useState('');
-	const [isCustomVibe, setIsCustomVibe] = useState(false);
-	const [openCustomMoodMenuId, setOpenCustomMoodMenuId] = useState(null);
-	const [showDeleteMoodPopup, setShowDeleteMoodPopup] = useState(false);
-	const [selectedCustomMood, setSelectedCustomMood] = useState(null);
-	const [isEditingMood, setIsEditingMood] = useState(false);
 	const [showDescriptionPopup, setShowDescriptionPopup] = useState(false);
 
 	// Fetch moods on component mount
 	useEffect(() => {
 		fetchMoods();
-		loadCustomMoods();
 	}, []);
 
 	// Check if there's a slug in the URL on initial load
@@ -48,27 +37,18 @@ function Moods(props) {
 		const slug = props.match.params.slug;
 		if (slug) {
 			setSelectedMoodSlug(slug);
-			// Check if this is a predefined mood or custom vibe
-			const isPredefinedMood = moods.some(m => m.slug === slug);
-			setIsCustomVibe(!isPredefinedMood);
 		} else {
 			// Clear selection if no slug in URL
 			setSelectedMoodSlug(null);
 			setSelectedMoodLabel(null);
 			setMoodWords([]);
-			setIsCustomVibe(false);
 		}
 	}, [props.match.params.slug, moods]);
 
 	// Fetch words when mood is selected
 	useEffect(() => {
 		if (selectedMoodSlug) {
-			if (isCustomVibe) {
-				// Use the label (original text) for custom vibes
-				fetchVibeWords(selectedMoodLabel);
-			} else {
-				fetchMoodWords(selectedMoodSlug);
-			}
+			fetchMoodWords(selectedMoodSlug);
 			// Find the label for this slug
 			const mood = moods.find(m => m.slug === selectedMoodSlug);
 			if (mood) {
@@ -76,7 +56,7 @@ function Moods(props) {
 				setSelectedMoodDescription(mood.description || '');
 			}
 		}
-	}, [selectedMoodSlug, selectedMoodLabel, moods, isCustomVibe]);
+	}, [selectedMoodSlug, moods]);
 
 	const fetchMoods = async () => {
 		try {
@@ -88,11 +68,6 @@ function Moods(props) {
 		} catch (error) {
 			console.error('Error fetching moods:', error);
 		}
-	};
-
-	const loadCustomMoods = () => {
-		const savedMoods = DataSource.retrieveMoods();
-		setCustomMoods(savedMoods);
 	};
 
 	const fetchMoodWords = async (slug) => {
@@ -111,35 +86,10 @@ function Moods(props) {
 		}
 	};
 
-	const fetchVibeWords = async (vibe) => {
-		setLoading(true);
-		try {
-			const response = await fetch('https://wordmage.toews-api.com/custom-mood', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					mood_text: vibe
-				})
-			});
-			const data = await response.json();
-			if (Array.isArray(data)) {
-				const randomizedWords = randomizeWords(data);
-				setMoodWords(randomizedWords);
-			}
-		} catch (error) {
-			console.error('Error fetching vibe words:', error);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const handleMoodClick = (slug, label, isVibe = false) => {
+	const handleMoodClick = (slug, label) => {
 		props.history.push(`/mood/${slug}`);
 		setSelectedMoodSlug(slug);
 		setSelectedMoodLabel(label);
-		setIsCustomVibe(isVibe);
 	};
 
 	const handleBackToMoods = () => {
@@ -147,119 +97,15 @@ function Moods(props) {
 		setSelectedMoodSlug(null);
 		setSelectedMoodLabel(null);
 		setMoodWords([]);
-		setIsCustomVibe(false);
 	};
 
 	const handleRefresh = () => {
 		if (selectedMoodSlug) {
-			// Refresh the words for the current mood or vibe
-			if (isCustomVibe) {
-				fetchVibeWords(selectedMoodLabel);
-			} else {
-				fetchMoodWords(selectedMoodSlug);
-			}
+			// Refresh the words for the current mood
+			fetchMoodWords(selectedMoodSlug);
 		} else {
 			// Refresh the moods list
 			fetchMoods();
-		}
-	};
-
-	const handleCustomMoodSubmit = (e) => {
-		e.preventDefault();
-		if (customMood.trim()) {
-			if (isEditingMood && selectedCustomMood) {
-				// Update existing mood
-				handleEditMoodSubmit();
-			} else {
-				// Save new custom mood
-				const updatedMoods = DataSource.saveMood(customMood.trim());
-				setCustomMoods(updatedMoods);
-
-				const slug = customMood.trim().toLowerCase().replace(/\s+/g, '-');
-				handleMoodClick(slug, customMood.trim(), true); // true indicates it's a custom vibe
-				setCustomMood('');
-			}
-		}
-	};
-
-	const handleCustomMoodMenuClick = (e, moodId) => {
-		e.stopPropagation();
-		setOpenCustomMoodMenuId(openCustomMoodMenuId === moodId ? null : moodId);
-	};
-
-	const handleEditMoodClick = (e, moodObj) => {
-		e.stopPropagation();
-		setSelectedCustomMood(moodObj);
-		setCustomMood(moodObj.text);
-		setIsEditingMood(true);
-		setOpenCustomMoodMenuId(null);
-	};
-
-	const handleEditMoodSubmit = async () => {
-		if (!customMood.trim() || !selectedCustomMood) {
-			return;
-		}
-
-		try {
-			const response = await fetch(`${CONFIG.domain}/custom-moods/${selectedCustomMood.id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ mood_text: customMood.trim() })
-			});
-
-			if (response.ok) {
-				// Update local storage
-				const moods = DataSource.retrieveMoods();
-				const updatedMoods = moods.map(m =>
-					m.id === selectedCustomMood.id ? { ...m, text: customMood.trim() } : m
-				);
-				localStorage.setItem('my-moods', JSON.stringify(updatedMoods));
-				setCustomMoods(updatedMoods);
-				setCustomMood('');
-				setIsEditingMood(false);
-				setSelectedCustomMood(null);
-			} else {
-				alert('Failed to update mood. Please try again.');
-			}
-		} catch (error) {
-			console.error('Error updating mood:', error);
-			alert('Error updating mood. Please try again.');
-		}
-	};
-
-	const handleDeleteMoodClick = (e, moodObj) => {
-		e.stopPropagation();
-		setSelectedCustomMood(moodObj);
-		setShowDeleteMoodPopup(true);
-		setOpenCustomMoodMenuId(null);
-	};
-
-	const handleDeleteMoodConfirm = async () => {
-		if (!selectedCustomMood) {
-			return;
-		}
-
-		try {
-			const response = await fetch(`${CONFIG.domain}/custom-moods/${selectedCustomMood.id}`, {
-				method: 'DELETE'
-			});
-
-			if (response.ok) {
-				// Update local storage
-				const moods = DataSource.retrieveMoods();
-				const updatedMoods = moods.filter(m => m.id !== selectedCustomMood.id);
-				localStorage.setItem('my-moods', JSON.stringify(updatedMoods));
-				setCustomMoods(updatedMoods);
-				setShowDeleteMoodPopup(false);
-				setSelectedCustomMood(null);
-			} else {
-				alert('Failed to delete mood. Please try again.');
-			}
-		} catch (error) {
-			console.error('Error deleting mood:', error);
-			alert('Error deleting mood. Please try again.');
 		}
 	};
 
@@ -323,7 +169,7 @@ function Moods(props) {
 							<button
 								key={mood.slug}
 								className="mood-button"
-								onClick={() => handleMoodClick(mood.slug, mood.label, false)}
+								onClick={() => handleMoodClick(mood.slug, mood.label)}
 							>
 								{mood.label}
 							</button>
@@ -345,26 +191,6 @@ function Moods(props) {
 					)}
 				</div>
 			)}
-
-			<Popup isVisible={showDeleteMoodPopup} handleBackgroundClick={() => setShowDeleteMoodPopup(false)}>
-				<div className="popup-header">
-					<h2>Delete Mood</h2>
-					<div className="close-icon" onClick={() => setShowDeleteMoodPopup(false)}>
-						<FontAwesomeIcon icon={faXmark} />
-					</div>
-				</div>
-				<div className="popup-body">
-					<p>This cannot be undone. Are you sure?</p>
-					<div className="button-wrapper">
-						<button className="btn btn-default" onClick={() => setShowDeleteMoodPopup(false)}>
-							Cancel
-						</button>
-						<button className="btn btn-primary" onClick={handleDeleteMoodConfirm}>
-							Delete
-						</button>
-					</div>
-				</div>
-			</Popup>
 		</div>
 	);
 }
