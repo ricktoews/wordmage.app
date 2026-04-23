@@ -4,7 +4,6 @@ import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faMasksTheater,
     faRandom,
     faThumbsUp,
     faGlasses,
@@ -202,12 +201,6 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const navToMoods = () => {
-        var history = props.history;
-        history.push('/moods');
-        setView('Moods');
-        setHamburgerClass('hamburger-nav');
-    }
     const navToAlbums = () => {
         var history = props.history;
         history.push('/albums');
@@ -299,7 +292,6 @@ function App(props) {
                     <li onClick={navToRandom}><FontAwesomeIcon icon={faRandom} /> Random</li>
                     {authUser && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
-                    <li onClick={navToMoods}><FontAwesomeIcon icon={faMasksTheater} /> Moods</li>
                     {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
                     {authUser && <li onClick={navToLearn}><FontAwesomeIcon icon={faLeaf} /> Learn</li>}
                     {authUser && <li onClick={navToTrain}><FontAwesomeIcon icon={faGraduationCap} /> Train</li>}
@@ -326,9 +318,6 @@ function App(props) {
                     )}
                     <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
                         <FontAwesomeIcon icon={faGlasses} />
-                    </button>
-                    <button className="header-nav-btn" onClick={navToMoods} title="Moods">
-                        <FontAwesomeIcon icon={faMasksTheater} />
                     </button>
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToAlbums} title="Albums">

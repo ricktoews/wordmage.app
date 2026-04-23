@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faRotate } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faRotate, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
 function WordAlbum(props) {
     const [album, setAlbum] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showAlbumInfo, setShowAlbumInfo] = useState(false);
     const albumId = props.match.params.id;
 
     useEffect(() => {
         if (albumId) {
             fetchAlbum();
+            setShowAlbumInfo(false);
         }
     }, [albumId]);
 
@@ -22,8 +24,10 @@ function WordAlbum(props) {
             const response = await fetch(`${CONFIG.domain}/albums/${albumId}`);
             const data = await response.json();
 
-            // Sort words alphabetically for Favorites and Learn albums
-            if (data.words && (data.title === 'Favorites' || data.title === 'Learn')) {
+            // Sort words: random for Favorites, alphabetically for Learn
+            if (data.words && data.title === 'Favorites') {
+                data.words.sort(() => Math.random() - 0.5);
+            } else if (data.words && data.title === 'Learn') {
                 data.words.sort((a, b) => a.word.localeCompare(b.word));
             }
 
@@ -76,7 +80,18 @@ function WordAlbum(props) {
                         Word Album
                     </div>
                     {album?.title && (
-                        <div className="album-title-subtitle">{album.title}</div>
+                        <div className="album-title-subtitle">
+                            <span>{album.title}</span>
+                            <button
+                                type="button"
+                                className="album-title-info-button"
+                                onClick={() => setShowAlbumInfo(prev => !prev)}
+                                title="Album info"
+                                aria-label="Album info"
+                            >
+                                <FontAwesomeIcon icon={faCircleInfo} className="album-title-info-icon" />
+                            </button>
+                        </div>
                     )}
                 </div>
                 <div className="moods-toolbar-actions">
@@ -119,6 +134,12 @@ function WordAlbum(props) {
                 ) : (
                     <div className="empty-state">Album not found</div>
                 )}
+            </div>
+
+            <div className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
+                <div className="album-info-panel-content">
+                    {album?.mood_text || 'No mood text available for this album.'}
+                </div>
             </div>
         </div>
     );
