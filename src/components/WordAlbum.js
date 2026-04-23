@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faRotate, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faRotate, faCircleInfo, faPencil } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
@@ -9,12 +9,17 @@ function WordAlbum(props) {
     const [album, setAlbum] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showAlbumInfo, setShowAlbumInfo] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [editedMoodText, setEditedMoodText] = useState('');
+    const [originalMoodText, setOriginalMoodText] = useState('');
+    const [savingMood, setSavingMood] = useState(false);
     const albumId = props.match.params.id;
 
     useEffect(() => {
         if (albumId) {
             fetchAlbum();
             setShowAlbumInfo(false);
+            setEditMode(false);
         }
     }, [albumId]);
 
@@ -69,6 +74,53 @@ function WordAlbum(props) {
             console.error('Error refreshing mood words:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleEditMood = () => {
+        setOriginalMoodText(album?.mood_text || '');
+        setEditedMoodText(album?.mood_text || '');
+        setEditMode(true);
+    };
+
+    const handleCancelEdit = () => {
+        setEditMode(false);
+        setEditedMoodText('');
+        setOriginalMoodText('');
+    };
+
+    const handleSaveMood = async () => {
+        const trimmedText = editedMoodText.trim();
+
+        if (!trimmedText) {
+            console.warn('Cannot save empty mood text');
+            return;
+        }
+
+        setSavingMood(true);
+        try {
+            const response = await fetch(`${CONFIG.domain}/albums/${albumId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ mood_text: trimmedText }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to save mood: ${response.status}`);
+            }
+
+            const updatedAlbum = await response.json();
+            setAlbum(updatedAlbum);
+            setEditMode(false);
+            setEditedMoodText('');
+            setOriginalMoodText('');
+        } catch (error) {
+            console.error('Error saving mood text:', error);
+            alert('Failed to save mood text. Please try again.');
+        } finally {
+            setSavingMood(false);
         }
     };
 
@@ -136,10 +188,63 @@ function WordAlbum(props) {
                 )}
             </div>
 
+            <div
+                className={`album-info-overlay ${showAlbumInfo ? 'open' : ''}`}
+                onClick={() => setShowAlbumInfo(false)}
+                aria-hidden={!showAlbumInfo}
+            />
+
             <div className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
-                <div className="album-info-panel-content">
-                    {album?.mood_text || 'No mood text available for this album.'}
+                <div className="album-info-drag-handle" />
+                <div className="album-info-panel-header">
+                    <div className="album-info-panel-label">Mood</div>
+                    {!editMode && album?.mood_text && (
+                        <button
+                            type="button"
+                            className="album-info-edit-button"
+                            onClick={handleEditMood}
+                            title="Edit mood"
+                            aria-label="Edit mood"
+                        >
+                            <FontAwesomeIcon icon={faPencil} />
+                        </button>
+                    )}
                 </div>
+
+                {!editMode ? (
+                    <div className="album-info-panel-content">
+                        {album?.mood_text || 'No mood text available for this album.'}
+                    </div>
+                ) : (
+                    <div className="album-info-edit-mode">
+                        <textarea
+                            className="album-mood-textarea"
+                            value={editedMoodText}
+                            onChange={(e) => setEditedMoodText(e.target.value)}
+                            placeholder="Enter mood text..."
+                            autoFocus
+                            rows={6}
+                        />
+                        <div className="album-info-button-group">
+                            <button
+                                type="button"
+                                className="album-info-button album-info-button-cancel"
+                                onClick={handleCancelEdit}
+                                disabled={savingMood}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                className="album-info-button album-info-button-save"
+                                onClick={handleSaveMood}
+                                disabled={savingMood || !editedMoodText.trim() || editedMoodText.trim() === originalMoodText.trim()}
+                            >
+                                {savingMood ? 'Saving...' : 'Save'}
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
