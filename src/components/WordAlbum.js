@@ -69,7 +69,7 @@ function WordAlbum(props) {
                 throw new Error(`Failed to refresh album: ${response.status}`);
             }
 
-            fetchAlbum();
+            await fetchAlbum();
         } catch (error) {
             console.error('Error refreshing mood words:', error);
         } finally {
@@ -125,6 +125,8 @@ function WordAlbum(props) {
         }
     };
 
+    const wordListVersion = album?.words?.map(word => word.id || word.word).join('|') || 'empty';
+
     return (
         <div className="word-list-page-container favorites-page">
             <div className="favorites-toolbar">
@@ -174,6 +176,7 @@ function WordAlbum(props) {
                     <div className="loading">Loading album...</div>
                 ) : album && album.words ? (
                     <WordScroller
+                        key={`album-${albumId}-${wordListVersion}`}
                         pool={album.words}
                         startingNdx={0}
                         listType={'album'}
