@@ -113,8 +113,7 @@ function WordAlbum(props) {
                 throw new Error(`Failed to save mood: ${response.status}`);
             }
 
-            const updatedAlbum = await response.json();
-            setAlbum(updatedAlbum);
+            await fetchAlbum();
             setEditMode(false);
             setEditedMoodText('');
             setOriginalMoodText('');
