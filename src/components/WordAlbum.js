@@ -92,6 +92,8 @@ function WordAlbum(props) {
     const handleSaveMood = async () => {
         const trimmedText = editedMoodText.trim();
 
+        console.log('Save mood — albumId:', albumId, '| description:', trimmedText);
+
         if (!trimmedText) {
             console.warn('Cannot save empty mood text');
             return;
@@ -99,7 +101,7 @@ function WordAlbum(props) {
 
         setSavingMood(true);
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${albumId}`, {
+            const response = await fetch(`${CONFIG.domain}/albums/${albumId}/mood-text`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
