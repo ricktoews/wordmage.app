@@ -141,24 +141,25 @@ function WordAlbum(props) {
         }
     };
 
-    const handleDragHandlePointerDown = (e) => {
+    const handleDragHandleTouchStart = (e) => {
         const panel = panelRef.current;
         if (!panel) return;
-        e.currentTarget.setPointerCapture(e.pointerId);
         panel.style.transition = 'none';
-        dragState.current = { startY: e.clientY, currentY: e.clientY };
+        const y = e.touches[0].clientY;
+        dragState.current = { startY: y, currentY: y };
     };
 
-    const handleDragHandlePointerMove = (e) => {
+    const handleDragHandleTouchMove = (e) => {
         if (!dragState.current) return;
         const panel = panelRef.current;
         if (!panel) return;
-        const delta = Math.max(0, e.clientY - dragState.current.startY);
-        dragState.current.currentY = e.clientY;
+        const y = e.touches[0].clientY;
+        const delta = Math.max(0, y - dragState.current.startY);
+        dragState.current.currentY = y;
         panel.style.transform = `translateY(${delta}px)`;
     };
 
-    const handleDragHandlePointerUp = () => {
+    const handleDragHandleTouchEnd = () => {
         if (!dragState.current) return;
         const panel = panelRef.current;
         if (!panel) return;
@@ -251,10 +252,10 @@ function WordAlbum(props) {
             <div ref={panelRef} className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
                 <div
                     className="album-info-drag-handle"
-                    onPointerDown={handleDragHandlePointerDown}
-                    onPointerMove={handleDragHandlePointerMove}
-                    onPointerUp={handleDragHandlePointerUp}
-                    onPointerCancel={handleDragHandlePointerUp}
+                    onTouchStart={handleDragHandleTouchStart}
+                    onTouchMove={handleDragHandleTouchMove}
+                    onTouchEnd={handleDragHandleTouchEnd}
+                    onTouchCancel={handleDragHandleTouchEnd}
                 />
                 <div className="album-info-panel-header">
                     <div className="album-info-panel-label">Mood</div>
