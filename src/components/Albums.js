@@ -173,13 +173,20 @@ function Albums(props) {
                 }))
             };
 
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
+            const filename = `${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
+            const json = JSON.stringify(exportData, null, 2);
+            const file = new File([json], filename, { type: 'application/json' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ title: 'WordMage Album', files: [file] });
+            } else {
+                const url = URL.createObjectURL(file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
         } catch (error) {
             console.error('Error exporting album:', error);
             alert('Failed to export album. Please try again.');
