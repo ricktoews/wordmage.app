@@ -147,29 +147,33 @@ function WordAlbum(props) {
         panel.style.transition = 'none';
         const y = e.touches[0].clientY;
         dragState.current = { startY: y, currentY: y };
-    };
 
-    const handleDragHandleTouchMove = (e) => {
-        if (!dragState.current) return;
-        const panel = panelRef.current;
-        if (!panel) return;
-        const y = e.touches[0].clientY;
-        const delta = Math.max(0, y - dragState.current.startY);
-        dragState.current.currentY = y;
-        panel.style.transform = `translateY(${delta}px)`;
-    };
+        const onMove = (ev) => {
+            if (!dragState.current) return;
+            ev.preventDefault();
+            const my = ev.touches[0].clientY;
+            const delta = Math.max(0, my - dragState.current.startY);
+            dragState.current.currentY = my;
+            panel.style.transform = `translateY(${delta}px)`;
+        };
 
-    const handleDragHandleTouchEnd = () => {
-        if (!dragState.current) return;
-        const panel = panelRef.current;
-        if (!panel) return;
-        const delta = dragState.current.currentY - dragState.current.startY;
-        dragState.current = null;
-        panel.style.transition = '';
-        if (delta > 60) {
-            setShowAlbumInfo(false);
-        }
-        panel.style.transform = '';
+        const onEnd = () => {
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onEnd);
+            document.removeEventListener('touchcancel', onEnd);
+            if (!dragState.current) return;
+            const delta = dragState.current.currentY - dragState.current.startY;
+            dragState.current = null;
+            panel.style.transition = '';
+            panel.style.transform = '';
+            if (delta > 60) {
+                setShowAlbumInfo(false);
+            }
+        };
+
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+        document.addEventListener('touchcancel', onEnd);
     };
 
     const wordListVersion = album?.words?.map(word => word.id || word.word).join('|') || 'empty';
@@ -253,9 +257,6 @@ function WordAlbum(props) {
                 <div
                     className="album-info-drag-handle"
                     onTouchStart={handleDragHandleTouchStart}
-                    onTouchMove={handleDragHandleTouchMove}
-                    onTouchEnd={handleDragHandleTouchEnd}
-                    onTouchCancel={handleDragHandleTouchEnd}
                 />
                 <div className="album-info-panel-header">
                     <div className="album-info-panel-label">Mood</div>

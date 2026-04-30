@@ -3958,6 +3958,9 @@ input[type="checkbox"] {
 	margin: 0 auto 12px;
 	touch-action: none;
 	cursor: grab;
+	padding: 12px 24px;
+	background-clip: content-box;
+	box-sizing: content-box;
 
 	&:active {
 		cursor: grabbing;
