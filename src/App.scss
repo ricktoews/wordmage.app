@@ -3983,6 +3983,36 @@ input[type="checkbox"] {
 	margin-bottom: 12px;
 }
 
+.album-info-panel-actions {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.album-mood-copy-toast {
+	position: fixed;
+	bottom: calc(24px + env(safe-area-inset-bottom));
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: rgba(40, 40, 40, 0.88);
+	color: #fff;
+	font-family: $lovable-font;
+	font-size: 0.85rem;
+	padding: 6px 16px;
+	border-radius: 999px;
+	pointer-events: none;
+	z-index: 3000;
+	animation: toastFadeInOut 2s ease forwards;
+}
+
+@keyframes toastFadeInOut {
+	0%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
+	15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+	75%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+	100% { opacity: 0; transform: translateX(-50%) translateY(6px); }
+}
+
+.album-info-copy-button,
 .album-info-edit-button {
 	background: none;
 	border: none;
@@ -3994,14 +4024,10 @@ input[type="checkbox"] {
 	color: #7a7a7a;
 	font-size: 0.9rem;
 	transition: color 0.15s ease;
+}
 
-	&:hover {
-		color: #555;
-	}
-
-	&:active {
-		color: #333;
-	}
+.album-info-copy-button {
+	color: #b0b0b0;
 }
 
 .album-info-edit-mode {

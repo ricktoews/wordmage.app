@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faRotate, faCircleInfo, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
@@ -13,6 +13,7 @@ function WordAlbum(props) {
     const [editedMoodText, setEditedMoodText] = useState('');
     const [originalMoodText, setOriginalMoodText] = useState('');
     const [savingMood, setSavingMood] = useState(false);
+    const [copyToast, setCopyToast] = useState(false);
     const albumId = props.match.params.id;
 
     useEffect(() => {
@@ -87,6 +88,19 @@ function WordAlbum(props) {
         setEditMode(false);
         setEditedMoodText('');
         setOriginalMoodText('');
+    };
+
+    const handleCopyMood = async () => {
+        const textToCopy = album?.mood_text || '';
+        if (!textToCopy) return;
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            setCopyToast(true);
+            setTimeout(() => setCopyToast(false), 2000);
+        } catch (error) {
+            console.error('Failed to copy mood text:', error);
+        }
     };
 
     const handleSaveMood = async () => {
@@ -198,20 +212,35 @@ function WordAlbum(props) {
                 aria-hidden={!showAlbumInfo}
             />
 
+            {copyToast && (
+                <div className="album-mood-copy-toast">Copied!</div>
+            )}
+
             <div className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
                 <div className="album-info-drag-handle" />
                 <div className="album-info-panel-header">
                     <div className="album-info-panel-label">Mood</div>
                     {!editMode && album?.mood_text && (
-                        <button
-                            type="button"
-                            className="album-info-edit-button"
-                            onClick={handleEditMood}
-                            title="Edit mood"
-                            aria-label="Edit mood"
-                        >
-                            <FontAwesomeIcon icon={faPencil} />
-                        </button>
+                        <div className="album-info-panel-actions">
+                            <button
+                                type="button"
+                                className="album-info-copy-button"
+                                onClick={handleCopyMood}
+                                title="Copy mood"
+                                aria-label="Copy mood"
+                            >
+                                <FontAwesomeIcon icon={faCopy} />
+                            </button>
+                            <button
+                                type="button"
+                                className="album-info-edit-button"
+                                onClick={handleEditMood}
+                                title="Edit mood"
+                                aria-label="Edit mood"
+                            >
+                                <FontAwesomeIcon icon={faPencil} />
+                            </button>
+                        </div>
                     )}
                 </div>
 
