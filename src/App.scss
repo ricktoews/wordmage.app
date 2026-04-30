@@ -3956,16 +3956,21 @@ input[type="checkbox"] {
 	border-radius: 999px;
 	background: rgba(0, 0, 0, 0.18);
 	margin: 0 auto 12px;
+	touch-action: none;
+	cursor: grab;
+
+	&:active {
+		cursor: grabbing;
+	}
 }
 
 .album-info-panel-label {
 	font-family: $lovable-font;
-	font-size: 0.72rem;
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: rgba(0, 0, 0, 0.55);
-	margin-bottom: 8px;
+	font-size: 1.05rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	color: rgba(0, 0, 0, 0.75);
+	margin: 0;
 }
 
 .album-info-panel-content {
@@ -3980,7 +3985,8 @@ input[type="checkbox"] {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 12px;
+	padding-bottom: 0;
+	margin-bottom: 14px;
 }
 
 .album-info-panel-actions {

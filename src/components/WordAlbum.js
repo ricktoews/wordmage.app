@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +15,8 @@ function WordAlbum(props) {
     const [savingMood, setSavingMood] = useState(false);
     const [copyToast, setCopyToast] = useState(false);
     const albumId = props.match.params.id;
+    const panelRef = useRef(null);
+    const dragState = useRef(null);
 
     useEffect(() => {
         if (albumId) {
@@ -139,6 +141,36 @@ function WordAlbum(props) {
         }
     };
 
+    const handleDragHandlePointerDown = (e) => {
+        const panel = panelRef.current;
+        if (!panel) return;
+        e.currentTarget.setPointerCapture(e.pointerId);
+        panel.style.transition = 'none';
+        dragState.current = { startY: e.clientY, currentY: e.clientY };
+    };
+
+    const handleDragHandlePointerMove = (e) => {
+        if (!dragState.current) return;
+        const panel = panelRef.current;
+        if (!panel) return;
+        const delta = Math.max(0, e.clientY - dragState.current.startY);
+        dragState.current.currentY = e.clientY;
+        panel.style.transform = `translateY(${delta}px)`;
+    };
+
+    const handleDragHandlePointerUp = () => {
+        if (!dragState.current) return;
+        const panel = panelRef.current;
+        if (!panel) return;
+        const delta = dragState.current.currentY - dragState.current.startY;
+        dragState.current = null;
+        panel.style.transition = '';
+        if (delta > 60) {
+            setShowAlbumInfo(false);
+        }
+        panel.style.transform = '';
+    };
+
     const wordListVersion = album?.words?.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
@@ -216,8 +248,14 @@ function WordAlbum(props) {
                 <div className="album-mood-copy-toast">Copied!</div>
             )}
 
-            <div className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
-                <div className="album-info-drag-handle" />
+            <div ref={panelRef} className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
+                <div
+                    className="album-info-drag-handle"
+                    onPointerDown={handleDragHandlePointerDown}
+                    onPointerMove={handleDragHandlePointerMove}
+                    onPointerUp={handleDragHandlePointerUp}
+                    onPointerCancel={handleDragHandlePointerUp}
+                />
                 <div className="album-info-panel-header">
                     <div className="album-info-panel-label">Mood</div>
                     {!editMode && album?.mood_text && (
