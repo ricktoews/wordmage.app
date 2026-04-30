@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,7 @@ function WordAlbum(props) {
     const [originalMoodText, setOriginalMoodText] = useState('');
     const [savingMood, setSavingMood] = useState(false);
     const [copyToast, setCopyToast] = useState(false);
+    const [favoritesSortMode, setFavoritesSortMode] = useState('random');
     const albumId = props.match.params.id;
     const panelRef = useRef(null);
     const dragState = useRef(null);
@@ -23,6 +24,7 @@ function WordAlbum(props) {
             fetchAlbum();
             setShowAlbumInfo(false);
             setEditMode(false);
+            setFavoritesSortMode('random');
         }
     }, [albumId]);
 
@@ -32,10 +34,8 @@ function WordAlbum(props) {
             const response = await fetch(`${CONFIG.domain}/albums/${albumId}`);
             const data = await response.json();
 
-            // Sort words: random for Favorites, alphabetically for Learn
-            if (data.words && data.title === 'Favorites') {
-                data.words.sort(() => Math.random() - 0.5);
-            } else if (data.words && data.title === 'Learn') {
+            // Keep Learn alphabetized; Favorites ordering is controlled in the header.
+            if (data.words && data.title === 'Learn') {
                 data.words.sort((a, b) => a.word.localeCompare(b.word));
             }
 
@@ -176,7 +176,29 @@ function WordAlbum(props) {
         document.addEventListener('touchcancel', onEnd);
     };
 
-    const wordListVersion = album?.words?.map(word => word.id || word.word).join('|') || 'empty';
+    const isFavoritesAlbum = album?.title === 'Favorites';
+
+    const displayedWords = useMemo(() => {
+        if (!album?.words) return [];
+
+        if (isFavoritesAlbum) {
+            const words = [...album.words];
+
+            if (favoritesSortMode === 'alphabetical') {
+                return words.sort((a, b) => a.word.localeCompare(b.word));
+            }
+
+            for (let i = words.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [words[i], words[j]] = [words[j], words[i]];
+            }
+            return words;
+        }
+
+        return album.words;
+    }, [album?.words, favoritesSortMode, isFavoritesAlbum]);
+
+    const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
         <div className="word-list-page-container favorites-page">
@@ -188,19 +210,32 @@ function WordAlbum(props) {
                     {album?.title && (
                         <div className="album-title-subtitle">
                             <span>{album.title}</span>
-                            <button
-                                type="button"
-                                className="album-title-info-button"
-                                onClick={() => setShowAlbumInfo(prev => !prev)}
-                                title="Album info"
-                                aria-label="Album info"
-                            >
-                                <FontAwesomeIcon icon={faCircleInfo} className="album-title-info-icon" />
-                            </button>
+                            {!isFavoritesAlbum && (
+                                <button
+                                    type="button"
+                                    className="album-title-info-button"
+                                    onClick={() => setShowAlbumInfo(prev => !prev)}
+                                    title="Album info"
+                                    aria-label="Album info"
+                                >
+                                    <FontAwesomeIcon icon={faCircleInfo} className="album-title-info-icon" />
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>
                 <div className="moods-toolbar-actions">
+                    {isFavoritesAlbum && (
+                        <button
+                            type="button"
+                            className="favorites-sort-toggle"
+                            onClick={() => setFavoritesSortMode(prev => (prev === 'random' ? 'alphabetical' : 'random'))}
+                            title={`Switch to ${favoritesSortMode === 'random' ? 'alphabetical' : 'random'} order`}
+                            aria-label={`Switch to ${favoritesSortMode === 'random' ? 'alphabetical' : 'random'} order`}
+                        >
+                            {favoritesSortMode === 'random' ? 'A-Z' : 'Random'}
+                        </button>
+                    )}
                     {album?.mood_text && (
                         <button
                             className="moods-refresh-icon"
@@ -228,7 +263,7 @@ function WordAlbum(props) {
                 ) : album && album.words ? (
                     <WordScroller
                         key={`album-${albumId}-${wordListVersion}`}
-                        pool={album.words}
+                        pool={displayedWords}
                         startingNdx={0}
                         listType={'album'}
                         albumId={albumId}

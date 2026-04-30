@@ -4202,6 +4202,30 @@ input[type="checkbox"] {
 	margin-left: auto;
 }
 
+.favorites-sort-toggle {
+	border: 1px solid #b9b0a2;
+	background: #f7f3ea;
+	color: #5a4f3f;
+	border-radius: 999px;
+	height: 32px;
+	padding: 0 12px;
+	font-family: $lovable-font;
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+	&:hover {
+		background: #efe8da;
+		border-color: #a79b8a;
+	}
+
+	&:active {
+		background: #e5dccb;
+	}
+}
+
 .moods-refresh-icon {
 	background: #9b59b6;
 	border: none;

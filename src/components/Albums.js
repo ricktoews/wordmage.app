@@ -152,6 +152,40 @@ function Albums(props) {
         }
     };
 
+    const handleExportClick = async (e, album) => {
+        e.stopPropagation();
+        setOpenMenuId(null);
+
+        try {
+            const response = await fetch(`${CONFIG.domain}/albums/${album.id}`);
+            const data = await response.json();
+
+            const exportData = {
+                album: {
+                    title: data.title,
+                    mood: data.mood_text || ''
+                },
+                words: (data.words || []).map((word, index) => ({
+                    id: word.id,
+                    word: word.word,
+                    definition: word.definition,
+                    position: word.position ?? index + 1
+                }))
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error exporting album:', error);
+            alert('Failed to export album. Please try again.');
+        }
+    };
+
     const handleCreateAlbumClick = () => {
         setCreateTitle('');
         setMoodPrompt('');
@@ -278,6 +312,12 @@ function Albums(props) {
                                                         onClick={(e) => handleRenameClick(e, album)}
                                                     >
                                                         Edit
+                                                    </div>
+                                                    <div
+                                                        className="album-menu-item"
+                                                        onClick={(e) => handleExportClick(e, album)}
+                                                    >
+                                                        Export
                                                     </div>
                                                     <div
                                                         className="album-menu-item album-menu-item-delete"
