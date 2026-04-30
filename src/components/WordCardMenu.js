@@ -67,6 +67,10 @@ function WordCardMenu(props) {
         };
     }, [isOpen]);
 
+    useEffect(() => {
+        setIsLocked(wordObj.is_locked || false);
+    }, [wordObj.is_locked]);
+
     const toggleMenu = (e) => {
         e.stopPropagation();
         setIsOpen(!isOpen);

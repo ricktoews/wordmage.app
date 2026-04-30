@@ -20,6 +20,7 @@ function WordScroller(props) {
 	const [tagToggle, setTagToggle] = useState(null);
 	const [visibleItems, setVisibleItems] = useState([]);
 	const loadedCountRef = useRef(0);
+	const visibleCountRef = useRef(0);
 	const taggedOnClass = 'badge-tag-filter-on';
 	const taggedOffClass = 'badge-tag-filter-off';
 
@@ -117,6 +118,20 @@ function WordScroller(props) {
 		}
 	}
 
+	function syncVisibleItems(pool) {
+		const startingIndex = props.startingNdx || 0;
+		const preservedCount = visibleCountRef.current || 15;
+		const nextItems = pool
+			.slice(startingIndex, startingIndex + preservedCount)
+			.map((wordItem, index) => ({
+				key: `word-${startingIndex + index}-${wordItem.word || index}`,
+				wordItem,
+			}));
+
+		setVisibleItems(nextItems);
+		loadedCountRef.current = startingIndex + nextItems.length;
+	}
+
 	const myObserverCallback = (entries) => {
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
@@ -140,11 +155,19 @@ function WordScroller(props) {
 	};
 
 	useEffect(() => {
+		visibleCountRef.current = visibleItems.length;
+	}, [visibleItems]);
+
+	useEffect(() => {
 		scrollerRef.current.startingNdx = props.startingNdx;
 		scrollerRef.current.pool = props.pool;
 		// In API pagination mode, don't use local pagination
 		if (props.hasMore === undefined) {
-			populateScroller(true);
+			if (visibleCountRef.current > 0) {
+				syncVisibleItems(props.pool || []);
+			} else {
+				populateScroller(true);
+			}
 		} else {
 			// API pagination mode - just display all items from pool
 			console.log('API mode: displaying', props.pool.length, 'items, hasMore:', props.hasMore);
