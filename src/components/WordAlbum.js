@@ -227,7 +227,7 @@ function WordAlbum(props) {
                             onChange={(e) => setEditedMoodText(e.target.value)}
                             placeholder="Enter mood text..."
                             autoFocus
-                            rows={6}
+                            rows={2}
                         />
                         <div className="album-info-button-group">
                             <button

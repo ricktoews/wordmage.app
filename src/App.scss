@@ -3892,8 +3892,8 @@ input[type="checkbox"] {
 }
 
 .album-title-info-icon {
-	font-size: 0.8rem;
-	color: #7a7a7a;
+	font-size: 1.4rem;
+	color: #a6a6a6;
 	flex-shrink: 0;
 }
 
@@ -3927,9 +3927,9 @@ input[type="checkbox"] {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height: 25vh;
-	min-height: 160px;
-	max-height: 30vh;
+	height: 33vh;
+	min-height: 220px;
+	max-height: 40vh;
 	background-color: #fcfcfc;
 	border: none;
 	border-radius: 15px 15px 0 0;
@@ -4020,8 +4020,8 @@ input[type="checkbox"] {
 	background-color: #fff;
 	color: #2a2a2a;
 	resize: vertical;
-	min-height: 120px;
-	max-height: 200px;
+	min-height: 50px;
+	max-height: 80px;
 	transition: border-color 0.15s ease;
 
 	&:focus {
