@@ -12,6 +12,7 @@ const ALBUM_THEME_LABELS = {
     ink: 'Ink',
     arcane: 'Arcane'
 };
+const GLOBAL_HEADER_THEME_CLASSES = ALBUM_THEMES.map(theme => `album-theme-global-${theme}`);
 
 function WordAlbum(props) {
     const [album, setAlbum] = useState(null);
@@ -37,6 +38,28 @@ function WordAlbum(props) {
 
     useEffect(() => {
         window.localStorage.setItem('wordmage.albumTheme', albumTheme);
+
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('wordmage:albumThemeChanged', {
+                detail: { theme: albumTheme }
+            }));
+        }
+    }, [albumTheme]);
+
+    useEffect(() => {
+        if (typeof document === 'undefined') {
+            return undefined;
+        }
+
+        const { body } = document;
+        body.classList.add('album-theme-global-active');
+        GLOBAL_HEADER_THEME_CLASSES.forEach((themeClass) => body.classList.remove(themeClass));
+        body.classList.add(`album-theme-global-${albumTheme}`);
+
+        return () => {
+            body.classList.remove('album-theme-global-active');
+            GLOBAL_HEADER_THEME_CLASSES.forEach((themeClass) => body.classList.remove(themeClass));
+        };
     }, [albumTheme]);
 
     const cycleAlbumTheme = () => {

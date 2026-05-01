@@ -27,7 +27,6 @@ import WordsInterface from './utils/words-interface';
 
 // Import components
 import Hamburger from './components/Hamburger';
-import WMLogo from './components/icons/WMLogo';
 import AddIcon from './components/icons/AddIcon';
 import PopupWordForm from './components/PopupWordForm';
 import PopupAIExplain from './components/PopupAIExplain';
@@ -45,6 +44,41 @@ import Profile from './Profile';
 import About from './About';
 
 import './App.scss';
+
+const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
+const THEME_TO_EMBLEM = {
+    classic: 'book',
+    paper: 'quill',
+    ink: 'owl',
+    arcane: 'lamp'
+};
+
+const getAlbumThemeFromStorage = () => {
+    if (typeof window === 'undefined') {
+        return 'classic';
+    }
+
+    const storedTheme = window.localStorage.getItem('wordmage.albumTheme');
+    return Object.prototype.hasOwnProperty.call(THEME_TO_EMBLEM, storedTheme) ? storedTheme : 'classic';
+};
+
+const getEmblemOverrideFromStorage = () => {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
+    const override = window.localStorage.getItem('wordmage.mastheadEmblem');
+    return EMBLEM_NAMES.includes(override) ? override : null;
+};
+
+const resolveMastheadEmblem = (theme) => {
+    const override = getEmblemOverrideFromStorage();
+    if (override) {
+        return override;
+    }
+
+    return THEME_TO_EMBLEM[theme] || 'book';
+};
 
 function App(props) {
     const [aiExplainWord, setAiExplainWord] = useState(null);
@@ -74,6 +108,7 @@ function App(props) {
     //---------------------------------------------
     const wordHash = WordsInterface.fullWordList();
     const [fullWordList, setFullWordList] = useState(wordHash);
+    const [mastheadEmblem, setMastheadEmblem] = useState(() => resolveMastheadEmblem(getAlbumThemeFromStorage()));
     const [view, setView] = useState('Random');
     const [word, setWord] = useState('');
     const [wordId, setWordId] = useState(0);
@@ -129,6 +164,38 @@ function App(props) {
 
     useEffect(() => {
         document.addEventListener('click', handleDocumentClicked, true);
+    }, []);
+
+    useEffect(() => {
+        const syncMastheadEmblemFromStorage = (themeOverride) => {
+            const theme = themeOverride || getAlbumThemeFromStorage();
+            setMastheadEmblem(resolveMastheadEmblem(theme));
+        };
+
+        const handleAlbumThemeChanged = (event) => {
+            const nextTheme = event?.detail?.theme;
+            syncMastheadEmblemFromStorage(nextTheme);
+        };
+
+        const handleStorage = (event) => {
+            if (event.key === 'wordmage.albumTheme' || event.key === 'wordmage.mastheadEmblem') {
+                syncMastheadEmblemFromStorage();
+            }
+        };
+
+        const handleMastheadEmblemChanged = () => {
+            syncMastheadEmblemFromStorage();
+        };
+
+        window.addEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
+        window.addEventListener('wordmage:mastheadEmblemChanged', handleMastheadEmblemChanged);
+        window.addEventListener('storage', handleStorage);
+
+        return () => {
+            window.removeEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
+            window.removeEventListener('wordmage:mastheadEmblemChanged', handleMastheadEmblemChanged);
+            window.removeEventListener('storage', handleStorage);
+        };
     }, []);
 
     const navToRandom = () => {
@@ -303,7 +370,19 @@ function App(props) {
 
             <header className="App-header">
                 <div className="hamburger-icon-container">
-                    <WMLogo onClick={hamburgerClick} />
+                    <button
+                        type="button"
+                        className="hamburger-icon masthead-emblem-button"
+                        onClick={hamburgerClick}
+                        title="Open navigation menu"
+                        aria-label="Open navigation menu"
+                    >
+                        <img
+                            src={`/images/wordmage_solid_emblems_svg/solid-${mastheadEmblem}.svg`}
+                            alt="WordMage emblem"
+                            className="masthead-emblem"
+                        />
+                    </button>
                 </div>                <div className="header-content">
                 </div>
 

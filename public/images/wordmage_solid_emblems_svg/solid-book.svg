@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><style>
+.solid{fill:currentColor}.cut{fill:var(--emblem-cutout,#fff)}
+.line{fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+</style><g color="var(--emblem-color,#b89242)">
+<path class="solid" d="M128 83c-23-21-52-24-81-11v109c31-15 58-11 81 13zM128 83c23-21 52-24 81-11v109c-31-15-58-11-81 13z"/>
+<path class="cut" d="M124 94c-18-12-41-15-63-7v73c23-8 45-4 63 13zM132 94c18-12 41-15 63-7v73c-23-8-45-4-63 13z"/>
+<rect class="solid" x="124" y="83" width="8" height="112" rx="3"/>
+<path class="solid" d="M128 19l8 29 30 8-30 8-8 30-8-30-30-8 30-8zM37 187c21 28 54 42 82 45-36 0-65-11-88-30zM219 187c-21 28-54 42-82 45 36 0 65-11 88-30zM58 206c14-14 21-30 22-52-14 15-20 31-22 52zM198 206c-14-14-21-30-22-52 14 15 20 31 22 52z"/>
+<rect class="solid" x="80" y="104" width="34" height="5" rx="2"/><rect class="solid" x="80" y="123" width="34" height="5" rx="2"/><rect class="solid" x="142" y="104" width="34" height="5" rx="2"/><rect class="solid" x="142" y="123" width="34" height="5" rx="2"/></g></svg>

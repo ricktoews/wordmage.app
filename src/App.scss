@@ -699,6 +699,23 @@ body {
 	align-items: center;
 }
 
+.masthead-emblem-button {
+	background: transparent;
+	border: none;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 0;
+}
+
+.masthead-emblem {
+	display: block;
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+}
+
 .App {
 	display: flex;
 	justify-content: center;
@@ -748,22 +765,22 @@ body {
 	align-items: center;
 	justify-content: center;
 	padding: 0;
-	background-color: transparent;
-	border: 1px solid #9b59b6;
-	color: #9b59b6;
+	background-color: #4a1a6b;
+	border: 1px solid #4a1a6b;
+	color: #ffffff;
 	cursor: pointer;
 	transition: all 0.2s;
 
 	&:hover {
-		background-color: rgba(155, 89, 182, 0.1);
-		border-color: #8e44ad;
-		color: #8e44ad;
+		background-color: #5c2280;
+		border-color: #5c2280;
+		color: #ffffff;
 	}
 
 	&:active {
-		background-color: rgba(155, 89, 182, 0.2);
-		border-color: #7d3c98;
-		color: #7d3c98;
+		background-color: #3a1355;
+		border-color: #3a1355;
+		color: #ffffff;
 	}
 
 	.glyphicon {
@@ -801,6 +818,107 @@ body {
 
 	.glyphicon {
 		font-size: 16px;
+	}
+}
+
+body.album-theme-global-active {
+	.App-header {
+		background-color: transparent;
+
+		.header-content {
+			background-color: #171717;
+			box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+		}
+	}
+
+	.header-nav-btn {
+		background-color: #4a1a6b;
+		border-color: #4a1a6b;
+		color: #ffffff;
+
+		&:hover {
+			background-color: #5c2280;
+			border-color: #5c2280;
+			color: #ffffff;
+		}
+
+		&:active {
+			background-color: #3a1355;
+			border-color: #3a1355;
+			color: #ffffff;
+		}
+	}
+}
+
+body.album-theme-global-paper {
+	.App-header .header-content {
+		background: linear-gradient(to bottom, #6a553a, #5a472f);
+	}
+
+	.header-nav-btn {
+		background-color: #5c3d1a;
+		border-color: #5c3d1a;
+		color: #fff3e0;
+
+		&:hover {
+			background-color: #7a5225;
+			border-color: #7a5225;
+			color: #ffffff;
+		}
+
+		&:active {
+			background-color: #472e12;
+			border-color: #472e12;
+			color: #ffffff;
+		}
+	}
+}
+
+body.album-theme-global-ink {
+	.App-header .header-content {
+		background: linear-gradient(to bottom, #1f3248, #19293b);
+	}
+
+	.header-nav-btn {
+		background-color: #1d4a72;
+		border-color: #1d4a72;
+		color: #e8f4ff;
+
+		&:hover {
+			background-color: #27618f;
+			border-color: #27618f;
+			color: #ffffff;
+		}
+
+		&:active {
+			background-color: #153858;
+			border-color: #153858;
+			color: #ffffff;
+		}
+	}
+}
+
+body.album-theme-global-arcane {
+	.App-header .header-content {
+		background: linear-gradient(to bottom, #1b1530, #140f27);
+	}
+
+	.header-nav-btn {
+		background-color: #3b1a6e;
+		border-color: #3b1a6e;
+		color: #e8d8ff;
+
+		&:hover {
+			background-color: #512490;
+			border-color: #512490;
+			color: #ffffff;
+		}
+
+		&:active {
+			background-color: #2a1252;
+			border-color: #2a1252;
+			color: #ffffff;
+		}
 	}
 }
 
@@ -1343,6 +1461,29 @@ body {
 }
 
 .favorites-page {
+	--album-masthead-bg-start: #f4f2ec;
+	--album-masthead-bg-end: #eeeae2;
+	--album-masthead-border: #e0e0e0;
+	--album-masthead-title: #2c2c2c;
+	--album-masthead-ornament: #8f8f8f;
+	--album-subtitle-color: #555;
+	--album-icon-focus-ring: rgba(155, 89, 182, 0.35);
+	--album-info-icon: #a6a6a6;
+	--album-info-icon-hover: #8f8f8f;
+	--album-nav-icon-bg: #9b59b6;
+	--album-nav-icon-hover: #8e44ad;
+	--album-nav-icon-active: #7d3c98;
+	--album-nav-icon-fg: #ffffff;
+	--album-theme-btn-bg: #7f4aa5;
+	--album-theme-btn-hover: #6f4191;
+	--album-theme-btn-active: #60387d;
+	--album-sort-bg: #f7f3ea;
+	--album-sort-border: #b9b0a2;
+	--album-sort-text: #5a4f3f;
+	--album-sort-hover-bg: #efe8da;
+	--album-sort-hover-border: #a79b8a;
+	--album-sort-active-bg: #e5dccb;
+
 	.browse {
 		display: none;
 	}
@@ -1355,8 +1496,8 @@ body {
 	width: 100%;
 	max-width: 100vw;
 	min-height: 50px;
-	background: linear-gradient(to bottom, #f4f2ec, #eeeae2);
-	border-bottom: 1px solid #e0e0e0;
+	background: linear-gradient(to bottom, var(--album-masthead-bg-start), var(--album-masthead-bg-end));
+	border-bottom: 1px solid var(--album-masthead-border);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -1366,7 +1507,7 @@ body {
 		font-family: "Georgia", "Times New Roman", serif;
 		font-size: 20px;
 		font-weight: 600;
-		color: #2c2c2c;
+		color: var(--album-masthead-title);
 		letter-spacing: 0.3px;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1377,6 +1518,7 @@ body {
 		&::after {
 			content: " ❧";
 			opacity: 0.55;
+			color: var(--album-masthead-ornament);
 			margin-left: 4px;
 		}
 
@@ -3379,6 +3521,50 @@ body {
 	}
 }
 
+.emblem-picker-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 18px 12px 8px;
+}
+
+.emblem-picker-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	border: 1px solid #d9d3c8;
+	border-radius: 999px;
+	background: #fbfaf6;
+	color: #4a3a2a;
+	cursor: pointer;
+	font-size: 14px;
+	text-transform: capitalize;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+	&:hover {
+		background: #f3eee3;
+		border-color: #c6b7a1;
+	}
+
+	&.active {
+		background: #4A3A2A;
+		border-color: #4A3A2A;
+		color: #fff;
+	}
+}
+
+.emblem-picker-image {
+	width: 22px;
+	height: 22px;
+	object-fit: contain;
+	display: block;
+}
+
+.emblem-picker-label {
+	line-height: 1;
+}
+
 .profile-form-message {
 	color: #c00;
 }
@@ -3931,7 +4117,7 @@ input[type="checkbox"] {
 	font-family: $lovable-font;
 	font-size: $lovable-def-size;
 	font-weight: 400;
-	color: #555;
+	color: var(--album-subtitle-color);
 	line-height: 1.3;
 }
 
@@ -3948,19 +4134,19 @@ input[type="checkbox"] {
 
 	&:focus-visible {
 		outline: none;
-		box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35);
+		box-shadow: 0 0 0 2px var(--album-icon-focus-ring);
 		border-radius: 50%;
 	}
 }
 
 .album-title-info-icon {
 	font-size: 1.2rem;
-	color: #a6a6a6;
+	color: var(--album-info-icon);
 	flex-shrink: 0;
 	transition: color 0.2s ease;
 
 	.album-title-info-button:hover & {
-		color: #8f8f8f;
+		color: var(--album-info-icon-hover);
 	}
 }
 
@@ -4260,9 +4446,9 @@ input[type="checkbox"] {
 }
 
 .favorites-sort-toggle {
-	border: 1px solid #b9b0a2;
-	background: #f7f3ea;
-	color: #5a4f3f;
+	border: 1px solid var(--album-sort-border);
+	background: var(--album-sort-bg);
+	color: var(--album-sort-text);
 	border-radius: 999px;
 	height: 32px;
 	padding: 0 12px;
@@ -4274,17 +4460,17 @@ input[type="checkbox"] {
 	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
 	&:hover {
-		background: #efe8da;
-		border-color: #a79b8a;
+		background: var(--album-sort-hover-bg);
+		border-color: var(--album-sort-hover-border);
 	}
 
 	&:active {
-		background: #e5dccb;
+		background: var(--album-sort-active-bg);
 	}
 }
 
 .moods-refresh-icon {
-	background: #9b59b6;
+	background: var(--album-nav-icon-bg);
 	border: none;
 	width: 38px;
 	height: 38px;
@@ -4293,7 +4479,7 @@ input[type="checkbox"] {
 	justify-content: center;
 	cursor: pointer;
 	border-radius: 50%;
-	color: white;
+	color: var(--album-nav-icon-fg);
 	padding: 7px;
 	transition: background-color 0.2s, color 0.2s;
 
@@ -4302,31 +4488,49 @@ input[type="checkbox"] {
 	}
 
 	&:hover {
-		background-color: #8e44ad;
+		background-color: var(--album-nav-icon-hover);
 	}
 
 	&:active {
-		background-color: #7d3c98;
+		background-color: var(--album-nav-icon-active);
 	}
 }
 
 .album-theme-toggle {
-	background: #7f4aa5;
+	background: var(--album-theme-btn-bg);
 
 	&:hover {
-		background-color: #6f4191;
+		background-color: var(--album-theme-btn-hover);
 	}
 
 	&:active {
-		background-color: #60387d;
+		background-color: var(--album-theme-btn-active);
 	}
 }
 
 .favorites-page.album-theme-paper {
-	.favorites-toolbar {
-		background: linear-gradient(to bottom, #f7f3ea, #f0e8dc);
-		border-bottom: 1px solid #d6c8b4;
-	}
+	--album-masthead-bg-start: #f7f3ea;
+	--album-masthead-bg-end: #f0e8dc;
+	--album-masthead-border: #d6c8b4;
+	--album-masthead-title: #3f3425;
+	--album-masthead-ornament: #8e7350;
+	--album-subtitle-color: #67553f;
+	--album-icon-focus-ring: rgba(142, 115, 80, 0.35);
+	--album-info-icon: #9b8565;
+	--album-info-icon-hover: #7a6343;
+	--album-nav-icon-bg: #b08d5e;
+	--album-nav-icon-hover: #9b7b4f;
+	--album-nav-icon-active: #876743;
+	--album-nav-icon-fg: #fff9ef;
+	--album-theme-btn-bg: #a07c50;
+	--album-theme-btn-hover: #8d6b44;
+	--album-theme-btn-active: #77593a;
+	--album-sort-bg: #f4edde;
+	--album-sort-border: #ccb896;
+	--album-sort-text: #5e4a34;
+	--album-sort-hover-bg: #ede2cd;
+	--album-sort-hover-border: #bfa780;
+	--album-sort-active-bg: #e3d5bc;
 
 	.word-item {
 		background: #fffdf8;
@@ -4348,10 +4552,28 @@ input[type="checkbox"] {
 }
 
 .favorites-page.album-theme-ink {
-	.favorites-toolbar {
-		background: linear-gradient(to bottom, #edf3fb, #e4ecf7);
-		border-bottom: 1px solid #c7d3e6;
-	}
+	--album-masthead-bg-start: #edf3fb;
+	--album-masthead-bg-end: #e4ecf7;
+	--album-masthead-border: #c7d3e6;
+	--album-masthead-title: #1f334d;
+	--album-masthead-ornament: #5d7ea5;
+	--album-subtitle-color: #4c657f;
+	--album-icon-focus-ring: rgba(80, 116, 160, 0.32);
+	--album-info-icon: #6f8cad;
+	--album-info-icon-hover: #567493;
+	--album-nav-icon-bg: #4d739f;
+	--album-nav-icon-hover: #3f618a;
+	--album-nav-icon-active: #345272;
+	--album-nav-icon-fg: #f4f8ff;
+	--album-theme-btn-bg: #415f84;
+	--album-theme-btn-hover: #35506f;
+	--album-theme-btn-active: #2d455f;
+	--album-sort-bg: #edf3fa;
+	--album-sort-border: #b5c7de;
+	--album-sort-text: #3d5878;
+	--album-sort-hover-bg: #e2ecf7;
+	--album-sort-hover-border: #9fb8d4;
+	--album-sort-active-bg: #d8e5f2;
 
 	.word-item {
 		background: #f8fbff;
@@ -4373,58 +4595,31 @@ input[type="checkbox"] {
 }
 
 .favorites-page.album-theme-arcane {
+	--album-masthead-bg-start: #1e1a30;
+	--album-masthead-bg-end: #181428;
+	--album-masthead-border: #3a2d6a;
+	--album-masthead-title: #d8c9f5;
+	--album-masthead-ornament: #9b76e0;
+	--album-subtitle-color: #a98de0;
+	--album-icon-focus-ring: rgba(188, 151, 255, 0.4);
+	--album-info-icon: #7b5cb5;
+	--album-info-icon-hover: #c3a0f5;
+	--album-nav-icon-bg: #4a2e7a;
+	--album-nav-icon-hover: #5e3d99;
+	--album-nav-icon-active: #3a2360;
+	--album-nav-icon-fg: #d4baff;
+	--album-theme-btn-bg: #3c2463;
+	--album-theme-btn-hover: #512f85;
+	--album-theme-btn-active: #341f56;
+	--album-sort-bg: #2a213f;
+	--album-sort-border: #5d4b85;
+	--album-sort-text: #dac9ff;
+	--album-sort-hover-bg: #332851;
+	--album-sort-hover-border: #7863a8;
+	--album-sort-active-bg: #251c38;
+
 	// Page background
 	background-color: #12101e;
-
-	// Toolbar: deep indigo with a subtle shimmer gradient
-	.favorites-toolbar {
-		background: linear-gradient(to bottom, #1e1a30, #181428);
-		border-bottom: 1px solid #3a2d6a;
-
-		.favorites-toolbar-title {
-			color: #d8c9f5;
-
-			&::after {
-				opacity: 0.4;
-				color: #9b76e0;
-			}
-		}
-	}
-
-	// Subtitle (album name) and info icon
-	.album-title-subtitle {
-		color: #a98de0;
-	}
-
-	.album-title-info-icon {
-		color: #7b5cb5;
-
-		.album-title-info-button:hover & {
-			color: #c3a0f5;
-		}
-	}
-
-	// Toolbar action icons
-	.moods-refresh-icon {
-		background: #4a2e7a;
-		color: #d4baff;
-
-		&:hover {
-			background: #5e3d99;
-		}
-
-		&:active {
-			background: #3a2360;
-		}
-	}
-
-	.album-theme-toggle {
-		background: #3c2463;
-
-		&:hover {
-			background: #512f85;
-		}
-	}
 
 	// Word cards: dark parchment with a glowing purple border
 	.word-item {

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><style>
+.solid{fill:currentColor}.cut{fill:var(--emblem-cutout,#fff)}
+.line{fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+</style><g color="var(--emblem-color,#b89242)">
+<path class="solid" d="M116 35c-20 35-22 77-8 104 7 14 16 21 20 21s13-7 20-21c14-27 12-69-8-104z"/>
+<path class="cut" d="M127 72c-16 24-11 47 1 62 16-21 14-41 1-58 3 20-9 29-2-4z"/>
+<rect class="solid" x="101" y="153" width="54" height="18" rx="6"/><path class="solid" d="M107 168l-15 30h72l-15-30z"/>
+<ellipse class="solid" cx="128" cy="199" rx="58" ry="19"/>
+<path class="solid" d="M93 178c-21 5-43-5-51-30 28 5 49 2 68-12zM162 177c28-9 42-32 48-59-16 19-34 32-60 28zM190 93c12-13 23-15 33-5-16 0-24 7-30 20zM54 201c21 18 127 18 148 0-19 34-129 34-148 0z"/>
+<path class="solid" d="M128 12l6 16 17 6-17 6-6 16-6-16-17-6 17-6zM48 65l5 11 12 4-11 5-4 12-5-11-12-4 11-5zM205 45l6 13 14 4-13 6-4 14-6-13-14-4 13-6z"/></g></svg>
