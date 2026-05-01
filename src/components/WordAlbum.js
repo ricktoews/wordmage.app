@@ -1,9 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy, faPalette } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
+
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
+const ALBUM_THEME_LABELS = {
+    classic: 'Classic',
+    paper: 'Paper',
+    ink: 'Ink',
+    arcane: 'Arcane'
+};
 
 function WordAlbum(props) {
     const [album, setAlbum] = useState(null);
@@ -15,9 +23,31 @@ function WordAlbum(props) {
     const [savingMood, setSavingMood] = useState(false);
     const [copyToast, setCopyToast] = useState(false);
     const [favoritesSortMode, setFavoritesSortMode] = useState('random');
+    const [albumTheme, setAlbumTheme] = useState(() => {
+        if (typeof window === 'undefined') {
+            return 'classic';
+        }
+
+        const savedTheme = window.localStorage.getItem('wordmage.albumTheme');
+        return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
+    });
     const albumId = props.match.params.id;
     const panelRef = useRef(null);
     const dragState = useRef(null);
+
+    useEffect(() => {
+        window.localStorage.setItem('wordmage.albumTheme', albumTheme);
+    }, [albumTheme]);
+
+    const cycleAlbumTheme = () => {
+        setAlbumTheme((currentTheme) => {
+            const currentIndex = ALBUM_THEMES.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % ALBUM_THEMES.length;
+            return ALBUM_THEMES[nextIndex];
+        });
+    };
+
+    const nextTheme = ALBUM_THEMES[(ALBUM_THEMES.indexOf(albumTheme) + 1) % ALBUM_THEMES.length];
 
     useEffect(() => {
         if (albumId) {
@@ -177,6 +207,7 @@ function WordAlbum(props) {
     };
 
     const isFavoritesAlbum = album?.title === 'Favorites';
+    const isLearnAlbum = album?.title === 'Learn';
 
     const displayedWords = useMemo(() => {
         if (!album?.words) return [];
@@ -201,30 +232,36 @@ function WordAlbum(props) {
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
-        <div className="word-list-page-container favorites-page">
+        <div className={`word-list-page-container favorites-page album-theme-${albumTheme}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">
-                        Word Album
+                        {isFavoritesAlbum ? 'Favorites' : isLearnAlbum ? 'Learn' : 'Word Album'}
                     </div>
-                    {album?.title && (
+                    {album?.title && !isFavoritesAlbum && !isLearnAlbum && (
                         <div className="album-title-subtitle">
                             <span>{album.title}</span>
-                            {!isFavoritesAlbum && (
-                                <button
-                                    type="button"
-                                    className="album-title-info-button"
-                                    onClick={() => setShowAlbumInfo(prev => !prev)}
-                                    title="Album info"
-                                    aria-label="Album info"
-                                >
-                                    <FontAwesomeIcon icon={faCircleInfo} className="album-title-info-icon" />
-                                </button>
-                            )}
+                            <button
+                                type="button"
+                                className="album-title-info-button"
+                                onClick={() => setShowAlbumInfo(prev => !prev)}
+                                title="Album info"
+                                aria-label="Album info"
+                            >
+                                <FontAwesomeIcon icon={faCircleInfo} className="album-title-info-icon" />
+                            </button>
                         </div>
                     )}
                 </div>
                 <div className="moods-toolbar-actions">
+                    <button
+                        className="moods-refresh-icon album-theme-toggle"
+                        onClick={cycleAlbumTheme}
+                        title={`Theme: ${ALBUM_THEME_LABELS[albumTheme]} (switch to ${ALBUM_THEME_LABELS[nextTheme]})`}
+                        aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]} (switch to ${ALBUM_THEME_LABELS[nextTheme]})`}
+                    >
+                        <FontAwesomeIcon icon={faPalette} />
+                    </button>
                     {isFavoritesAlbum && (
                         <button
                             type="button"

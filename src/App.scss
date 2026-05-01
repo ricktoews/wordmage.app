@@ -1414,29 +1414,37 @@ body {
 			white-space: nowrap;
 			flex: 0 0 auto;
 			min-width: 100px;
+			transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
 			svg {
 				font-size: 12px;
 			}
+
+			&:focus-visible {
+				outline: none;
+				box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35);
+			}
 		}
 
 		.btn-favorites {
-			background-color: #4a90e2;
-			color: white;
-			border: 1px solid #3a7bc8;
+			background-color: #eaf2fb;
+			color: #2b4f73;
+			border: 1px solid #c6d9ef;
 
 			&:hover {
-				background-color: #3a7bc8;
+				background-color: #dceafb;
+				border-color: #b4cce9;
 			}
 		}
 
 		.btn-learn {
-			background-color: #52c41a;
-			color: white;
-			border: 1px solid #389e0d;
+			background-color: #eef7ea;
+			color: #355f2c;
+			border: 1px solid #cce4bd;
 
 			&:hover {
-				background-color: #389e0d;
+				background-color: #e2f1da;
+				border-color: #bddcab;
 			}
 		}
 
@@ -1448,6 +1456,27 @@ body {
 			align-items: center;
 			gap: 6px;
 			white-space: nowrap;
+			background: linear-gradient(180deg, #8b59b3 0%, #7a4aa4 100%);
+			color: #ffffff;
+			border: 1px solid #6f4399;
+			box-shadow: 0 1px 2px rgba(60, 35, 85, 0.2);
+			transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+			&:hover {
+				background: #74459d;
+				border-color: #673b8d;
+				box-shadow: 0 2px 4px rgba(60, 35, 85, 0.25);
+			}
+
+			&:active {
+				background: #673b8d;
+				border-color: #5b347b;
+			}
+
+			&:focus-visible {
+				outline: none;
+				box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35), 0 2px 4px rgba(60, 35, 85, 0.25);
+			}
 
 			svg {
 				font-size: 12px;
@@ -3717,29 +3746,37 @@ input[type="checkbox"] {
 		align-items: center;
 		gap: 6px;
 		white-space: nowrap;
+		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
 		svg {
 			font-size: 12px;
 		}
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35);
+		}
 	}
 
 	.btn-favorites {
-		background-color: #4a90e2;
-		color: white;
-		border: 1px solid #3a7bc8;
+		background-color: #eaf2fb;
+		color: #2b4f73;
+		border: 1px solid #c6d9ef;
 
 		&:hover {
-			background-color: #3a7bc8;
+			background-color: #dceafb;
+			border-color: #b4cce9;
 		}
 	}
 
 	.btn-learn {
-		background-color: #52c41a;
-		color: white;
-		border: 1px solid #389e0d;
+		background-color: #eef7ea;
+		color: #355f2c;
+		border: 1px solid #cce4bd;
 
 		&:hover {
-			background-color: #389e0d;
+			background-color: #e2f1da;
+			border-color: #bddcab;
 		}
 	}
 }
@@ -3782,6 +3819,12 @@ input[type="checkbox"] {
 	&:hover {
 		color: #333;
 	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35);
+		border-radius: 4px;
+	}
 }
 
 .album-menu-dropdown {
@@ -3789,12 +3832,13 @@ input[type="checkbox"] {
 	top: 100%;
 	right: 0;
 	background: white;
-	border: 1px solid #dde5ed;
+	border: 1px solid #ddd;
 	border-radius: 4px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 	min-width: 120px;
 	z-index: 100;
-	margin-top: 4px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	margin-top: 2px;
 }
 
 .album-menu-item {
@@ -3829,7 +3873,7 @@ input[type="checkbox"] {
 	width: 100px;
 	height: 100px;
 	object-fit: cover;
-	border-radius: 4px;
+	border-radius: 8px;
 	flex-shrink: 0;
 }
 
@@ -3891,26 +3935,39 @@ input[type="checkbox"] {
 	line-height: 1.3;
 }
 
-.album-title-info-icon {
-	font-size: 1.4rem;
-	color: #a6a6a6;
-	flex-shrink: 0;
-}
 
 .album-title-info-button {
 	background: none;
 	border: none;
-	padding: 0;
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
+	padding: 0;
 	cursor: pointer;
 	line-height: 1;
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35);
+		border-radius: 50%;
+	}
+}
+
+.album-title-info-icon {
+	font-size: 1.2rem;
+	color: #a6a6a6;
+	flex-shrink: 0;
+	transition: color 0.2s ease;
+
+	.album-title-info-button:hover & {
+		color: #8f8f8f;
+	}
 }
 
 .album-info-overlay {
 	position: fixed;
 	inset: 0;
-	background: rgba(0, 0, 0, 0.1);
+	background: rgba(0, 0, 0, 0.18);
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.22s ease;
@@ -4250,6 +4307,190 @@ input[type="checkbox"] {
 
 	&:active {
 		background-color: #7d3c98;
+	}
+}
+
+.album-theme-toggle {
+	background: #7f4aa5;
+
+	&:hover {
+		background-color: #6f4191;
+	}
+
+	&:active {
+		background-color: #60387d;
+	}
+}
+
+.favorites-page.album-theme-paper {
+	.favorites-toolbar {
+		background: linear-gradient(to bottom, #f7f3ea, #f0e8dc);
+		border-bottom: 1px solid #d6c8b4;
+	}
+
+	.word-item {
+		background: #fffdf8;
+		border: 1px solid #eadfcd;
+		border-radius: 12px;
+		padding: 14px 12px;
+		margin: 0 10px 10px;
+	}
+
+	.word-item-word,
+	.word-item-def {
+		color: #3f3425;
+	}
+
+	.album-info-panel {
+		background-color: #fffaf0;
+		box-shadow: 0 -8px 22px rgba(70, 48, 25, 0.18);
+	}
+}
+
+.favorites-page.album-theme-ink {
+	.favorites-toolbar {
+		background: linear-gradient(to bottom, #edf3fb, #e4ecf7);
+		border-bottom: 1px solid #c7d3e6;
+	}
+
+	.word-item {
+		background: #f8fbff;
+		border: 1px solid #d4e0ef;
+		border-radius: 10px;
+		padding: 14px 12px;
+		margin: 0 10px 10px;
+	}
+
+	.word-item-word,
+	.word-item-def {
+		color: #1f334d;
+	}
+
+	.album-info-panel {
+		background-color: #f3f8ff;
+		box-shadow: 0 -8px 22px rgba(27, 45, 73, 0.16);
+	}
+}
+
+.favorites-page.album-theme-arcane {
+	// Page background
+	background-color: #12101e;
+
+	// Toolbar: deep indigo with a subtle shimmer gradient
+	.favorites-toolbar {
+		background: linear-gradient(to bottom, #1e1a30, #181428);
+		border-bottom: 1px solid #3a2d6a;
+
+		.favorites-toolbar-title {
+			color: #d8c9f5;
+
+			&::after {
+				opacity: 0.4;
+				color: #9b76e0;
+			}
+		}
+	}
+
+	// Subtitle (album name) and info icon
+	.album-title-subtitle {
+		color: #a98de0;
+	}
+
+	.album-title-info-icon {
+		color: #7b5cb5;
+
+		.album-title-info-button:hover & {
+			color: #c3a0f5;
+		}
+	}
+
+	// Toolbar action icons
+	.moods-refresh-icon {
+		background: #4a2e7a;
+		color: #d4baff;
+
+		&:hover {
+			background: #5e3d99;
+		}
+
+		&:active {
+			background: #3a2360;
+		}
+	}
+
+	.album-theme-toggle {
+		background: #3c2463;
+
+		&:hover {
+			background: #512f85;
+		}
+	}
+
+	// Word cards: dark parchment with a glowing purple border
+	.word-item {
+		background: #1c1728;
+		border: 1px solid #3d2e68;
+		border-radius: 10px;
+		padding: 14px 12px;
+		margin: 0 10px 10px;
+		box-shadow: 0 0 0 0 transparent;
+		transition: box-shadow 0.2s ease;
+
+		&:hover {
+			box-shadow: 0 0 10px 1px rgba(155, 89, 182, 0.25);
+		}
+	}
+
+	// Word text
+	.word-item-word {
+		color: #e2d5ff;
+	}
+
+	.word-item-def,
+	.word-item-def-container {
+		color: #b8a8d8;
+	}
+
+	.word-item-source {
+		color: #7060a0;
+	}
+
+	// Separator dots between cards
+	.word-item-sep-container::before {
+		background-color: #3d2e68;
+	}
+
+	// Kebab / action icon
+	.word-card-menu-button {
+		color: #7b5cb5;
+
+		&:hover {
+			color: #c3a0f5;
+			background-color: rgba(155, 89, 182, 0.12);
+		}
+	}
+
+	// Bottom mood panel
+	.album-info-panel {
+		background-color: #1a1428;
+		box-shadow: 0 -8px 28px rgba(100, 60, 180, 0.3);
+
+		.album-info-drag-handle {
+			background: rgba(180, 140, 255, 0.25);
+		}
+
+		.album-info-panel-label {
+			color: #c8aef8;
+		}
+
+		.album-info-panel-content {
+			color: #c0b0e0;
+		}
+	}
+
+	// Overlay behind mood panel
+	.album-info-overlay {
+		background: rgba(8, 5, 20, 0.55);
 	}
 }
 
