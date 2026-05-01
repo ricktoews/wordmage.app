@@ -7,7 +7,7 @@ import { CONFIG } from '../config';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
 const ALBUM_THEME_LABELS = {
-    classic: 'Classic',
+    classic: 'Lilac',
     paper: 'Paper',
     ink: 'Ink',
     arcane: 'Arcane'
@@ -24,6 +24,7 @@ function WordAlbum(props) {
     const [savingMood, setSavingMood] = useState(false);
     const [copyToast, setCopyToast] = useState(false);
     const [favoritesSortMode, setFavoritesSortMode] = useState('random');
+    const [showThemeMenu, setShowThemeMenu] = useState(false);
     const [albumTheme, setAlbumTheme] = useState(() => {
         if (typeof window === 'undefined') {
             return 'classic';
@@ -35,6 +36,12 @@ function WordAlbum(props) {
     const albumId = props.match.params.id;
     const panelRef = useRef(null);
     const dragState = useRef(null);
+    const themeMenuRef = useRef(null);
+    const themeToggleButtonRef = useRef(null);
+    const themeClickTimerRef = useRef(null);
+    const lastThemeToggleClickRef = useRef(0);
+
+    const THEME_DOUBLE_TAP_MS = 280;
 
     useEffect(() => {
         window.localStorage.setItem('wordmage.albumTheme', albumTheme);
@@ -70,7 +77,35 @@ function WordAlbum(props) {
         });
     };
 
-    const nextTheme = ALBUM_THEMES[(ALBUM_THEMES.indexOf(albumTheme) + 1) % ALBUM_THEMES.length];
+    const handleThemeToggleClick = () => {
+        const now = Date.now();
+        const msSinceLastClick = now - lastThemeToggleClickRef.current;
+
+        if (msSinceLastClick > 0 && msSinceLastClick <= THEME_DOUBLE_TAP_MS) {
+            if (themeClickTimerRef.current) {
+                clearTimeout(themeClickTimerRef.current);
+                themeClickTimerRef.current = null;
+            }
+            lastThemeToggleClickRef.current = 0;
+            setShowThemeMenu((prev) => !prev);
+            return;
+        }
+
+        lastThemeToggleClickRef.current = now;
+        if (themeClickTimerRef.current) {
+            clearTimeout(themeClickTimerRef.current);
+        }
+
+        themeClickTimerRef.current = setTimeout(() => {
+            cycleAlbumTheme();
+            themeClickTimerRef.current = null;
+        }, THEME_DOUBLE_TAP_MS);
+    };
+
+    const handleThemeSelect = (theme) => {
+        setAlbumTheme(theme);
+        setShowThemeMenu(false);
+    };
 
     useEffect(() => {
         if (albumId) {
@@ -78,8 +113,49 @@ function WordAlbum(props) {
             setShowAlbumInfo(false);
             setEditMode(false);
             setFavoritesSortMode('random');
+            setShowThemeMenu(false);
         }
     }, [albumId]);
+
+    useEffect(() => {
+        return () => {
+            if (themeClickTimerRef.current) {
+                clearTimeout(themeClickTimerRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!showThemeMenu) {
+            return undefined;
+        }
+
+        const handleOutsideThemeMenuClick = (event) => {
+            const target = event.target;
+
+            if (themeMenuRef.current?.contains(target) || themeToggleButtonRef.current?.contains(target)) {
+                return;
+            }
+
+            setShowThemeMenu(false);
+        };
+
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') {
+                setShowThemeMenu(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideThemeMenuClick);
+        document.addEventListener('touchstart', handleOutsideThemeMenuClick, { passive: true });
+        document.addEventListener('keydown', handleEscape);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideThemeMenuClick);
+            document.removeEventListener('touchstart', handleOutsideThemeMenuClick);
+            document.removeEventListener('keydown', handleEscape);
+        };
+    }, [showThemeMenu]);
 
     const fetchAlbum = async () => {
         setLoading(true);
@@ -255,7 +331,7 @@ function WordAlbum(props) {
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
-        <div className={`word-list-page-container favorites-page album-theme-${albumTheme}`}>
+            <div className={`word-list-page-container favorites-page album-theme-${albumTheme}${(!isFavoritesAlbum && !isLearnAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">
@@ -277,14 +353,37 @@ function WordAlbum(props) {
                     )}
                 </div>
                 <div className="moods-toolbar-actions">
-                    <button
-                        className="moods-refresh-icon album-theme-toggle"
-                        onClick={cycleAlbumTheme}
-                        title={`Theme: ${ALBUM_THEME_LABELS[albumTheme]} (switch to ${ALBUM_THEME_LABELS[nextTheme]})`}
-                        aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]} (switch to ${ALBUM_THEME_LABELS[nextTheme]})`}
-                    >
-                        <FontAwesomeIcon icon={faPalette} />
-                    </button>
+                    <div className="album-theme-menu-container">
+                        <button
+                            ref={themeToggleButtonRef}
+                            className="moods-refresh-icon album-theme-toggle"
+                            onClick={handleThemeToggleClick}
+                            title={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to cycle, double-click or double-tap for Themes menu.`}
+                            aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to cycle, double-click or double-tap for Themes menu.`}
+                            aria-haspopup="menu"
+                            aria-expanded={showThemeMenu}
+                        >
+                            <FontAwesomeIcon icon={faPalette} />
+                        </button>
+                        {showThemeMenu && (
+                            <div className="album-theme-menu" ref={themeMenuRef} role="menu" aria-label="Themes">
+                                <div className="album-theme-menu-title">Themes</div>
+                                {ALBUM_THEMES.map((theme) => (
+                                    <button
+                                        key={theme}
+                                        type="button"
+                                        className={`album-theme-menu-item${theme === albumTheme ? ' active' : ''}`}
+                                        onClick={() => handleThemeSelect(theme)}
+                                        role="menuitemradio"
+                                        aria-checked={theme === albumTheme}
+                                    >
+                                        <span className="album-theme-menu-item-name">{ALBUM_THEME_LABELS[theme]}</span>
+                                        <span className="album-theme-menu-item-status">{theme === albumTheme ? 'Current' : ''}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                     {isFavoritesAlbum && (
                         <button
                             type="button"

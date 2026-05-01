@@ -52,6 +52,7 @@ const THEME_TO_EMBLEM = {
     ink: 'owl',
     arcane: 'lamp'
 };
+const GLOBAL_THEME_CLASSES = Object.keys(THEME_TO_EMBLEM).map((theme) => `album-theme-global-${theme}`);
 
 const getAlbumThemeFromStorage = () => {
     if (typeof window === 'undefined') {
@@ -167,25 +168,35 @@ function App(props) {
     }, []);
 
     useEffect(() => {
-        const syncMastheadEmblemFromStorage = (themeOverride) => {
+        const syncThemeUIFromStorage = (themeOverride) => {
             const theme = themeOverride || getAlbumThemeFromStorage();
             setMastheadEmblem(resolveMastheadEmblem(theme));
+
+            if (typeof document !== 'undefined') {
+                const { body } = document;
+                body.classList.add('album-theme-global-active');
+                GLOBAL_THEME_CLASSES.forEach((themeClass) => body.classList.remove(themeClass));
+                body.classList.add(`album-theme-global-${theme}`);
+            }
         };
 
         const handleAlbumThemeChanged = (event) => {
             const nextTheme = event?.detail?.theme;
-            syncMastheadEmblemFromStorage(nextTheme);
+            syncThemeUIFromStorage(nextTheme);
         };
 
         const handleStorage = (event) => {
             if (event.key === 'wordmage.albumTheme' || event.key === 'wordmage.mastheadEmblem') {
-                syncMastheadEmblemFromStorage();
+                syncThemeUIFromStorage();
             }
         };
 
         const handleMastheadEmblemChanged = () => {
-            syncMastheadEmblemFromStorage();
+            syncThemeUIFromStorage();
         };
+
+        // Re-sync on route changes so theme classes remain applied outside WordAlbum.
+        syncThemeUIFromStorage();
 
         window.addEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
         window.addEventListener('wordmage:mastheadEmblemChanged', handleMastheadEmblemChanged);
@@ -196,7 +207,7 @@ function App(props) {
             window.removeEventListener('wordmage:mastheadEmblemChanged', handleMastheadEmblemChanged);
             window.removeEventListener('storage', handleStorage);
         };
-    }, []);
+    }, [props.location.pathname]);
 
     const navToRandom = () => {
         var history = props.history;
