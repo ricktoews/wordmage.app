@@ -11,6 +11,16 @@ function WordEntry(props) {
 	const { wordObj, listType } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [showInfo, setShowInfo] = useState(false);
+	const sourceList = Array.isArray(wordObj.sources)
+		? wordObj.sources.filter(Boolean)
+		: wordObj.source
+			? [wordObj.source]
+			: [];
+	const sourceSummary = sourceList.length === 0
+		? null
+		: sourceList.length === 1
+			? sourceList[0]
+			: `${sourceList[0]} +${sourceList.length - 1} more`;
 
 	// Check if word is in favorites list (liked array)
 	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
@@ -67,6 +77,9 @@ function WordEntry(props) {
 					<div className="word-item-def">{wordObj.def}</div>
 				</div>
 				<div className="word-item-def-container">
+					{sourceSummary && (
+						<div className="word-item-source">✦ {sourceSummary}</div>
+					)}
 					{showInfo && (
 						<div className="word-info-popup">
 							{wordObj.sources ? (

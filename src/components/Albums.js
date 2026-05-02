@@ -5,6 +5,8 @@ import { faEllipsisVertical, faXmark, faPlus, faThumbsUp, faLeaf } from '@fortaw
 import { CONFIG } from '../config';
 import Popup from './Popup';
 
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
+
 function randomizeWords(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -27,9 +29,42 @@ function Albums(props) {
     const [createTitle, setCreateTitle] = useState('');
     const [moodPrompt, setMoodPrompt] = useState('');
     const [isCreating, setIsCreating] = useState(false);
+    const [albumTheme, setAlbumTheme] = useState(() => {
+        if (typeof window === 'undefined') {
+            return 'classic';
+        }
+
+        const savedTheme = window.localStorage.getItem('wordmage.albumTheme');
+        return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
+    });
 
     useEffect(() => {
         fetchAlbums();
+    }, []);
+
+    useEffect(() => {
+        const syncAlbumTheme = (themeOverride) => {
+            const storedTheme = themeOverride || window.localStorage.getItem('wordmage.albumTheme');
+            setAlbumTheme(ALBUM_THEMES.includes(storedTheme) ? storedTheme : 'classic');
+        };
+
+        const handleAlbumThemeChanged = (event) => {
+            syncAlbumTheme(event?.detail?.theme);
+        };
+
+        const handleStorage = (event) => {
+            if (event.key === 'wordmage.albumTheme') {
+                syncAlbumTheme();
+            }
+        };
+
+        window.addEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
+        window.addEventListener('storage', handleStorage);
+
+        return () => {
+            window.removeEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
+            window.removeEventListener('storage', handleStorage);
+        };
     }, []);
 
     const fetchAlbums = async () => {
@@ -260,16 +295,18 @@ function Albums(props) {
     };
 
     return (
-        <div className="word-list-page-container favorites-page albums-page">
+        <div className={`word-list-page-container favorites-page albums-page album-theme-${albumTheme}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-title">Albums</div>
                 <div className="favorites-toolbar-actions">
                     <button
-                        className="btn btn-primary create-album-btn"
+                        type="button"
+                        className="moods-refresh-icon create-album-icon-button"
                         onClick={handleCreateAlbumClick}
                         title="Create Album"
+                        aria-label="Create Album"
                     >
-                        <FontAwesomeIcon icon={faPlus} /> Create Album
+                        <FontAwesomeIcon icon={faPlus} />
                     </button>
                 </div>
             </div>

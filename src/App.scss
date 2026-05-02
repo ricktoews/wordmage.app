@@ -822,7 +822,7 @@ body {
 }
 
 body.album-theme-global-active {
-	--global-page-bg: #f4f1fa;
+	--global-page-bg: #fffefe;
 	--global-toolbar-start: #f1ecfb;
 	--global-toolbar-end: #e9e1f8;
 	--global-toolbar-border: #d2c2ee;
@@ -843,6 +843,16 @@ body.album-theme-global-active {
 	--global-input-border: #cfbfeb;
 	--global-input-focus: #7b5aae;
 	--global-input-focus-ring: rgba(123, 90, 174, 0.18);
+	--album-favorites-btn-bg: #edf3ff;
+	--album-favorites-btn-text: #304f77;
+	--album-favorites-btn-border: #ccdaef;
+	--album-favorites-btn-hover-bg: #e0ebff;
+	--album-favorites-btn-hover-border: #b7cae5;
+	--album-learn-btn-bg: #eef8ee;
+	--album-learn-btn-text: #355f2c;
+	--album-learn-btn-border: #cce4bd;
+	--album-learn-btn-hover-bg: #e3f2df;
+	--album-learn-btn-hover-border: #bddcab;
 
 	.App-header {
 		background-color: transparent;
@@ -878,8 +888,8 @@ body.album-theme-global-active {
 		background-color: var(--global-page-bg);
 	}
 
-	.random-page .word-list-scroller,
-	.browse-page .word-list-scroller {
+	.random-page .word-list-container,
+	.browse-page .word-list-container {
 		background-color: var(--global-page-bg);
 	}
 
@@ -1040,7 +1050,7 @@ body.album-theme-global-active {
 }
 
 body.album-theme-global-paper {
-	--global-page-bg: #f6f1e8;
+	--global-page-bg: #ffffff;
 	--global-toolbar-start: #f7f3ea;
 	--global-toolbar-end: #f0e8dc;
 	--global-toolbar-border: #d6c8b4;
@@ -1061,6 +1071,16 @@ body.album-theme-global-paper {
 	--global-input-border: #ccb896;
 	--global-input-focus: #9b7b4f;
 	--global-input-focus-ring: rgba(155, 123, 79, 0.16);
+	--album-favorites-btn-bg: #eef4f8;
+	--album-favorites-btn-text: #35556f;
+	--album-favorites-btn-border: #c8d6e1;
+	--album-favorites-btn-hover-bg: #e2ecf3;
+	--album-favorites-btn-hover-border: #b7c8d5;
+	--album-learn-btn-bg: #f1f6ea;
+	--album-learn-btn-text: #48603a;
+	--album-learn-btn-border: #c8d8ba;
+	--album-learn-btn-hover-bg: #e8efde;
+	--album-learn-btn-hover-border: #b8cbab;
 
 	.App-header .header-content {
 		background: linear-gradient(to bottom, #6a553a, #5a472f);
@@ -1086,7 +1106,7 @@ body.album-theme-global-paper {
 }
 
 body.album-theme-global-ink {
-	--global-page-bg: #f4f7fb;
+	--global-page-bg: #fcfeff;
 	--global-toolbar-start: #edf3fb;
 	--global-toolbar-end: #e4ecf7;
 	--global-toolbar-border: #c7d3e6;
@@ -1107,6 +1127,16 @@ body.album-theme-global-ink {
 	--global-input-border: #b5c7de;
 	--global-input-focus: #4d739f;
 	--global-input-focus-ring: rgba(77, 115, 159, 0.16);
+	--album-favorites-btn-bg: #e5eef9;
+	--album-favorites-btn-text: #244567;
+	--album-favorites-btn-border: #b8cce5;
+	--album-favorites-btn-hover-bg: #d9e6f7;
+	--album-favorites-btn-hover-border: #a7bfdc;
+	--album-learn-btn-bg: #e9f4ef;
+	--album-learn-btn-text: #2f5a49;
+	--album-learn-btn-border: #b9d4c8;
+	--album-learn-btn-hover-bg: #ddeadf;
+	--album-learn-btn-hover-border: #a6c3b5;
 
 	.App-header .header-content {
 		background: linear-gradient(to bottom, #1f3248, #19293b);
@@ -1132,7 +1162,7 @@ body.album-theme-global-ink {
 }
 
 body.album-theme-global-arcane {
-	--global-page-bg: #f1eef7;
+	--global-page-bg: #fbf8ff;
 	--global-toolbar-start: #2f244a;
 	--global-toolbar-end: #261d3e;
 	--global-toolbar-border: #5e4b88;
@@ -1153,6 +1183,16 @@ body.album-theme-global-arcane {
 	--global-input-border: #6d58a0;
 	--global-input-focus: #c3a0f5;
 	--global-input-focus-ring: rgba(195, 160, 245, 0.2);
+	--album-favorites-btn-bg: #f1e8ff;
+	--album-favorites-btn-text: #553a87;
+	--album-favorites-btn-border: #cebbed;
+	--album-favorites-btn-hover-bg: #e7dbfb;
+	--album-favorites-btn-hover-border: #bca4e2;
+	--album-learn-btn-bg: #e9f3ee;
+	--album-learn-btn-text: #395b4b;
+	--album-learn-btn-border: #bdd2c7;
+	--album-learn-btn-hover-bg: #dfebe5;
+	--album-learn-btn-hover-border: #a9c0b4;
 
 	.App-header .header-content {
 		background: linear-gradient(to bottom, #1b1530, #140f27);
@@ -1716,7 +1756,7 @@ body.album-theme-global-arcane {
 }
 
 .favorites-page {
-	--album-page-bg: #f9fafb;
+	--album-page-bg: #fcfdff;
 	--album-masthead-bg-start: #f4f2ec;
 	--album-masthead-bg-end: #eeeae2;
 	--album-masthead-border: #e0e0e0;
@@ -1745,7 +1785,7 @@ body.album-theme-global-arcane {
 	}
 }
 
-.favorites-page .word-list-scroller {
+.favorites-page .word-list-container {
 	background-color: var(--album-page-bg);
 }
 
@@ -1829,59 +1869,32 @@ body.album-theme-global-arcane {
 		}
 
 		.btn-favorites {
-			background-color: #eaf2fb;
-			color: #2b4f73;
-			border: 1px solid #c6d9ef;
+			background-color: var(--album-favorites-btn-bg, #eaf2fb);
+			color: var(--album-favorites-btn-text, #2b4f73);
+			border: 1px solid var(--album-favorites-btn-border, #c6d9ef);
 
 			&:hover {
-				background-color: #dceafb;
-				border-color: #b4cce9;
+				background-color: var(--album-favorites-btn-hover-bg, #dceafb);
+				border-color: var(--album-favorites-btn-hover-border, #b4cce9);
 			}
 		}
 
 		.btn-learn {
-			background-color: #eef7ea;
-			color: #355f2c;
-			border: 1px solid #cce4bd;
+			background-color: var(--album-learn-btn-bg, #eef7ea);
+			color: var(--album-learn-btn-text, #355f2c);
+			border: 1px solid var(--album-learn-btn-border, #cce4bd);
 
 			&:hover {
-				background-color: #e2f1da;
-				border-color: #bddcab;
+				background-color: var(--album-learn-btn-hover-bg, #e2f1da);
+				border-color: var(--album-learn-btn-hover-border, #bddcab);
 			}
 		}
 
-		.create-album-btn {
-			padding: 6px 12px;
-			font-size: 14px;
-			border-radius: 4px;
-			display: flex;
-			align-items: center;
-			gap: 6px;
-			white-space: nowrap;
-			background: linear-gradient(180deg, #8b59b3 0%, #7a4aa4 100%);
-			color: #ffffff;
-			border: 1px solid #6f4399;
-			box-shadow: 0 1px 2px rgba(60, 35, 85, 0.2);
-			transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-
-			&:hover {
-				background: #74459d;
-				border-color: #673b8d;
-				box-shadow: 0 2px 4px rgba(60, 35, 85, 0.25);
-			}
-
-			&:active {
-				background: #673b8d;
-				border-color: #5b347b;
-			}
-
-			&:focus-visible {
-				outline: none;
-				box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.35), 0 2px 4px rgba(60, 35, 85, 0.25);
-			}
+		.create-album-icon-button {
+			flex: 0 0 auto;
 
 			svg {
-				font-size: 12px;
+				font-size: 16px;
 			}
 		}
 	}
@@ -2870,6 +2883,7 @@ body.album-theme-global-arcane {
 
 .word-list-container {
 	z-index: 100;
+	background-color: $wordmage-background;
 
 	.word-list-wrapper {
 		position: relative;
@@ -3142,7 +3156,6 @@ body.album-theme-global-arcane {
 .word-list-scroller {
 	position: relative;
 	top: 100px;
-	background-color: $wordmage-background;
 }
 
 .word-list-scroller {
@@ -3168,6 +3181,11 @@ body.album-theme-global-arcane {
 
 .word-content-wrapper {
 	flex: 1;
+	display: block;
+}
+
+.word-item > .word-content-wrapper {
+	display: block;
 }
 
 .word-item> :first-child {
@@ -3175,6 +3193,11 @@ body.album-theme-global-arcane {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
+}
+
+/* Keep metadata (source) on its own row under the main word line. */
+.word-item > .word-content-wrapper {
+	display: block;
 }
 
 .word-item-word-container {
@@ -3254,9 +3277,10 @@ body.album-theme-global-arcane {
 
 .word-item-def-container {
 	font-family: Lato;
-	display: inline;
+	display: block;
 	color: black;
-	margin-left: 0.25em;
+	margin-left: 0;
+	margin-top: 0.35rem;
 	//background-color: white;
 }
 
@@ -3272,12 +3296,14 @@ body.album-theme-global-arcane {
 */
 
 .word-item-source {
-	font-style: italic;
-	font-size: 14px;
+	font-family: $lovable-font;
+	font-size: 0.72rem;
+	line-height: 1.35;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
 	color: rgb(128, 128, 128);
-	padding: 5px 0;
-	border-radius: 10px;
-	clear: both;
+	opacity: 0.9;
+	padding-top: 0.2rem;
 }
 
 .source-def-container {
@@ -4132,24 +4158,24 @@ input[type="checkbox"] {
 	}
 
 	.btn-favorites {
-		background-color: #eaf2fb;
-		color: #2b4f73;
-		border: 1px solid #c6d9ef;
+		background-color: var(--album-favorites-btn-bg, #eaf2fb);
+		color: var(--album-favorites-btn-text, #2b4f73);
+		border: 1px solid var(--album-favorites-btn-border, #c6d9ef);
 
 		&:hover {
-			background-color: #dceafb;
-			border-color: #b4cce9;
+			background-color: var(--album-favorites-btn-hover-bg, #dceafb);
+			border-color: var(--album-favorites-btn-hover-border, #b4cce9);
 		}
 	}
 
 	.btn-learn {
-		background-color: #eef7ea;
-		color: #355f2c;
-		border: 1px solid #cce4bd;
+		background-color: var(--album-learn-btn-bg, #eef7ea);
+		color: var(--album-learn-btn-text, #355f2c);
+		border: 1px solid var(--album-learn-btn-border, #cce4bd);
 
 		&:hover {
-			background-color: #e2f1da;
-			border-color: #bddcab;
+			background-color: var(--album-learn-btn-hover-bg, #e2f1da);
+			border-color: var(--album-learn-btn-hover-border, #bddcab);
 		}
 	}
 }
@@ -4286,6 +4312,10 @@ input[type="checkbox"] {
 
 .album-words-container {
 	// No extra positioning needed - WordScroller handles it
+}
+
+.favorites-page.album-has-subtitle .word-list-scroller {
+	top: 118px;
 }
 
 .favorites-toolbar-content {
@@ -4761,7 +4791,7 @@ input[type="checkbox"] {
 }
 
 .favorites-page.album-theme-classic {
-	--album-page-bg: #f4f1fa;
+	--album-page-bg: #fffefe;
 	--album-masthead-bg-start: #f1ecfb;
 	--album-masthead-bg-end: #e9e1f8;
 	--album-masthead-border: #d2c2ee;
@@ -4784,6 +4814,16 @@ input[type="checkbox"] {
 	--album-sort-hover-bg: #e8def7;
 	--album-sort-hover-border: #b8a3da;
 	--album-sort-active-bg: #ddcff2;
+	--album-favorites-btn-bg: #ece8ff;
+	--album-favorites-btn-text: #4d3e82;
+	--album-favorites-btn-border: #d0c2f1;
+	--album-favorites-btn-hover-bg: #e1d8ff;
+	--album-favorites-btn-hover-border: #bca7e3;
+	--album-learn-btn-bg: #edf6e7;
+	--album-learn-btn-text: #4b6735;
+	--album-learn-btn-border: #c9ddb6;
+	--album-learn-btn-hover-bg: #e3efd9;
+	--album-learn-btn-hover-border: #b7cfa0;
 
 	.word-item {
 		background: #fcf9ff;
@@ -4819,7 +4859,7 @@ input[type="checkbox"] {
 }
 
 .favorites-page.album-theme-paper {
-	--album-page-bg: #f6f1e8;
+	--album-page-bg: #ffffff;
 	--album-masthead-bg-start: #f7f3ea;
 	--album-masthead-bg-end: #f0e8dc;
 	--album-masthead-border: #d6c8b4;
@@ -4842,6 +4882,16 @@ input[type="checkbox"] {
 	--album-sort-hover-bg: #ede2cd;
 	--album-sort-hover-border: #bfa780;
 	--album-sort-active-bg: #e3d5bc;
+	--album-favorites-btn-bg: #eaf0f5;
+	--album-favorites-btn-text: #49627b;
+	--album-favorites-btn-border: #c4d0db;
+	--album-favorites-btn-hover-bg: #dde7ef;
+	--album-favorites-btn-hover-border: #b2c2cf;
+	--album-learn-btn-bg: #f3f0e1;
+	--album-learn-btn-text: #6a6238;
+	--album-learn-btn-border: #d8ceb0;
+	--album-learn-btn-hover-bg: #ece6d2;
+	--album-learn-btn-hover-border: #c8ba96;
 
 	.word-item {
 		background: #fffdf8;
@@ -4863,7 +4913,7 @@ input[type="checkbox"] {
 }
 
 .favorites-page.album-theme-ink {
-	--album-page-bg: #f4f7fb;
+	--album-page-bg: #fcfeff;
 	--album-masthead-bg-start: #edf3fb;
 	--album-masthead-bg-end: #e4ecf7;
 	--album-masthead-border: #c7d3e6;
@@ -4886,6 +4936,16 @@ input[type="checkbox"] {
 	--album-sort-hover-bg: #e2ecf7;
 	--album-sort-hover-border: #9fb8d4;
 	--album-sort-active-bg: #d8e5f2;
+	--album-favorites-btn-bg: #e2edf8;
+	--album-favorites-btn-text: #2b5176;
+	--album-favorites-btn-border: #bbcee2;
+	--album-favorites-btn-hover-bg: #d6e4f4;
+	--album-favorites-btn-hover-border: #a8c0da;
+	--album-learn-btn-bg: #e5f1ed;
+	--album-learn-btn-text: #2f5f54;
+	--album-learn-btn-border: #bdd6cb;
+	--album-learn-btn-hover-bg: #d8e8e2;
+	--album-learn-btn-hover-border: #a8c3b7;
 
 	.word-item {
 		background: #f8fbff;
@@ -4907,7 +4967,7 @@ input[type="checkbox"] {
 }
 
 .favorites-page.album-theme-arcane {
-	--album-page-bg: #f1eef7;
+	--album-page-bg: #fbf8ff;
 	--album-masthead-bg-start: #1e1a30;
 	--album-masthead-bg-end: #181428;
 	--album-masthead-border: #3a2d6a;
@@ -4930,9 +4990,19 @@ input[type="checkbox"] {
 	--album-sort-hover-bg: #332851;
 	--album-sort-hover-border: #7863a8;
 	--album-sort-active-bg: #251c38;
+	--album-favorites-btn-bg: #f0e5ff;
+	--album-favorites-btn-text: #654097;
+	--album-favorites-btn-border: #d0b8ef;
+	--album-favorites-btn-hover-bg: #e4d6fb;
+	--album-favorites-btn-hover-border: #bda5e2;
+	--album-learn-btn-bg: #e7f2ec;
+	--album-learn-btn-text: #3f6754;
+	--album-learn-btn-border: #bfd4c8;
+	--album-learn-btn-hover-bg: #dbeae2;
+	--album-learn-btn-hover-border: #abc1b4;
 
 	// Page background
-	background-color: #12101e;
+	background-color: #2a2242;
 
 	// Word cards: dark parchment with a glowing purple border
 	.word-item {
