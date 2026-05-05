@@ -343,14 +343,14 @@ function getLearnList() {
 }
 
 /**
- * Get random word from learn list for unscramble game.
+ * Get random word from favorites list for unscramble game.
  */
 function getUnscrambleItem() {
     var unscrambleItem = { word: '', def: '' };
-    var learnArray = getLearnList();
-    if (learnArray.length > 0) {
-        var ndx = Math.floor(Math.random() * learnArray.length);
-        unscrambleItem = learnArray[ndx];
+    var favoritesArray = userData.liked || [];
+    if (favoritesArray.length > 0) {
+        var ndx = Math.floor(Math.random() * favoritesArray.length);
+        unscrambleItem = favoritesArray[ndx];
     }
     console.log('getUnscrambleItem', unscrambleItem);
     return unscrambleItem;

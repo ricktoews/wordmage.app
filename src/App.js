@@ -415,11 +415,6 @@ function App(props) {
                         </button>
                     )}
                     {/* {authUser && (
-                        <button className="header-nav-btn" onClick={navToLearn} title="Learn">
-                            <FontAwesomeIcon icon={faLeaf} />
-                        </button>
-                    )}
-                    {authUser && (
                         <button className="header-nav-btn" onClick={navToTrain} title="Train">
                             <FontAwesomeIcon icon={faGraduationCap} />
                         </button>
@@ -442,6 +437,12 @@ function App(props) {
                             </button>
                             {accountMenuOpen && (
                                 <div className="account-menu" role="menu">
+                                    <button
+                                        className="account-menu-item"
+                                        onClick={() => { setAccountMenuOpen(false); navToProfile(); }}
+                                    >
+                                        Profile
+                                    </button>
                                     <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); signOut(); }}>Sign out</button>
                                 </div>
                             )}

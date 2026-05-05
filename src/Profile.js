@@ -6,6 +6,13 @@ import { CONFIG } from './config';
 import { WordMageContext } from './WordMageContext';
 
 const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
+const ALBUM_THEME_LABELS = {
+	classic: 'Lilac',
+	paper: 'Paper',
+	ink: 'Ink',
+	arcane: 'Arcane',
+};
 
 function Profile(props) {
 	var profile_user_id = localStorage.getItem('wordmage-profile-user_id');
@@ -30,18 +37,18 @@ function Profile(props) {
 	const [showNotification, setShowNotification] = useState(false);
 	const [profileUser, setProfileUser] = useState(profileObj);
 	const [custom, setCustom] = useState(getMyWords());
-	const [clickedWord, setClickedWord] = useState('');
-	const [clickedDef, setClickedDef] = useState('');
 	const [selectedDownload, setSelectedDownload] = useState('');
 	const [selectedMastheadEmblem, setSelectedMastheadEmblem] = useState(() => {
 		const override = localStorage.getItem('wordmage.mastheadEmblem');
 		return EMBLEM_NAMES.includes(override) ? override : 'theme';
 	});
+	const [selectedAlbumTheme, setSelectedAlbumTheme] = useState(() => {
+		const savedTheme = localStorage.getItem('wordmage.albumTheme');
+		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
+	});
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-	const clickedWordRef = useRef(null);
-	const profileFormRef = useRef(null);
 
 	// authUser is provided via WordMageContext; no local authUser state needed here.
 
@@ -55,21 +62,28 @@ function Profile(props) {
 
 
 	useEffect(() => {
-		if (profileFormRef.current) {
-			console.log('profile form', profileFormRef.current);
-			profileFormRef.current.addEventListener('click', handleProfileFormClick);
-		}
-	}, []);
+		const handleThemeChanged = (event) => {
+			const nextTheme = event?.detail?.theme;
+			if (ALBUM_THEMES.includes(nextTheme)) {
+				setSelectedAlbumTheme(nextTheme);
+			}
+		};
 
-	function handleProfileFormClick(e) {
-		var el = e.target;
-		var elClasses = Array.from(el.classList);
-		console.log('profile form clicked', elClasses);
-		if (elClasses.indexOf('my-word') === -1) {
-			clickedWordRef.current.classList.remove('element-show');
-			clickedWordRef.current.classList.add('element-hide');
-		}
-	}
+		const handleStorage = (event) => {
+			if (event.key === 'wordmage.albumTheme') {
+				const savedTheme = localStorage.getItem('wordmage.albumTheme');
+				setSelectedAlbumTheme(ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic');
+			}
+		};
+
+		window.addEventListener('wordmage:albumThemeChanged', handleThemeChanged);
+		window.addEventListener('storage', handleStorage);
+
+		return () => {
+			window.removeEventListener('wordmage:albumThemeChanged', handleThemeChanged);
+			window.removeEventListener('storage', handleStorage);
+		};
+	}, []);
 
 	function getMyWords() {
 		var tmpCustom = WordsInterface.getCustom();
@@ -166,16 +180,6 @@ function Profile(props) {
 		}
 	}
 
-	const handleWordClick = e => {
-		var el = e.target;
-		var { word, def } = el.dataset;
-		setClickedWord(word);
-		setClickedDef(def);
-		clickedWordRef.current.classList.remove('element-hide');
-		clickedWordRef.current.classList.add('element-show');
-		console.log('handleWordClick', word, def);
-	}
-
 	const closeNotification = () => {
 		setShowNotification(false);
 		setMessage('');
@@ -239,6 +243,18 @@ function Profile(props) {
 		window.dispatchEvent(new CustomEvent('wordmage:mastheadEmblemChanged'));
 	};
 
+	const handleThemeSelect = (themeName) => {
+		if (!ALBUM_THEMES.includes(themeName)) {
+			return;
+		}
+
+		localStorage.setItem('wordmage.albumTheme', themeName);
+		setSelectedAlbumTheme(themeName);
+		window.dispatchEvent(new CustomEvent('wordmage:albumThemeChanged', {
+			detail: { theme: themeName }
+		}));
+	};
+
 	return (
 		<>
 			{showNotification && (
@@ -251,16 +267,12 @@ function Profile(props) {
 			)}
 			<div className="profile-toolbar">
 				<div className="page-title">Profile</div>
+				{(profileUser.user_id || (authUser && authUser.email)) && (
+					<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
+				)}
 			</div>
-			<div ref={profileFormRef} className="profile-form plain-content container">
-				<div ref={clickedWordRef} className="clicked-word-container element-hide">
-					<div className="clicked-word-item">
-						<div className="clicked-word">{clickedWord}</div>
-						<div className="clicked-def">{clickedDef}</div>
-					</div>
-				</div>
-
-				{!profileUser.user_id ? (
+			<div className="profile-form plain-content container">
+				{!profileUser.user_id && (
 					<div className="form">
 						<div className="input-field">
 							<div className="icon-wrapper"><FontAwesomeIcon icon={faEnvelope} /></div>
@@ -278,11 +290,26 @@ function Profile(props) {
 						</div>
 						<div className="link-wrapper"><a href="/register">Not registered?</a></div>
 					</div>
-				) : (
-					<div className="form">
-						<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
-					</div>
 				)}
+
+				<div className="downloads-section">
+					<h4 className="downloads-heading">Theme</h4>
+					<div className="theme-picker-options" role="radiogroup" aria-label="Theme selection">
+						{ALBUM_THEMES.map((themeName) => (
+							<button
+								type="button"
+								key={themeName}
+								className={`theme-picker-btn ${selectedAlbumTheme === themeName ? 'active' : ''}`}
+								onClick={() => handleThemeSelect(themeName)}
+								role="radio"
+								aria-checked={selectedAlbumTheme === themeName}
+							>
+								<span className={`theme-swatch theme-swatch-${themeName}`} aria-hidden="true" />
+								<span className="theme-picker-label">{ALBUM_THEME_LABELS[themeName]}</span>
+							</button>
+						))}
+					</div>
+				</div>
 
 				<div className="downloads-section">
 					<h4 className="downloads-heading">Masthead Emblem</h4>

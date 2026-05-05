@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
@@ -178,6 +178,10 @@ function WordAlbum(props) {
 
     const handleBackToAlbums = () => {
         props.history.push('/albums');
+    };
+
+    const handleToUnscramble = () => {
+        props.history.push('/unscramble');
     };
 
     const handleWordLockToggle = (wordId, isLocked) => {
@@ -384,6 +388,16 @@ function WordAlbum(props) {
                             </div>
                         )}
                     </div>
+                    {(isLearnAlbum || isFavoritesAlbum) && (
+                        <button
+                            className="moods-refresh-icon"
+                            onClick={handleToUnscramble}
+                            title="Unscramble"
+                            aria-label="Unscramble"
+                        >
+                            <FontAwesomeIcon icon={faPuzzlePiece} />
+                        </button>
+                    )}
                     {isFavoritesAlbum && (
                         <button
                             type="button"

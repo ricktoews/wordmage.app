@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForward } from '@fortawesome/free-solid-svg-icons';
+import { faForward, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
 import DataSource from '../utils/data-source';
@@ -490,6 +490,9 @@ function Train(props) {
 			)}
 			<div className="train-toolbar">
 				<div className="train-toolbar-title">{isWhatToTrain ? 'What To Train' : 'Training Room'}</div>
+				<button className="train-toolbar-icon-btn" onClick={() => props.history.push('/unscramble')} title="Unscramble">
+					<FontAwesomeIcon icon={faPuzzlePiece} />
+				</button>
 				<div className="train-menu-container">
 					<button className="train-menu-btn" onClick={() => setShowMenu(prev => !prev)}>
 						<span className="train-menu-dots">&#8942;</span>
