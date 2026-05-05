@@ -5,7 +5,7 @@ import { faEllipsisVertical, faXmark, faPlus, faThumbsUp, faLeaf } from '@fortaw
 import { CONFIG } from '../config';
 import Popup from './Popup';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 function randomizeWords(array) {
     const shuffled = [...array];
@@ -316,22 +316,6 @@ function Albums(props) {
                     <div className="empty-state">No albums yet. Create one from a mood!</div>
                 ) : (
                     <>
-                        <div className="album-quick-access">
-                            <button
-                                className="btn btn-favorites album-quick-btn"
-                                onClick={handleFavoritesClick}
-                                title="Favorites"
-                            >
-                                <FontAwesomeIcon icon={faThumbsUp} /> Favorites
-                            </button>
-                            <button
-                                className="btn btn-learn album-quick-btn"
-                                onClick={handleLearnClick}
-                                title="Learn"
-                            >
-                                <FontAwesomeIcon icon={faLeaf} /> Learn
-                            </button>
-                        </div>
                         <div className="albums-list">
                             {albums.filter(album => album.title !== 'Favorites' && album.title !== 'Learn').map((album) => (
                                 <div

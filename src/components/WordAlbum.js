@@ -5,12 +5,15 @@ import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy, faPalette, faP
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
-    classic: 'Lilac',
-    paper: 'Paper',
-    ink: 'Ink',
-    arcane: 'Arcane'
+    classic: 'Literary',
+    paper: 'Parchment',
+    ink: 'Nocturne',
+    arcane: 'Arcane',
+    eldritch: 'Eldritch',
+    obsidian: 'Obsidian',
+    fogbound: 'Fogbound'
 };
 const GLOBAL_HEADER_THEME_CLASSES = ALBUM_THEMES.map(theme => `album-theme-global-${theme}`);
 
@@ -163,11 +166,6 @@ function WordAlbum(props) {
             const response = await fetch(`${CONFIG.domain}/albums/${albumId}`);
             const data = await response.json();
 
-            // Keep Learn alphabetized; Favorites ordering is controlled in the header.
-            if (data.words && data.title === 'Learn') {
-                data.words.sort((a, b) => a.word.localeCompare(b.word));
-            }
-
             setAlbum(data);
         } catch (error) {
             console.error('Error fetching album:', error);
@@ -310,7 +308,6 @@ function WordAlbum(props) {
     };
 
     const isFavoritesAlbum = album?.title === 'Favorites';
-    const isLearnAlbum = album?.title === 'Learn';
 
     const displayedWords = useMemo(() => {
         if (!album?.words) return [];
@@ -335,13 +332,13 @@ function WordAlbum(props) {
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
-            <div className={`word-list-page-container favorites-page album-theme-${albumTheme}${(!isFavoritesAlbum && !isLearnAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
+            <div className={`word-list-page-container favorites-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">
-                        {isFavoritesAlbum ? 'Favorites' : isLearnAlbum ? 'Learn' : 'Word Album'}
+                        {isFavoritesAlbum ? 'Favorites' : 'Word Album'}
                     </div>
-                    {album?.title && !isFavoritesAlbum && !isLearnAlbum && (
+                    {album?.title && !isFavoritesAlbum && (
                         <div className="album-title-subtitle">
                             <span>{album.title}</span>
                             <button
@@ -388,7 +385,7 @@ function WordAlbum(props) {
                             </div>
                         )}
                     </div>
-                    {(isLearnAlbum || isFavoritesAlbum) && (
+                    {isFavoritesAlbum && (
                         <button
                             className="moods-refresh-icon"
                             onClick={handleToUnscramble}

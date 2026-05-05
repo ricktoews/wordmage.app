@@ -50,7 +50,10 @@ const THEME_TO_EMBLEM = {
     classic: 'book',
     paper: 'quill',
     ink: 'owl',
-    arcane: 'lamp'
+    arcane: 'lamp',
+    eldritch: 'compass',
+    obsidian: 'key',
+    fogbound: 'lamp'
 };
 const GLOBAL_THEME_CLASSES = Object.keys(THEME_TO_EMBLEM).map((theme) => `album-theme-global-${theme}`);
 

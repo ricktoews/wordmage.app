@@ -6,12 +6,15 @@ import { CONFIG } from './config';
 import { WordMageContext } from './WordMageContext';
 
 const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane'];
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
-	classic: 'Lilac',
-	paper: 'Paper',
-	ink: 'Ink',
+	classic: 'Literary',
+	paper: 'Parchment',
+	ink: 'Nocturne',
 	arcane: 'Arcane',
+	eldritch: 'Eldritch',
+	obsidian: 'Obsidian',
+	fogbound: 'Fogbound',
 };
 
 function Profile(props) {
