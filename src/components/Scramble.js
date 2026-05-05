@@ -46,8 +46,28 @@ function Scramble(props) {
         solvedForCurrentWordRef.current = false;
     }, [props.word]);
 
+    const handleBackspace = () => {
+        if (!unscrambled.length || finished) return;
+        const lastLetter = unscrambled[unscrambled.length - 1];
+        const scrambledArr = scrambled.split('');
+        const letterStatesClone = letterStates.slice(0);
+        let pos = -1;
+        for (let i = scrambledArr.length - 1; i >= 0; i--) {
+            if (scrambledArr[i] === lastLetter && letterStatesClone[i][lastLetter] === true) {
+                pos = i;
+                break;
+            }
+        }
+        if (pos === -1) return;
+        letterStatesClone[pos] = { ...letterStatesClone[pos], [lastLetter]: false };
+        setLetterStates(letterStatesClone);
+        setUnscrambled(unscrambled.slice(0, -1));
+    };
+
     useEffect(() => {
-        if (/[A-Z]/.test(contextValue.capturedKey)) {
+        if (contextValue.capturedKey === '\b') {
+            handleBackspace();
+        } else if (/[A-Z]/.test(contextValue.capturedKey)) {
             const letter = contextValue.capturedKey.toLowerCase();
             processLetter(letter);
         }

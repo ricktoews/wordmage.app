@@ -3251,9 +3251,10 @@ body.album-theme-global-fogbound {
 			}
 
 			&.hinted {
-				background-color: #f90;
+				background-color: #ffd447;
+				color: #1f1a10;
 				transform: scale(1.04);
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				box-shadow: 0 0 0 2px rgba(31, 26, 16, 0.28), 0 4px 12px rgba(0, 0, 0, 0.2);
 			}
 
 			// Smoothly animate highlight changes (fade in / fade out)
