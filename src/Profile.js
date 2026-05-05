@@ -266,7 +266,7 @@ function Profile(props) {
 				</div>
 			)}
 			<div className="profile-toolbar">
-				<div className="page-title">Profile</div>
+				<div className="page-title">Settings</div>
 				{(profileUser.user_id || (authUser && authUser.email)) && (
 					<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
 				)}

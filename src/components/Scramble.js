@@ -35,6 +35,7 @@ function Scramble(props) {
     const [showWord, setShowWord] = useState(false);
     const hintTimeoutsRef = useRef([]);
     const hintInProgressRef = useRef(false);
+    const solvedForCurrentWordRef = useRef(false);
 
     useEffect(() => {
         let newScrambled = scrambleWord(props.word);
@@ -42,6 +43,7 @@ function Scramble(props) {
         setLetterStates(initLetters(newScrambled));
         setUnscrambled('');
         setFinished(false);
+        solvedForCurrentWordRef.current = false;
     }, [props.word]);
 
     useEffect(() => {
@@ -56,6 +58,10 @@ function Scramble(props) {
             setFinished(true);
             setShowWord(false);
             setScrambled(scrambleWord(props.word));
+            if (!solvedForCurrentWordRef.current && props.onSolved) {
+                solvedForCurrentWordRef.current = true;
+                props.onSolved();
+            }
         }
     }, [unscrambled]);
 
@@ -83,6 +89,15 @@ function Scramble(props) {
 
     const processLetter = (letter) => {
         console.log('====> processLetter, letterStates:', letterStates);
+        const expectedLetter = props.word.charAt(unscrambled.length);
+        const isCorrectOrder = expectedLetter === letter;
+        if (props.onLetterAttempt) {
+            props.onLetterAttempt({
+                letter,
+                source: 'keyboard',
+                isCorrectOrder
+            });
+        }
         let letterStatesClone = letterStates.slice(0);
         const ndx = letterStates.findIndex(item => item[letter] === false);
         if (ndx !== -1) {
@@ -103,12 +118,25 @@ function Scramble(props) {
             let letterNdx = unscrambled.lastIndexOf(letter);
             setUnscrambled(unscrambled.substr(0, letterNdx) + unscrambled.substr(letterNdx + 1));
         } else {
+            const expectedLetter = props.word.charAt(unscrambled.length);
+            const isCorrectOrder = expectedLetter === letter;
+            if (props.onLetterAttempt) {
+                props.onLetterAttempt({
+                    letter,
+                    source: 'click',
+                    isCorrectOrder
+                });
+            }
             letterStatesClone[ndx] = { ...letterStatesClone[ndx], [letter]: true };
             setLetterStates(letterStatesClone);
             setUnscrambled(unscrambled + letter);
             if (unscrambled + letter === props.word) {
                 setFinished(true);
                 setShowWord(false);
+                if (!solvedForCurrentWordRef.current && props.onSolved) {
+                    solvedForCurrentWordRef.current = true;
+                    props.onSolved();
+                }
             }
         }
     };

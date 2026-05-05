@@ -287,7 +287,7 @@ function App(props) {
     }
     const navToProfile = () => {
         var history = props.history;
-        history.push('/profile');
+        history.push('/settings');
         setView('Profile');
         setHamburgerClass('hamburger-nav');
     }
@@ -371,10 +371,9 @@ function App(props) {
                     {authUser && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
-                    {authUser && <li onClick={navToLearn}><FontAwesomeIcon icon={faLeaf} /> Learn</li>}
                     {authUser && <li onClick={navToTrain}><FontAwesomeIcon icon={faGraduationCap} /> Train</li>}
-                    {authUser && <li onClick={navToUnscramble}><FontAwesomeIcon icon={faRetweet} /> Unscramble</li>}
                     <li onClick={navToCollective}><FontAwesomeIcon icon={faBook} /> Collective</li>
+                    {authUser && <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>}
                     <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
             </nav>
@@ -441,7 +440,7 @@ function App(props) {
                                         className="account-menu-item"
                                         onClick={() => { setAccountMenuOpen(false); navToProfile(); }}
                                     >
-                                        Profile
+                                        Settings
                                     </button>
                                     <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); signOut(); }}>Sign out</button>
                                 </div>
@@ -536,7 +535,7 @@ function App(props) {
                             popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route path="/profile" component={Profile} />
+                        <Route path="/settings" component={Profile} />
                         <Route path="/login" component={Login} />
                         <Route path="/register" component={Register} />
                         <Route path="/about" component={About} />
