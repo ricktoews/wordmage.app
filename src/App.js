@@ -125,6 +125,7 @@ function App(props) {
     const hamburgerRef = useRef(null);
     const accountRef = useRef(null);
     const webchatRef = useRef(null);
+    const webchatButtonRef = useRef(null);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
     useEffect(() => {
@@ -159,7 +160,7 @@ function App(props) {
         try {
             if (webchatRef.current && !webchatRef.current.contains(el)) {
                 // Don't close if clicking the webchat toggle button
-                if (!elClass.includes('badge-botpress') && !parentElClass.includes('badge-botpress')) {
+                if (webchatButtonRef.current && !webchatButtonRef.current.contains(el)) {
                     setIsWebchatOpen(false);
                 }
             }
@@ -424,6 +425,7 @@ function App(props) {
                     )} */}
                     {botpressClientId && (
                         <button
+                            ref={webchatButtonRef}
                             className="header-nav-btn"
                             onClick={toggleWebchat}
                             title="Chat with WordMage Wizard"
@@ -477,23 +479,21 @@ function App(props) {
                     </Popup>
                 )}
 
-                {props.location.pathname.startsWith('/browse') && (
-                    <>
-                        {botpressClientId && isWebchatOpen && (<div ref={webchatRef} className="add-word-icon-container">
-                            <Webchat
-                                clientId={botpressClientId}
-                                configuration={{ botName: 'WordMage Wizard' }}
-                                style={{
-                                    width: '300px',
-                                    height: '400px',
-                                    display: 'flex',
-                                    position: 'fixed',
-                                    bottom: '90px',
-                                    right: '20px',
-                                }}
-                            />
-                        </div>)}
-                    </>
+                {botpressClientId && isWebchatOpen && (
+                    <div ref={webchatRef} className="add-word-icon-container">
+                        <Webchat
+                            clientId={botpressClientId}
+                            configuration={{ botName: 'WordMage Wizard' }}
+                            style={{
+                                width: '300px',
+                                height: '400px',
+                                display: 'flex',
+                                position: 'fixed',
+                                bottom: '90px',
+                                right: '20px',
+                            }}
+                        />
+                    </div>
                 )}
 
                 <KeyCapture>
