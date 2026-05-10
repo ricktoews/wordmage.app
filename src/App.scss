@@ -594,7 +594,13 @@ body {
 }
 
 .badge-refresh {
-	min-height: 40px;
+	width: 36px;
+	height: 36px;
+	min-height: 36px;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-size: 14pt;
 	background-color: $large-button-color;
 	color: #fff;
@@ -3269,11 +3275,9 @@ body.album-theme-global-fogbound {
 	.show-word {
 		display: flex;
 		justify-content: center;
-		margin: 20px auto;
 		padding: 12px 24px;
 		background-color: #efe0cb;
 		border-radius: 24px;
-		max-width: 400px;
 		min-height: 40px;
 		font-size: 1.25em;
 		letter-spacing: .25em;
@@ -3281,6 +3285,51 @@ body.album-theme-global-fogbound {
 		font-weight: bold;
 		font-family: futura;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	}
+
+	.show-word {
+		max-width: 400px;
+		margin: 20px auto;
+	}
+
+	.unscrambled-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		margin: 20px auto;
+		max-width: 600px;
+		width: 100%;
+		padding: 0 20px;
+	}
+
+	.unscrambled-container .unscrambled {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.check-button {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		font-size: 1.5em;
+		border: none;
+		cursor: pointer;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s, box-shadow 0.2s;
+
+		&:hover {
+			transform: scale(1.05);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		&:active {
+			transform: scale(0.95);
+		}
 	}
 
 	.unscrambled {
@@ -3328,7 +3377,7 @@ body.album-theme-global-fogbound {
 	display: block;
 }
 
-.word-item > .word-content-wrapper {
+.word-item>.word-content-wrapper {
 	display: block;
 }
 
@@ -3340,7 +3389,7 @@ body.album-theme-global-fogbound {
 }
 
 /* Keep metadata (source) on its own row under the main word line. */
-.word-item > .word-content-wrapper {
+.word-item>.word-content-wrapper {
 	display: block;
 }
 
@@ -3822,9 +3871,10 @@ body.album-theme-global-fogbound {
 .downloads-section {
 	margin-top: 0;
 
-	& + & {
+	&+& {
 		margin-top: 0;
 	}
+
 	width: 100vw;
 	position: relative;
 	left: 50%;
@@ -4644,10 +4694,25 @@ input[type="checkbox"] {
 }
 
 @keyframes toastFadeInOut {
-	0%   { opacity: 0; transform: translateX(-50%) translateY(6px); }
-	15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-	75%  { opacity: 1; transform: translateX(-50%) translateY(0); }
-	100% { opacity: 0; transform: translateX(-50%) translateY(6px); }
+	0% {
+		opacity: 0;
+		transform: translateX(-50%) translateY(6px);
+	}
+
+	15% {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	75% {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateX(-50%) translateY(6px);
+	}
 }
 
 .album-info-copy-button,

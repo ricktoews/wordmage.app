@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faRotate, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
@@ -174,9 +174,6 @@ function WordAlbum(props) {
         }
     };
 
-    const handleBackToAlbums = () => {
-        props.history.push('/albums');
-    };
 
     const handleToUnscramble = () => {
         props.history.push('/unscramble');
@@ -332,7 +329,7 @@ function WordAlbum(props) {
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
-            <div className={`word-list-page-container favorites-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
+        <div className={`word-list-page-container favorites-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">
@@ -416,14 +413,6 @@ function WordAlbum(props) {
                             <FontAwesomeIcon icon={faRotate} />
                         </button>
                     )}
-                    <button
-                        className="moods-refresh-icon"
-                        onClick={handleBackToAlbums}
-                        title="Back to Albums"
-                        aria-label="Back to Albums"
-                    >
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                    </button>
                 </div>
             </div>
 

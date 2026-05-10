@@ -13,7 +13,8 @@ import {
     faRetweet,
     faBook,
     faHome,
-    faUser
+    faUser,
+    faComment
 } from '@fortawesome/free-solid-svg-icons';
 
 import KeyCapture from './KeyCapture';
@@ -421,6 +422,16 @@ function App(props) {
                             <FontAwesomeIcon icon={faGraduationCap} />
                         </button>
                     )} */}
+                    {botpressClientId && (
+                        <button
+                            className="header-nav-btn"
+                            onClick={toggleWebchat}
+                            title="Chat with WordMage Wizard"
+                            aria-label="Chat with WordMage Wizard"
+                        >
+                            <FontAwesomeIcon icon={faComment} />
+                        </button>
+                    )}
                 </div>
 
                 <div className="header-right">
@@ -514,8 +525,6 @@ function App(props) {
                         />} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
                             popupWordForm={wordId => { popupWordForm(wordId); }}
-                            botpressButton={botpressClientId}
-                            toggleWebchat={toggleWebchat}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords

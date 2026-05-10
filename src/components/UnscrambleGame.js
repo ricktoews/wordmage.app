@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRandom, faCircleQuestion, faEye, faForward } from '@fortawesome/free-solid-svg-icons';
+import { faRandom, faLightbulb, faForward } from '@fortawesome/free-solid-svg-icons';
 import OpenCloseIcon from './icons/OpenCloseIcon';
+import RefreshIcon from './icons/RefreshIcon';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
 import Scramble from './Scramble';
@@ -22,7 +23,6 @@ function UnscrambleGame(props) {
     const [introMessage, setIntroMessage] = useState('');
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [hintTrigger, setHintTrigger] = useState(0);
-    const [showWordTrigger, setShowWordTrigger] = useState(0);
     const [favoritesPool, setFavoritesPool] = useState([]);
     const poolRef = useRef([]);
     const attemptRef = useRef({
@@ -167,14 +167,6 @@ function UnscrambleGame(props) {
         setHintTrigger(prev => prev + 1);
     };
 
-    const handleShowWord = () => {
-        attemptRef.current.showWordRequested = true;
-        if (!attemptRef.current.submitted && item?.word) {
-            submitAttempt('revealed');
-        }
-        setShowWordTrigger(prev => prev + 1);
-    };
-
     const handleSolved = () => {
         attemptRef.current.solved = true;
         if (!attemptRef.current.submitted && item?.word) {
@@ -197,9 +189,8 @@ function UnscrambleGame(props) {
                     <div className="unscramble-toolbar">
                         <div className="unscramble-toolbar-title">Unscramble</div>
                         <div className="unscramble-toolbar-buttons">
-                            <button className="badge" onClick={handleRefresh} title="Reset"><FontAwesomeIcon icon={faRandom} /></button>
-                            <button className="badge" onClick={handleHint} title="Hint"><FontAwesomeIcon icon={faCircleQuestion} /></button>
-                            <button className="badge" onClick={handleShowWord} title="Show Word"><FontAwesomeIcon icon={faEye} /></button>
+                            <RefreshIcon onClick={handleRefresh} />
+                            <button className="badge" onClick={handleHint} title="Hint"><FontAwesomeIcon icon={faLightbulb} /></button>
                             <button className="badge" onClick={handleAnother} title="Another"><FontAwesomeIcon icon={faForward} /></button>
                         </div>
                     </div>
@@ -216,7 +207,6 @@ function UnscrambleGame(props) {
                             word={item.word}
                             refreshTrigger={refreshTrigger}
                             hintTrigger={hintTrigger}
-                            showWordTrigger={showWordTrigger}
                             onSolved={handleSolved}
                             onLetterAttempt={handleLetterAttempt}
                         />

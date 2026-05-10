@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import { WordMageContext } from '../WordMageContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 function scrambleWord(word) {
     var letters = word.split('');
@@ -237,6 +239,17 @@ function Scramble(props) {
         setShowWord(true);
     }
 
+    const handleCheck = () => {
+        if (unscrambled === props.word) {
+            setFinished(true);
+            setShowWord(false);
+            if (!solvedForCurrentWordRef.current && props.onSolved) {
+                solvedForCurrentWordRef.current = true;
+                props.onSolved();
+            }
+        }
+    };
+
     return (
         <div className="scrambled-wrapper">
 
@@ -251,8 +264,14 @@ function Scramble(props) {
                     return <span key={key} onClick={selectLetter} data-ndx={key} className={className}>{letter}</span>;
                 })}
             </div>
-            <div className={'unscrambled'}>
-                {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
+            <div className="unscrambled-container">
+                <div className={'unscrambled'}>                {unscrambled.split('').map((letter, key) => <span key={key}>{letter}</span>)}
+                </div>
+                {unscrambled.length > 0 && !finished && (
+                    <button className="badge check-button" onClick={handleCheck} title="Check">
+                        <FontAwesomeIcon icon={faCircleCheck} />
+                    </button>
+                )}
             </div>
         </div>
     );
