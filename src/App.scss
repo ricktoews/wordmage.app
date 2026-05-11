@@ -670,12 +670,12 @@ body {
 .hamburger-nav {
 	position: fixed;
 	z-index: 201;
-	top: $header-height - 1;
-	width: 200px;
+	top: $header-height;
+	width: 180px;
 	height: 100vh;
 	background-color: $side-nav-background;
 	transition-duration: .5s;
-	left: -200px;
+	left: -180px;
 
 	ul {
 		margin: 0;
@@ -884,6 +884,14 @@ body.album-theme-global-active {
 			background-color: #3a1355;
 			border-color: #3a1355;
 			color: #ffffff;
+		}
+	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
 		}
 	}
 
@@ -1109,6 +1117,14 @@ body.album-theme-global-paper {
 			color: #ffffff;
 		}
 	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
+		}
+	}
 }
 
 body.album-theme-global-ink {
@@ -1163,6 +1179,14 @@ body.album-theme-global-ink {
 			background-color: #153858;
 			border-color: #153858;
 			color: #ffffff;
+		}
+	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
 		}
 	}
 }
@@ -1221,6 +1245,14 @@ body.album-theme-global-arcane {
 			color: #ffffff;
 		}
 	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
+		}
+	}
 }
 
 body.album-theme-global-eldritch {
@@ -1275,6 +1307,14 @@ body.album-theme-global-eldritch {
 			background-color: #133818;
 			border-color: #133818;
 			color: #ffffff;
+		}
+	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
 		}
 	}
 }
@@ -1333,6 +1373,14 @@ body.album-theme-global-obsidian {
 			color: #ffffff;
 		}
 	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
+		}
+	}
 }
 
 body.album-theme-global-fogbound {
@@ -1387,6 +1435,14 @@ body.album-theme-global-fogbound {
 			background-color: #1e3848;
 			border-color: #1e3848;
 			color: #ffffff;
+		}
+	}
+
+	.hamburger-nav {
+		background: linear-gradient(to bottom, var(--global-toolbar-start), var(--global-toolbar-end));
+
+		ul li {
+			color: var(--global-toolbar-title);
 		}
 	}
 

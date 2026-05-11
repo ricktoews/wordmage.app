@@ -376,8 +376,6 @@ function App(props) {
                     {authUser && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
-                    {authUser && <li onClick={navToTrain}><FontAwesomeIcon icon={faGraduationCap} /> Train</li>}
-                    <li onClick={navToCollective}><FontAwesomeIcon icon={faBook} /> Collective</li>
                     {authUser && <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>}
                     <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
@@ -423,7 +421,7 @@ function App(props) {
                             <FontAwesomeIcon icon={faGraduationCap} />
                         </button>
                     )} */}
-                    {botpressClientId && (
+                    {authUser && botpressClientId && (
                         <button
                             ref={webchatButtonRef}
                             className="header-nav-btn"
