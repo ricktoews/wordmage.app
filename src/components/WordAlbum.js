@@ -429,7 +429,6 @@ function WordAlbum(props) {
                         hasMoodText={!!album.mood_text}
                         onWordLockToggle={handleWordLockToggle}
                         onAlbumRefresh={fetchAlbum}
-                        popupWordForm={props.popupWordForm}
                         onAIExplain={props.onAIExplain}
                     />
                 ) : (

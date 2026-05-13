@@ -8,7 +8,6 @@ import {
     faThumbsUp,
     faGlasses,
     faFolderOpen,
-    faLeaf,
     faGraduationCap,
     faRetweet,
     faBook,
@@ -28,8 +27,7 @@ import WordsInterface from './utils/words-interface';
 
 // Import components
 import Hamburger from './components/Hamburger';
-import AddIcon from './components/icons/AddIcon';
-import PopupWordForm from './components/PopupWordForm';
+
 import PopupAIExplain from './components/PopupAIExplain';
 import Popup from './components/Popup';
 import UnscrambleGame from './components/UnscrambleGame';
@@ -116,10 +114,8 @@ function App(props) {
     const [mastheadEmblem, setMastheadEmblem] = useState(() => resolveMastheadEmblem(getAlbumThemeFromStorage()));
     const [view, setView] = useState('Random');
     const [word, setWord] = useState('');
-    const [wordId, setWordId] = useState(0);
     const [hamburgerClass, setHamburgerClass] = useState('hamburger-nav');
 
-    const [wordFormState, setWordFormState] = useState(false);
     const [wordShareState, setWordShareState] = useState(false);
 
     const hamburgerRef = useRef(null);
@@ -249,20 +245,6 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const navToLearn = () => {
-        var history = props.history;
-        const albumIds = WordsInterface.getAlbumIds();
-        const learnAlbumId = albumIds.Learn;
-        if (learnAlbumId) {
-            history.push(`/albums/${learnAlbumId}`);
-            setView('Learn');
-        } else {
-            history.push('/albums');
-            setView('Albums');
-        }
-        setHamburgerClass('hamburger-nav');
-    }
-
     const navToTrain = () => {
         var history = props.history;
         history.push('/training-room');
@@ -344,23 +326,6 @@ function App(props) {
             setHamburgerClass('hamburger-nav');
         }
     };
-
-    const popupWordForm = wordId => {
-        setWordId(wordId);
-        setWordFormState(true);
-    }
-
-    const cancelWordForm = () => {
-        setWordFormState(false);
-    }
-
-    const saveWordForm = () => {
-        setWordFormState(false);
-    }
-
-    const handleBackgroundClick = () => {
-        setWordFormState(false);
-    }
 
     const handleAIExplain = (word, definition) => {
         setAiExplainWord({ word, definition });
@@ -465,8 +430,6 @@ function App(props) {
             </header>
 
             <WordMageContext.Provider value={contextProviderValue}>
-                <Popup isVisible={wordFormState} handleBackgroundClick={handleBackgroundClick}><PopupWordForm wordId={wordId} cancelWordForm={cancelWordForm} saveWordForm={saveWordForm} /></Popup>
-
                 {aiExplainWord && (
                     <Popup isVisible={true} handleBackgroundClick={() => setAiExplainWord(null)}>
                         <PopupAIExplain
@@ -496,53 +459,37 @@ function App(props) {
 
                 <KeyCapture>
                     <Switch>
-                        <Route exact path={['/unscramble/:word/:def']} render={props => <UnscrambleGame
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
-                        />} />
+                        <Route exact path={['/unscramble/:word/:def']} render={props => <UnscrambleGame />} />
                         <Route exact path={['/what-to-train']} render={props => (<Train
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path={['/training-room']} render={props => (<Train
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path={['/what-to-train']} render={props => (<Train
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path={['/training-room']} render={props => (<Train
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route exact path='/unscramble/:word' render={props => <UnscrambleGame
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
-                        />} />
-                        <Route exact path='/unscramble' render={props => <UnscrambleGame
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
-                        />} />
+                        <Route exact path='/unscramble/:word' render={props => <UnscrambleGame />} />
+                        <Route exact path='/unscramble' render={props => <UnscrambleGame />} />
                         <Route path="/browse/:start?" render={props => (<BrowseWords
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path={["/moods", "/mood/:slug"]} render={props => (<Moods
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path="/albums" render={props => (<Albums
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/albums/:id" render={props => (<WordAlbum
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
-                            popupWordForm={wordId => { popupWordForm(wordId); }}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/settings" component={Profile} />

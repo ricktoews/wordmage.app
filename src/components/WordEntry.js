@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPencil, faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordCardMenu from './WordCardMenu';
 import { FacebookShareButton, FacebookIcon } from "react-share";
@@ -25,26 +25,6 @@ function WordEntry(props) {
 	// Check if word is in favorites list (liked array)
 	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
 
-	function deleteWordToggle(wordObj, e) {
-		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
-		var classes = Array.from(wordEl.classList);
-		if (classes.indexOf('deleted') === -1) {
-			wordEl.classList.add('deleted');
-			WordsInterface.deleteCustomWord(wordObj._id);
-		}
-		else {
-			wordEl.classList.remove('deleted');
-			WordsInterface.undeleteCustomWord(wordObj);
-		}
-
-	}
-
-	function editWord(wordObj, e) {
-		var wordEl = e.target.closest('.word-item-word-container').querySelector('.word-item-word');
-		var classes = Array.from(wordEl.classList);
-		props.popupWordForm(wordObj._id);
-	}
-
 	function scrambleWord(wordObj) {
 		console.log('scrambleWord', wordObj);
 		history.push('/unscramble', { wordObj: wordObj });
@@ -67,8 +47,7 @@ function WordEntry(props) {
 			<div className="word-content-wrapper">
 				<div className="word-item-word-container">
 					<div className="word-edit-btn">
-						{false && wordObj.myown ? <div className="trash-btn" onClick={e => { deleteWordToggle(wordObj, e); }}><FontAwesomeIcon icon={faTrash} /></div> : null}
-						{false && wordObj.myown ? <button className="badge badge-edit" onClick={e => { editWord(wordObj, e); }}><FontAwesomeIcon icon={faPencil} /></button> : null}
+
 					</div>
 					{(listType === 'browse' || listType === 'random') && isFavorited && <span className="featured-word-icon"><FontAwesomeIcon icon={faThumbsUp} /></span>}
 					{!!wordObj.is_locked && <span className="word-lock-icon"><FontAwesomeIcon icon={faLock} /></span>}

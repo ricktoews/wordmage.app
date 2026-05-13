@@ -5,7 +5,6 @@ import {
     faEllipsisVertical,
     faThumbsUp,
     faThumbsDown,
-    faLeaf,
     faTrash,
     faFolderOpen,
     faFolder,
@@ -21,7 +20,6 @@ function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj.word));
-    const [isLearning, setIsLearning] = useState(WordsInterface.isWordInLearn(wordObj));
     const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -138,68 +136,6 @@ function WordCardMenu(props) {
         }
     };
 
-    const handleLearn = async (e) => {
-        e.stopPropagation();
-        const newLearningState = !isLearning;
-        setIsOpen(false);
-
-        try {
-            const albumIds = WordsInterface.getAlbumIds();
-            const learnAlbumId = albumIds.Learn;
-
-            if (!learnAlbumId) {
-                console.error('Learn album ID not found');
-                alert('Learn album not configured. Please try again.');
-                return;
-            }
-
-            if (newLearningState) {
-                // Add word to Learn album
-                const response = await fetch(`${CONFIG.domain}/albums/add-word`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        album_id: learnAlbumId,
-                        word_id: wordObj.id
-                    })
-                });
-
-                if (response.ok) {
-                    setIsLearning(true);
-                    WordsInterface.addToLearn(wordObj);
-                    if (props.onUpdate) props.onUpdate();
-                    if (onAlbumRefresh) onAlbumRefresh();
-                } else {
-                    console.error('Failed to add word to Learn');
-                    alert('Failed to add word to Learn. Please try again.');
-                }
-            } else {
-                // Remove word from Learn album
-                const response = await fetch(`${CONFIG.domain}/albums/delete-word`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        album_id: learnAlbumId,
-                        word_id: wordObj.id
-                    })
-                });
-
-                if (response.ok) {
-                    setIsLearning(false);
-                    WordsInterface.removeFromLearn(wordObj);
-                    if (props.onUpdate) props.onUpdate();
-                    if (onAlbumRefresh) onAlbumRefresh();
-                } else {
-                    console.error('Failed to remove word from Learn');
-                    alert('Failed to remove word from Learn. Please try again.');
-                }
-            }
-        } catch (error) {
-            console.error('Error toggling learn:', error);
-            alert('Error toggling learn. Please try again.');
-        }
-    };
-
     const handleDiscard = (e) => {
         e.stopPropagation();
         setIsDiscarded(!isDiscarded);
@@ -304,14 +240,6 @@ function WordCardMenu(props) {
                     >
                         <FontAwesomeIcon icon={isBookmarked ? faThumbsDown : faThumbsUp} />
                         <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>
-                    </button>
-
-                    <button
-                        className="word-card-menu-item"
-                        onClick={handleLearn}
-                    >
-                        <FontAwesomeIcon icon={faLeaf} />
-                        <span>{isLearning ? 'Remove from Learn' : 'Learn word'}</span>
                     </button>
 
                     <button

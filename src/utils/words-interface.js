@@ -7,24 +7,24 @@ import DataSource from './data-source';
 import { CONFIG } from '../config';
 
 const custom = DataSource.retrieveUserLocalData();
-const userData = { custom, liked: [], learn: [], albumIds: {} };
+const userData = { custom, favoriteWords: [], albumIds: {} };
 
 const WORD_POOL = [];
 const COLLECTIVE = [];
 
-function initializeCustom(custom, liked = [], learn = [], albumIds = {}) {
-    userData.custom = custom;
+function initializeCustom(albumIds = {}) {
     userData.albumIds = albumIds;
-    // Map liked to use 'def' instead of 'definition' to match custom data format
-    userData.liked = liked.map(fav => ({
+}
+
+function setFavoriteWords(words = []) {
+    userData.favoriteWords = words.map((fav) => ({
         ...fav,
-        def: fav.definition
+        def: fav.definition || fav.def || ''
     }));
-    // Map learn to use 'def' instead of 'definition' to match custom data format
-    userData.learn = learn.map(word => ({
-        ...word,
-        def: word.definition
-    }));
+}
+
+function getFavoriteWords() {
+    return userData.favoriteWords || [];
 }
 
 function getCustom() {
@@ -111,7 +111,7 @@ function fullWordList() {
     var universal = cloneJSON(WORD_POOL);
     //console.log('====> fullWordList - userData', userData);
     var custom = userData.custom;
-    const liked = userData.liked || [];
+    const liked = userData.favoriteWords || [];
     var revisedCustom = [];
     liked.forEach(fav => {
         let ndx = universal.findIndex(item => item.word === fav.word);
@@ -155,13 +155,10 @@ function getWordList(type) {
     var list = [];
     switch (type) {
         case 'favorites':
-            list = userData.liked || [];
+            list = userData.favoriteWords || [];
             break;
         case 'dislike':
             list = userData.custom.filter(item => item.dislike);
-            break;
-        case 'learn':
-            list = userData.learn || [];
             break;
         default:
             list = fullWordList();
@@ -347,7 +344,7 @@ function getLearnList() {
  */
 function getUnscrambleItem() {
     var unscrambleItem = { word: '', def: '' };
-    var favoritesArray = userData.liked || [];
+    var favoritesArray = userData.favoriteWords || [];
     if (favoritesArray.length > 0) {
         var ndx = Math.floor(Math.random() * favoritesArray.length);
         unscrambleItem = favoritesArray[ndx];
@@ -362,15 +359,14 @@ function getUserData() {
 
 function isWordLiked(word) {
     if (!word) return false;
-    return userData.liked.some(item => item.word === word);
+    return userData.favoriteWords.some(item => item.word === word);
 }
 
 function addToLiked(wordObj) {
     if (!isWordLiked(wordObj.word)) {
-        // Store with 'def' property for consistency with liked array format
-        userData.liked.push({
+        userData.favoriteWords.push({
             ...wordObj,
-            def: wordObj.definition || wordObj.def
+            def: wordObj.definition || wordObj.def || ''
         });
     }
 }
@@ -378,29 +374,7 @@ function addToLiked(wordObj) {
 function removeFromLiked(wordObj) {
     const wordToRemove = wordObj.word || '';
     if (!wordToRemove) return;
-    userData.liked = userData.liked.filter(word => word.word !== wordToRemove);
-}
-
-function isWordInLearn(wordObj) {
-    const wordToCheck = wordObj.word || '';
-    if (!wordToCheck) return false;
-    return userData.learn.some(word => word.word === wordToCheck);
-}
-
-function addToLearn(wordObj) {
-    if (!isWordInLearn(wordObj)) {
-        // Store with 'def' property for consistency with learn array format
-        userData.learn.push({
-            ...wordObj,
-            def: wordObj.definition || wordObj.def
-        });
-    }
-}
-
-function removeFromLearn(wordObj) {
-    const wordToRemove = wordObj.word || '';
-    if (!wordToRemove) return;
-    userData.learn = userData.learn.filter(word => word.word !== wordToRemove);
+    userData.favoriteWords = userData.favoriteWords.filter(word => word.word !== wordToRemove);
 }
 
 
@@ -408,6 +382,8 @@ const WordsInterface = {
     getCustom,
     getAlbumIds,
     initializeCustom,
+    setFavoriteWords,
+    getFavoriteWords,
     initializeWordPool,
     getRandomPool,
     getWordList,
@@ -430,9 +406,6 @@ const WordsInterface = {
     isWordLiked,
     addToLiked,
     removeFromLiked,
-    isWordInLearn,
-    addToLearn,
-    removeFromLearn,
 };
 
 export default WordsInterface;
