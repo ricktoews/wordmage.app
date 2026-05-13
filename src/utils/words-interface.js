@@ -271,50 +271,6 @@ function getWordObj(word) {
 }
 
 /**
- * Make list of tags by compiling from word list.
- */
-function getTagList() {
-    var wordObjList = WordsInterface.fullWordList();
-    var taggedWords = wordObjList.filter(item => item.tags && Array.isArray(item.tags));
-    var tags = taggedWords.map(item => item.tags);
-    tags = [].concat(...tags);
-    tags = Array.from(new Set(tags));
-    return tags;
-}
-
-/**
- * Adjust tags for selected word
- */
-function updateTags(word, tags) {
-    var wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    if (wordObjIndex === -1) {
-        let builtInWord = cloneJSON(WORD_POOL.find(item => item.word === word));
-        addCustomWord(builtInWord);
-        wordObjIndex = userData.custom.findIndex(item => item.word === word);
-    }
-    var wordObj = userData.custom[wordObjIndex];
-    wordObj.tags = tags;
-    DataSource.saveUserData(userData);
-}
-
-/**
- * Toggle Learn status for specified word.
- * 
- * OBSOLETE: This function is only called from WordEntryButtons.js (which is unused).
- * It was intended to toggle a word's Learn status by modifying the obsolete wordObj.learn 
- * property in userData.custom and saving to localStorage.
- * 
- * The current implementation is in WordCardMenu.handleLearn(), which:
- * - Uses the albums API (POST /albums/add-word or /albums/delete-word)
- * - Updates userData.learn array via addToLearn() or removeFromLearn()
- * - Refreshes the UI to reflect changes
- */
-function toggleLearn(word) {
-    console.warn('toggleLearn is obsolete. Use WordCardMenu.handleLearn() instead.');
-    return [];
-}
-
-/**
  * Toggle Dislike status for specified word.
  */
 function toggleDislike(word) {
@@ -330,13 +286,6 @@ function toggleDislike(word) {
     // Create array of words from userData.active, which is an array of { word: notes }.
     var newDislikeList = userData.custom.filter(item => item.dislike);
     return newDislikeList;
-}
-
-/**
- * Get list of Learn words.
- */
-function getLearnList() {
-    return userData.learn || [];
 }
 
 /**
@@ -393,11 +342,7 @@ const WordsInterface = {
     saveCustomWord,
     deleteCustomWord,
     undeleteCustomWord,
-    getTagList,
-    updateTags,
-    getLearnList,
     toggleDislike,
-    toggleLearn,
     getWordObjById,
     getWordObjByWord,
     getWordObj,

@@ -3,63 +3,19 @@ import { withRouter } from 'react-router-dom';
 import WordsInterface from '../utils/words-interface';
 import WordEntry from './WordEntry';
 import Popup from './Popup';
-import PopupTagList from './PopupTagList';
 import PopupWordShare from './PopupWordShare';
 import PopupAlbumSelect from './PopupAlbumSelect';
 
 function WordScroller(props) {
 	const scrollerRef = useRef(null);
 	const sentinelRef = useRef(null);
-	const [showTags, setShowTags] = useState(false);
 	const [showAlbums, setShowAlbums] = useState(false);
 	const [showWordShare, setShowWordShare] = useState(false);
 	const [shareWord, setShareWord] = useState(null);
-	const [tagWordObj, setTagWordObj] = useState({});
 	const [albumWordObj, setAlbumWordObj] = useState({});
-	const [tagList, setTagList] = useState(WordsInterface.getTagList());
-	const [tagToggle, setTagToggle] = useState(null);
 	const [visibleItems, setVisibleItems] = useState([]);
 	const loadedCountRef = useRef(0);
 	const visibleCountRef = useRef(0);
-	const taggedOnClass = 'badge-tag-filter-on';
-	const taggedOffClass = 'badge-tag-filter-off';
-
-	function tagWord(wordObj, tag, add, closeTagList) {
-		if (!Array.isArray(wordObj.tags)) {
-			wordObj.tags = [];
-		}
-		if (tag) {
-			let ndx = wordObj.tags.indexOf(tag);
-			if (add) {
-				if (ndx === -1) {
-					wordObj.tags.push(tag);
-					tagToggle.classList.remove(taggedOffClass);
-					tagToggle.classList.add(taggedOnClass);
-				}
-			} else {
-				wordObj.tags.splice(ndx, 1);
-				if (wordObj.tags.length === 0) {
-					tagToggle.classList.remove(taggedOnClass);
-					tagToggle.classList.add(taggedOffClass);
-				}
-			}
-		}
-		WordsInterface.updateTags(wordObj.word, wordObj.tags);
-		if (closeTagList) {
-			setShowTags(false);
-			setTagList(WordsInterface.getTagList());
-		}
-	}
-
-	function closeTagPopup() {
-		setShowTags(false);
-	}
-
-	function popupTags(wordObj, tagButtonEl) {
-		setShowTags(true);
-		setTagWordObj(wordObj);
-		setTagToggle(tagButtonEl);
-	}
 
 	function popupWordShare(wordObj) {
 		setShareWord(wordObj);
@@ -77,7 +33,6 @@ function WordScroller(props) {
 
 	const handleBackgroundClick = () => {
 		setShowWordShare(false);
-		setShowTags(false);
 		setShowAlbums(false);
 	};
 
@@ -194,31 +149,10 @@ function WordScroller(props) {
 		};
 	}, [props.hasMore, props.isLoading, props.onLoadMore]);
 
-	const tagListEl = (ref) => {
-		if (ref.current) {
-			const el = ref.current;
-			const classes = Array.from(el.classList);
-			const isPopupActive = !classes.includes('element-hide');
-			if (isPopupActive) {
-				console.log('Should hide popup');
-			}
-		}
-	};
-
 	return (
 		<div className="word-list-container">
 			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}>
 				<PopupWordShare shareWord={shareWord} wordId={142} />
-			</Popup>
-			<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}>
-				<PopupTagList
-					showTags={showTags}
-					tagListEl={tagListEl}
-					tagList={tagList}
-					wordObj={tagWordObj}
-					closeTagPopup={closeTagPopup}
-					tagWord={tagWord}
-				/>
 			</Popup>
 			<Popup isVisible={showAlbums} handleBackgroundClick={handleBackgroundClick}>
 				<PopupAlbumSelect
@@ -235,12 +169,11 @@ function WordScroller(props) {
 				{visibleItems.map(({ key, wordItem }) => (
 					<div key={key} className="word-item-container">
 						<WordEntry
-							popupTags={popupTags} popupAlbums={popupAlbums} popupWordShare={popupWordShare}
-							wordObj={wordItem}
-							listType={props.listType}
-							albumId={props.albumId} hasMoodText={props.hasMoodText} onWordLockToggle={props.onWordLockToggle} onAlbumRefresh={props.onAlbumRefresh}
-							history={props.history}
-							popupWordForm={props.popupWordForm}
+						popupAlbums={popupAlbums} popupWordShare={popupWordShare}
+						wordObj={wordItem}
+						listType={props.listType}
+						albumId={props.albumId} hasMoodText={props.hasMoodText} onWordLockToggle={props.onWordLockToggle} onAlbumRefresh={props.onAlbumRefresh}
+						history={props.history}
 							onAIExplain={props.onAIExplain}
 						/>
 					</div>

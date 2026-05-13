@@ -552,39 +552,6 @@ body {
 	color: $word-control-label-color;
 }
 
-.badge-tag-filter-off {
-	background: #fff;
-	border: 1px solid $word-control-off-border;
-	color: $word-control-off-border;
-}
-
-.badge-tag-filter-on {
-	background: $word-control-button-color;
-	color: $word-control-label-color;
-}
-
-.badge-tag {
-	background: white;
-	border-radius: 5px;
-	color: rgb(60, 60, 60);
-	line-height: 16px;
-	font-size: 12px;
-	padding: 10px;
-	border: 1px solid rgb(60, 60, 60);
-	cursor: pointer;
-}
-
-.add-tags .badge-tag {
-	background: white;
-	color: rgb(60, 60, 60);
-	font-size: 12px;
-	border: 1px solid rgb(60, 60, 60);
-}
-
-.add-tags .tag-selected {
-	background: rgb(200, 200, 200);
-}
-
 .badge-scramble {
 	min-height: 40px;
 	//	padding: 10px;
@@ -3505,8 +3472,6 @@ body.album-theme-global-fogbound {
 	border-radius: 10px 10px 0 0;
 }
 
-.tag-list-popup .word-item-word {}
-
 .word-item-def {
 	font-family: $lovable-font;
 	font-size: $lovable-def-size;
@@ -4241,54 +4206,6 @@ input[type="checkbox"] {
 
 .clicked-def {
 	padding: 5px;
-}
-
-/*
-.tag-list-popup {
-	position: fixed;
-	z-index: 100;
-	top: 55px;
-	left: calc(50vw - 150px);
-	width: 300px;
-	height: 300px;
-	background-color:white;
-	border: 2px solid #09f;
-
-	.button-wrapper {
-		display: flex;
-		justify-content: flex-end;
-	}
-}
-*/
-
-.tag-list>.instructions {
-	padding: 10px;
-	background-color: black;
-	color: white;
-	font-family: Roboto Condensed;
-}
-
-.tag-list>.tag-wrapper {
-	max-width: 380px;
-	padding: 6px;
-}
-
-.tag-list-button-wrapper {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 5px;
-}
-
-.tag-button {
-	background-color: white;
-	color: #09f;
-	border: 1px solid #09f;
-	border-radius: 15px;
-}
-
-.tag-button-cancel {
-	color: #999;
-	border: 1px solid #999;
 }
 
 /* AI Explanation Popup */

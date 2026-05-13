@@ -95,7 +95,6 @@ function WordEntry(props) {
 					hasMoodText={props.hasMoodText}
 					onWordLockToggle={props.onWordLockToggle}
 					onAlbumRefresh={props.onAlbumRefresh}
-					popupTags={props.popupTags}
 					popupAlbums={props.popupAlbums}
 					onUpdate={() => {
 						setUpdateToggle(!updateToggle);

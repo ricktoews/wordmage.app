@@ -2,14 +2,12 @@ import ReactDOM from 'react-dom';
 import { useEffect, useState, useRef, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faTag, faPlus, faRandom, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faRandom, faPalette } from '@fortawesome/free-solid-svg-icons';
 import { WordMageContext } from '../WordMageContext';
 import WordScroller from './WordScroller';
 import WordsInterface from '../utils/words-interface';
 import { getWordsPage } from '../utils/api';
 import Popup from './Popup';
-import PopupTagFilter from './PopupTagFilter';
-import TagFilter from './TagFilter';
 
 const INFINITE_SCROLLING_ON = 'list-loading-container';
 const INFINITE_SCROLLING_OFF = 'hide-section';
@@ -36,9 +34,6 @@ function BrowseWords(props) {
 	const [nextCursor, setNextCursor] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [browseMode, setBrowseMode] = useState('api');
-	const [showTags, setShowTags] = useState(false);
-	const [tagList, setTagList] = useState(WordsInterface.getTagList());
-	const [tagFilter, setTagFilter] = useState('');
 	const [showThemeMenu, setShowThemeMenu] = useState(false);
 	const [albumTheme, setAlbumTheme] = useState(() => {
 		if (typeof window === 'undefined') {
@@ -48,7 +43,6 @@ function BrowseWords(props) {
 		const savedTheme = window.localStorage.getItem('wordmage.albumTheme');
 		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
 	});
-	const tagFilterRef = useRef(null);
 	const themeMenuRef = useRef(null);
 	const themeToggleButtonRef = useRef(null);
 	const themeClickTimerRef = useRef(null);
@@ -100,12 +94,7 @@ function BrowseWords(props) {
 	// Here is where we respond to document click.
 	// contextValue is set in App.js when document.click is detected.
 	useEffect(() => {
-		// In addition to checking popup visibility, we verify a click outside of the popup before hiding.
-		if (showTags) {
-			if (tagFilterRef.current.contains(contextValue.targetEl) === false) {
-				setShowTags(false);
-			}
-		}
+		// placeholder - was checking showTags
 	}, [contextValue]);
 
 	useEffect(() => {
@@ -165,21 +154,6 @@ function BrowseWords(props) {
 		}
 	}, [startingLetters, browseMode]);
 
-	function tagSelection(discard, tag, checked, closeTagList) {
-		setTagFilter(tag);
-
-		// For now, tag filtering still uses local data
-		const fullWordObjList = WordsInterface.fullWordList();
-		let filteredWordObjList = fullWordObjList.filter(obj => obj.tags && obj.tags.indexOf(tag) !== -1);
-		setWordObjList(filteredWordObjList);
-		setBrowseMode('tagged');
-		setHasMore(false); // No pagination for tagged mode
-
-		if (closeTagList) {
-			setShowTags(false);
-		}
-	}
-
 	var partialWordTimer;
 	const handlePartialWord = e => {
 		var el = e.target;
@@ -190,18 +164,11 @@ function BrowseWords(props) {
 		partialWordTimer = setTimeout(() => {
 			window.scrollTo(0, 0);
 			setBrowseMode('api');
-			setTagFilter('');
 			setStartingLetters(partial);
 			props.history.push('/browse/' + partial);
 			el.blur();
 		}, 2500);
 	};
-
-	const handleCancelTagFilter = e => {
-		setTagFilter('');
-		setBrowseMode('api');
-		loadInitialPage(startingLetters);
-	}
 
 	const handleRandomJump = () => {
 		// Generate a random 5-letter string
@@ -213,28 +180,8 @@ function BrowseWords(props) {
 
 		window.scrollTo(0, 0);
 		setBrowseMode('api');
-		setTagFilter('');
 		setStartingLetters(randomString);
 		props.history.push('/browse/' + randomString);
-	}
-
-	const handleTagFilter = e => {
-		setShowTags(!showTags);
-	}
-
-	const customFilterClass = browseMode === 'custom' ? 'badge-custom-filter' : 'badge-custom-filter-off';
-
-	const tagListEl = ref => {
-		let el = ref.current;
-		let classes = Array.from(el.classList);
-		let isPopupActive = classes.indexOf('element-hide') === -1;
-		if (isPopupActive) {
-			console.log('Should hide popup');
-		}
-	}
-
-	const handleBackgroundClick = () => {
-		setShowTags(false);
 	}
 
 	const cycleAlbumTheme = () => {
@@ -283,13 +230,6 @@ function BrowseWords(props) {
 					<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
 				</div>
 				<div className="browse-filter-buttons">
-					{
-						tagFilter
-							? (<span><button onClick={handleCancelTagFilter} className="badge"><FontAwesomeIcon icon={faXmark} /></button> {tagFilter}</span>)
-							: null
-					}
-					{false && <button className={'badge ' + customFilterClass} onClick={handleTagFilter}><FontAwesomeIcon icon={faTag} /></button>}
-					{false && <button className="badge badge-add-word" onClick={() => props.popupWordForm()}><FontAwesomeIcon icon={faPlus} /></button>}
 					<div className="album-theme-menu-container">
 						<button
 							ref={themeToggleButtonRef}
@@ -325,14 +265,12 @@ function BrowseWords(props) {
 						<FontAwesomeIcon icon={faRandom} />
 					</button>
 				</div>
-			</div>			<div ref={tagFilterRef}> {/* Wrap Tag Filter in a div, for checking document click outside. */}
-				<Popup isVisible={showTags} handleBackgroundClick={handleBackgroundClick}><PopupTagFilter showTags={showTags} tagListEl={tagListEl} tagList={tagList} tagWord={tagSelection} /></Popup>
+
 			</div>
 			<WordScroller
 				pool={wordObjList}
 				startingNdx={0}
 				listType={'browse'}
-				popupWordForm={props.popupWordForm}
 				onAIExplain={props.onAIExplain}
 				hasMore={hasMore}
 				onLoadMore={loadMoreWords}
