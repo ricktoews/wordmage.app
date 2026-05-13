@@ -898,6 +898,7 @@ body.album-theme-global-active {
 
 	.random-page .random-refresh-icon,
 	.browse-page .browse-filter-buttons .badge,
+	.albums-page .moods-refresh-icon,
 	.unscramble-container .unscramble-toolbar-buttons .badge {
 		background-color: var(--global-btn-bg);
 		color: #ffffff;
@@ -905,12 +906,14 @@ body.album-theme-global-active {
 
 	.random-page .random-refresh-icon:hover,
 	.browse-page .browse-filter-buttons .badge:hover,
+	.albums-page .moods-refresh-icon:hover,
 	.unscramble-container .unscramble-toolbar-buttons .badge:hover {
 		background-color: var(--global-btn-hover);
 	}
 
 	.random-page .random-refresh-icon:active,
 	.browse-page .browse-filter-buttons .badge:active,
+	.albums-page .moods-refresh-icon:active,
 	.unscramble-container .unscramble-toolbar-buttons .badge:active {
 		background-color: var(--global-btn-active);
 	}
@@ -2037,6 +2040,46 @@ body.album-theme-global-fogbound {
 				font-size: 16px;
 			}
 		}
+	}
+}
+
+.moods-toolbar-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.moods-refresh-icon {
+	background: var(--album-nav-icon-bg);
+	border: none;
+	width: 38px;
+	height: 38px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border-radius: 50%;
+	color: var(--album-nav-icon-fg);
+	padding: 7px;
+	transition: background-color 0.2s, color 0.2s;
+
+	.glyphicon,
+	svg {
+		font-size: 16px;
+	}
+
+	&:hover {
+		background-color: var(--album-nav-icon-hover);
+	}
+
+	&:active {
+		background-color: var(--album-nav-icon-active);
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--album-icon-focus-ring);
 	}
 }
 
@@ -3362,6 +3405,10 @@ body.album-theme-global-fogbound {
 	position: relative;
 }
 
+.album-content-page.album-has-subtitle .word-list-scroller {
+	top: 118px;
+}
+
 .word-list-scroller .word-item-container {
 	position: relative;
 	padding: 5px 0;
@@ -4332,6 +4379,18 @@ input[type="checkbox"] {
 	}
 }
 
+.albums-container {
+	position: relative;
+	top: calc(#{$header-height} + 50px + 15px);
+	margin: 0 10px 20px;
+	padding: 0;
+}
+
+.albums-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
 
 .album-item {
 	display: flex;
