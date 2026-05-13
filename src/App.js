@@ -34,7 +34,6 @@ import UnscrambleGame from './components/UnscrambleGame';
 import BrowseWords from './components/BrowseWords';
 import CollectiveWords from './components/CollectiveWords';
 import Train from './components/Train';
-import Moods from './components/Moods';
 import Albums from './components/Albums';
 import WordAlbum from './components/WordAlbum';
 import Random from './components/Random';
@@ -478,9 +477,6 @@ function App(props) {
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
-                            onAIExplain={handleAIExplain}
-                        />)} />
-                        <Route path={["/moods", "/mood/:slug"]} render={props => (<Moods
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path="/albums" render={props => (<Albums

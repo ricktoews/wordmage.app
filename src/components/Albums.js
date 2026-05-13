@@ -399,7 +399,7 @@ function Albums(props) {
     };
 
     return (
-        <div className={`word-list-page-container favorites-page albums-page album-theme-${albumTheme}`}>
+        <div className={`word-list-page-container album-content-page albums-page album-theme-${albumTheme}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-title">Albums</div>
                 <div className="favorites-toolbar-actions">

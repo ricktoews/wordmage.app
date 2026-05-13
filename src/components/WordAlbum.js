@@ -329,7 +329,7 @@ function WordAlbum(props) {
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
     return (
-        <div className={`word-list-page-container favorites-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
+        <div className={`word-list-page-container album-content-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">
