@@ -5,7 +5,6 @@ import {
     faEllipsisVertical,
     faThumbsUp,
     faThumbsDown,
-    faTrash,
     faFolderOpen,
     faFolder,
     faXmark,
@@ -20,7 +19,6 @@ function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj.word));
-    const [isDiscarded, setIsDiscarded] = useState(wordObj.dislike);
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [menuPosition, setMenuPosition] = useState('bottom');
@@ -134,14 +132,6 @@ function WordCardMenu(props) {
             console.error('Error toggling favorite:', error);
             alert('Error toggling favorite. Please try again.');
         }
-    };
-
-    const handleDiscard = (e) => {
-        e.stopPropagation();
-        setIsDiscarded(!isDiscarded);
-        WordsInterface.toggleDislike(wordObj.word);
-        setIsOpen(false);
-        if (props.onUpdate) props.onUpdate();
     };
 
     const handleAddToAlbum = (e) => {
@@ -260,15 +250,6 @@ function WordCardMenu(props) {
                         </button>
 
                     )}
-
-                    <button
-                        className="word-card-menu-item"
-                        onClick={handleDiscard}
-                    >
-                        <FontAwesomeIcon icon={faTrash} />
-                        <span>{isDiscarded ? 'Restore' : 'Discard'}</span>
-                    </button>
-
                 </div>
             )}
 
