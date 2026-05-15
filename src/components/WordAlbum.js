@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 
@@ -17,6 +17,58 @@ const ALBUM_THEME_LABELS = {
 };
 const GLOBAL_HEADER_THEME_CLASSES = ALBUM_THEMES.map(theme => `album-theme-global-${theme}`);
 
+function getRefreshUndoStorageKey(albumId) {
+    return `wordmage.albumRefreshUndo.${albumId}`;
+}
+
+function readRefreshUndoSnapshot(albumId) {
+    if (!albumId || typeof window === 'undefined') {
+        return null;
+    }
+
+    try {
+        const raw = window.sessionStorage.getItem(getRefreshUndoStorageKey(albumId));
+        if (!raw) {
+            return null;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed?.words) || parsed.words.length === 0) {
+            return null;
+        }
+
+        return {
+            createdAt: parsed.createdAt || Date.now(),
+            words: parsed.words
+                .filter((entry) => entry && entry.word_id != null && Number.isFinite(entry.position))
+                .map((entry) => ({
+                    word_id: String(entry.word_id),
+                    position: Number(entry.position),
+                })),
+        };
+    } catch (error) {
+        console.error('Failed to read album refresh undo snapshot:', error);
+        return null;
+    }
+}
+
+function writeRefreshUndoSnapshot(albumId, snapshot) {
+    if (!albumId || typeof window === 'undefined') {
+        return;
+    }
+
+    try {
+        if (!snapshot?.words?.length) {
+            window.sessionStorage.removeItem(getRefreshUndoStorageKey(albumId));
+            return;
+        }
+
+        window.sessionStorage.setItem(getRefreshUndoStorageKey(albumId), JSON.stringify(snapshot));
+    } catch (error) {
+        console.error('Failed to write album refresh undo snapshot:', error);
+    }
+}
+
 function WordAlbum(props) {
     const [album, setAlbum] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -28,6 +80,7 @@ function WordAlbum(props) {
     const [copyToast, setCopyToast] = useState(false);
     const [favoritesSortMode, setFavoritesSortMode] = useState('random');
     const [showThemeMenu, setShowThemeMenu] = useState(false);
+    const [lastRefreshSnapshot, setLastRefreshSnapshot] = useState(null);
     const [albumTheme, setAlbumTheme] = useState(() => {
         if (typeof window === 'undefined') {
             return 'classic';
@@ -117,8 +170,13 @@ function WordAlbum(props) {
             setEditMode(false);
             setFavoritesSortMode('random');
             setShowThemeMenu(false);
+            setLastRefreshSnapshot(readRefreshUndoSnapshot(albumId));
         }
     }, [albumId]);
+
+    useEffect(() => {
+        writeRefreshUndoSnapshot(albumId, lastRefreshSnapshot);
+    }, [albumId, lastRefreshSnapshot]);
 
     useEffect(() => {
         return () => {
@@ -191,6 +249,18 @@ function WordAlbum(props) {
     const handleRefreshMoodWords = async () => {
         if (!albumId) return;
 
+        const previousWords = (album?.words || [])
+            .map((word, index) => {
+                const wordId = word.id || word._id;
+                if (!wordId) return null;
+
+                return {
+                    word_id: String(wordId),
+                    position: typeof word.position === 'number' ? word.position : (index + 1),
+                };
+            })
+            .filter(Boolean);
+
         setLoading(true);
         try {
             const response = await fetch(`${CONFIG.domain}/albums/${albumId}/refresh`, {
@@ -201,8 +271,55 @@ function WordAlbum(props) {
             }
 
             await fetchAlbum();
+            const nextSnapshot = {
+                words: previousWords,
+                createdAt: Date.now(),
+            };
+            setLastRefreshSnapshot(nextSnapshot);
         } catch (error) {
             console.error('Error refreshing mood words:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleUndoMoodRefresh = async () => {
+        if (!albumId || !lastRefreshSnapshot?.words?.length) return;
+
+        const restoreWords = lastRefreshSnapshot.words;
+
+        setLoading(true);
+        try {
+            const restoreResponse = await fetch(`${CONFIG.domain}/albums/${albumId}/words`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    words: restoreWords.map((entry) => ({
+                        word_id: entry.word_id,
+                        position: entry.position,
+                    })),
+                }),
+            });
+
+            if (!restoreResponse.ok) {
+                throw new Error(`Failed restoring album words: ${restoreResponse.status}`);
+            }
+
+            const restoredAlbum = await restoreResponse.json().catch(() => null);
+
+            if (restoredAlbum?.words && Array.isArray(restoredAlbum.words)) {
+                setAlbum((prevAlbum) => ({
+                    ...prevAlbum,
+                    ...restoredAlbum,
+                }));
+            } else {
+                await fetchAlbum();
+            }
+
+            setLastRefreshSnapshot(null);
+        } catch (error) {
+            console.error('Error undoing mood refresh:', error);
+            alert('Failed to undo refresh. Ensure the server supports PUT /albums/:id/words with a words array of { word_id, position } objects.');
         } finally {
             setLoading(false);
         }
@@ -403,12 +520,24 @@ function WordAlbum(props) {
                             {favoritesSortMode === 'random' ? 'A-Z' : 'Random'}
                         </button>
                     )}
+                    {album?.mood_text && lastRefreshSnapshot?.words?.length > 0 && (
+                        <button
+                            className="moods-refresh-icon"
+                            onClick={handleUndoMoodRefresh}
+                            title="Undo last refresh"
+                            aria-label="Undo last refresh"
+                            disabled={loading}
+                        >
+                            <FontAwesomeIcon icon={faRotateLeft} />
+                        </button>
+                    )}
                     {album?.mood_text && (
                         <button
                             className="moods-refresh-icon"
                             onClick={handleRefreshMoodWords}
                             title="Refresh mood words"
                             aria-label="Refresh mood words"
+                            disabled={loading}
                         >
                             <FontAwesomeIcon icon={faRotate} />
                         </button>

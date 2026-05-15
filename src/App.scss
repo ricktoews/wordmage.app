@@ -2077,6 +2077,11 @@ body.album-theme-global-fogbound {
 		background-color: var(--album-nav-icon-active);
 	}
 
+	&:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
+
 	&:focus-visible {
 		outline: none;
 		box-shadow: 0 0 0 2px var(--album-icon-focus-ring);
