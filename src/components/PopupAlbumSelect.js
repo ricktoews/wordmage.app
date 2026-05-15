@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CONFIG } from '../config';
+import WordsInterface from '../utils/words-interface';
 
 function PopupAlbumSelect(props) {
     const { wordObj, closeAlbumPopup } = props;
@@ -54,6 +55,7 @@ function PopupAlbumSelect(props) {
 
             if (response.ok) {
                 console.log('Word added to album successfully');
+                WordsInterface.recordWordInterestSignal(wordObj, 'favorite_or_album', props.listType || 'browse');
                 closeAlbumPopup();
             } else {
                 console.error('Failed to add word to album:', response.status);
@@ -85,6 +87,7 @@ function PopupAlbumSelect(props) {
 
             if (createResponse.ok) {
                 console.log('Album created and word added successfully');
+                WordsInterface.recordWordInterestSignal(wordObj, 'favorite_or_album', props.listType || 'browse');
                 closeAlbumPopup();
             } else {
                 console.error('Failed to create album:', createResponse.status);

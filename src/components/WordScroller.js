@@ -158,6 +158,7 @@ function WordScroller(props) {
 				<PopupAlbumSelect
 					showAlbums={showAlbums}
 					wordObj={albumWordObj}
+					listType={props.listType}
 					closeAlbumPopup={closeAlbumPopup}
 				/>
 			</Popup>

@@ -69,7 +69,13 @@ function WordCardMenu(props) {
 
     const toggleMenu = (e) => {
         e.stopPropagation();
-        setIsOpen(!isOpen);
+        const newIsOpen = !isOpen;
+        setIsOpen(newIsOpen);
+
+        // Signal explicit curiosity when menu is opened.
+        if (newIsOpen) {
+            WordsInterface.recordWordInterestSignal(wordObj, 'menu_opened', listType);
+        }
     };
 
     const handleBookmark = async (e) => {
@@ -101,6 +107,7 @@ function WordCardMenu(props) {
                 if (response.ok) {
                     setIsBookmarked(true);
                     WordsInterface.addToLiked(wordObj);
+                    WordsInterface.recordWordInterestSignal(wordObj, 'favorite_or_album', listType);
                     if (props.onUpdate) props.onUpdate();
                     if (onAlbumRefresh) onAlbumRefresh();
                 } else {

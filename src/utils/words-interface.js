@@ -7,7 +7,101 @@ import DataSource from './data-source';
 import { CONFIG } from '../config';
 
 const custom = DataSource.retrieveUserLocalData();
-const userData = { custom, favoriteWords: [], albumIds: {} };
+const userData = { custom, favoriteWords: [], albumIds: {}, browseHistory: [] };
+
+const HISTORY_SETTINGS_STORAGE_KEY = 'wordmage.historyScoringSettings';
+const DEFAULT_HISTORY_SCORING_SETTINGS = {
+    scoreThreshold: 4,
+    viewport3sMs: 3000,
+    viewport6sMs: 6000,
+    scrollStopVisibleMs: 180,
+    signalSessionIdleMs: 2 * 60 * 1000,
+    returnToWordIdleMs: 10 * 60 * 1000,
+};
+
+const SIGNAL_SCORES = {
+    viewport_3s: 1,
+    viewport_6s: 1,
+    scroll_stop_visible: 2,
+    tap_card: 3,
+    menu_opened: 2,
+    favorite_or_album: 10,
+    returned_later: 4,
+};
+
+const signalStateByWord = {};
+
+function clampNumber(value, min, max, fallback) {
+    const asNumber = Number(value);
+    if (!Number.isFinite(asNumber)) {
+        return fallback;
+    }
+    return Math.min(max, Math.max(min, Math.round(asNumber)));
+}
+
+function sanitizeHistoryScoringSettings(settings = {}) {
+    return {
+        scoreThreshold: clampNumber(settings.scoreThreshold, 1, 50, DEFAULT_HISTORY_SCORING_SETTINGS.scoreThreshold),
+        viewport3sMs: clampNumber(settings.viewport3sMs, 500, 20000, DEFAULT_HISTORY_SCORING_SETTINGS.viewport3sMs),
+        viewport6sMs: clampNumber(settings.viewport6sMs, 1000, 30000, DEFAULT_HISTORY_SCORING_SETTINGS.viewport6sMs),
+        scrollStopVisibleMs: clampNumber(settings.scrollStopVisibleMs, 50, 3000, DEFAULT_HISTORY_SCORING_SETTINGS.scrollStopVisibleMs),
+        signalSessionIdleMs: clampNumber(settings.signalSessionIdleMs, 5000, 60 * 60 * 1000, DEFAULT_HISTORY_SCORING_SETTINGS.signalSessionIdleMs),
+        returnToWordIdleMs: clampNumber(settings.returnToWordIdleMs, 30 * 1000, 24 * 60 * 60 * 1000, DEFAULT_HISTORY_SCORING_SETTINGS.returnToWordIdleMs),
+    };
+}
+
+function getHistoryScoringSettings() {
+    if (typeof localStorage === 'undefined') {
+        return { ...DEFAULT_HISTORY_SCORING_SETTINGS };
+    }
+
+    try {
+        const stored = localStorage.getItem(HISTORY_SETTINGS_STORAGE_KEY);
+        if (!stored) {
+            return { ...DEFAULT_HISTORY_SCORING_SETTINGS };
+        }
+
+        const parsed = JSON.parse(stored);
+        return sanitizeHistoryScoringSettings({
+            ...DEFAULT_HISTORY_SCORING_SETTINGS,
+            ...(parsed || {}),
+        });
+    } catch (error) {
+        return { ...DEFAULT_HISTORY_SCORING_SETTINGS };
+    }
+}
+
+function setHistoryScoringSettings(nextSettings = {}) {
+    const current = getHistoryScoringSettings();
+    const merged = sanitizeHistoryScoringSettings({
+        ...current,
+        ...nextSettings,
+    });
+
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(HISTORY_SETTINGS_STORAGE_KEY, JSON.stringify(merged));
+    }
+
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('wordmage:historyScoringChanged', { detail: merged }));
+    }
+
+    return merged;
+}
+
+function resetHistoryScoringSettings() {
+    if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem(HISTORY_SETTINGS_STORAGE_KEY);
+    }
+
+    const defaults = { ...DEFAULT_HISTORY_SCORING_SETTINGS };
+
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('wordmage:historyScoringChanged', { detail: defaults }));
+    }
+
+    return defaults;
+}
 
 const WORD_POOL = [];
 const COLLECTIVE = [];
@@ -326,6 +420,121 @@ function removeFromLiked(wordObj) {
     userData.favoriteWords = userData.favoriteWords.filter(word => word.word !== wordToRemove);
 }
 
+function getSignalStateForWord(word, now, signalSessionIdleMs) {
+    const existingState = signalStateByWord[word];
+    const shouldReset = !existingState || (now - existingState.lastSignalAt > signalSessionIdleMs);
+
+    if (shouldReset) {
+        signalStateByWord[word] = {
+            score: 0,
+            seenSignals: {},
+            lastSignalAt: now,
+            hasLoggedThisSession: false,
+        };
+    }
+
+    return signalStateByWord[word];
+}
+
+/**
+ * Add word to browse history. Track when user views a word.
+ * Updates view count and timestamp if word already exists.
+ */
+function addToBrowseHistory(wordObj, source = 'browse', score = null) {
+    if (!wordObj || !wordObj.word) return;
+
+    const now = Date.now();
+    const history = userData.browseHistory || [];
+    const existing = history.find(h => h.word === wordObj.word);
+
+    if (existing) {
+        existing.viewCount = (existing.viewCount || 1) + 1;
+        existing.lastViewedAt = now;
+        existing.source = source || existing.source;
+        if (typeof score === 'number') {
+            existing.lastScore = score;
+        }
+    } else {
+        history.push({
+            word: wordObj.word,
+            id: wordObj.id,
+            def: wordObj.def || wordObj.definition || '',
+            source: source,
+            firstViewedAt: now,
+            lastViewedAt: now,
+            viewCount: 1,
+            lastScore: typeof score === 'number' ? score : 0,
+        });
+    }
+
+    userData.browseHistory = history;
+}
+
+/**
+ * Weighted-interest detector. Signals accumulate per word and session.
+ * A word is written to history once per session when score crosses threshold.
+ */
+function recordWordInterestSignal(wordObj, signal, source = 'browse') {
+    if (!wordObj || !wordObj.word || !signal || !SIGNAL_SCORES[signal]) {
+        return { logged: false, score: 0 };
+    }
+
+    const settings = getHistoryScoringSettings();
+    const now = Date.now();
+    const word = wordObj.word;
+    const signalState = getSignalStateForWord(word, now, settings.signalSessionIdleMs);
+    const history = userData.browseHistory || [];
+    const existingHistory = history.find(item => item.word === word);
+
+    if (
+        existingHistory &&
+        !signalState.seenSignals.returned_later &&
+        (now - (existingHistory.lastViewedAt || 0) >= settings.returnToWordIdleMs)
+    ) {
+        signalState.score += SIGNAL_SCORES.returned_later;
+        signalState.seenSignals.returned_later = true;
+    }
+
+    if (!signalState.seenSignals[signal]) {
+        signalState.score += SIGNAL_SCORES[signal];
+        signalState.seenSignals[signal] = true;
+    }
+
+    signalState.lastSignalAt = now;
+
+    if (!signalState.hasLoggedThisSession && signalState.score >= settings.scoreThreshold) {
+        addToBrowseHistory(wordObj, source, signalState.score);
+        signalState.hasLoggedThisSession = true;
+        return { logged: true, score: signalState.score };
+    }
+
+    return { logged: false, score: signalState.score };
+}
+
+/**
+ * Get all words from browse history, sorted by most recent first
+ */
+function getBrowseHistory() {
+    const history = userData.browseHistory || [];
+    return history.slice().sort((a, b) => (b.lastViewedAt || 0) - (a.lastViewedAt || 0));
+}
+
+/**
+ * Clear all browse history
+ */
+function clearBrowseHistory() {
+    userData.browseHistory = [];
+}
+
+/**
+ * Remove specific word from browse history
+ */
+function removeFromBrowseHistory(word) {
+    const history = userData.browseHistory || [];
+    userData.browseHistory = history.filter(h => h.word !== word);
+    delete signalStateByWord[word];
+}
+
 
 const WordsInterface = {
     getCustom,
@@ -351,6 +560,14 @@ const WordsInterface = {
     isWordLiked,
     addToLiked,
     removeFromLiked,
+    getHistoryScoringSettings,
+    setHistoryScoringSettings,
+    resetHistoryScoringSettings,
+    recordWordInterestSignal,
+    addToBrowseHistory,
+    getBrowseHistory,
+    clearBrowseHistory,
+    removeFromBrowseHistory,
 };
 
 export default WordsInterface;

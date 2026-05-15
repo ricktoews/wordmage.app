@@ -13,7 +13,8 @@ import {
     faBook,
     faHome,
     faUser,
-    faComment
+    faComment,
+    faHistory
 } from '@fortawesome/free-solid-svg-icons';
 
 import KeyCapture from './KeyCapture';
@@ -40,6 +41,7 @@ import Random from './components/Random';
 import Register from './Register';
 import Profile from './Profile';
 import About from './About';
+import History from './components/History';
 
 import './App.scss';
 
@@ -299,6 +301,13 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
+    const navToHistory = () => {
+        var history = props.history;
+        history.push('/history');
+        setView('History');
+        setHamburgerClass('hamburger-nav');
+    }
+
     const signOut = () => {
         // Attempt to disable Google auto-select / revoke if available
         try {
@@ -340,6 +349,7 @@ function App(props) {
                     {authUser && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
+                    {authUser && <li onClick={navToHistory}><FontAwesomeIcon icon={faHistory} /> History</li>}
                     {authUser && <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>}
                     <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
@@ -378,6 +388,11 @@ function App(props) {
                     {authUser && (
                         <button className="header-nav-btn" onClick={navToAlbums} title="Albums">
                             <FontAwesomeIcon icon={faFolderOpen} />
+                        </button>
+                    )}
+                    {authUser && (
+                        <button className="header-nav-btn" onClick={navToHistory} title="History">
+                            <FontAwesomeIcon icon={faHistory} />
                         </button>
                     )}
                     {/* {authUser && (
@@ -485,6 +500,7 @@ function App(props) {
                         <Route path="/albums/:id" render={props => (<WordAlbum
                             onAIExplain={handleAIExplain}
                         />)} />
+                        <Route exact path="/history" render={props => (<History />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             onAIExplain={handleAIExplain}
                         />)} />

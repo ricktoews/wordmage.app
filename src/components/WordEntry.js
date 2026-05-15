@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
@@ -11,6 +11,12 @@ function WordEntry(props) {
 	const { wordObj, listType } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [showInfo, setShowInfo] = useState(false);
+	const [historySettings, setHistorySettings] = useState(() => WordsInterface.getHistoryScoringSettings());
+	const wordItemRef = useRef(null);
+	const viewport3sTimerRef = useRef(null);
+	const viewport6sTimerRef = useRef(null);
+	const scrollStopTimerRef = useRef(null);
+	const isFullyVisibleRef = useRef(false);
 	const sourceList = Array.isArray(wordObj.sources)
 		? wordObj.sources.filter(Boolean)
 		: wordObj.source
@@ -24,6 +30,114 @@ function WordEntry(props) {
 
 	// Check if word is in favorites list (liked array)
 	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
+
+	useEffect(() => {
+		const syncHistorySettings = () => {
+			setHistorySettings(WordsInterface.getHistoryScoringSettings());
+		};
+
+		const handleStorage = (event) => {
+			if (event.key === 'wordmage.historyScoringSettings') {
+				syncHistorySettings();
+			}
+		};
+
+		window.addEventListener('wordmage:historyScoringChanged', syncHistorySettings);
+		window.addEventListener('storage', handleStorage);
+
+		return () => {
+			window.removeEventListener('wordmage:historyScoringChanged', syncHistorySettings);
+			window.removeEventListener('storage', handleStorage);
+		};
+	}, []);
+
+	// Weighted viewport signals: +1 at 3s, +1 at 6s when fully visible.
+	useEffect(() => {
+		if (wordObj.divider) return;
+
+		const clearViewportTimers = () => {
+			if (viewport3sTimerRef.current) {
+				clearTimeout(viewport3sTimerRef.current);
+				viewport3sTimerRef.current = null;
+			}
+			if (viewport6sTimerRef.current) {
+				clearTimeout(viewport6sTimerRef.current);
+				viewport6sTimerRef.current = null;
+			}
+		};
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						isFullyVisibleRef.current = true;
+
+						if (!viewport3sTimerRef.current) {
+							viewport3sTimerRef.current = setTimeout(() => {
+								WordsInterface.recordWordInterestSignal(wordObj, 'viewport_3s', listType);
+								viewport3sTimerRef.current = null;
+							}, historySettings.viewport3sMs);
+						}
+
+						if (!viewport6sTimerRef.current) {
+							viewport6sTimerRef.current = setTimeout(() => {
+								WordsInterface.recordWordInterestSignal(wordObj, 'viewport_6s', listType);
+								viewport6sTimerRef.current = null;
+							}, historySettings.viewport6sMs);
+						}
+					} else {
+						isFullyVisibleRef.current = false;
+						clearViewportTimers();
+					}
+				});
+			},
+			{ threshold: 1 }
+		);
+
+		if (wordItemRef.current) {
+			observer.observe(wordItemRef.current);
+		}
+
+		return () => {
+			isFullyVisibleRef.current = false;
+			clearViewportTimers();
+			observer.disconnect();
+			if (scrollStopTimerRef.current) {
+				clearTimeout(scrollStopTimerRef.current);
+				scrollStopTimerRef.current = null;
+			}
+		};
+	}, [wordObj, listType, historySettings.viewport3sMs, historySettings.viewport6sMs]);
+
+	// Scroll-stop signal while card is fully visible.
+	useEffect(() => {
+		if (wordObj.divider) return;
+
+		const handleScroll = () => {
+			if (!isFullyVisibleRef.current) return;
+
+			if (scrollStopTimerRef.current) {
+				clearTimeout(scrollStopTimerRef.current);
+			}
+
+			scrollStopTimerRef.current = setTimeout(() => {
+				if (isFullyVisibleRef.current) {
+					WordsInterface.recordWordInterestSignal(wordObj, 'scroll_stop_visible', listType);
+				}
+				scrollStopTimerRef.current = null;
+			}, historySettings.scrollStopVisibleMs);
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			if (scrollStopTimerRef.current) {
+				clearTimeout(scrollStopTimerRef.current);
+				scrollStopTimerRef.current = null;
+			}
+		};
+	}, [wordObj, listType, historySettings.scrollStopVisibleMs]);
 
 	function scrambleWord(wordObj) {
 		console.log('scrambleWord', wordObj);
@@ -42,8 +156,12 @@ function WordEntry(props) {
 		setShowInfo(!showInfo);
 	};
 
+	const handleCardTap = () => {
+		WordsInterface.recordWordInterestSignal(wordObj, 'tap_card', listType);
+	};
+
 	return wordObj.divider ? <hr className="rejects" /> : (
-		<div className="word-item">
+		<div className="word-item" ref={wordItemRef} onClick={handleCardTap}>
 			<div className="word-content-wrapper">
 				<div className="word-item-word-container">
 					<div className="word-edit-btn">
