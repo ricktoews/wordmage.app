@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece, faDownload } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
+import { downloadWordList } from '../utils/page-download';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
@@ -445,6 +446,14 @@ function WordAlbum(props) {
 
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
+    const handleDownload = () => {
+        const label = isFavoritesAlbum ? 'favorites-words' : `${album?.title || 'word-album'}-words`;
+        downloadWordList({
+            label,
+            wordEntries: displayedWords,
+        });
+    };
+
     return (
         <div className={`word-list-page-container album-content-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
             <div className="favorites-toolbar">
@@ -509,6 +518,16 @@ function WordAlbum(props) {
                             <FontAwesomeIcon icon={faPuzzlePiece} />
                         </button>
                     )}
+                    <button
+                        type="button"
+                        className="moods-refresh-icon"
+                        onClick={handleDownload}
+                        title="Download words"
+                        aria-label="Download words"
+                        disabled={displayedWords.length === 0}
+                    >
+                        <FontAwesomeIcon icon={faDownload} />
+                    </button>
                     {isFavoritesAlbum && (
                         <button
                             type="button"

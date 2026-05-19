@@ -400,17 +400,6 @@ function App(props) {
                             <FontAwesomeIcon icon={faGraduationCap} />
                         </button>
                     )} */}
-                    {authUser && botpressClientId && (
-                        <button
-                            ref={webchatButtonRef}
-                            className="header-nav-btn"
-                            onClick={toggleWebchat}
-                            title="Chat with WordMage Wizard"
-                            aria-label="Chat with WordMage Wizard"
-                        >
-                            <FontAwesomeIcon icon={faComment} />
-                        </button>
-                    )}
                 </div>
 
                 <div className="header-right">

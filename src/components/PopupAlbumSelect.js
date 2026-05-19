@@ -23,12 +23,9 @@ function PopupAlbumSelect(props) {
             const response = await fetch(`${CONFIG.domain}/albums`);
             const data = await response.json();
             if (Array.isArray(data)) {
-                const sortedAlbums = data.sort((a, b) => {
-                    // Always put "Favorites" at the top, "Learn" second
-                    if (a.title === 'Favorites') return -1;
-                    if (b.title === 'Favorites') return 1;
-                    if (a.title === 'Learn') return -1;
-                    if (b.title === 'Learn') return 1;
+                const sortedAlbums = data
+                    .filter((album) => album.title !== 'Favorites' && album.title !== 'Learn')
+                    .sort((a, b) => {
                     return a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
                 });
                 setAlbums(sortedAlbums);
@@ -112,7 +109,13 @@ function PopupAlbumSelect(props) {
         <div className="popup-album-select">
             <div className="popup-header">
                 <h3>Add to Album</h3>
-                <button className="popup-close-button" onClick={closeAlbumPopup}>
+                <button
+                    type="button"
+                    className="popup-close-button"
+                    onClick={closeAlbumPopup}
+                    aria-label="Close add to album popup"
+                    title="Close"
+                >
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
             </div>

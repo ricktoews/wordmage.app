@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { getRandomPageData } from '../utils/api';
 import WordScroller from './WordScroller';
+import { downloadWordList } from '../utils/page-download';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
@@ -16,10 +17,59 @@ const ALBUM_THEME_LABELS = {
 	fogbound: 'Fogbound'
 };
 
+function getRandomRefreshUndoStorageKey(userId) {
+	return `wordmage.randomRefreshUndo.${userId || 'anon'}`;
+}
+
+function readRandomRefreshUndoSnapshot(userId) {
+	if (typeof window === 'undefined') {
+		return null;
+	}
+
+	try {
+		const raw = window.sessionStorage.getItem(getRandomRefreshUndoStorageKey(userId));
+		if (!raw) {
+			return null;
+		}
+
+		const parsed = JSON.parse(raw);
+		if (!Array.isArray(parsed?.words)) {
+			return null;
+		}
+
+		return {
+			createdAt: parsed.createdAt || Date.now(),
+			words: parsed.words,
+			featuredWord: parsed.featuredWord || null,
+		};
+	} catch (error) {
+		console.error('Failed to read random refresh undo snapshot:', error);
+		return null;
+	}
+}
+
+function writeRandomRefreshUndoSnapshot(userId, snapshot) {
+	if (typeof window === 'undefined') {
+		return;
+	}
+
+	try {
+		if (!snapshot) {
+			window.sessionStorage.removeItem(getRandomRefreshUndoStorageKey(userId));
+			return;
+		}
+
+		window.sessionStorage.setItem(getRandomRefreshUndoStorageKey(userId), JSON.stringify(snapshot));
+	} catch (error) {
+		console.error('Failed to write random refresh undo snapshot:', error);
+	}
+}
+
 function Random(props) {
 	const [randomWords, setRandomWords] = useState([]);
 	const [featuredWord, setFeaturedWord] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const [lastRefreshSnapshot, setLastRefreshSnapshot] = useState(null);
 	const [showThemeMenu, setShowThemeMenu] = useState(false);
 	const [albumTheme, setAlbumTheme] = useState(() => {
 		if (typeof window === 'undefined') {
@@ -33,8 +83,18 @@ function Random(props) {
 	const themeToggleButtonRef = useRef(null);
 	const themeClickTimerRef = useRef(null);
 	const lastThemeToggleClickRef = useRef(0);
+	const userIdRef = useRef(null);
 
 	const THEME_DOUBLE_TAP_MS = 280;
+
+	useEffect(() => {
+		userIdRef.current = localStorage.getItem('wordmage-profile-user_id');
+		setLastRefreshSnapshot(readRandomRefreshUndoSnapshot(userIdRef.current));
+	}, []);
+
+	useEffect(() => {
+		writeRandomRefreshUndoSnapshot(userIdRef.current, lastRefreshSnapshot);
+	}, [lastRefreshSnapshot]);
 
 	useEffect(() => {
 		window.localStorage.setItem('wordmage.albumTheme', albumTheme);
@@ -128,14 +188,17 @@ function Random(props) {
 		setIsLoading(true);
 		try {
 			const userId = localStorage.getItem('wordmage-profile-user_id');
+			userIdRef.current = userId;
 			const data = await getRandomPageData(userId);
 
 			setRandomWords(data.words || []);
 			setFeaturedWord(data.featured_favorite || null);
+			return true;
 		} catch (error) {
 			console.error('Error loading random page data:', error);
 			setRandomWords([]);
 			setFeaturedWord(null);
+			return false;
 		} finally {
 			setIsLoading(false);
 		}
@@ -145,9 +208,33 @@ function Random(props) {
 		loadRandomData();
 	}, []);
 
-	const handleNewRandom = () => {
+	const handleNewRandom = async () => {
 		console.log('Refresh random list.');
-		loadRandomData();
+		const previousSnapshot = {
+			words: randomWords,
+			featuredWord,
+			createdAt: Date.now(),
+		};
+
+		const didLoad = await loadRandomData();
+		if (didLoad) {
+			setLastRefreshSnapshot(previousSnapshot);
+		}
+	};
+
+	const handleUndoRandomRefresh = () => {
+		if (!lastRefreshSnapshot) return;
+
+		setRandomWords(lastRefreshSnapshot.words || []);
+		setFeaturedWord(lastRefreshSnapshot.featuredWord || null);
+		setLastRefreshSnapshot(null);
+	};
+
+	const handleDownload = () => {
+		downloadWordList({
+			label: 'random-words',
+			wordEntries: randomWords
+		});
 	};
 
 	return (
@@ -186,6 +273,28 @@ function Random(props) {
 							</div>
 						)}
 					</div>
+					<button
+						type="button"
+						className="random-refresh-icon"
+						onClick={handleDownload}
+						title="Download words"
+						aria-label="Download words"
+						disabled={randomWords.length === 0}
+					>
+						<FontAwesomeIcon icon={faDownload} />
+					</button>
+					{lastRefreshSnapshot && (
+						<button
+							type="button"
+							className="random-refresh-icon"
+							onClick={handleUndoRandomRefresh}
+							title="Undo last refresh"
+							aria-label="Undo last refresh"
+							disabled={isLoading}
+						>
+							<FontAwesomeIcon icon={faRotateLeft} />
+						</button>
+					)}
 					<button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words" disabled={isLoading}>
 						<FontAwesomeIcon icon={faRotate} spin={isLoading} />
 					</button>
