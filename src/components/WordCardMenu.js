@@ -9,7 +9,8 @@ import {
     faFolder,
     faXmark,
     faLock,
-    faLockOpen
+    faLockOpen,
+    faTrashCan
 } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
@@ -153,6 +154,16 @@ function WordCardMenu(props) {
         setShowDeletePopup(true);
     };
 
+    const handleRemoveFromHistory = (e) => {
+        e.stopPropagation();
+        setIsOpen(false);
+        WordsInterface.removeFromBrowseHistory(wordObj.word);
+        // Trigger a refresh via the onAlbumRefresh callback
+        if (props.onAlbumRefresh) {
+            props.onAlbumRefresh();
+        }
+    };
+
     const handleToggleLock = async (e) => {
         e.stopPropagation();
         const newLockedState = !isLocked;
@@ -256,6 +267,16 @@ function WordCardMenu(props) {
                             <span>- Album</span>
                         </button>
 
+                    )}
+
+                    {listType === 'history' && (
+                        <button
+                            className="word-card-menu-item word-card-menu-item-delete"
+                            onClick={handleRemoveFromHistory}
+                        >
+                            <FontAwesomeIcon icon={faTrashCan} />
+                            <span>Remove from History</span>
+                        </button>
                     )}
                 </div>
             )}

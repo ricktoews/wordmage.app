@@ -22,11 +22,43 @@ function WordEntry(props) {
 		: wordObj.source
 			? [wordObj.source]
 			: [];
+
+	const formatHistoryTimestamp = (timestamp) => {
+		if (!timestamp) {
+			return null;
+		}
+
+		const date = new Date(timestamp);
+		const now = new Date();
+		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+		const viewedDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+		const dayDiff = Math.round((today - viewedDay) / (1000 * 60 * 60 * 24));
+
+		if (dayDiff === 0) {
+			return `Today ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+		}
+
+		if (dayDiff === 1) {
+			return `Yesterday ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+		}
+
+		return date.toLocaleString('en-US', {
+			month: 'short',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: '2-digit'
+		});
+	};
+
 	const sourceSummary = sourceList.length === 0
 		? null
 		: sourceList.length === 1
 			? sourceList[0]
 			: `${sourceList[0]} +${sourceList.length - 1} more`;
+
+	const metadataSummary = listType === 'history'
+		? formatHistoryTimestamp(wordObj.lastViewedAt)
+		: sourceSummary;
 
 	// Check if word is in favorites list (liked array)
 	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
@@ -174,8 +206,8 @@ function WordEntry(props) {
 					<div className="word-item-def">{wordObj.def}</div>
 				</div>
 				<div className="word-item-def-container">
-					{sourceSummary && (
-						<div className="word-item-source">✦ {sourceSummary}</div>
+					{metadataSummary && (
+						<div className="word-item-source">✦ {metadataSummary}</div>
 					)}
 					{showInfo && (
 						<div className="word-info-popup">

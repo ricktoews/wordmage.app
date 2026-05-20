@@ -1,22 +1,36 @@
 import { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faXmark, faPalette } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
-import WordCardMenu from './WordCardMenu';
+import WordScroller from './WordScroller';
 import PopupAlbumSelect from './PopupAlbumSelect';
 import Popup from './Popup';
 import './History.scss';
+
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
+const ALBUM_THEME_LABELS = {
+	classic: 'Literary',
+	paper: 'Parchment',
+	ink: 'Nocturne',
+	arcane: 'Arcane',
+	eldritch: 'Eldritch',
+	obsidian: 'Obsidian',
+	fogbound: 'Fogbound'
+};
 
 function History(props) {
 	const [history, setHistory] = useState(() => WordsInterface.getBrowseHistory());
 	const [showConfirmClear, setShowConfirmClear] = useState(false);
 	const [showAlbums, setShowAlbums] = useState(false);
 	const [albumWordObj, setAlbumWordObj] = useState({});
+	const [albumTheme, setAlbumTheme] = useState(() => {
+		if (typeof window === 'undefined') {
+			return 'paper';
+		}
 
-	const handleRemoveWord = useCallback((word) => {
-		WordsInterface.removeFromBrowseHistory(word);
-		setHistory(WordsInterface.getBrowseHistory());
-	}, []);
+		const savedTheme = window.localStorage.getItem('wordmage.albumTheme');
+		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'paper';
+	});
 
 	const handleClearAll = useCallback(() => {
 		WordsInterface.clearBrowseHistory();
@@ -38,81 +52,68 @@ function History(props) {
 		setHistory(WordsInterface.getBrowseHistory());
 	};
 
-	const formatDate = (timestamp) => {
-		if (!timestamp) return '';
-		const date = new Date(timestamp);
-		const today = new Date();
-		const yesterday = new Date(today);
-		yesterday.setDate(yesterday.getDate() - 1);
+	const cycleAlbumTheme = () => {
+		setAlbumTheme((currentTheme) => {
+			const currentIndex = ALBUM_THEMES.indexOf(currentTheme);
+			const nextIndex = (currentIndex + 1) % ALBUM_THEMES.length;
+			const nextTheme = ALBUM_THEMES[nextIndex];
+			if (typeof window !== 'undefined') {
+				window.localStorage.setItem('wordmage.albumTheme', nextTheme);
+				window.dispatchEvent(new CustomEvent('wordmage:albumThemeChanged', {
+					detail: { theme: nextTheme }
+				}));
+			}
 
-		if (date.toDateString() === today.toDateString()) {
-			return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-		} else if (date.toDateString() === yesterday.toDateString()) {
-			return 'Yesterday ' + date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-		} else {
-			return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-		}
+			return nextTheme;
+		});
 	};
 
 	return (
-		<div className="browse-container">
-			<div className="history-toolbar">
-				<div className="history-toolbar-title">Words That Caught My Eye</div>
-				{history.length > 0 && (
+		<div className={`word-list-page-container album-content-page album-theme-${albumTheme}`}>
+			<div className="favorites-toolbar">
+				<div className="favorites-toolbar-content">
+					<div className="favorites-toolbar-title">
+						History
+					</div>
+				</div>
+				<div className="moods-toolbar-actions">
 					<button
-						className="history-clear-btn"
-						onClick={() => setShowConfirmClear(true)}
-						title="Clear all history"
-						aria-label="Clear all history"
+						type="button"
+						className="moods-refresh-icon album-theme-toggle"
+						onClick={cycleAlbumTheme}
+						title={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to change theme.`}
+						aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to change theme.`}
 					>
-						<FontAwesomeIcon icon={faTrash} />
+						<FontAwesomeIcon icon={faPalette} />
 					</button>
-				)}
+					{history.length > 0 && (
+						<button
+							type="button"
+							className="moods-refresh-icon"
+							onClick={() => setShowConfirmClear(true)}
+							title="Clear all history"
+							aria-label="Clear all history"
+						>
+							<FontAwesomeIcon icon={faTrash} />
+						</button>
+					)}
+				</div>
 			</div>
 
-			<div className="history-content">
+			<div className="word-list-wrapper">
 				{history.length === 0 ? (
 					<div className="history-empty">
 						<p>No words in your history yet.</p>
 						<p>Words you browse or interact with will appear here.</p>
 					</div>
 				) : (
-					<div className="history-list">
-						{history.map((item, index) => (
-							<div key={index} className="history-item">
-								<div className="history-item-content">
-									<div className="history-item-word">{item.word}</div>
-									<div className="history-item-def">{item.def}</div>
-									<div className="history-item-meta">
-										<span className="history-item-timestamp">
-											{formatDate(item.lastViewedAt)}
-										</span>
-										{item.viewCount > 1 && (
-											<span className="history-item-viewcount">
-												{item.viewCount} views
-											</span>
-										)}
-									</div>
-								</div>
-								<div className="history-item-actions">
-									<WordCardMenu
-										wordObj={item}
-										listType="history"
-										onAlbumRefresh={handleAlbumRefresh}
-										popupAlbums={popupAlbums}
-									/>
-								</div>
-								<button
-									className="history-item-remove-corner"
-									onClick={() => handleRemoveWord(item.word)}
-									title="Remove from history"
-									aria-label="Remove from history"
-								>
-									<FontAwesomeIcon icon={faTrashCan} />
-								</button>
-							</div>
-						))}
-					</div>
+					<WordScroller
+						pool={history}
+						startingNdx={0}
+						listType="history"
+						onAlbumRefresh={handleAlbumRefresh}
+						popupAlbums={popupAlbums}
+					/>
 				)}
 			</div>
 
@@ -124,7 +125,7 @@ function History(props) {
 					</div>
 				</div>
 				<div className="popup-body">
-					<p>Are you sure you want to clear all browsing history?</p>
+					<p>Are you sure you want to clear all word browsing history?</p>
 					<div className="button-wrapper">
 						<button className="btn btn-default" onClick={() => setShowConfirmClear(false)}>
 							Cancel
