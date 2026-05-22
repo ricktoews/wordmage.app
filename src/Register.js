@@ -5,6 +5,7 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import DataSource from './utils/data-source';
 import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
+import { persistTokenFromResponse } from './utils/auth';
 
 const userLocalData = DataSource.retrieveUserLocalData();
 
@@ -56,11 +57,13 @@ function Register(props) {
         };
         var response = await fetch(`${CONFIG.domain}/login`, options);
         var data = await response.json();
+        persistTokenFromResponse(data);
         console.log('login from Registration', data);
         var user_id = data.user_id;
         setProfileUser({ user_id, email });
         localStorage.setItem('wordmage-profile-user_id', user_id);
         localStorage.setItem('wordmage-profile-email', email);
+        localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
         if (data.custom) {
             setCustomData(data.custom);
         }
@@ -77,6 +80,7 @@ function Register(props) {
         };
         var response = await fetch(`${CONFIG.domain}/register`, options);
         var data = await response.json();
+        persistTokenFromResponse(data);
         console.log('register', data);
         if (data.status) {
             login();

@@ -4,6 +4,7 @@ import { faXmark, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
 import { WordMageContext } from './WordMageContext';
+import { clearAuthenticatedToken, persistTokenFromResponse } from './utils/auth';
 
 const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
@@ -123,7 +124,16 @@ function Profile(props) {
 
 	const logout = () => {
 		setProfileUser({});
-		localStorage.clear();
+		localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
+		localStorage.removeItem('authUser');
+		localStorage.removeItem('wordmage-profile-email');
+		const anonymousUserId = localStorage.getItem('wordmage-anonymous-user_id');
+		if (anonymousUserId) {
+			localStorage.setItem('wordmage-profile-user_id', anonymousUserId);
+		} else {
+			localStorage.removeItem('wordmage-profile-user_id');
+		}
+		clearAuthenticatedToken();
 		console.log('Removed user ID');
 	}
 
@@ -170,6 +180,7 @@ function Profile(props) {
 		};
 		var response = await fetch(`${CONFIG.domain}/login`, options);
 		var data = await response.json();
+		persistTokenFromResponse(data);
 		var user_id = data.user_id;
 		if (user_id == -1) {
 			setMessage("The email / password combo you used isn't registered. Try again?");
@@ -178,6 +189,7 @@ function Profile(props) {
 			setProfileUser({ user_id, email });
 			localStorage.setItem('wordmage-profile-user_id', user_id);
 			localStorage.setItem('wordmage-profile-email', email);
+			localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
 		}
 		if (data.custom) {
 			setCustomData(data.custom);

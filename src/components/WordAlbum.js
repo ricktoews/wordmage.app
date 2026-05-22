@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
+import { authFetch } from '../utils/auth';
 import Popup from './Popup';
 import PopupListShare from './PopupListShare';
 
@@ -224,7 +225,7 @@ function WordAlbum(props) {
     const fetchAlbum = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${albumId}`);
+            const response = await authFetch(`${CONFIG.domain}/albums/${albumId}`);
             const data = await response.json();
 
             setAlbum(data);
@@ -266,7 +267,7 @@ function WordAlbum(props) {
 
         setLoading(true);
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${albumId}/refresh`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/${albumId}/refresh`, {
                 method: 'POST',
             });
             if (!response.ok) {
@@ -293,7 +294,7 @@ function WordAlbum(props) {
 
         setLoading(true);
         try {
-            const restoreResponse = await fetch(`${CONFIG.domain}/albums/${albumId}/words`, {
+            const restoreResponse = await authFetch(`${CONFIG.domain}/albums/${albumId}/words`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -365,7 +366,7 @@ function WordAlbum(props) {
 
         setSavingMood(true);
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${albumId}/mood-text`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/${albumId}/mood-text`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -592,7 +593,11 @@ function WordAlbum(props) {
                 <div className="album-mood-copy-toast">Copied!</div>
             )}
 
-            <Popup isVisible={showSharePopup} handleBackgroundClick={() => setShowSharePopup(false)}>
+            <Popup
+                isVisible={showSharePopup}
+                handleBackgroundClick={() => setShowSharePopup(false)}
+                className={`list-share-popup album-theme-${albumTheme}`}
+            >
                 <PopupListShare
                     title={isFavoritesAlbum ? 'Share Favorites' : `Share ${album?.title || 'Word Album'}`}
                     label={isFavoritesAlbum ? 'Favorites' : album?.title || 'Word Album'}

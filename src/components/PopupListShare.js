@@ -10,11 +10,29 @@ import {
 	formatWordListForText,
 } from '../utils/page-download';
 
+const LIST_SHARE_FORMAT_KEY = 'wordmage.listShareFormat';
+
+function getInitialFormat() {
+	if (typeof window === 'undefined') {
+		return 'text';
+	}
+
+	const savedFormat = window.localStorage.getItem(LIST_SHARE_FORMAT_KEY);
+	return savedFormat === 'json' ? 'json' : 'text';
+}
+
 function PopupListShare(props) {
 	const { label, title = 'Share Word List', wordEntries = [] } = props;
 	const [status, setStatus] = useState('');
 	const [isWorking, setIsWorking] = useState(false);
-	const [selectedFormat, setSelectedFormat] = useState('text');
+	const [selectedFormat, setSelectedFormat] = useState(getInitialFormat);
+
+	const handleFormatSelect = (format) => {
+		setSelectedFormat(format);
+		if (typeof window !== 'undefined') {
+			window.localStorage.setItem(LIST_SHARE_FORMAT_KEY, format);
+		}
+	};
 
 	const buildContent = (format) => {
 		return format === 'json'
@@ -67,7 +85,7 @@ function PopupListShare(props) {
 					<button
 						type="button"
 						className={`btn btn-share${selectedFormat === 'text' ? ' selected' : ''}`}
-						onClick={() => setSelectedFormat('text')}
+						onClick={() => handleFormatSelect('text')}
 						disabled={isWorking || wordEntries.length === 0}
 					>
 						<div className="share-btn-label">
@@ -78,7 +96,7 @@ function PopupListShare(props) {
 					<button
 						type="button"
 						className={`btn btn-share${selectedFormat === 'json' ? ' selected' : ''}`}
-						onClick={() => setSelectedFormat('json')}
+						onClick={() => handleFormatSelect('json')}
 						disabled={isWorking || wordEntries.length === 0}
 					>
 						<div className="share-btn-label">

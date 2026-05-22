@@ -325,7 +325,11 @@ function Random(props) {
 				<div className="loading-message">Loading random words...</div>
 			)}
 
-			<Popup isVisible={showSharePopup} handleBackgroundClick={() => setShowSharePopup(false)}>
+			<Popup
+				isVisible={showSharePopup}
+				handleBackgroundClick={() => setShowSharePopup(false)}
+				className={`list-share-popup album-theme-${albumTheme}`}
+			>
 				<PopupListShare title="Share Random Words" label="Random Words" wordEntries={randomWords} />
 			</Popup>
 		</div>

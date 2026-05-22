@@ -6,6 +6,7 @@ import OpenCloseIcon from './icons/OpenCloseIcon';
 import RefreshIcon from './icons/RefreshIcon';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
+import { authFetch } from '../utils/auth';
 import Scramble from './Scramble';
 
 function pickRandom(pool) {
@@ -73,7 +74,7 @@ function UnscrambleGame(props) {
         attempt.submitted = true;
 
         try {
-            await fetch(`${CONFIG.domain}/user-word-learning/unscramble-attempt`, {
+            await authFetch(`${CONFIG.domain}/user-word-learning/unscramble-attempt`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -124,7 +125,7 @@ function UnscrambleGame(props) {
             setIntroMessage('Add words to your Favorites to play Unscramble.');
             return;
         }
-        fetch(`${CONFIG.domain}/albums/${favoritesId}/unscramble-queue`)
+        authFetch(`${CONFIG.domain}/albums/${favoritesId}/unscramble-queue`)
             .then(res => res.json())
             .then(data => {
                 const words = Array.isArray(data) ? data : (data.words || []);

@@ -5,6 +5,7 @@ import { cloneJSON } from './helpers';
 //import wordHash from '../data/word-pool';
 import DataSource from './data-source';
 import { CONFIG } from '../config';
+import { authFetch } from './auth';
 
 const custom = DataSource.retrieveUserLocalData();
 const userData = { custom, favoriteWords: [], albumIds: {}, browseHistory: [] };
@@ -130,7 +131,7 @@ function getAlbumIds() {
 }
 
 async function initializeWordPool() {
-    var response = await fetch(CONFIG.domain + '/get-words');
+    var response = await authFetch(CONFIG.domain + '/get-words');
     var data = await response.json();
     const mergedWordObjList = data.wordPool.reduce((acc, wordObj) => {
         const existing = acc.find(item => item.word === wordObj.word);

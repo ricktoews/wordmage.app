@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
+import { authFetch } from '../utils/auth';
 import Popup from './Popup';
 
 function WordCardMenu(props) {
@@ -96,7 +97,7 @@ function WordCardMenu(props) {
 
             if (newBookmarkedState) {
                 // Add word to Favorites album
-                const response = await fetch(`${CONFIG.domain}/albums/add-word`, {
+                const response = await authFetch(`${CONFIG.domain}/albums/add-word`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -117,7 +118,7 @@ function WordCardMenu(props) {
                 }
             } else {
                 // Remove word from Favorites album
-                const response = await fetch(`${CONFIG.domain}/albums/delete-word`, {
+                const response = await authFetch(`${CONFIG.domain}/albums/delete-word`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -170,7 +171,7 @@ function WordCardMenu(props) {
         setIsOpen(false);
 
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${albumId}/words/${wordObj.id}/lock`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/${albumId}/words/${wordObj.id}/lock`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -195,7 +196,7 @@ function WordCardMenu(props) {
 
     const handleDeleteConfirm = async () => {
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/delete-word`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/delete-word`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

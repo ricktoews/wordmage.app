@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faXmark, faPlus, faThumbsUp, faLeaf, faPalette } from '@fortawesome/free-solid-svg-icons';
 import { CONFIG } from '../config';
+import { authFetch } from '../utils/auth';
 import Popup from './Popup';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
@@ -136,7 +137,7 @@ function Albums(props) {
     const fetchAlbums = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${CONFIG.domain}/albums`);
+            const response = await authFetch(`${CONFIG.domain}/albums`);
             const data = await response.json();
             if (Array.isArray(data)) {
                 // Sort albums, but always put "Favorites" first and "Learn" second
@@ -204,7 +205,7 @@ function Albums(props) {
         }
 
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${selectedAlbum.id}`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/${selectedAlbum.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -236,7 +237,7 @@ function Albums(props) {
         }
 
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${selectedAlbum.id}`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/${selectedAlbum.id}`, {
                 method: 'DELETE'
             });
 
@@ -258,7 +259,7 @@ function Albums(props) {
         setOpenMenuId(null);
 
         try {
-            const response = await fetch(`${CONFIG.domain}/albums/${album.id}`);
+            const response = await authFetch(`${CONFIG.domain}/albums/${album.id}`);
             const data = await response.json();
 
             const exportData = {
@@ -341,7 +342,7 @@ function Albums(props) {
     const fetchVibeWords = async (vibe) => {
         try {
             console.log('====> fetchVibeWords', vibe);
-            const response = await fetch(`${CONFIG.domain}/custom-mood`, {
+            const response = await authFetch(`${CONFIG.domain}/custom-mood`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -374,7 +375,7 @@ function Albums(props) {
                 ...(moodPrompt.trim() && { mood_text: moodPrompt.trim() })
             };
 
-            const response = await fetch(`${CONFIG.domain}/albums`, {
+            const response = await authFetch(`${CONFIG.domain}/albums`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

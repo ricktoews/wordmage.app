@@ -1,4 +1,6 @@
 //const base = 'https://words-rest.toewsweb.net';
+import { authFetch } from './auth';
+
 const base = 'https://wordmage.toews-api.com';
 
 const urls = {
@@ -7,7 +9,7 @@ const urls = {
 };
 
 async function share(data) {
-	const response = await fetch(urls.share, {
+	const response = await authFetch(urls.share, {
 		method: 'POST',
 		//		mode: 'no-cors',
 		//		cache: 'no-cache',
@@ -22,7 +24,7 @@ async function share(data) {
 }
 
 async function receive(code) {
-	const response = await fetch(urls.receive + code);
+	const response = await authFetch(urls.receive + code);
 	return response.json();
 }
 
@@ -36,12 +38,12 @@ async function getWordsPage(params = {}) {
 	}
 	queryParams.append('limit', limit);
 
-	const response = await fetch(`${base}/get-words-page?${queryParams.toString()}`);
+	const response = await authFetch(`${base}/get-words-page?${queryParams.toString()}`);
 	return response.json();
 }
 
 async function getRandomPageData(user_id) {
-	const response = await fetch(`${base}/get-random-page-data`, {
+	const response = await authFetch(`${base}/get-random-page-data`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -53,4 +55,3 @@ async function getRandomPageData(user_id) {
 
 
 export { share, receive, getWordsPage, getRandomPageData };
-

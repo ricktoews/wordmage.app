@@ -12,6 +12,7 @@
  */
 
 import { CONFIG } from '../config';
+import { authFetch, withAuthHeaders } from './auth';
 
 const starter = JSON.stringify([]);
 
@@ -80,10 +81,10 @@ async function saveUserData(userData) {
             var moods = JSON.parse(localStorage.getItem('my-moods') || '[]');
             var options = {
                 method: 'post',
-                header: { 'Content-type': 'application/json' },
+                headers: withAuthHeaders({ 'Content-type': 'application/json' }),
                 body: JSON.stringify({ user_id: profile_user_id, custom, training, moods })
             };
-            var response = fetch(`${CONFIG.domain}/savecustom`, options);
+            var response = authFetch(`${CONFIG.domain}/savecustom`, options);
         } catch (e) {
             console.log('Problem saving', userData, e);
         }
@@ -99,10 +100,10 @@ async function saveTrainingData() {
         try {
             var options = {
                 method: 'post',
-                header: { 'Content-type': 'application/json' },
+                headers: withAuthHeaders({ 'Content-type': 'application/json' }),
                 body: JSON.stringify({ user_id: profile_user_id, training })
             };
-            var response = fetch(`${CONFIG.domain}/savetraining`, options);
+            var response = authFetch(`${CONFIG.domain}/savetraining`, options);
         } catch (e) {
             console.log('Problem saving training data', e);
         }
@@ -112,4 +113,3 @@ async function saveTrainingData() {
 const DataSource = { retrieveUserLocalData, retrieveUserData, saveUserData, saveTrainingData };
 
 export default DataSource;
-

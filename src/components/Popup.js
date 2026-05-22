@@ -49,8 +49,10 @@ function Popup(props) {
         }
     }
 
+    const popupClassName = ['popup', props.className].filter(Boolean).join(' ');
+
     return visibleState ? <PopupContext.Provider value={{ requestConfirmation }}><div ref={popupRef} onClick={handlePopupClick} className="popup-container">
-        <div className="popup">
+        <div className={popupClassName}>
             {isConfirmOpen && (
                 <div className="confirm-action">
                     <div className="confirmation-text">Are you sure?</div>

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CONFIG } from '../config';
 import WordsInterface from '../utils/words-interface';
+import { authFetch } from '../utils/auth';
 
 function PopupAlbumSelect(props) {
     const { wordObj, closeAlbumPopup } = props;
@@ -20,7 +21,7 @@ function PopupAlbumSelect(props) {
     const fetchAlbums = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${CONFIG.domain}/albums`);
+            const response = await authFetch(`${CONFIG.domain}/albums`);
             const data = await response.json();
             if (Array.isArray(data)) {
                 const sortedAlbums = data
@@ -41,7 +42,7 @@ function PopupAlbumSelect(props) {
         try {
             const wordId = wordObj.id || wordObj._id;
             console.log('====> Adding word to album:', { albumId: album.id, wordId });
-            const response = await fetch(`${CONFIG.domain}/albums/add-word`, {
+            const response = await authFetch(`${CONFIG.domain}/albums/add-word`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -73,7 +74,7 @@ function PopupAlbumSelect(props) {
             const wordId = wordObj.id || wordObj._id;
             console.log('====> Creating album and adding word:', { newAlbumTitle, wordId });
             // Create the album
-            const createResponse = await fetch(`${CONFIG.domain}/albums`, {
+            const createResponse = await authFetch(`${CONFIG.domain}/albums`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

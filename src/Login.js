@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { WordMageContext } from './WordMageContext';
 import { GOOGLE_CONFIG, CONFIG } from './config';
 import WordsInterface from './utils/words-interface';
+import { persistTokenFromResponse } from './utils/auth';
 
 function parseJwt(token) {
     try {
@@ -62,6 +63,10 @@ function Login() {
 
                     // Update client auth state
                     const user = { name: decoded.name || decoded.email, email: decoded.email, provider: 'google', id: providerId };
+                    try {
+                        localStorage.setItem('authUser', JSON.stringify(user));
+                        localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
+                    } catch (e) { }
                     try { if (typeof setAuthUser === 'function') setAuthUser(user); } catch (e) { }
 
                     // Fetch custom data from backend (same as Profile.js)
@@ -72,6 +77,7 @@ function Login() {
                             body: JSON.stringify({ email: decoded.email, google: true })
                         });
                         const data = await resp.json();
+                        persistTokenFromResponse(data);
                         if (data.custom) {
                             try {
                                 WordsInterface.initializeCustom(JSON.parse(data.custom));
@@ -125,6 +131,10 @@ function Login() {
                         id: providerId,
                         picture: decoded.picture
                     };
+                    try {
+                        localStorage.setItem('authUser', JSON.stringify(user));
+                        localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
+                    } catch (e) { }
                     try { if (typeof setAuthUser === 'function') setAuthUser(user); } catch (e) { }
 
                     // Fetch custom data from backend if email is available
@@ -136,6 +146,7 @@ function Login() {
                                 body: JSON.stringify({ email: decoded.email, facebook: true })
                             });
                             const data = await resp.json();
+                            persistTokenFromResponse(data);
                             if (data.custom) {
                                 try {
                                     WordsInterface.initializeCustom(JSON.parse(data.custom));
@@ -232,6 +243,7 @@ function Login() {
         };
         try {
             localStorage.setItem('authUser', JSON.stringify(user));
+            localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
         } catch (e) {
             console.warn('Could not persist authUser', e);
         }
@@ -249,6 +261,7 @@ function Login() {
                     body: JSON.stringify({ email: payload.email, google: true })
                 });
                 const data = await resp.json();
+                persistTokenFromResponse(data);
                 if (data.custom) {
                     setCustomData(data.custom);
                     console.log('Signed in with Google — customizations loaded');

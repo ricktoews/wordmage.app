@@ -22,6 +22,7 @@ import KeyCapture from './KeyCapture';
 import { WordMageContext } from './WordMageContext';
 import Login from './Login';
 import { CONFIG } from './config';
+import { clearAuthenticatedToken, persistTokenFromResponse } from './utils/auth';
 
 // Import WordsInterface - data, utilities.
 import WordsInterface from './utils/words-interface';
@@ -97,6 +98,14 @@ function App(props) {
     const [contextValue, setContextValue] = useState({ targetEl: null });
     const [authUser, setAuthUser] = useState(null);
     const contextProviderValue = useMemo(() => ({ contextValue, setContextValue, authUser, setAuthUser }), [contextValue, setContextValue, authUser, setAuthUser]);
+    const [activeUserId, setActiveUserId] = useState(() => {
+        if (typeof window === 'undefined') {
+            return null;
+        }
+
+        return localStorage.getItem('wordmage-profile-user_id') || localStorage.getItem('wordmage-anonymous-user_id');
+    });
+    const hasUserWorkspace = Boolean(activeUserId);
 
     useEffect(() => {
         try {
@@ -308,7 +317,31 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const signOut = () => {
+    const createAnonymousWorkspace = async () => {
+        try {
+            const response = await fetch(`${CONFIG.domain}/anonymous-user`, {
+                method: 'POST'
+            });
+            const data = await response.json();
+            if (!data?.user_id) {
+                return null;
+            }
+
+            localStorage.setItem('wordmage-anonymous-user_id', data.user_id);
+            localStorage.setItem('wordmage-profile-user_id', data.user_id);
+            if (data.anonymous_token) {
+                localStorage.setItem('wordmage-anonymous-token', data.anonymous_token);
+            }
+            persistTokenFromResponse(data, { anonymous: true });
+            setActiveUserId(String(data.user_id));
+            return data.user_id;
+        } catch (error) {
+            console.error('Failed to create anonymous workspace:', error);
+            return null;
+        }
+    };
+
+    const signOut = async () => {
         // Attempt to disable Google auto-select / revoke if available
         try {
             if (window.google && window.google.accounts && window.google.accounts.id) {
@@ -319,7 +352,21 @@ function App(props) {
             }
         } catch (e) { }
         setAuthUser(null);
-        try { localStorage.clear(); } catch (e) { }
+        try {
+            localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
+            localStorage.removeItem('authUser');
+            localStorage.removeItem('wordmage-profile-email');
+            const anonymousUserId = localStorage.getItem('wordmage-anonymous-user_id');
+            if (anonymousUserId) {
+                localStorage.setItem('wordmage-profile-user_id', anonymousUserId);
+                setActiveUserId(anonymousUserId);
+            } else {
+                localStorage.removeItem('wordmage-profile-user_id');
+                setActiveUserId(null);
+                createAnonymousWorkspace();
+            }
+            clearAuthenticatedToken();
+        } catch (e) { }
     }
 
     const toggleAccountMenu = () => {
@@ -346,10 +393,10 @@ function App(props) {
             <nav ref={hamburgerRef} className={hamburgerClass}>
                 <ul>
                     <li onClick={navToRandom}><FontAwesomeIcon icon={faRandom} /> Random</li>
-                    {authUser && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
+                    {hasUserWorkspace && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
-                    {authUser && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
-                    {authUser && <li onClick={navToHistory}><FontAwesomeIcon icon={faHistory} /> History</li>}
+                    {hasUserWorkspace && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
+                    {hasUserWorkspace && <li onClick={navToHistory}><FontAwesomeIcon icon={faHistory} /> History</li>}
                     {authUser && <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>}
                     <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
@@ -377,7 +424,7 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToRandom} title="Random">
                         <FontAwesomeIcon icon={faRandom} />
                     </button>
-                    {authUser && (
+                    {hasUserWorkspace && (
                         <button className="header-nav-btn" onClick={navToFavoritesList} title="Favorites">
                             <FontAwesomeIcon icon={faThumbsUp} />
                         </button>
@@ -385,12 +432,12 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
                         <FontAwesomeIcon icon={faGlasses} />
                     </button>
-                    {authUser && (
+                    {hasUserWorkspace && (
                         <button className="header-nav-btn" onClick={navToAlbums} title="Albums">
                             <FontAwesomeIcon icon={faFolderOpen} />
                         </button>
                     )}
-                    {authUser && (
+                    {hasUserWorkspace && (
                         <button className="header-nav-btn" onClick={navToHistory} title="History">
                             <FontAwesomeIcon icon={faHistory} />
                         </button>
