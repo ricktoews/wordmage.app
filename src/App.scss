@@ -316,6 +316,36 @@ $lovable-def-size: 14px;
 	flex-direction: column;
 }
 
+.list-share-section-title {
+	margin: 4px 0 10px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #777;
+}
+
+.list-share-section {
+	margin-bottom: 14px;
+}
+
+.btn.btn-share.selected {
+	border-color: #7f4aa5;
+	color: #7f4aa5;
+	box-shadow: 0 0 0 2px rgba(127, 74, 165, 0.12);
+}
+
+.list-share-status {
+	margin-top: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #666;
+}
+
 .popup .popup-word-form {
 	width: 100%;
 }

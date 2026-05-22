@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPalette, faPuzzlePiece, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
-import { downloadWordList } from '../utils/page-download';
+import Popup from './Popup';
+import PopupListShare from './PopupListShare';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
@@ -78,6 +79,7 @@ function WordAlbum(props) {
     const [editedMoodText, setEditedMoodText] = useState('');
     const [originalMoodText, setOriginalMoodText] = useState('');
     const [savingMood, setSavingMood] = useState(false);
+    const [showSharePopup, setShowSharePopup] = useState(false);
     const [copyToast, setCopyToast] = useState(false);
     const [favoritesSortMode, setFavoritesSortMode] = useState('random');
     const [showThemeMenu, setShowThemeMenu] = useState(false);
@@ -446,12 +448,8 @@ function WordAlbum(props) {
 
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
-    const handleDownload = () => {
-        const label = isFavoritesAlbum ? 'favorites-words' : `${album?.title || 'word-album'}-words`;
-        downloadWordList({
-            label,
-            wordEntries: displayedWords,
-        });
+    const handleShare = () => {
+        setShowSharePopup(true);
     };
 
     return (
@@ -521,12 +519,12 @@ function WordAlbum(props) {
                     <button
                         type="button"
                         className="moods-refresh-icon"
-                        onClick={handleDownload}
-                        title="Download words"
-                        aria-label="Download words"
+                        onClick={handleShare}
+                        title="Share words"
+                        aria-label="Share words"
                         disabled={displayedWords.length === 0}
                     >
-                        <FontAwesomeIcon icon={faDownload} />
+                        <FontAwesomeIcon icon={faShareNodes} />
                     </button>
                     {isFavoritesAlbum && (
                         <button
@@ -593,6 +591,14 @@ function WordAlbum(props) {
             {copyToast && (
                 <div className="album-mood-copy-toast">Copied!</div>
             )}
+
+            <Popup isVisible={showSharePopup} handleBackgroundClick={() => setShowSharePopup(false)}>
+                <PopupListShare
+                    title={isFavoritesAlbum ? 'Share Favorites' : `Share ${album?.title || 'Word Album'}`}
+                    label={isFavoritesAlbum ? 'Favorites' : album?.title || 'Word Album'}
+                    wordEntries={displayedWords}
+                />
+            </Popup>
 
             <div ref={panelRef} className={`album-info-panel ${showAlbumInfo ? 'open' : ''}`}>
                 <div

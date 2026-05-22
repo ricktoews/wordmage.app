@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faRotateLeft, faPalette, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft, faPalette, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { getRandomPageData } from '../utils/api';
 import WordScroller from './WordScroller';
-import { downloadWordList } from '../utils/page-download';
+import Popup from './Popup';
+import PopupListShare from './PopupListShare';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
@@ -71,6 +72,7 @@ function Random(props) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [lastRefreshSnapshot, setLastRefreshSnapshot] = useState(null);
 	const [showThemeMenu, setShowThemeMenu] = useState(false);
+	const [showSharePopup, setShowSharePopup] = useState(false);
 	const [albumTheme, setAlbumTheme] = useState(() => {
 		if (typeof window === 'undefined') {
 			return 'classic';
@@ -230,11 +232,8 @@ function Random(props) {
 		setLastRefreshSnapshot(null);
 	};
 
-	const handleDownload = () => {
-		downloadWordList({
-			label: 'random-words',
-			wordEntries: randomWords
-		});
+	const handleShare = () => {
+		setShowSharePopup(true);
 	};
 
 	return (
@@ -276,12 +275,12 @@ function Random(props) {
 					<button
 						type="button"
 						className="random-refresh-icon"
-						onClick={handleDownload}
-						title="Download words"
-						aria-label="Download words"
+						onClick={handleShare}
+						title="Share words"
+						aria-label="Share words"
 						disabled={randomWords.length === 0}
 					>
-						<FontAwesomeIcon icon={faDownload} />
+						<FontAwesomeIcon icon={faShareNodes} />
 					</button>
 					{lastRefreshSnapshot && (
 						<button
@@ -325,6 +324,10 @@ function Random(props) {
 			{isLoading && randomWords.length === 0 && (
 				<div className="loading-message">Loading random words...</div>
 			)}
+
+			<Popup isVisible={showSharePopup} handleBackgroundClick={() => setShowSharePopup(false)}>
+				<PopupListShare title="Share Random Words" label="Random Words" wordEntries={randomWords} />
+			</Popup>
 		</div>
 	);
 }
