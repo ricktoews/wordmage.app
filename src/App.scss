@@ -573,6 +573,15 @@ $lovable-def-size: 14px;
 	line-height: 1.45;
 }
 
+.shared-album-page .word-list-scroller {
+	top: 118px;
+	margin-top: 15px;
+}
+
+.shared-album-page .shared-album-mood + .album-words-container .word-list-scroller {
+	top: 56px;
+}
+
 .claim-albums-list {
 	display: flex;
 	flex-direction: column;
