@@ -231,7 +231,6 @@ function WordEntry(props) {
 					)}
 				</div>
 			</div>
-			{!readOnly && (
 			<div className="word-card-actions">
 				{/*}
 			<button 
@@ -253,9 +252,9 @@ function WordEntry(props) {
 					onUpdate={() => {
 						setUpdateToggle(!updateToggle);
 					}}
+					readOnly={readOnly}
 				/>
 			</div>
-			)}
 		</div>
 	);
 }

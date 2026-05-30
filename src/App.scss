@@ -573,9 +573,33 @@ $lovable-def-size: 14px;
 	line-height: 1.45;
 }
 
+.shared-album-keep-button {
+	flex-shrink: 0;
+}
+
+.shared-album-message {
+	margin: 12px auto 0;
+	width: min(680px, calc(100% - 28px));
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-family: $lovable-font;
+	font-size: 0.9rem;
+	line-height: 1.35;
+}
+
+.shared-album-error {
+	border: 1px solid #d88;
+	background: #fff4f4;
+	color: #8a2c2c;
+}
+
 .shared-album-page .word-list-scroller {
 	top: 118px;
 	margin-top: 15px;
+}
+
+.shared-album-page .shared-album-message + .album-words-container .word-list-scroller {
+	top: 56px;
 }
 
 .shared-album-page .shared-album-mood + .album-words-container .word-list-scroller {

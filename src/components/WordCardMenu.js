@@ -10,15 +10,17 @@ import {
     faXmark,
     faLock,
     faLockOpen,
-    faTrashCan
+    faTrashCan,
+    faCopy
 } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import { CONFIG } from '../config';
 import { authFetch } from '../utils/auth';
+import { copyTextToClipboard } from '../utils/page-download';
 import Popup from './Popup';
 
 function WordCardMenu(props) {
-    const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle } = props;
+    const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle, readOnly = false } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj.word));
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
@@ -75,9 +77,22 @@ function WordCardMenu(props) {
         setIsOpen(newIsOpen);
 
         // Signal explicit curiosity when menu is opened.
-        if (newIsOpen) {
+        if (newIsOpen && !readOnly) {
             WordsInterface.recordWordInterestSignal(wordObj, 'menu_opened', listType);
         }
+    };
+
+    const handleCopyWord = async (e) => {
+        e.stopPropagation();
+        setIsOpen(false);
+        await copyTextToClipboard(wordObj.word || '');
+    };
+
+    const handleCopyWordDefinition = async (e) => {
+        e.stopPropagation();
+        setIsOpen(false);
+        const definition = wordObj.def || wordObj.definition || '';
+        await copyTextToClipboard(`${wordObj.word}. ${definition}`.trim());
     };
 
     const handleBookmark = async (e) => {
@@ -233,56 +248,77 @@ function WordCardMenu(props) {
 
             {isOpen && (
                 <div className={`word-card-menu-dropdown word-card-menu-dropdown-${menuPosition}`}>
-                    {listType === 'album' && albumId && hasMoodText && (
-                        <button
-                            className="word-card-menu-item"
-                            onClick={handleToggleLock}
-                        >
-                            <FontAwesomeIcon icon={isLocked ? faLockOpen : faLock} />
-                            <span>{isLocked ? 'Unlock' : 'Lock'}</span>
-                        </button>
-                    )}
+                    {readOnly ? (
+                        <>
+                            <button
+                                className="word-card-menu-item"
+                                onClick={handleCopyWord}
+                            >
+                                <FontAwesomeIcon icon={faCopy} />
+                                <span>Copy word</span>
+                            </button>
+                            <button
+                                className="word-card-menu-item"
+                                onClick={handleCopyWordDefinition}
+                            >
+                                <FontAwesomeIcon icon={faCopy} />
+                                <span>Copy word + definition</span>
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            {listType === 'album' && albumId && hasMoodText && (
+                                <button
+                                    className="word-card-menu-item"
+                                    onClick={handleToggleLock}
+                                >
+                                    <FontAwesomeIcon icon={isLocked ? faLockOpen : faLock} />
+                                    <span>{isLocked ? 'Unlock' : 'Lock'}</span>
+                                </button>
+                            )}
 
-                    <button
-                        className="word-card-menu-item"
-                        onClick={handleBookmark}
-                    >
-                        <FontAwesomeIcon icon={isBookmarked ? faThumbsDown : faThumbsUp} />
-                        <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>
-                    </button>
+                            <button
+                                className="word-card-menu-item"
+                                onClick={handleBookmark}
+                            >
+                                <FontAwesomeIcon icon={isBookmarked ? faThumbsDown : faThumbsUp} />
+                                <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>
+                            </button>
 
-                    <button
-                        className="word-card-menu-item"
-                        onClick={handleAddToAlbum}
-                    >
-                        <FontAwesomeIcon icon={faFolderOpen} />
-                        <span>+ Album</span>
-                    </button>
+                            <button
+                                className="word-card-menu-item"
+                                onClick={handleAddToAlbum}
+                            >
+                                <FontAwesomeIcon icon={faFolderOpen} />
+                                <span>+ Album</span>
+                            </button>
 
-                    {listType === 'album' && albumId && (
-                        <button
-                            className="word-card-menu-item word-card-menu-item-delete"
-                            onClick={handleRemoveFromAlbum}
-                        >
-                            <FontAwesomeIcon icon={faFolder} />
-                            <span>- Album</span>
-                        </button>
+                            {listType === 'album' && albumId && (
+                                <button
+                                    className="word-card-menu-item word-card-menu-item-delete"
+                                    onClick={handleRemoveFromAlbum}
+                                >
+                                    <FontAwesomeIcon icon={faFolder} />
+                                    <span>- Album</span>
+                                </button>
 
-                    )}
+                            )}
 
-                    {listType === 'history' && (
-                        <button
-                            className="word-card-menu-item word-card-menu-item-delete"
-                            onClick={handleRemoveFromHistory}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                            <span>Remove from History</span>
-                        </button>
+                            {listType === 'history' && (
+                                <button
+                                    className="word-card-menu-item word-card-menu-item-delete"
+                                    onClick={handleRemoveFromHistory}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCan} />
+                                    <span>Remove from History</span>
+                                </button>
+                            )}
+                        </>
                     )}
                 </div>
             )}
 
-            {createPortal(
+            {!readOnly && createPortal(
                 <Popup isVisible={showDeletePopup} handleBackgroundClick={() => setShowDeletePopup(false)}>
                     <div className="popup-header">
                         <h2>Remove from Album</h2>

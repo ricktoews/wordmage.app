@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
+import { authFetch } from '../utils/auth';
 
 function SharedAlbum(props) {
 	const [album, setAlbum] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
+	const [keepLoading, setKeepLoading] = useState(false);
+	const [keepError, setKeepError] = useState('');
 	const shareToken = props.match.params.token;
 
 	useEffect(() => {
@@ -60,6 +65,35 @@ function SharedAlbum(props) {
 
 	const wordListVersion = words.map((wordEntry) => wordEntry.word).join('|') || 'empty';
 
+	const handleKeepAlbum = async () => {
+		setKeepLoading(true);
+		setKeepError('');
+
+		try {
+			const response = await authFetch(`${CONFIG.domain}/shared/albums/${shareToken}/keep`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({})
+			});
+
+			if (!response.ok) {
+				throw new Error(`Failed to keep shared album: ${response.status}`);
+			}
+
+			const data = await response.json();
+			if (!data?.album_id) {
+				throw new Error('Keep album response did not include album_id');
+			}
+
+			props.history.push(`/albums/${data.album_id}`);
+		} catch (keepAlbumError) {
+			console.error('Error keeping shared album:', keepAlbumError);
+			setKeepError('Could not keep this album. Please try again.');
+		} finally {
+			setKeepLoading(false);
+		}
+	};
+
 	return (
 		<div className="word-list-page-container album-content-page album-theme-classic shared-album-page">
 			<div className="favorites-toolbar">
@@ -71,7 +105,25 @@ function SharedAlbum(props) {
 						</div>
 					)}
 				</div>
+				<div className="moods-toolbar-actions">
+					<button
+						type="button"
+						className="moods-refresh-icon shared-album-keep-button"
+						onClick={handleKeepAlbum}
+						disabled={loading || !!error || keepLoading}
+						title="Keep album"
+						aria-label="Keep album"
+					>
+						<FontAwesomeIcon icon={faBookmark} />
+					</button>
+				</div>
 			</div>
+
+			{keepError && (
+				<div className="shared-album-message shared-album-error">
+					{keepError}
+				</div>
+			)}
 
 			{album?.mood_text && (
 				<div className="shared-album-mood">
@@ -96,7 +148,6 @@ function SharedAlbum(props) {
 						pool={words}
 						startingNdx={0}
 						listType="shared-album"
-						readOnly
 					/>
 				)}
 			</div>
