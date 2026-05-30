@@ -442,6 +442,120 @@ $lovable-def-size: 14px;
 	width: 100%;
 }
 
+.claim-albums-copy {
+	color: var(--global-text, #34244f);
+	font-family: $lovable-font;
+	font-size: 0.95rem;
+	line-height: 1.4;
+	margin-bottom: 14px;
+}
+
+.claim-albums-list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin-bottom: 14px;
+}
+
+.claim-albums-section {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.claim-albums-section-title {
+	color: var(--global-muted, #6a568d);
+	font-family: $lovable-font;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.claim-album-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid var(--global-card-border, #ddd2f0);
+	border-radius: 10px;
+	background: var(--global-card-bg, #fcf9ff);
+	color: var(--global-text, #34244f);
+	cursor: pointer;
+	font-family: $lovable-font;
+	font-size: 0.95rem;
+	text-align: left;
+	transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover:not(:disabled) {
+		border-color: var(--global-btn-bg, #7b5aae);
+		background: var(--global-card-hover-bg, #f5effd);
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.65;
+	}
+
+	&.selected {
+		border-color: var(--global-btn-bg, #7b5aae);
+		background: var(--global-featured-header-bg, #ece3fb);
+		box-shadow: 0 0 0 1px var(--global-btn-bg, #7b5aae);
+	}
+}
+
+.claim-album-check {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 22px;
+	width: 22px;
+	height: 22px;
+	border: 2px solid var(--global-input-border, #cfbfeb);
+	border-radius: 6px;
+	background: var(--global-featured-bg, #fcf9ff);
+	color: transparent;
+	font-size: 0.9rem;
+	font-weight: 800;
+	line-height: 1;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.claim-album-item.selected .claim-album-check {
+	border-color: var(--global-btn-bg, #7b5aae);
+	background: var(--global-btn-bg, #7b5aae);
+	color: #fff;
+}
+
+.claim-albums-actions {
+	justify-content: flex-end;
+
+	.btn {
+		border-color: var(--global-card-border, #ddd2f0);
+		background: var(--global-featured-bg, #fcf9ff);
+		color: var(--global-text, #34244f);
+		font-family: $lovable-font;
+		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+	}
+
+	.btn:hover:not(:disabled) {
+		border-color: var(--global-btn-bg, #7b5aae);
+		background: var(--global-card-hover-bg, #f5effd);
+	}
+
+	.btn:not(.btn-default) {
+		border-color: var(--global-btn-bg, #7b5aae);
+		background: var(--global-btn-bg, #7b5aae);
+		color: #fff;
+	}
+
+	.btn:not(.btn-default):hover:not(:disabled) {
+		border-color: var(--global-btn-hover, #69499a);
+		background: var(--global-btn-hover, #69499a);
+	}
+}
+
 
 /*
   COLORS
@@ -4544,6 +4658,35 @@ input[type="checkbox"] {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
+
+.album-empty-state {
+	margin: 0 10px;
+	padding: 18px 20px;
+	border: 1px solid var(--global-card-border, #ddd2f0);
+	border-radius: 12px;
+	background: var(--global-card-bg, #fcf9ff);
+	color: var(--global-text, #34244f);
+	box-shadow: 0 1px 4px rgba(34, 24, 52, 0.08);
+}
+
+.album-words-container .album-empty-state {
+	margin-top: calc(#{$header-height} + 85px);
+}
+
+.empty-state-title {
+	font-family: "Georgia", "Times New Roman", serif;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.2;
+	margin-bottom: 8px;
+	color: var(--global-featured-accent, #6e4fa0);
+}
+
+.empty-state-copy {
+	font-size: 0.98rem;
+	line-height: 1.45;
+	color: var(--global-muted, #6a568d);
 }
 
 .album-item {

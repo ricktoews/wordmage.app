@@ -17,6 +17,14 @@ function storeAuthToken(token) {
 	localStorage.setItem(AUTH_TOKEN_KEY, token);
 }
 
+function removeAnonymousToken() {
+	if (typeof localStorage === 'undefined') {
+		return;
+	}
+
+	localStorage.removeItem(ANONYMOUS_TOKEN_KEY);
+}
+
 function storeAnonymousToken(token) {
 	if (typeof localStorage === 'undefined' || !token) {
 		return;
@@ -67,6 +75,7 @@ function withAuthHeaders(headers = {}) {
 
 function authFetch(url, options = {}) {
 	return fetch(url, {
+		cache: 'no-store',
 		...options,
 		headers: withAuthHeaders(options.headers || {})
 	});
@@ -79,6 +88,7 @@ export {
 	clearAuthenticatedToken,
 	getStoredAuthToken,
 	persistTokenFromResponse,
+	removeAnonymousToken,
 	storeAnonymousToken,
 	storeAuthToken,
 	withAuthHeaders,

@@ -566,6 +566,17 @@ function WordAlbum(props) {
             <div className="album-words-container">
                 {loading ? (
                     <div className="loading">Loading album...</div>
+                ) : album && album.words && displayedWords.length === 0 ? (
+                    <div className="empty-state album-empty-state">
+                        <div className="empty-state-title">
+                            {isFavoritesAlbum ? 'No favorite words yet.' : 'No words in this album yet.'}
+                        </div>
+                        <div className="empty-state-copy">
+                            {isFavoritesAlbum
+                                ? 'Favorites keeps the words you want to find again. Use the menu on any word card to add a word here.'
+                                : 'Albums collect words around a theme, mood, or study goal. Add words from word cards as you browse.'}
+                        </div>
+                    </div>
                 ) : album && album.words ? (
                     <WordScroller
                         key={`album-${albumId}-${wordListVersion}`}

@@ -6,6 +6,7 @@ import DataSource from './utils/data-source';
 import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
 import { persistTokenFromResponse } from './utils/auth';
+import { loadUserWorkspace } from './utils/workspace';
 
 const userLocalData = DataSource.retrieveUserLocalData();
 
@@ -64,6 +65,10 @@ function Register(props) {
         localStorage.setItem('wordmage-profile-user_id', user_id);
         localStorage.setItem('wordmage-profile-email', email);
         localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
+        await loadUserWorkspace(user_id);
+        window.dispatchEvent(new CustomEvent('wordmage:workspaceChanged', {
+            detail: { userId: String(user_id) }
+        }));
         if (data.custom) {
             setCustomData(data.custom);
         }

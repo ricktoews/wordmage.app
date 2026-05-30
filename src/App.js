@@ -21,8 +21,8 @@ import KeyCapture from './KeyCapture';
 // Import WordMageContext to set Context for app.
 import { WordMageContext } from './WordMageContext';
 import Login from './Login';
-import { CONFIG } from './config';
-import { clearAuthenticatedToken, persistTokenFromResponse } from './utils/auth';
+import { clearAuthenticatedToken } from './utils/auth';
+import { createAnonymousUser, hasPendingAlbumClaim, loadUserWorkspace } from './utils/workspace';
 
 // Import WordsInterface - data, utilities.
 import WordsInterface from './utils/words-interface';
@@ -117,6 +117,25 @@ function App(props) {
             console.warn('Error reading authUser from localStorage', err);
         }
     }, []);
+
+    useEffect(() => {
+        const handleWorkspaceChanged = (event) => {
+            const nextUserId = event?.detail?.userId || localStorage.getItem('wordmage-profile-user_id');
+            setActiveUserId(nextUserId || null);
+        };
+
+        window.addEventListener('wordmage:workspaceChanged', handleWorkspaceChanged);
+
+        return () => {
+            window.removeEventListener('wordmage:workspaceChanged', handleWorkspaceChanged);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (hasPendingAlbumClaim() && props.location.pathname !== '/login') {
+            props.history.push('/login');
+        }
+    }, [props.history, props.location.pathname]);
 
     //---------------------------------------------
     const wordHash = WordsInterface.fullWordList();
@@ -317,30 +336,6 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
-    const createAnonymousWorkspace = async () => {
-        try {
-            const response = await fetch(`${CONFIG.domain}/anonymous-user`, {
-                method: 'POST'
-            });
-            const data = await response.json();
-            if (!data?.user_id) {
-                return null;
-            }
-
-            localStorage.setItem('wordmage-anonymous-user_id', data.user_id);
-            localStorage.setItem('wordmage-profile-user_id', data.user_id);
-            if (data.anonymous_token) {
-                localStorage.setItem('wordmage-anonymous-token', data.anonymous_token);
-            }
-            persistTokenFromResponse(data, { anonymous: true });
-            setActiveUserId(String(data.user_id));
-            return data.user_id;
-        } catch (error) {
-            console.error('Failed to create anonymous workspace:', error);
-            return null;
-        }
-    };
-
     const signOut = async () => {
         // Attempt to disable Google auto-select / revoke if available
         try {
@@ -356,17 +351,22 @@ function App(props) {
             localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
             localStorage.removeItem('authUser');
             localStorage.removeItem('wordmage-profile-email');
-            const anonymousUserId = localStorage.getItem('wordmage-anonymous-user_id');
-            if (anonymousUserId) {
-                localStorage.setItem('wordmage-profile-user_id', anonymousUserId);
-                setActiveUserId(anonymousUserId);
-            } else {
-                localStorage.removeItem('wordmage-profile-user_id');
-                setActiveUserId(null);
-                createAnonymousWorkspace();
-            }
+            localStorage.removeItem('wordmage-profile-user_id');
+            localStorage.removeItem('wordmage-anonymous-user_id');
+            localStorage.removeItem('wordmage-anonymous-token');
+            WordsInterface.initializeCustom({});
+            WordsInterface.setFavoriteWords([]);
             clearAuthenticatedToken();
-        } catch (e) { }
+            const nextUserId = await createAnonymousUser();
+            await loadUserWorkspace(nextUserId);
+            setActiveUserId(String(nextUserId));
+            window.dispatchEvent(new CustomEvent('wordmage:workspaceChanged', {
+                detail: { userId: String(nextUserId) }
+            }));
+            props.history.push('/random');
+        } catch (e) {
+            console.error('Failed to switch to anonymous workspace:', e);
+        }
     }
 
     const toggleAccountMenu = () => {
@@ -531,13 +531,16 @@ function App(props) {
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path="/albums" render={props => (<Albums
+                            key={`albums-${activeUserId || 'none'}`}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/albums/:id" render={props => (<WordAlbum
+                            key={`album-${activeUserId || 'none'}-${props.match.params.id}`}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route exact path="/history" render={props => (<History />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
+                            key={`random-${activeUserId || 'none'}`}
                             onAIExplain={handleAIExplain}
                         />)} />
                         <Route path="/settings" component={Profile} />

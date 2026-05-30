@@ -399,6 +399,8 @@ function Albums(props) {
         }
     };
 
+    const visibleAlbums = albums.filter(album => album.title !== 'Favorites' && album.title !== 'Learn');
+
     return (
         <div className={`word-list-page-container album-content-page albums-page album-theme-${albumTheme}`}>
             <div className="favorites-toolbar">
@@ -448,12 +450,17 @@ function Albums(props) {
             </div>
 
             <div className="albums-container">
-                {loading ? null : albums.length === 0 ? (
-                    <div className="empty-state">No albums yet. Create one from a mood!</div>
+                {loading ? null : visibleAlbums.length === 0 ? (
+                    <div className="empty-state album-empty-state">
+                        <div className="empty-state-title">No word albums yet.</div>
+                        <div className="empty-state-copy">
+                            Word albums are saved collections for a theme, mood, or study list. Create one from a mood, or add words from word cards as you browse.
+                        </div>
+                    </div>
                 ) : (
                     <>
                         <div className="albums-list">
-                            {albums.filter(album => album.title !== 'Favorites' && album.title !== 'Learn').map((album) => (
+                            {visibleAlbums.map((album) => (
                                 <div
                                     key={album.id}
                                     className="album-item"

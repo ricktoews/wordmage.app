@@ -1,9 +1,20 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { WordMageContext } from './WordMageContext';
 import { GOOGLE_CONFIG, CONFIG } from './config';
 import WordsInterface from './utils/words-interface';
 import { persistTokenFromResponse } from './utils/auth';
+import {
+    claimAnonymousAlbums,
+    clearAnonymousWorkspace,
+    clearPendingAlbumClaim,
+    getAnonymousAlbumsForClaim,
+    getPendingAlbumClaim,
+    loadUserWorkspace,
+    savePendingAlbumClaim,
+} from './utils/workspace';
+import Popup from './components/Popup';
+import PopupHeader from './components/Popup-Header';
 
 function parseJwt(token) {
     try {
@@ -36,17 +47,146 @@ function loadScript(src) {
     });
 }
 
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
+const normalizeAlbumId = (albumId) => String(albumId);
+const getStoredAlbumTheme = () => {
+    const savedTheme = localStorage.getItem('wordmage.albumTheme');
+    return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
+};
+
 function Login() {
     const history = useHistory();
     const { setAuthUser } = useContext(WordMageContext) || {};
     const buttonRef = useRef(null);
+    const [claimPrompt, setClaimPrompt] = useState(null);
+    const [selectedClaimAlbumIds, setSelectedClaimAlbumIds] = useState([]);
+    const [isClaimingAlbums, setIsClaimingAlbums] = useState(false);
+
+    const emitWorkspaceChanged = useCallback((userId) => {
+        window.dispatchEvent(new CustomEvent('wordmage:workspaceChanged', {
+            detail: { userId: String(userId) }
+        }));
+    }, []);
+
+    const loadAuthenticatedWorkspace = useCallback(async (userId, redirectPath = '/') => {
+        await loadUserWorkspace(userId);
+        emitWorkspaceChanged(userId);
+        history.push(redirectPath);
+    }, [emitWorkspaceChanged, history]);
+
+    const showAlbumClaimPrompt = useCallback((claimContext) => {
+        const selectedAlbumIds = (claimContext.selectedAlbumIds || claimContext.albums.map((album) => album.id))
+            .map(normalizeAlbumId);
+        setSelectedClaimAlbumIds(selectedAlbumIds);
+        setClaimPrompt({
+            ...claimContext,
+            selectedAlbumIds
+        });
+    }, []);
+
+    const maybePromptToClaimAnonymousAlbums = useCallback(async ({ data, redirectPath = '/' }) => {
+        if (!data?.user_id) {
+            return false;
+        }
+
+        const claimContext = await getAnonymousAlbumsForClaim().catch((error) => {
+            console.error('Failed to inspect anonymous albums:', error);
+            return null;
+        });
+
+        persistTokenFromResponse(data);
+        localStorage.setItem('wordmage-profile-user_id', data.user_id);
+
+        if (!claimContext?.albums?.length) {
+            clearAnonymousWorkspace();
+            await loadAuthenticatedWorkspace(data.user_id, redirectPath);
+            return false;
+        }
+
+        const pendingClaim = {
+            ...claimContext,
+            authenticatedUserId: data.user_id,
+            redirectPath,
+            selectedAlbumIds: claimContext.albums.map((album) => normalizeAlbumId(album.id))
+        };
+        savePendingAlbumClaim(pendingClaim);
+        showAlbumClaimPrompt(pendingClaim);
+        return true;
+    }, [loadAuthenticatedWorkspace, showAlbumClaimPrompt]);
+
+    const handleClaimAlbumToggle = (albumId) => {
+        const normalizedAlbumId = normalizeAlbumId(albumId);
+
+        setSelectedClaimAlbumIds((currentAlbumIds) => {
+            const currentAlbumIdSet = new Set(currentAlbumIds.map(normalizeAlbumId));
+            if (currentAlbumIdSet.has(normalizedAlbumId)) {
+                currentAlbumIdSet.delete(normalizedAlbumId);
+            } else {
+                currentAlbumIdSet.add(normalizedAlbumId);
+            }
+            const nextAlbumIds = Array.from(currentAlbumIdSet);
+
+            if (claimPrompt) {
+                const nextClaimPrompt = {
+                    ...claimPrompt,
+                    selectedAlbumIds: nextAlbumIds
+                };
+                savePendingAlbumClaim(nextClaimPrompt);
+                setClaimPrompt(nextClaimPrompt);
+            }
+
+            return nextAlbumIds;
+        });
+    };
+
+    const finishClaimFlow = async ({ shouldClaim }) => {
+        if (!claimPrompt) {
+            return;
+        }
+
+        setIsClaimingAlbums(true);
+        try {
+            await claimAnonymousAlbums({
+                anonymousUserId: claimPrompt.anonymousUserId,
+                anonymousToken: claimPrompt.anonymousToken,
+                albumIds: shouldClaim
+                    ? selectedClaimAlbumIds.map((albumId) => {
+                        const numericAlbumId = Number(albumId);
+                        return Number.isNaN(numericAlbumId) ? albumId : numericAlbumId;
+                    })
+                    : []
+            });
+
+            clearPendingAlbumClaim();
+            clearAnonymousWorkspace();
+            await loadAuthenticatedWorkspace(claimPrompt.authenticatedUserId, claimPrompt.redirectPath);
+            setClaimPrompt(null);
+        } catch (error) {
+            console.error('Failed to preserve anonymous albums:', error);
+            alert('Could not preserve those albums. Please try again, or choose Skip to continue.');
+        } finally {
+            setIsClaimingAlbums(false);
+        }
+    };
+
+    useEffect(() => {
+        const pendingClaim = getPendingAlbumClaim();
+        if (
+            pendingClaim?.authenticatedUserId &&
+            pendingClaim?.anonymousUserId &&
+            pendingClaim?.anonymousToken &&
+            pendingClaim?.albums?.length
+        ) {
+            showAlbumClaimPrompt(pendingClaim);
+        }
+    }, [showAlbumClaimPrompt]);
 
     // If redirected back from the server-side Google auth flow, the
     // Netlify function adds a `google_user` query param containing a
     // base64-encoded JSON payload. Mirror `Profile.js` behavior: parse it,
     // persist profile identifiers, fetch `/login` from the API with
     // `google: true` to retrieve custom data, initialize it, then
-    // navigate to `/profile`.
+    // navigate to settings.
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const gu = params.get('google_user');
@@ -77,7 +217,15 @@ function Login() {
                             body: JSON.stringify({ email: decoded.email, google: true })
                         });
                         const data = await resp.json();
-                        persistTokenFromResponse(data);
+                        const didPrompt = await maybePromptToClaimAnonymousAlbums({ data, redirectPath: '/settings' });
+                        if (data.user_id) {
+                            if (didPrompt) {
+                                params.delete('google_user');
+                                history.replace('/login' + (params.toString() ? ('?' + params.toString()) : ''));
+                                return;
+                            }
+                            return;
+                        }
                         if (data.custom) {
                             try {
                                 WordsInterface.initializeCustom(JSON.parse(data.custom));
@@ -86,23 +234,20 @@ function Login() {
                                 try { WordsInterface.initializeCustom(data.custom); } catch (e) { console.error('Failed to initialize custom data', e); }
                             }
                         }
-                        if (data.user_id) {
-                            localStorage.setItem('wordmage-profile-user_id', data.user_id);
-                        }
                     } catch (err) {
                         console.error('Failed to load customizations after Google sign-in', err);
                     }
 
                     // Remove the query param and navigate to profile
                     params.delete('google_user');
-                    const newUrl = '/profile' + (params.toString() ? ('?' + params.toString()) : '');
+                    const newUrl = '/settings' + (params.toString() ? ('?' + params.toString()) : '');
                     history.replace(newUrl);
                 }
             } catch (err) {
                 console.error('Failed to parse google_user payload in /login', err);
             }
         })();
-    }, [history, setAuthUser]);
+    }, [history, maybePromptToClaimAnonymousAlbums, setAuthUser]);
 
     // Handle Facebook OAuth callback
     useEffect(() => {
@@ -146,7 +291,15 @@ function Login() {
                                 body: JSON.stringify({ email: decoded.email, facebook: true })
                             });
                             const data = await resp.json();
-                            persistTokenFromResponse(data);
+                            const didPrompt = await maybePromptToClaimAnonymousAlbums({ data, redirectPath: '/settings' });
+                            if (data.user_id) {
+                                if (didPrompt) {
+                                    params.delete('facebook_user');
+                                    history.replace('/login' + (params.toString() ? ('?' + params.toString()) : ''));
+                                    return;
+                                }
+                                return;
+                            }
                             if (data.custom) {
                                 try {
                                     WordsInterface.initializeCustom(JSON.parse(data.custom));
@@ -155,9 +308,6 @@ function Login() {
                                     try { WordsInterface.initializeCustom(data.custom); } catch (e) { console.error('Failed to initialize custom data', e); }
                                 }
                             }
-                            if (data.user_id) {
-                                localStorage.setItem('wordmage-profile-user_id', data.user_id);
-                            }
                         } catch (err) {
                             console.error('Failed to load customizations after Facebook sign-in', err);
                         }
@@ -165,14 +315,14 @@ function Login() {
 
                     // Remove the query param and navigate to profile
                     params.delete('facebook_user');
-                    const newUrl = '/profile' + (params.toString() ? ('?' + params.toString()) : '');
+                    const newUrl = '/settings' + (params.toString() ? ('?' + params.toString()) : '');
                     history.replace(newUrl);
                 }
             } catch (err) {
                 console.error('Failed to parse facebook_user payload in /login', err);
             }
         })();
-    }, [history, setAuthUser]);
+    }, [history, maybePromptToClaimAnonymousAlbums, setAuthUser]);
 
     useEffect(() => {
         const clientId = GOOGLE_CONFIG.googleClientId;
@@ -261,29 +411,96 @@ function Login() {
                     body: JSON.stringify({ email: payload.email, google: true })
                 });
                 const data = await resp.json();
-                persistTokenFromResponse(data);
+                const didPrompt = await maybePromptToClaimAnonymousAlbums({ data, redirectPath: '/' });
+                if (data.user_id) {
+                    if (didPrompt) {
+                        return;
+                    }
+                    return;
+                }
                 if (data.custom) {
                     setCustomData(data.custom);
                     console.log('Signed in with Google — customizations loaded');
                 } else {
                     console.log('Signed in with Google');
                 }
-                if (data.user_id) {
-                    // If backend returns a user_id, persist it for other pages
-                    localStorage.setItem('wordmage-profile-user_id', data.user_id);
-                }
             } catch (err) {
                 console.error('Failed to load customizations after Google sign-in', err);
             }
         })();
         if (typeof setAuthUser === 'function') setAuthUser(user);
-        history.push('/');
     };
 
     const clientId = GOOGLE_CONFIG.googleClientId;
+    const claimPopupTheme = getStoredAlbumTheme();
+    const claimAlbums = claimPrompt?.albums || [];
+    const favoriteClaimAlbums = claimAlbums.filter((album) => album.title === 'Favorites');
+    const otherClaimAlbums = claimAlbums.filter((album) => album.title !== 'Favorites');
+    const renderClaimAlbumItem = (album) => {
+        const albumId = normalizeAlbumId(album.id);
+
+        return (
+            <button
+                key={album.id}
+                type="button"
+                className={`claim-album-item${selectedClaimAlbumIds.includes(albumId) ? ' selected' : ''}`}
+                onClick={() => handleClaimAlbumToggle(album.id)}
+                disabled={isClaimingAlbums}
+                role="checkbox"
+                aria-checked={selectedClaimAlbumIds.includes(albumId)}
+            >
+                <span className="claim-album-check" aria-hidden="true">✓</span>
+                <span>{album.title}</span>
+            </button>
+        );
+    };
 
     return (
         <>
+            <Popup
+                isVisible={!!claimPrompt}
+                handleBackgroundClick={() => { }}
+                className={`list-share-popup claim-albums-popup album-theme-${claimPopupTheme}`}
+            >
+                <PopupHeader>Keep words from this device?</PopupHeader>
+                <div className="popup-body">
+                    <div className="claim-albums-copy">
+                        You used WordMage before signing in. Choose any local albums or favorites you would like to add to your signed-in account.
+                    </div>
+                    <div className="claim-albums-list">
+                        {favoriteClaimAlbums.length > 0 && (
+                            <div className="claim-albums-section">
+                                <div className="claim-albums-section-title">Favorites</div>
+                                {favoriteClaimAlbums.map(renderClaimAlbumItem)}
+                            </div>
+                        )}
+                        {otherClaimAlbums.length > 0 && (
+                            <div className="claim-albums-section">
+                                <div className="claim-albums-section-title">Albums</div>
+                                {otherClaimAlbums.map(renderClaimAlbumItem)}
+                            </div>
+                        )}
+                    </div>
+                    <div className="button-wrapper claim-albums-actions">
+                        <button
+                            type="button"
+                            className="btn btn-default"
+                            onClick={() => finishClaimFlow({ shouldClaim: false })}
+                            disabled={isClaimingAlbums}
+                        >
+                            Skip
+                        </button>
+                        <button
+                            type="button"
+                            className="btn"
+                            onClick={() => finishClaimFlow({ shouldClaim: true })}
+                            disabled={isClaimingAlbums}
+                        >
+                            Keep Selected
+                        </button>
+                    </div>
+                </div>
+            </Popup>
             <div className="login-toolbar">
                 <div className="page-title">Login</div>
             </div>

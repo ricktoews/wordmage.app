@@ -5,6 +5,7 @@ import WordsInterface from './utils/words-interface';
 import { CONFIG } from './config';
 import { WordMageContext } from './WordMageContext';
 import { clearAuthenticatedToken, persistTokenFromResponse } from './utils/auth';
+import { loadUserWorkspace } from './utils/workspace';
 
 const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
@@ -190,6 +191,10 @@ function Profile(props) {
 			localStorage.setItem('wordmage-profile-user_id', user_id);
 			localStorage.setItem('wordmage-profile-email', email);
 			localStorage.setItem('wordmage.hasAuthenticatedBefore', 'true');
+			await loadUserWorkspace(user_id);
+			window.dispatchEvent(new CustomEvent('wordmage:workspaceChanged', {
+				detail: { userId: String(user_id) }
+			}));
 		}
 		if (data.custom) {
 			setCustomData(data.custom);
