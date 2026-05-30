@@ -151,17 +151,21 @@ function WordScroller(props) {
 
 	return (
 		<div className="word-list-container">
-			<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}>
-				<PopupWordShare shareWord={shareWord} wordId={142} />
-			</Popup>
-			<Popup isVisible={showAlbums} handleBackgroundClick={handleBackgroundClick}>
-				<PopupAlbumSelect
-					showAlbums={showAlbums}
-					wordObj={albumWordObj}
-					listType={props.listType}
-					closeAlbumPopup={closeAlbumPopup}
-				/>
-			</Popup>
+			{!props.readOnly && (
+				<>
+					<Popup isVisible={showWordShare} handleBackgroundClick={handleBackgroundClick}>
+						<PopupWordShare shareWord={shareWord} wordId={142} />
+					</Popup>
+					<Popup isVisible={showAlbums} handleBackgroundClick={handleBackgroundClick}>
+						<PopupAlbumSelect
+							showAlbums={showAlbums}
+							wordObj={albumWordObj}
+							listType={props.listType}
+							closeAlbumPopup={closeAlbumPopup}
+						/>
+					</Popup>
+				</>
+			)}
 
 			<div
 				className="word-list-scroller"
@@ -176,6 +180,7 @@ function WordScroller(props) {
 						albumId={props.albumId} hasMoodText={props.hasMoodText} onWordLockToggle={props.onWordLockToggle} onAlbumRefresh={props.onAlbumRefresh}
 						history={props.history}
 							onAIExplain={props.onAIExplain}
+							readOnly={props.readOnly}
 						/>
 					</div>
 				))}

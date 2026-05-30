@@ -329,6 +329,78 @@ $lovable-def-size: 14px;
 	margin-bottom: 14px;
 }
 
+.popup-container .button-wrapper.list-share-format-buttons,
+.popup-container .button-wrapper.list-share-action-buttons {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.5rem;
+}
+
+.list-share-qr-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 14px;
+	padding: 14px;
+	border: 1px solid #ddd2f0;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.list-share-qr-code {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 172px;
+	height: 172px;
+	padding: 8px;
+	border-radius: 8px;
+	background: #fff;
+	box-sizing: border-box;
+}
+
+.list-share-url-row {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-width: 0;
+	padding: 6px 8px;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #666;
+	cursor: pointer;
+	font-family: inherit;
+
+	&:disabled {
+		cursor: wait;
+		opacity: 0.75;
+	}
+
+	span {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+.list-share-qr-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 96px;
+	text-align: center;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: #666;
+}
+
 .btn.btn-share.selected {
 	border-color: #7f4aa5;
 	color: #7f4aa5;
@@ -382,9 +454,40 @@ $lovable-def-size: 14px;
 
 	.popup-body {
 		background: var(--global-card-bg, #fcf9ff);
+		overflow-y: auto;
 	}
 
 	.list-share-section-title {
+		color: var(--global-muted, #6a568d);
+	}
+
+	.list-share-qr-panel {
+		border-color: var(--global-card-border, #ddd2f0);
+		background: var(--global-featured-bg, #fcf9ff);
+	}
+
+	.list-share-qr-code {
+		border: 1px solid var(--global-card-border, #ddd2f0);
+		box-shadow: 0 8px 22px rgba(34, 24, 52, 0.12);
+	}
+
+	.list-share-url-row {
+		color: var(--global-muted, #6a568d);
+
+		&:hover:not(:disabled),
+		&:focus-visible {
+			background: var(--global-card-hover-bg, #f5effd);
+			color: var(--global-text, #34244f);
+			outline: none;
+		}
+
+		svg {
+			color: var(--global-featured-accent, #6e4fa0);
+			flex-shrink: 0;
+		}
+	}
+
+	.list-share-qr-placeholder {
 		color: var(--global-muted, #6a568d);
 	}
 
@@ -421,6 +524,11 @@ $lovable-def-size: 14px;
 		}
 	}
 
+	.button-wrapper.list-share-format-buttons .btn.btn-share,
+	.button-wrapper.list-share-action-buttons .btn.btn-share {
+		justify-content: center;
+	}
+
 	.share-btn-label {
 		align-items: center;
 	}
@@ -436,6 +544,12 @@ $lovable-def-size: 14px;
 		background: var(--global-featured-header-bg, #ece3fb);
 		color: var(--global-text, #34244f);
 	}
+
+	.list-share-error {
+		border-color: #d88;
+		background: #fff4f4;
+		color: #8a2c2c;
+	}
 }
 
 .popup .popup-word-form {
@@ -448,6 +562,15 @@ $lovable-def-size: 14px;
 	font-size: 0.95rem;
 	line-height: 1.4;
 	margin-bottom: 14px;
+}
+
+.shared-album-mood {
+	margin: 12px auto 0;
+	width: min(680px, calc(100% - 28px));
+	color: var(--global-text, #34244f);
+	font-family: $lovable-font;
+	font-size: 0.95rem;
+	line-height: 1.45;
 }
 
 .claim-albums-list {

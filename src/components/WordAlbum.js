@@ -72,6 +72,41 @@ function writeRefreshUndoSnapshot(albumId, snapshot) {
     }
 }
 
+function getShareSnapshotStorageKey(albumId) {
+    return `wordmage.albumShareSnapshot.${albumId}`;
+}
+
+function readShareSnapshot(albumId) {
+    if (!albumId || typeof window === 'undefined') {
+        return null;
+    }
+
+    try {
+        const raw = window.localStorage.getItem(getShareSnapshotStorageKey(albumId));
+        if (!raw) {
+            return null;
+        }
+
+        const parsed = JSON.parse(raw);
+        return parsed?.share_url ? parsed : null;
+    } catch (error) {
+        console.error('Failed to read album share snapshot:', error);
+        return null;
+    }
+}
+
+function writeShareSnapshot(albumId, snapshot) {
+    if (!albumId || typeof window === 'undefined' || !snapshot?.share_url) {
+        return;
+    }
+
+    try {
+        window.localStorage.setItem(getShareSnapshotStorageKey(albumId), JSON.stringify(snapshot));
+    } catch (error) {
+        console.error('Failed to store album share snapshot:', error);
+    }
+}
+
 function WordAlbum(props) {
     const [album, setAlbum] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -81,6 +116,9 @@ function WordAlbum(props) {
     const [originalMoodText, setOriginalMoodText] = useState('');
     const [savingMood, setSavingMood] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
+    const [shareSnapshot, setShareSnapshot] = useState(null);
+    const [shareSnapshotLoading, setShareSnapshotLoading] = useState(false);
+    const [shareSnapshotError, setShareSnapshotError] = useState('');
     const [copyToast, setCopyToast] = useState(false);
     const [favoritesSortMode, setFavoritesSortMode] = useState('random');
     const [showThemeMenu, setShowThemeMenu] = useState(false);
@@ -175,6 +213,8 @@ function WordAlbum(props) {
             setFavoritesSortMode('random');
             setShowThemeMenu(false);
             setLastRefreshSnapshot(readRefreshUndoSnapshot(albumId));
+            setShareSnapshot(readShareSnapshot(albumId));
+            setShareSnapshotError('');
         }
     }, [albumId]);
 
@@ -449,8 +489,55 @@ function WordAlbum(props) {
 
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
-    const handleShare = () => {
+    const createShareSnapshot = async () => {
+        if (!albumId) {
+            return null;
+        }
+
+        setShareSnapshotLoading(true);
+        setShareSnapshotError('');
+
+        try {
+            const response = await authFetch(`${CONFIG.domain}/albums/${albumId}/share-snapshot`, {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed creating share snapshot: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (!data?.share_url) {
+                throw new Error('Share snapshot response did not include share_url');
+            }
+
+            writeShareSnapshot(albumId, data);
+            setShareSnapshot(data);
+            return data;
+        } catch (error) {
+            console.error('Error creating share snapshot:', error);
+            setShareSnapshotError('Could not create the album QR link. Please try again.');
+            return null;
+        } finally {
+            setShareSnapshotLoading(false);
+        }
+    };
+
+    const handleShare = async () => {
         setShowSharePopup(true);
+        setShareSnapshotError('');
+
+        const cachedSnapshot = shareSnapshot?.share_url ? shareSnapshot : readShareSnapshot(albumId);
+        if (cachedSnapshot?.share_url) {
+            setShareSnapshot(cachedSnapshot);
+            return;
+        }
+
+        await createShareSnapshot();
+    };
+
+    const handleRegenerateShareSnapshot = async () => {
+        await createShareSnapshot();
     };
 
     return (
@@ -613,6 +700,10 @@ function WordAlbum(props) {
                     title={isFavoritesAlbum ? 'Share Favorites' : `Share ${album?.title || 'Word Album'}`}
                     label={isFavoritesAlbum ? 'Favorites' : album?.title || 'Word Album'}
                     wordEntries={displayedWords}
+                    shareUrl={shareSnapshot?.share_url || ''}
+                    onRegenerateShare={handleRegenerateShareSnapshot}
+                    isShareLoading={shareSnapshotLoading}
+                    shareError={shareSnapshotError}
                 />
             </Popup>
 

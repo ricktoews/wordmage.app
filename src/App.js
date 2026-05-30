@@ -14,7 +14,8 @@ import {
     faHome,
     faUser,
     faComment,
-    faHistory
+    faHistory,
+    faShareNodes
 } from '@fortawesome/free-solid-svg-icons';
 
 import KeyCapture from './KeyCapture';
@@ -32,12 +33,14 @@ import Hamburger from './components/Hamburger';
 
 import PopupAIExplain from './components/PopupAIExplain';
 import Popup from './components/Popup';
+import PopupListShare from './components/PopupListShare';
 import UnscrambleGame from './components/UnscrambleGame';
 import BrowseWords from './components/BrowseWords';
 import CollectiveWords from './components/CollectiveWords';
 import Train from './components/Train';
 import Albums from './components/Albums';
 import WordAlbum from './components/WordAlbum';
+import SharedAlbum from './components/SharedAlbum';
 import Random from './components/Random';
 import Register from './Register';
 import Profile from './Profile';
@@ -88,6 +91,7 @@ const resolveMastheadEmblem = (theme) => {
 function App(props) {
     const [aiExplainWord, setAiExplainWord] = useState(null);
     const [isWebchatOpen, setIsWebchatOpen] = useState(false);
+    const [showAppSharePopup, setShowAppSharePopup] = useState(false);
     const [botpressClientId, setBotpressClientId] = useState(null);
 
     const toggleWebchat = () => {
@@ -437,11 +441,14 @@ function App(props) {
                             <FontAwesomeIcon icon={faFolderOpen} />
                         </button>
                     )}
-                    {hasUserWorkspace && (
-                        <button className="header-nav-btn" onClick={navToHistory} title="History">
-                            <FontAwesomeIcon icon={faHistory} />
-                        </button>
-                    )}
+                    <button
+                        className="header-nav-btn"
+                        onClick={() => setShowAppSharePopup(true)}
+                        title="Share WordMage"
+                        aria-label="Share WordMage"
+                    >
+                        <FontAwesomeIcon icon={faShareNodes} />
+                    </button>
                     {/* {authUser && (
                         <button className="header-nav-btn" onClick={navToTrain} title="Train">
                             <FontAwesomeIcon icon={faGraduationCap} />
@@ -490,6 +497,14 @@ function App(props) {
                     </Popup>
                 )}
 
+                <Popup
+                    isVisible={showAppSharePopup}
+                    handleBackgroundClick={() => setShowAppSharePopup(false)}
+                    className="list-share-popup"
+                >
+                    <PopupListShare title="Share WordMage" label="WordMage" showWordListOptions={false} />
+                </Popup>
+
                 {botpressClientId && isWebchatOpen && (
                     <div ref={webchatRef} className="add-word-icon-container">
                         <Webchat
@@ -530,6 +545,7 @@ function App(props) {
                         <Route path="/collective/:start?" render={props => (<CollectiveWords
                             onAIExplain={handleAIExplain}
                         />)} />
+                        <Route path="/shared/albums/:token" render={props => (<SharedAlbum />)} />
                         <Route exact path="/albums" render={props => (<Albums
                             key={`albums-${activeUserId || 'none'}`}
                             onAIExplain={handleAIExplain}

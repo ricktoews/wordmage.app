@@ -8,7 +8,7 @@ import { TwitterShareButton, XIcon } from "react-share";
 
 function WordEntry(props) {
 	const { history } = props;
-	const { wordObj, listType } = props;
+	const { wordObj, listType, readOnly = false } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [showInfo, setShowInfo] = useState(false);
 	const [historySettings, setHistorySettings] = useState(() => WordsInterface.getHistoryScoringSettings());
@@ -85,6 +85,7 @@ function WordEntry(props) {
 
 	// Weighted viewport signals: +1 at 3s, +1 at 6s when fully visible.
 	useEffect(() => {
+		if (readOnly) return;
 		if (wordObj.divider) return;
 
 		const clearViewportTimers = () => {
@@ -139,10 +140,11 @@ function WordEntry(props) {
 				scrollStopTimerRef.current = null;
 			}
 		};
-	}, [wordObj, listType, historySettings.viewport3sMs, historySettings.viewport6sMs]);
+	}, [wordObj, listType, historySettings.viewport3sMs, historySettings.viewport6sMs, readOnly]);
 
 	// Scroll-stop signal while card is fully visible.
 	useEffect(() => {
+		if (readOnly) return;
 		if (wordObj.divider) return;
 
 		const handleScroll = () => {
@@ -169,7 +171,7 @@ function WordEntry(props) {
 				scrollStopTimerRef.current = null;
 			}
 		};
-	}, [wordObj, listType, historySettings.scrollStopVisibleMs]);
+	}, [wordObj, listType, historySettings.scrollStopVisibleMs, readOnly]);
 
 	function scrambleWord(wordObj) {
 		console.log('scrambleWord', wordObj);
@@ -189,6 +191,7 @@ function WordEntry(props) {
 	};
 
 	const handleCardTap = () => {
+		if (readOnly) return;
 		WordsInterface.recordWordInterestSignal(wordObj, 'tap_card', listType);
 	};
 
@@ -228,6 +231,7 @@ function WordEntry(props) {
 					)}
 				</div>
 			</div>
+			{!readOnly && (
 			<div className="word-card-actions">
 				{/*}
 			<button 
@@ -251,6 +255,7 @@ function WordEntry(props) {
 					}}
 				/>
 			</div>
+			)}
 		</div>
 	);
 }
