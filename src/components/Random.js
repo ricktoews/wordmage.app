@@ -250,6 +250,7 @@ function Random(props) {
 							aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to cycle, double-click or double-tap for Themes menu.`}
 							aria-haspopup="menu"
 							aria-expanded={showThemeMenu}
+							data-contextual-help="theme-button"
 						>
 							<FontAwesomeIcon icon={faPalette} />
 						</button>
@@ -279,6 +280,7 @@ function Random(props) {
 						title="Share words"
 						aria-label="Share words"
 						disabled={randomWords.length === 0}
+						data-contextual-help="random-share-button"
 					>
 						<FontAwesomeIcon icon={faShareNodes} />
 					</button>
@@ -294,7 +296,13 @@ function Random(props) {
 							<FontAwesomeIcon icon={faRotateLeft} />
 						</button>
 					)}
-					<button className="random-refresh-icon" onClick={handleNewRandom} aria-label="Refresh random words" disabled={isLoading}>
+					<button
+						className="random-refresh-icon"
+						onClick={handleNewRandom}
+						aria-label="Refresh random words"
+						disabled={isLoading}
+						data-contextual-help="random-refresh-button"
+					>
 						<FontAwesomeIcon icon={faRotate} spin={isLoading} />
 					</button>
 				</div>

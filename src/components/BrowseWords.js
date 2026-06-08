@@ -239,6 +239,7 @@ function BrowseWords(props) {
 							aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to cycle, double-click or double-tap for Themes menu.`}
 							aria-haspopup="menu"
 							aria-expanded={showThemeMenu}
+							data-contextual-help="theme-button"
 						>
 							<FontAwesomeIcon icon={faPalette} />
 						</button>
@@ -281,4 +282,3 @@ function BrowseWords(props) {
 }
 
 export default withRouter(BrowseWords);
-

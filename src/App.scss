@@ -1186,6 +1186,115 @@ body {
 	}
 }
 
+.contextual-help {
+	--contextual-help-accent: var(--global-featured-accent, #7b5aae);
+	--contextual-help-bg: var(--global-card-bg, #ffffff);
+	--contextual-help-border: var(--global-card-border, #ddd2f0);
+	--contextual-help-text: var(--global-text, #34244f);
+	--contextual-help-muted: var(--global-muted, #6a568d);
+	--contextual-help-button: var(--global-btn-bg, #7b5aae);
+	--contextual-help-button-hover: var(--global-btn-hover, #69499a);
+}
+
+.contextual-help-dimmer {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	background: rgba(5, 4, 8, 0.38);
+	-webkit-mask-image: radial-gradient(
+		ellipse var(--contextual-help-cutout-width) var(--contextual-help-cutout-height)
+		at var(--contextual-help-cutout-x) var(--contextual-help-cutout-y),
+		transparent 97%,
+		#000 100%
+	);
+	mask-image: radial-gradient(
+		ellipse var(--contextual-help-cutout-width) var(--contextual-help-cutout-height)
+		at var(--contextual-help-cutout-x) var(--contextual-help-cutout-y),
+		transparent 97%,
+		#000 100%
+	);
+}
+
+.contextual-help-highlight {
+	position: fixed;
+	z-index: 1001;
+	border: 2px solid var(--contextual-help-accent);
+	border-radius: 50%;
+	box-shadow:
+		0 0 0 3px var(--contextual-help-bg),
+		0 0 0 6px var(--contextual-help-accent),
+		0 5px 18px rgba(0, 0, 0, 0.24);
+	pointer-events: none;
+	animation: contextual-help-pulse 1.8s ease-in-out infinite;
+}
+
+.contextual-help-card {
+	position: fixed;
+	z-index: 1002;
+	box-sizing: border-box;
+	padding: 16px;
+	background: var(--contextual-help-bg);
+	border: 1px solid var(--contextual-help-border);
+	border-radius: 12px;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+	color: var(--contextual-help-text);
+	font-family: Georgia, 'Times New Roman', serif;
+}
+
+.contextual-help-title {
+	margin-bottom: 6px;
+	font-size: 1.05rem;
+	font-weight: 700;
+}
+
+.contextual-help-card p {
+	margin: 0 0 14px;
+	color: var(--contextual-help-muted);
+	font-family: Arial, sans-serif;
+	font-size: 0.9rem;
+	line-height: 1.45;
+}
+
+.contextual-help-dismiss {
+	display: block;
+	margin-left: auto;
+	padding: 7px 14px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--contextual-help-button);
+	color: #ffffff;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-visible {
+		background: var(--contextual-help-button-hover);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--contextual-help-text);
+		outline-offset: 2px;
+	}
+}
+
+@keyframes contextual-help-pulse {
+	0%,
+	100% {
+		filter: brightness(1);
+	}
+
+	50% {
+		filter: brightness(1.18);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.contextual-help-highlight {
+		animation: none;
+	}
+}
+
 body.album-theme-global-active {
 	--global-page-bg: #fffefe;
 	--global-toolbar-start: #f1ecfb;

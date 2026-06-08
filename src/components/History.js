@@ -83,6 +83,7 @@ function History(props) {
 						onClick={cycleAlbumTheme}
 						title={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to change theme.`}
 						aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to change theme.`}
+						data-contextual-help="theme-button"
 					>
 						<FontAwesomeIcon icon={faPalette} />
 					</button>

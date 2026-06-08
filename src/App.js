@@ -30,6 +30,7 @@ import WordsInterface from './utils/words-interface';
 
 // Import components
 import Hamburger from './components/Hamburger';
+import ContextualHelp from './components/ContextualHelp';
 
 import PopupAIExplain from './components/PopupAIExplain';
 import Popup from './components/Popup';
@@ -60,6 +61,26 @@ const THEME_TO_EMBLEM = {
     fogbound: 'lamp'
 };
 const GLOBAL_THEME_CLASSES = Object.keys(THEME_TO_EMBLEM).map((theme) => `album-theme-global-${theme}`);
+const CONTEXTUAL_HELP_HINTS = [
+    {
+        id: 'theme-button-v1',
+        target: '[data-contextual-help="theme-button"]',
+        title: 'Choose your atmosphere',
+        text: 'Tap the palette to cycle themes. Double-tap it to open the full Themes menu.'
+    },
+    {
+        id: 'random-share-button-v1',
+        target: '[data-contextual-help="random-share-button"]',
+        title: 'Share your finds',
+        text: 'Use this button to share the current collection of random words.'
+    },
+    {
+        id: 'random-refresh-button-v1',
+        target: '[data-contextual-help="random-refresh-button"]',
+        title: 'Discover new words',
+        text: 'Refresh the Random page whenever you want a fresh selection of words.'
+    }
+];
 
 const getAlbumThemeFromStorage = () => {
     if (typeof window === 'undefined') {
@@ -485,6 +506,8 @@ function App(props) {
                     )}
                 </div>
             </header>
+
+            <ContextualHelp hints={CONTEXTUAL_HELP_HINTS} />
 
             <WordMageContext.Provider value={contextProviderValue}>
                 {aiExplainWord && (
