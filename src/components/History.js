@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faXmark, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordScroller from './WordScroller';
 import PopupAlbumSelect from './PopupAlbumSelect';
@@ -8,22 +8,13 @@ import Popup from './Popup';
 import './History.scss';
 
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
-const ALBUM_THEME_LABELS = {
-	classic: 'Literary',
-	paper: 'Parchment',
-	ink: 'Nocturne',
-	arcane: 'Arcane',
-	eldritch: 'Eldritch',
-	obsidian: 'Obsidian',
-	fogbound: 'Fogbound'
-};
 
 function History(props) {
 	const [history, setHistory] = useState(() => WordsInterface.getBrowseHistory());
 	const [showConfirmClear, setShowConfirmClear] = useState(false);
 	const [showAlbums, setShowAlbums] = useState(false);
 	const [albumWordObj, setAlbumWordObj] = useState({});
-	const [albumTheme, setAlbumTheme] = useState(() => {
+	const [albumTheme] = useState(() => {
 		if (typeof window === 'undefined') {
 			return 'paper';
 		}
@@ -52,22 +43,6 @@ function History(props) {
 		setHistory(WordsInterface.getBrowseHistory());
 	};
 
-	const cycleAlbumTheme = () => {
-		setAlbumTheme((currentTheme) => {
-			const currentIndex = ALBUM_THEMES.indexOf(currentTheme);
-			const nextIndex = (currentIndex + 1) % ALBUM_THEMES.length;
-			const nextTheme = ALBUM_THEMES[nextIndex];
-			if (typeof window !== 'undefined') {
-				window.localStorage.setItem('wordmage.albumTheme', nextTheme);
-				window.dispatchEvent(new CustomEvent('wordmage:albumThemeChanged', {
-					detail: { theme: nextTheme }
-				}));
-			}
-
-			return nextTheme;
-		});
-	};
-
 	return (
 		<div className={`word-list-page-container album-content-page album-theme-${albumTheme}`}>
 			<div className="favorites-toolbar">
@@ -77,16 +52,6 @@ function History(props) {
 					</div>
 				</div>
 				<div className="moods-toolbar-actions">
-					<button
-						type="button"
-						className="moods-refresh-icon album-theme-toggle"
-						onClick={cycleAlbumTheme}
-						title={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to change theme.`}
-						aria-label={`Theme: ${ALBUM_THEME_LABELS[albumTheme]}. Click to change theme.`}
-						data-contextual-help="theme-button"
-					>
-						<FontAwesomeIcon icon={faPalette} />
-					</button>
 					{history.length > 0 && (
 						<button
 							type="button"

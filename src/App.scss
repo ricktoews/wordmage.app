@@ -4498,37 +4498,6 @@ body.album-theme-global-fogbound {
 	padding: 18px 12px 8px;
 }
 
-.history-settings-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-	gap: 12px;
-	padding: 16px 12px 8px;
-}
-
-.history-setting-item {
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
-
-	label {
-		font-size: 13px;
-		color: var(--global-text-muted, #7a6f5f);
-	}
-
-	input {
-		padding: 8px 10px;
-		border-radius: 8px;
-		border: 1px solid var(--global-card-border, #d8d1c6);
-		background: var(--global-card-bg, #fff);
-		color: var(--global-text, #2c2416);
-		font-size: 14px;
-	}
-}
-
-.history-settings-actions {
-	padding: 0 12px 16px;
-}
-
 .theme-picker-btn {
 	display: inline-flex;
 	align-items: center;

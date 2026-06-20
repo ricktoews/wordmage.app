@@ -63,12 +63,6 @@ const THEME_TO_EMBLEM = {
 const GLOBAL_THEME_CLASSES = Object.keys(THEME_TO_EMBLEM).map((theme) => `album-theme-global-${theme}`);
 const CONTEXTUAL_HELP_HINTS = [
     {
-        id: 'theme-button-v1',
-        target: '[data-contextual-help="theme-button"]',
-        title: 'Choose your atmosphere',
-        text: 'Tap the palette to cycle themes. Double-tap it to open the full Themes menu.'
-    },
-    {
         id: 'random-share-button-v1',
         target: '[data-contextual-help="random-share-button"]',
         title: 'Share your finds',
@@ -422,7 +416,7 @@ function App(props) {
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     {hasUserWorkspace && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
                     {hasUserWorkspace && <li onClick={navToHistory}><FontAwesomeIcon icon={faHistory} /> History</li>}
-                    {authUser && <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>}
+                    <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>
                     <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
                 </ul>
             </nav>
@@ -449,14 +443,14 @@ function App(props) {
                     <button className="header-nav-btn" onClick={navToRandom} title="Random">
                         <FontAwesomeIcon icon={faRandom} />
                     </button>
+                    <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
+                        <FontAwesomeIcon icon={faGlasses} />
+                    </button>
                     {hasUserWorkspace && (
                         <button className="header-nav-btn" onClick={navToFavoritesList} title="Favorites">
                             <FontAwesomeIcon icon={faThumbsUp} />
                         </button>
                     )}
-                    <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
-                        <FontAwesomeIcon icon={faGlasses} />
-                    </button>
                     {hasUserWorkspace && (
                         <button className="header-nav-btn" onClick={navToAlbums} title="Albums">
                             <FontAwesomeIcon icon={faFolderOpen} />

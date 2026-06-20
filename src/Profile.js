@@ -41,6 +41,7 @@ function Profile(props) {
 	const [message, setMessage] = useState('');
 	const [showNotification, setShowNotification] = useState(false);
 	const [profileUser, setProfileUser] = useState(profileObj);
+	const loggedInEmail = profileUser.email || (authUser && authUser.email) || '';
 	const [custom, setCustom] = useState(getMyWords());
 	const [selectedDownload, setSelectedDownload] = useState('');
 	const [selectedMastheadEmblem, setSelectedMastheadEmblem] = useState(() => {
@@ -51,7 +52,6 @@ function Profile(props) {
 		const savedTheme = localStorage.getItem('wordmage.albumTheme');
 		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
 	});
-	const [historyScoringSettings, setHistoryScoringSettings] = useState(() => WordsInterface.getHistoryScoringSettings());
 
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -276,23 +276,6 @@ function Profile(props) {
 		}));
 	};
 
-	const updateHistoryScoringSetting = (field, rawValue) => {
-		const nextValue = Number(rawValue);
-		const persisted = WordsInterface.setHistoryScoringSettings({ [field]: nextValue });
-		setHistoryScoringSettings(persisted);
-	};
-
-	const handleResetHistoryScoring = () => {
-		const defaults = WordsInterface.resetHistoryScoringSettings();
-		setHistoryScoringSettings(defaults);
-		setMessage('History scoring settings reset to defaults.');
-		setShowNotification(true);
-		setTimeout(() => {
-			setShowNotification(false);
-			setMessage('');
-		}, 3000);
-	};
-
 	return (
 		<>
 			{showNotification && (
@@ -305,8 +288,8 @@ function Profile(props) {
 			)}
 			<div className="profile-toolbar">
 				<div className="page-title">Settings</div>
-				{(profileUser.user_id || (authUser && authUser.email)) && (
-					<div className="logged-in-message">Logged in as {profileUser.email || (authUser && authUser.email) || ''}</div>
+				{loggedInEmail && (
+					<div className="logged-in-message">Logged in as {loggedInEmail}</div>
 				)}
 			</div>
 			<div className="profile-form plain-content container">
@@ -379,93 +362,6 @@ function Profile(props) {
 								<span className="emblem-picker-label">{emblemName}</span>
 							</button>
 						))}
-					</div>
-				</div>
-
-				<div className="downloads-section">
-					<h4 className="downloads-heading">Word History Scoring</h4>
-					<div className="history-settings-grid">
-						<div className="history-setting-item">
-							<label htmlFor="history-score-threshold">Score threshold</label>
-							<input
-								id="history-score-threshold"
-								type="number"
-								min={1}
-								max={50}
-								value={historyScoringSettings.scoreThreshold}
-								onChange={(e) => updateHistoryScoringSetting('scoreThreshold', e.target.value)}
-							/>
-						</div>
-
-						<div className="history-setting-item">
-							<label htmlFor="history-viewport-3">Viewport short dwell (ms)</label>
-							<input
-								id="history-viewport-3"
-								type="number"
-								min={500}
-								max={20000}
-								step={100}
-								value={historyScoringSettings.viewport3sMs}
-								onChange={(e) => updateHistoryScoringSetting('viewport3sMs', e.target.value)}
-							/>
-						</div>
-
-						<div className="history-setting-item">
-							<label htmlFor="history-viewport-6">Viewport long dwell (ms)</label>
-							<input
-								id="history-viewport-6"
-								type="number"
-								min={1000}
-								max={30000}
-								step={100}
-								value={historyScoringSettings.viewport6sMs}
-								onChange={(e) => updateHistoryScoringSetting('viewport6sMs', e.target.value)}
-							/>
-						</div>
-
-						<div className="history-setting-item">
-							<label htmlFor="history-scroll-stop">Scroll-stop delay (ms)</label>
-							<input
-								id="history-scroll-stop"
-								type="number"
-								min={50}
-								max={3000}
-								step={10}
-								value={historyScoringSettings.scrollStopVisibleMs}
-								onChange={(e) => updateHistoryScoringSetting('scrollStopVisibleMs', e.target.value)}
-							/>
-						</div>
-
-						<div className="history-setting-item">
-							<label htmlFor="history-session-idle">Signal session reset (ms)</label>
-							<input
-								id="history-session-idle"
-								type="number"
-								min={5000}
-								max={3600000}
-								step={1000}
-								value={historyScoringSettings.signalSessionIdleMs}
-								onChange={(e) => updateHistoryScoringSetting('signalSessionIdleMs', e.target.value)}
-							/>
-						</div>
-
-						<div className="history-setting-item">
-							<label htmlFor="history-return-idle">Return-to-word delay (ms)</label>
-							<input
-								id="history-return-idle"
-								type="number"
-								min={30000}
-								max={86400000}
-								step={1000}
-								value={historyScoringSettings.returnToWordIdleMs}
-								onChange={(e) => updateHistoryScoringSetting('returnToWordIdleMs', e.target.value)}
-							/>
-						</div>
-					</div>
-					<div className="history-settings-actions">
-						<button className="download-pill-btn" onClick={handleResetHistoryScoring}>
-							Reset Defaults
-						</button>
 					</div>
 				</div>
 
