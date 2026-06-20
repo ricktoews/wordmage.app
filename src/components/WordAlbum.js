@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPuzzlePiece, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft, faCircleInfo, faPencil, faCopy, faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
 import { CONFIG } from '../config';
 import { authFetch } from '../utils/auth';
@@ -99,6 +99,7 @@ function writeShareSnapshot(albumId, snapshot) {
 }
 
 function WordAlbum(props) {
+    const { setMastheadShareConfig } = props;
     const [album, setAlbum] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showAlbumInfo, setShowAlbumInfo] = useState(false);
@@ -413,7 +414,7 @@ function WordAlbum(props) {
 
     const wordListVersion = displayedWords.map(word => word.id || word.word).join('|') || 'empty';
 
-    const createShareSnapshot = async () => {
+    const createShareSnapshot = useCallback(async () => {
         if (!albumId) {
             return null;
         }
@@ -445,9 +446,9 @@ function WordAlbum(props) {
         } finally {
             setShareSnapshotLoading(false);
         }
-    };
+    }, [albumId]);
 
-    const handleShare = async () => {
+    const handleShare = useCallback(async () => {
         setShowSharePopup(true);
         setShareSnapshotError('');
 
@@ -458,11 +459,30 @@ function WordAlbum(props) {
         }
 
         await createShareSnapshot();
-    };
+    }, [albumId, shareSnapshot, createShareSnapshot]);
 
     const handleRegenerateShareSnapshot = async () => {
         await createShareSnapshot();
     };
+
+    const mastheadShareConfig = useMemo(() => ({
+        onShare: handleShare,
+        title: isFavoritesAlbum ? 'Share Favorites' : `Share ${album?.title || 'Word Album'}`,
+        ariaLabel: isFavoritesAlbum ? 'Share favorites' : `Share ${album?.title || 'word album'}`,
+        disabled: displayedWords.length === 0,
+    }), [handleShare, isFavoritesAlbum, album?.title, displayedWords.length]);
+
+    useEffect(() => {
+        if (!setMastheadShareConfig) {
+            return undefined;
+        }
+
+        setMastheadShareConfig(mastheadShareConfig);
+
+        return () => {
+            setMastheadShareConfig(null);
+        };
+    }, [setMastheadShareConfig, mastheadShareConfig]);
 
     return (
         <div className={`word-list-page-container album-content-page album-theme-${albumTheme}${(!isFavoritesAlbum && album?.title) ? ' album-has-subtitle' : ''}`}>
@@ -497,16 +517,6 @@ function WordAlbum(props) {
                             <FontAwesomeIcon icon={faPuzzlePiece} />
                         </button>
                     )}
-                    <button
-                        type="button"
-                        className="moods-refresh-icon"
-                        onClick={handleShare}
-                        title="Share words"
-                        aria-label="Share words"
-                        disabled={displayedWords.length === 0}
-                    >
-                        <FontAwesomeIcon icon={faShareNodes} />
-                    </button>
                     {isFavoritesAlbum && (
                         <button
                             type="button"

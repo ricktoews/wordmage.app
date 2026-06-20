@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotate, faRotateLeft, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { faRotate, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { getRandomPageData } from '../utils/api';
 import WordScroller from './WordScroller';
 import Popup from './Popup';
@@ -58,6 +58,7 @@ function writeRandomRefreshUndoSnapshot(userId, snapshot) {
 }
 
 function Random(props) {
+	const { setMastheadShareConfig } = props;
 	const [randomWords, setRandomWords] = useState([]);
 	const [featuredWord, setFeaturedWord] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
@@ -157,26 +158,33 @@ function Random(props) {
 		setLastRefreshSnapshot(null);
 	};
 
-	const handleShare = () => {
+	const handleShare = useCallback(() => {
 		setShowSharePopup(true);
-	};
+	}, []);
+
+	useEffect(() => {
+		if (!setMastheadShareConfig) {
+			return undefined;
+		}
+
+		setMastheadShareConfig({
+			onShare: handleShare,
+			title: 'Share Random Words',
+			ariaLabel: 'Share random words',
+			disabled: randomWords.length === 0,
+			contextualHelpId: 'random-share-button',
+		});
+
+		return () => {
+			setMastheadShareConfig(null);
+		};
+	}, [setMastheadShareConfig, handleShare, randomWords.length]);
 
 	return (
 		<div className={`browse-container random-page album-theme-${albumTheme}`}>
 			<div className="random-toolbar">
 				<div className="random-toolbar-title">Random</div>
 				<div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-					<button
-						type="button"
-						className="random-refresh-icon"
-						onClick={handleShare}
-						title="Share words"
-						aria-label="Share words"
-						disabled={randomWords.length === 0}
-						data-contextual-help="random-share-button"
-					>
-						<FontAwesomeIcon icon={faShareNodes} />
-					</button>
 					{lastRefreshSnapshot && (
 						<button
 							type="button"

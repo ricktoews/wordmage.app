@@ -107,6 +107,7 @@ function App(props) {
     const [aiExplainWord, setAiExplainWord] = useState(null);
     const [isWebchatOpen, setIsWebchatOpen] = useState(false);
     const [showAppSharePopup, setShowAppSharePopup] = useState(false);
+    const [mastheadShareConfig, setMastheadShareConfig] = useState(null);
     const [botpressClientId, setBotpressClientId] = useState(null);
 
     const toggleWebchat = () => {
@@ -392,6 +393,15 @@ function App(props) {
         setAccountMenuOpen(prev => !prev);
     }
 
+    const handleMastheadShare = () => {
+        if (mastheadShareConfig?.onShare) {
+            mastheadShareConfig.onShare();
+            return;
+        }
+
+        setShowAppSharePopup(true);
+    };
+
     const hamburgerClick = () => {
         console.log('hamburger clicked', hamburgerClass);
         if (hamburgerClass === 'hamburger-nav') {
@@ -458,9 +468,11 @@ function App(props) {
                     )}
                     <button
                         className="header-nav-btn"
-                        onClick={() => setShowAppSharePopup(true)}
-                        title="Share WordMage"
-                        aria-label="Share WordMage"
+                        onClick={handleMastheadShare}
+                        title={mastheadShareConfig?.title || 'Share WordMage'}
+                        aria-label={mastheadShareConfig?.ariaLabel || mastheadShareConfig?.title || 'Share WordMage'}
+                        disabled={mastheadShareConfig?.disabled || false}
+                        data-contextual-help={mastheadShareConfig?.contextualHelpId}
                     >
                         <FontAwesomeIcon icon={faShareNodes} />
                     </button>
@@ -570,11 +582,13 @@ function App(props) {
                         <Route path="/albums/:id" render={props => (<WordAlbum
                             key={`album-${activeUserId || 'none'}-${props.match.params.id}`}
                             onAIExplain={handleAIExplain}
+                            setMastheadShareConfig={setMastheadShareConfig}
                         />)} />
                         <Route exact path="/history" render={props => (<History />)} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             key={`random-${activeUserId || 'none'}`}
                             onAIExplain={handleAIExplain}
+                            setMastheadShareConfig={setMastheadShareConfig}
                         />)} />
                         <Route path="/settings" component={Profile} />
                         <Route path="/login" component={Login} />
