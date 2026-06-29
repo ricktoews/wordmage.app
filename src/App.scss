@@ -593,17 +593,14 @@ $lovable-def-size: 14px;
 	color: #8a2c2c;
 }
 
+.shared-album-page {
+	box-sizing: border-box;
+	padding-top: calc(#{$header-height} + 70px);
+}
+
 .shared-album-page .word-list-scroller {
-	top: 118px;
+	top: 0;
 	margin-top: 15px;
-}
-
-.shared-album-page .shared-album-message + .album-words-container .word-list-scroller {
-	top: 56px;
-}
-
-.shared-album-page .shared-album-mood + .album-words-container .word-list-scroller {
-	top: 56px;
 }
 
 .claim-albums-list {
@@ -1919,6 +1916,33 @@ body.album-theme-global-fogbound {
 
 	.downloads-heading {
 		color: #1e3040;
+	}
+}
+
+/* Keep word-card typography owned by WordMage rather than inherited from package CSS. */
+.random-page,
+.browse-page,
+.album-content-page {
+	.word-list-scroller .word-item-word {
+		font-family: Charter, 'Bitstream Charter', Georgia, serif;
+		font-size: 15.2px;
+		font-weight: 700;
+		letter-spacing: 0.2px;
+	}
+
+	.word-list-scroller .word-item-def {
+		font-family: $lovable-font;
+		font-size: $lovable-def-size;
+		line-height: 1.45;
+		font-weight: 200;
+	}
+
+	.word-list-scroller .word-item-source {
+		font-family: $lovable-font;
+		font-size: 11.52px;
+		line-height: 1.35;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
 	}
 }
 
@@ -3975,7 +3999,7 @@ body.album-theme-global-fogbound {
 
 .word-item-word {
 	font-family: Charter, 'Bitstream Charter', Georgia, serif;
-	font-size: 0.95rem;
+	font-size: 15.2px;
 	letter-spacing: 0.2px;
 	font-weight: 700;
 	display: inline-block;
@@ -4042,7 +4066,7 @@ body.album-theme-global-fogbound {
 
 .word-item-source {
 	font-family: $lovable-font;
-	font-size: 0.72rem;
+	font-size: 11.52px;
 	line-height: 1.35;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -4484,13 +4508,6 @@ body.album-theme-global-fogbound {
 	}
 }
 
-.emblem-picker-options {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-	padding: 18px 12px 8px;
-}
-
 .theme-picker-options {
 	display: flex;
 	flex-wrap: wrap;
@@ -4560,43 +4577,6 @@ body.album-theme-global-fogbound {
 }
 
 .theme-picker-label {
-	line-height: 1;
-}
-
-.emblem-picker-btn {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 8px 12px;
-	border: 1px solid var(--global-card-border, #d9d3c8);
-	border-radius: 999px;
-	background: var(--global-card-bg, #fbfaf6);
-	color: var(--global-text, #4a3a2a);
-	cursor: pointer;
-	font-size: 14px;
-	text-transform: capitalize;
-	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-
-	&:hover {
-		background: var(--global-card-hover-bg, #f3eee3);
-		border-color: var(--global-btn-bg, #c6b7a1);
-	}
-
-	&.active {
-		background: var(--global-btn-bg, #4A3A2A);
-		border-color: var(--global-btn-bg, #4A3A2A);
-		color: #fff;
-	}
-}
-
-.emblem-picker-image {
-	width: 22px;
-	height: 22px;
-	object-fit: contain;
-	display: block;
-}
-
-.emblem-picker-label {
 	line-height: 1;
 }
 
@@ -4910,7 +4890,7 @@ input[type="checkbox"] {
 
 .empty-state-title {
 	font-family: "Georgia", "Times New Roman", serif;
-	font-size: 1.25rem;
+	font-size: 20px;
 	font-weight: 700;
 	line-height: 1.2;
 	margin-bottom: 8px;
@@ -4918,7 +4898,7 @@ input[type="checkbox"] {
 }
 
 .empty-state-copy {
-	font-size: 0.98rem;
+	font-size: 15.68px;
 	line-height: 1.45;
 	color: var(--global-muted, #6a568d);
 }
@@ -4986,7 +4966,7 @@ input[type="checkbox"] {
 .album-menu-item {
 	padding: 10px 16px;
 	cursor: pointer;
-	font-size: 0.9rem;
+	font-size: 14.4px;
 	color: #333;
 	transition: background-color 0.2s;
 
@@ -5020,7 +5000,7 @@ input[type="checkbox"] {
 }
 
 .album-title {
-	font-size: 1rem;
+	font-size: 16px;
 	font-weight: 500;
 	color: #2c2c2c;
 	text-align: left;

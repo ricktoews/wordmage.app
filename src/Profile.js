@@ -7,7 +7,6 @@ import { WordMageContext } from './WordMageContext';
 import { clearAuthenticatedToken, persistTokenFromResponse } from './utils/auth';
 import { loadUserWorkspace } from './utils/workspace';
 
-const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
 const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
 	classic: 'Literary',
@@ -44,10 +43,6 @@ function Profile(props) {
 	const loggedInEmail = profileUser.email || (authUser && authUser.email) || '';
 	const [custom, setCustom] = useState(getMyWords());
 	const [selectedDownload, setSelectedDownload] = useState('');
-	const [selectedMastheadEmblem, setSelectedMastheadEmblem] = useState(() => {
-		const override = localStorage.getItem('wordmage.mastheadEmblem');
-		return EMBLEM_NAMES.includes(override) ? override : 'theme';
-	});
 	const [selectedAlbumTheme, setSelectedAlbumTheme] = useState(() => {
 		const savedTheme = localStorage.getItem('wordmage.albumTheme');
 		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
@@ -252,18 +247,6 @@ function Profile(props) {
 		}
 	}
 
-	const handleMastheadEmblemSelect = (emblemName) => {
-		if (emblemName === 'theme') {
-			localStorage.removeItem('wordmage.mastheadEmblem');
-			setSelectedMastheadEmblem('theme');
-		} else {
-			localStorage.setItem('wordmage.mastheadEmblem', emblemName);
-			setSelectedMastheadEmblem(emblemName);
-		}
-
-		window.dispatchEvent(new CustomEvent('wordmage:mastheadEmblemChanged'));
-	};
-
 	const handleThemeSelect = (themeName) => {
 		if (!ALBUM_THEMES.includes(themeName)) {
 			return;
@@ -327,39 +310,6 @@ function Profile(props) {
 							>
 								<span className={`theme-swatch theme-swatch-${themeName}`} aria-hidden="true" />
 								<span className="theme-picker-label">{ALBUM_THEME_LABELS[themeName]}</span>
-							</button>
-						))}
-					</div>
-				</div>
-
-				<div className="downloads-section">
-					<h4 className="downloads-heading">Masthead Emblem</h4>
-					<div className="emblem-picker-options" role="radiogroup" aria-label="Masthead emblem">
-						<button
-							type="button"
-							className={`emblem-picker-btn ${selectedMastheadEmblem === 'theme' ? 'active' : ''}`}
-							onClick={() => handleMastheadEmblemSelect('theme')}
-							role="radio"
-							aria-checked={selectedMastheadEmblem === 'theme'}
-						>
-							<span className="emblem-picker-label">Auto by Theme</span>
-						</button>
-						{EMBLEM_NAMES.map((emblemName) => (
-							<button
-								type="button"
-								key={emblemName}
-								className={`emblem-picker-btn ${selectedMastheadEmblem === emblemName ? 'active' : ''}`}
-								onClick={() => handleMastheadEmblemSelect(emblemName)}
-								role="radio"
-								aria-checked={selectedMastheadEmblem === emblemName}
-								title={emblemName}
-							>
-								<img
-									src={`/images/wordmage_solid_emblems_svg/solid-${emblemName}.svg`}
-									alt={`${emblemName} emblem`}
-									className="emblem-picker-image"
-								/>
-								<span className="emblem-picker-label">{emblemName}</span>
 							</button>
 						))}
 					</div>

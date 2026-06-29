@@ -1,5 +1,3 @@
-import { Fab, Webchat } from '@botpress/webchat'
-
 import { useEffect, useState, useRef, useContext, useMemo } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,17 +48,8 @@ import History from './components/History';
 
 import './App.scss';
 
-const EMBLEM_NAMES = ['book', 'compass', 'key', 'lamp', 'owl', 'quill'];
-const THEME_TO_EMBLEM = {
-    classic: 'book',
-    paper: 'quill',
-    ink: 'owl',
-    arcane: 'lamp',
-    eldritch: 'compass',
-    obsidian: 'key',
-    fogbound: 'lamp'
-};
-const GLOBAL_THEME_CLASSES = Object.keys(THEME_TO_EMBLEM).map((theme) => `album-theme-global-${theme}`);
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
+const GLOBAL_THEME_CLASSES = ALBUM_THEMES.map((theme) => `album-theme-global-${theme}`);
 const CONTEXTUAL_HELP_HINTS = [
     {
         id: 'random-share-button-v1',
@@ -82,37 +71,13 @@ const getAlbumThemeFromStorage = () => {
     }
 
     const storedTheme = window.localStorage.getItem('wordmage.albumTheme');
-    return Object.prototype.hasOwnProperty.call(THEME_TO_EMBLEM, storedTheme) ? storedTheme : 'classic';
-};
-
-const getEmblemOverrideFromStorage = () => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-
-    const override = window.localStorage.getItem('wordmage.mastheadEmblem');
-    return EMBLEM_NAMES.includes(override) ? override : null;
-};
-
-const resolveMastheadEmblem = (theme) => {
-    const override = getEmblemOverrideFromStorage();
-    if (override) {
-        return override;
-    }
-
-    return THEME_TO_EMBLEM[theme] || 'book';
+    return ALBUM_THEMES.includes(storedTheme) ? storedTheme : 'classic';
 };
 
 function App(props) {
     const [aiExplainWord, setAiExplainWord] = useState(null);
-    const [isWebchatOpen, setIsWebchatOpen] = useState(false);
     const [showAppSharePopup, setShowAppSharePopup] = useState(false);
     const [mastheadShareConfig, setMastheadShareConfig] = useState(null);
-    const [botpressClientId, setBotpressClientId] = useState(null);
-
-    const toggleWebchat = () => {
-        setIsWebchatOpen((prevState) => !prevState)
-    }
 
     // Set up Context for app. WordMageContext.Provider will wrap everything.
     const [contextValue, setContextValue] = useState({ targetEl: null });
@@ -160,7 +125,6 @@ function App(props) {
     //---------------------------------------------
     const wordHash = WordsInterface.fullWordList();
     const [fullWordList, setFullWordList] = useState(wordHash);
-    const [mastheadEmblem, setMastheadEmblem] = useState(() => resolveMastheadEmblem(getAlbumThemeFromStorage()));
     const [view, setView] = useState('Random');
     const [word, setWord] = useState('');
     const [hamburgerClass, setHamburgerClass] = useState('hamburger-nav');
@@ -169,21 +133,7 @@ function App(props) {
 
     const hamburgerRef = useRef(null);
     const accountRef = useRef(null);
-    const webchatRef = useRef(null);
-    const webchatButtonRef = useRef(null);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-
-    useEffect(() => {
-        fetch('/.netlify/functions/botpress')
-            .then((res) => res.json())
-            .then((data) => {
-                const clientId = data.clientId;
-                setBotpressClientId(clientId);
-            })
-            .catch((error) => {
-                console.error('Error fetching environment variable:', error);
-            });
-    }, []);
 
     const handleDocumentClicked = e => {
         // Check if clicked outside hambuger menu.
@@ -201,15 +151,6 @@ function App(props) {
                 setAccountMenuOpen(false);
             }
         } catch (e) { }
-        // Close webchat if clicking outside it
-        try {
-            if (webchatRef.current && !webchatRef.current.contains(el)) {
-                // Don't close if clicking the webchat toggle button
-                if (webchatButtonRef.current && !webchatButtonRef.current.contains(el)) {
-                    setIsWebchatOpen(false);
-                }
-            }
-        } catch (e) { }
         setContextValue({ ...contextValue, targetEl: el });
     }
 
@@ -220,7 +161,6 @@ function App(props) {
     useEffect(() => {
         const syncThemeUIFromStorage = (themeOverride) => {
             const theme = themeOverride || getAlbumThemeFromStorage();
-            setMastheadEmblem(resolveMastheadEmblem(theme));
 
             if (typeof document !== 'undefined') {
                 const { body } = document;
@@ -236,25 +176,19 @@ function App(props) {
         };
 
         const handleStorage = (event) => {
-            if (event.key === 'wordmage.albumTheme' || event.key === 'wordmage.mastheadEmblem') {
+            if (event.key === 'wordmage.albumTheme') {
                 syncThemeUIFromStorage();
             }
-        };
-
-        const handleMastheadEmblemChanged = () => {
-            syncThemeUIFromStorage();
         };
 
         // Re-sync on route changes so theme classes remain applied outside WordAlbum.
         syncThemeUIFromStorage();
 
         window.addEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
-        window.addEventListener('wordmage:mastheadEmblemChanged', handleMastheadEmblemChanged);
         window.addEventListener('storage', handleStorage);
 
         return () => {
             window.removeEventListener('wordmage:albumThemeChanged', handleAlbumThemeChanged);
-            window.removeEventListener('wordmage:mastheadEmblemChanged', handleMastheadEmblemChanged);
             window.removeEventListener('storage', handleStorage);
         };
     }, [props.location.pathname]);
@@ -441,8 +375,8 @@ function App(props) {
                         aria-label="Open navigation menu"
                     >
                         <img
-                            src={`/images/wordmage_solid_emblems_svg/solid-${mastheadEmblem}.svg`}
-                            alt="WordMage emblem"
+                            src="/images/wordmage-logo.png"
+                            alt="WordMage"
                             className="masthead-emblem"
                         />
                     </button>
@@ -533,23 +467,6 @@ function App(props) {
                 >
                     <PopupListShare title="Share WordMage" label="WordMage" showWordListOptions={false} />
                 </Popup>
-
-                {botpressClientId && isWebchatOpen && (
-                    <div ref={webchatRef} className="add-word-icon-container">
-                        <Webchat
-                            clientId={botpressClientId}
-                            configuration={{ botName: 'WordMage Wizard' }}
-                            style={{
-                                width: '300px',
-                                height: '400px',
-                                display: 'flex',
-                                position: 'fixed',
-                                bottom: '90px',
-                                right: '20px',
-                            }}
-                        />
-                    </div>
-                )}
 
                 <KeyCapture>
                     <Switch>
