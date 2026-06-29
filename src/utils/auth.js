@@ -22,7 +22,13 @@ function removeAnonymousToken() {
 		return;
 	}
 
+	const anonymousToken = localStorage.getItem(ANONYMOUS_TOKEN_KEY);
+	const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+
 	localStorage.removeItem(ANONYMOUS_TOKEN_KEY);
+	if (anonymousToken && authToken === anonymousToken) {
+		localStorage.removeItem(AUTH_TOKEN_KEY);
+	}
 }
 
 function storeAnonymousToken(token) {

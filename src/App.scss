@@ -556,10 +556,28 @@ $lovable-def-size: 14px;
 	width: 100%;
 }
 
+.popup-container .popup.claim-albums-popup {
+	.popup-header {
+		font-size: 32px;
+		line-height: 1.2;
+		padding: 16px 32px;
+
+		.close-icon {
+			width: 32px;
+			height: 32px;
+			font-size: 28px;
+		}
+	}
+
+	.popup-body {
+		padding: 32px;
+	}
+}
+
 .claim-albums-copy {
 	color: var(--global-text, #34244f);
 	font-family: $lovable-font;
-	font-size: 0.95rem;
+	font-size: 24px;
 	line-height: 1.4;
 	margin-bottom: 14px;
 }
@@ -619,7 +637,7 @@ $lovable-def-size: 14px;
 .claim-albums-section-title {
 	color: var(--global-muted, #6a568d);
 	font-family: $lovable-font;
-	font-size: 0.72rem;
+	font-size: 18px;
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -637,7 +655,7 @@ $lovable-def-size: 14px;
 	color: var(--global-text, #34244f);
 	cursor: pointer;
 	font-family: $lovable-font;
-	font-size: 0.95rem;
+	font-size: 24px;
 	text-align: left;
 	transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 
@@ -669,7 +687,7 @@ $lovable-def-size: 14px;
 	border-radius: 6px;
 	background: var(--global-featured-bg, #fcf9ff);
 	color: transparent;
-	font-size: 0.9rem;
+	font-size: 14.4px;
 	font-weight: 800;
 	line-height: 1;
 	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
@@ -689,6 +707,8 @@ $lovable-def-size: 14px;
 		background: var(--global-featured-bg, #fcf9ff);
 		color: var(--global-text, #34244f);
 		font-family: $lovable-font;
+		font-size: 20px;
+		line-height: 1.2;
 		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 	}
 

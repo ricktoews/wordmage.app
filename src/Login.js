@@ -146,24 +146,27 @@ function Login() {
 
         setIsClaimingAlbums(true);
         try {
-            await claimAnonymousAlbums({
-                anonymousUserId: claimPrompt.anonymousUserId,
-                anonymousToken: claimPrompt.anonymousToken,
-                albumIds: shouldClaim
-                    ? selectedClaimAlbumIds.map((albumId) => {
+            if (shouldClaim) {
+                await claimAnonymousAlbums({
+                    anonymousUserId: claimPrompt.anonymousUserId,
+                    anonymousToken: claimPrompt.anonymousToken,
+                    albumIds: selectedClaimAlbumIds.map((albumId) => {
                         const numericAlbumId = Number(albumId);
                         return Number.isNaN(numericAlbumId) ? albumId : numericAlbumId;
                     })
-                    : []
-            });
+                });
+            }
 
+            const { authenticatedUserId, redirectPath } = claimPrompt;
             clearPendingAlbumClaim();
             clearAnonymousWorkspace();
-            await loadAuthenticatedWorkspace(claimPrompt.authenticatedUserId, claimPrompt.redirectPath);
             setClaimPrompt(null);
+            await loadAuthenticatedWorkspace(authenticatedUserId, redirectPath);
         } catch (error) {
             console.error('Failed to preserve anonymous albums:', error);
-            alert('Could not preserve those albums. Please try again, or choose Skip to continue.');
+            alert(shouldClaim
+                ? 'Could not preserve those albums. Please try again, or choose Skip to continue.'
+                : 'Could not continue past this device cleanup. Please try signing in again.');
         } finally {
             setIsClaimingAlbums(false);
         }
