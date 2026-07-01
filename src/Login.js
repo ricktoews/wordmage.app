@@ -463,6 +463,7 @@ function Login() {
             <Popup
                 isVisible={!!claimPrompt}
                 handleBackgroundClick={() => { }}
+                handleCloseClick={() => finishClaimFlow({ shouldClaim: false })}
                 className={`list-share-popup claim-albums-popup album-theme-${claimPopupTheme}`}
             >
                 <PopupHeader>Keep words from this device?</PopupHeader>

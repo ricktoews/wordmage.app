@@ -39,7 +39,12 @@ function Popup(props) {
     const handlePopupClick = e => {
         // Close popup because "x" in upper right corner clicked.
         if (isCloseIcon(e)) {
-            props.handleBackgroundClick();
+            if (props.handleCloseClick) {
+                props.handleCloseClick();
+            } else {
+                props.handleBackgroundClick();
+            }
+            return;
         }
 
         // Close popup because background outside of popup clicked.
