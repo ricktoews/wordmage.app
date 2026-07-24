@@ -616,7 +616,7 @@ function WordAlbum(props) {
                     onTouchStart={handleDragHandleTouchStart}
                 />
                 <div className="album-info-panel-header">
-                    <div className="album-info-panel-label">Mood</div>
+                    <div className="album-info-panel-label">Album Description</div>
                     {!editMode && album?.mood_text && (
                         <div className="album-info-panel-actions">
                             <button
