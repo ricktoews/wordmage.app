@@ -163,6 +163,67 @@ $lovable-def-size: 14px;
 	align-items: flex-start;
 }
 
+.popup-container .popup.word-prompt-popup {
+	width: 600px;
+	max-width: 92vw;
+	max-height: calc(100dvh - 4rem);
+	overflow-y: auto;
+	color: #333;
+	font-size: 14px;
+
+	.word-prompt-options {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .5rem 1rem;
+		margin: 0 0 .75rem;
+		padding: .5rem 0;
+		border: 0;
+
+		.word-prompt-toggle {
+			display: inline-flex;
+			align-items: center;
+			gap: .35rem;
+			padding: .45rem .7rem;
+			border: 1px solid #888;
+			border-radius: .5rem;
+			background: #fff;
+			color: #333;
+			font: inherit;
+			cursor: pointer;
+
+			&[aria-pressed='true'] {
+				background: #245c47;
+				border-color: #245c47;
+				color: #fff;
+			}
+
+			&:focus-visible {
+				outline: 2px solid #245c47;
+				outline-offset: 3px;
+			}
+		}
+	}
+
+	.word-prompt-label {
+		display: block;
+		font-weight: 600;
+	}
+
+	textarea {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		margin-top: .5rem;
+		padding: .75rem;
+		border: 1px solid #888;
+		border-radius: .5rem;
+		font: inherit;
+		font-weight: normal;
+		line-height: 1.4;
+		resize: vertical;
+	}
+}
+
 .popup .confirm-action {
 	position: absolute;
 	width: 200px;
