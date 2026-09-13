@@ -209,7 +209,7 @@ $lovable-def-size: 14px;
 		font-weight: 600;
 	}
 
-	textarea {
+	.word-prompt-preview {
 		display: block;
 		box-sizing: border-box;
 		width: 100%;
@@ -220,7 +220,10 @@ $lovable-def-size: 14px;
 		font: inherit;
 		font-weight: normal;
 		line-height: 1.4;
-		resize: vertical;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+		user-select: text;
+		-webkit-user-select: text;
 	}
 }
 

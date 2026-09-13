@@ -16,6 +16,7 @@ function PopupWordPrompt({ wordObj, onClose }) {
     const dialogRef = useRef(null);
     const textRef = useRef(null);
     const titleId = useId();
+    const promptLabelId = useId();
     const definition = wordObj.def || wordObj.definition;
     const includedSections = promptSections.filter((_, index) => selectedSections[index]);
     const prompt = `Help me understand the word ${JSON.stringify(wordObj.word)}.${definition ? ` The definition I have: ${JSON.stringify(definition)}. Please check it rather than assuming it is correct.` : ''}
@@ -27,7 +28,7 @@ ${includedSections.map((section, index) => `${index + 1}. ${section.text}`).join
 Keep the explanation clear and concise. Distinguish established facts from uncertain or disputed claims. If you cannot verify a detail, say so instead of guessing. Cite reliable dictionary or etymology sources when available; do not invent citations.`;
 
     useEffect(() => {
-        textRef.current?.focus();
+        dialogRef.current?.focus({ preventScroll: true });
     }, []);
 
     const copyPrompt = async () => {
@@ -39,8 +40,13 @@ Keep the explanation clear and concise. Distinguish established facts from uncer
         } catch (_) {
             // Leave the full prompt available for manual copying.
         }
-        textRef.current?.focus();
-        textRef.current?.select();
+        const selection = window.getSelection();
+        if (selection && textRef.current) {
+            const range = document.createRange();
+            range.selectNodeContents(textRef.current);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
         setStatus('Could not copy automatically. Copy the selected prompt manually.');
     };
 
@@ -50,10 +56,10 @@ Keep the explanation clear and concise. Distinguish established facts from uncer
             onClose();
         }
         if (event.key === 'Tab') {
-            const controls = dialogRef.current.querySelectorAll('button, input, textarea');
+            const controls = dialogRef.current.querySelectorAll('button');
             const first = controls[0];
             const last = controls[controls.length - 1];
-            if (event.shiftKey && document.activeElement === first) {
+            if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
                 event.preventDefault();
                 last.focus();
             } else if (!event.shiftKey && document.activeElement === last) {
@@ -66,7 +72,7 @@ Keep the explanation clear and concise. Distinguish established facts from uncer
     return (
         <div onClick={(event) => event.stopPropagation()} onKeyDown={handleKeyDown}>
             <Popup isVisible handleBackgroundClick={onClose} className="word-prompt-popup">
-                <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+                <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={titleId}>
                     <div className="popup-header">
                         <h2 id={titleId}>Ask AI about “{wordObj.word}”</h2>
                         <button type="button" className="close-icon" aria-label="Close prompt">×</button>
@@ -91,10 +97,10 @@ Keep the explanation clear and concise. Distinguish established facts from uncer
                                 </button>
                             ))}
                         </fieldset>
-                        <label className="word-prompt-label">
-                            Your prompt
-                            <textarea ref={textRef} readOnly value={prompt} rows={12} />
-                        </label>
+                        <div id={promptLabelId} className="word-prompt-label">Your prompt</div>
+                        <div ref={textRef} role="region" aria-labelledby={promptLabelId} className="word-prompt-preview">
+                            {prompt}
+                        </div>
                         <p role="status" aria-live="polite">{status}</p>
                         <div className="button-wrapper">
                             <button type="button" className="btn btn-primary" onClick={copyPrompt}>Copy prompt</button>
