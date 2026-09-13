@@ -12,20 +12,27 @@ const promptSections = [
 
 function PopupWordPrompt({ wordObj, onClose }) {
     const [status, setStatus] = useState('');
+    const [manualCopy, setManualCopy] = useState(false);
     const [selectedSections, setSelectedSections] = useState([true, true, false, false, false]);
     const dialogRef = useRef(null);
     const textRef = useRef(null);
     const titleId = useId();
-    const promptLabelId = useId();
     const definition = wordObj.def || wordObj.definition;
     const includedSections = promptSections.filter((_, index) => selectedSections[index]);
-    const prompt = `Help me understand the word ${JSON.stringify(wordObj.word)}.${definition ? ` The definition I have: ${JSON.stringify(definition)}. Please check it rather than assuming it is correct.` : ''}
-${includedSections.length ? `
-Please include:
+    const introduction = `Help me understand the word ${JSON.stringify(wordObj.word)}.${definition ? ` The definition I have: ${JSON.stringify(definition)}. Please check it rather than assuming it is correct.` : ''}`;
+    const closing = 'Keep the explanation clear and concise. Distinguish established facts from uncertain or disputed claims. If you cannot verify a detail, say so instead of guessing. Cite reliable dictionary or etymology sources when available; do not invent citations.';
+    const prompt = [introduction, ...(includedSections.length ? ['Please include:', ...includedSections.map((section) => section.text)] : []), closing].join('\n\n');
 
-${includedSections.map((section, index) => `${index + 1}. ${section.text}`).join('\n')}
-` : ''}
-Keep the explanation clear and concise. Distinguish established facts from uncertain or disputed claims. If you cannot verify a detail, say so instead of guessing. Cite reliable dictionary or etymology sources when available; do not invent citations.`;
+    useEffect(() => {
+        if (!manualCopy || !textRef.current) return;
+        const selection = window.getSelection();
+        if (selection) {
+            const range = document.createRange();
+            range.selectNodeContents(textRef.current);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }, [manualCopy, prompt]);
 
     useEffect(() => {
         dialogRef.current?.focus({ preventScroll: true });
@@ -40,13 +47,7 @@ Keep the explanation clear and concise. Distinguish established facts from uncer
         } catch (_) {
             // Leave the full prompt available for manual copying.
         }
-        const selection = window.getSelection();
-        if (selection && textRef.current) {
-            const range = document.createRange();
-            range.selectNodeContents(textRef.current);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
+        setManualCopy(true);
         setStatus('Could not copy automatically. Copy the selected prompt manually.');
     };
 
@@ -74,33 +75,37 @@ Keep the explanation clear and concise. Distinguish established facts from uncer
             <Popup isVisible handleBackgroundClick={onClose} className="word-prompt-popup">
                 <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={titleId}>
                     <div className="popup-header">
-                        <h2 id={titleId}>Ask AI about “{wordObj.word}”</h2>
+                        <h2 id={titleId}><em>{wordObj.word}</em> — Ask AI</h2>
                         <button type="button" className="close-icon" aria-label="Close prompt">×</button>
                     </div>
                     <div className="popup-body">
-                        <p>Copy this prompt and paste it into ChatGPT, Gemini, Grok, Claude, or your preferred AI tool.</p>
-                        <fieldset className="word-prompt-options">
-                            <legend>Include in your prompt</legend>
-                            {promptSections.map((section, index) => (
-                                <button
-                                    key={section.label}
-                                    type="button"
-                                    className="word-prompt-toggle"
-                                    aria-pressed={selectedSections[index]}
-                                    onClick={() => {
-                                        setSelectedSections((selected) => selected.map((value, i) => i === index ? !value : value));
-                                        setStatus('');
-                                    }}
-                                >
-                                    <span aria-hidden="true">{selectedSections[index] ? '✓' : '+'}</span>
-                                    {section.label}
-                                </button>
-                            ))}
-                        </fieldset>
-                        <div id={promptLabelId} className="word-prompt-label">Your prompt</div>
-                        <div ref={textRef} role="region" aria-labelledby={promptLabelId} className="word-prompt-preview">
-                            {prompt}
+                        <div role="region" aria-label="Your prompt" className="word-prompt-preview">
+                            <p>{introduction}</p>
+                            <p>Please include:</p>
+                            <div className="word-prompt-sections">
+                                {promptSections.map((section, index) => (
+                                    <button
+                                        key={section.label}
+                                        type="button"
+                                        className="word-prompt-section"
+                                        aria-label={section.label}
+                                        aria-pressed={selectedSections[index]}
+                                        onClick={() => {
+                                            setSelectedSections((selected) => selected.map((value, i) => i === index ? !value : value));
+                                            setStatus('');
+                                            setManualCopy(false);
+                                        }}
+                                    >
+                                        <span className="word-prompt-section-state" aria-hidden="true">{selectedSections[index] ? '✓' : '+'}</span>
+                                        <span>{section.text}</span>
+                                    </button>
+                                ))}
+                            </div>
+                            <p>{closing}</p>
                         </div>
+                        {manualCopy && (
+                            <div ref={textRef} role="region" aria-label="Prompt for manual copying" className="word-prompt-manual-copy">{prompt}</div>
+                        )}
                         <p role="status" aria-live="polite">{status}</p>
                         <div className="button-wrapper">
                             <button type="button" className="btn btn-primary" onClick={copyPrompt}>Copy prompt</button>
