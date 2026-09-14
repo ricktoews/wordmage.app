@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import PopupWordPrompt from './PopupWordPrompt';
+import SparklesIcon from './icons/SparklesIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
@@ -11,6 +14,8 @@ function WordEntry(props) {
 	const { wordObj, listType, readOnly = false } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [showInfo, setShowInfo] = useState(false);
+	const [showPrompt, setShowPrompt] = useState(false);
+	const askAIButtonRef = useRef(null);
 	const [historySettings, setHistorySettings] = useState(() => WordsInterface.getHistoryScoringSettings());
 	const wordItemRef = useRef(null);
 	const viewport3sTimerRef = useRef(null);
@@ -178,12 +183,6 @@ function WordEntry(props) {
 		history.push('/unscramble', { wordObj: wordObj });
 	}
 
-	const handleAIExplain = (e) => {
-		e.stopPropagation();
-		if (props.onAIExplain) {
-			props.onAIExplain(wordObj.word, wordObj.def);
-		}
-	};
 
 	const handleInfoClick = (e) => {
 		e.stopPropagation();
@@ -212,6 +211,18 @@ function WordEntry(props) {
 					{metadataSummary && (
 						<div className="word-item-source">✦ {metadataSummary}</div>
 					)}
+					<button
+						type="button"
+						className="word-ask-ai-button"
+						ref={askAIButtonRef}
+						onClick={(event) => {
+							event.stopPropagation();
+							setShowPrompt(true);
+						}}
+					>
+						<SparklesIcon />
+						<span>Ask AI</span>
+					</button>
 					{showInfo && (
 						<div className="word-info-popup">
 							{wordObj.sources ? (
@@ -231,6 +242,13 @@ function WordEntry(props) {
 					)}
 				</div>
 			</div>
+			{showPrompt && createPortal(
+				<PopupWordPrompt wordObj={wordObj} onClose={() => {
+					setShowPrompt(false);
+					askAIButtonRef.current?.focus();
+				}} />,
+				document.body
+			)}
 			<div className="word-card-actions">
 				{/*}
 			<button 

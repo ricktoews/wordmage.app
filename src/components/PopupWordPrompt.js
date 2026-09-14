@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState, useId } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { copyTextToClipboard } from '../utils/page-download';
 import Popup from './Popup';
 
 const promptSections = [
     { label: 'Dictionary entry', text: 'A concise dictionary-style entry with part of speech and main meanings, highlighting the meaning relevant to the card.' },
-    { label: 'Pronunciation', text: 'Pronunciation in IPA and a plain-English pronunciation guide, including common regional variations. If you can provide audio, pronounce the word too.' },
     { label: 'Etymology', text: 'Etymology: its origin, roots, and how its meaning developed.' },
     { label: 'Usage examples', text: 'Three original example sentences that show natural usage.' },
     { label: 'Usage notes', text: 'Usage notes: formality, whether it is rare or archaic, and helpful synonyms or commonly confused words.' },
+    { label: 'Pronunciation', text: 'Pronunciation in IPA and a plain-English pronunciation guide, including common regional variations. If you can provide audio, pronounce the word too.' },
 ];
 
 function PopupWordPrompt({ wordObj, onClose }) {
@@ -72,15 +74,15 @@ function PopupWordPrompt({ wordObj, onClose }) {
 
     return (
         <div onClick={(event) => event.stopPropagation()} onKeyDown={handleKeyDown}>
-            <Popup isVisible handleBackgroundClick={onClose} className="word-prompt-popup">
+            <Popup isVisible handleBackgroundClick={onClose} className="word-prompt-popup themed-header-popup">
                 <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby={titleId}>
                     <div className="popup-header">
                         <h2 id={titleId}><em>{wordObj.word}</em> — Ask AI</h2>
-                        <button type="button" className="close-icon" aria-label="Close prompt">×</button>
+                        <button type="button" className="close-icon" aria-label="Close prompt"><FontAwesomeIcon icon={faXmark} /></button>
                     </div>
                     <div className="popup-body">
                         <div role="region" aria-label="Your prompt" className="word-prompt-preview">
-                            <p>{introduction}</p>
+                            <p>I'd like to ask AI about the word <em>{wordObj.word}</em>.</p>
                             <p>Please include:</p>
                             <div className="word-prompt-sections">
                                 {promptSections.map((section, index) => (
@@ -101,12 +103,11 @@ function PopupWordPrompt({ wordObj, onClose }) {
                                     </button>
                                 ))}
                             </div>
-                            <p>{closing}</p>
                         </div>
                         {manualCopy && (
                             <div ref={textRef} role="region" aria-label="Prompt for manual copying" className="word-prompt-manual-copy">{prompt}</div>
                         )}
-                        <p role="status" aria-live="polite">{status}</p>
+                        <p className="word-prompt-status" role="status" aria-live="polite">{status}</p>
                         <div className="button-wrapper">
                             <button type="button" className="btn btn-primary" onClick={copyPrompt}>Copy prompt</button>
                         </div>

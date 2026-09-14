@@ -18,7 +18,6 @@ import { CONFIG } from '../config';
 import { authFetch } from '../utils/auth';
 import { copyTextToClipboard } from '../utils/page-download';
 import Popup from './Popup';
-import PopupWordPrompt from './PopupWordPrompt';
 
 function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle, readOnly = false } = props;
@@ -26,7 +25,6 @@ function WordCardMenu(props) {
     const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj.word));
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
-    const [showPrompt, setShowPrompt] = useState(false);
     const [menuPosition, setMenuPosition] = useState('bottom');
     const menuRef = useRef(null);
     const buttonRef = useRef(null);
@@ -250,14 +248,6 @@ function WordCardMenu(props) {
 
             {isOpen && (
                 <div className={`word-card-menu-dropdown word-card-menu-dropdown-${menuPosition}`}>
-                    <button className="word-card-menu-item" onClick={(e) => {
-                        e.stopPropagation();
-                        setIsOpen(false);
-                        setShowPrompt(true);
-                    }}>
-                        <FontAwesomeIcon icon={faCopy} />
-                        <span>Ask AI</span>
-                    </button>
                     {readOnly ? (
                         <>
                             <button
@@ -326,14 +316,6 @@ function WordCardMenu(props) {
                         </>
                     )}
                 </div>
-            )}
-
-            {showPrompt && createPortal(
-                <PopupWordPrompt wordObj={wordObj} onClose={() => {
-                    setShowPrompt(false);
-                    buttonRef.current?.focus();
-                }} />,
-                document.body
             )}
 
             {!readOnly && createPortal(

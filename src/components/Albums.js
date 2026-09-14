@@ -437,7 +437,7 @@ function Albums(props) {
                 </div>
             </Popup>
 
-            <Popup isVisible={showCreatePopup} handleBackgroundClick={() => !isCreating && setShowCreatePopup(false)}>
+            <Popup isVisible={showCreatePopup} handleBackgroundClick={() => !isCreating && setShowCreatePopup(false)} className="themed-header-popup">
                 <div className="popup-header">
                     <h2>Create Album</h2>
                     <div className="close-icon" onClick={() => !isCreating && setShowCreatePopup(false)}>

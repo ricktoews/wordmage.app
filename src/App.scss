@@ -163,6 +163,11 @@ $lovable-def-size: 14px;
 	align-items: flex-start;
 }
 
+.popup-container .popup.themed-header-popup .popup-header {
+	background: linear-gradient(to bottom, var(--global-toolbar-start, #f1ecfb), var(--global-toolbar-end, #e9e1f8));
+	color: var(--global-toolbar-title, #34244f);
+}
+
 .popup-container .popup.word-prompt-popup {
 	width: 600px;
 	max-width: 92vw;
@@ -178,8 +183,6 @@ $lovable-def-size: 14px;
 		top: 0;
 		z-index: 1;
 		padding: 1rem 3rem;
-		background: linear-gradient(to bottom, var(--global-toolbar-start, #f1ecfb), var(--global-toolbar-end, #e9e1f8));
-		color: var(--global-toolbar-title, #34244f);
 
 		h2 {
 			width: 100%;
@@ -191,6 +194,7 @@ $lovable-def-size: 14px;
 			position: absolute;
 			right: .75rem;
 			border: 0;
+			padding: 0;
 			background: transparent;
 			color: inherit;
 		}
@@ -199,6 +203,11 @@ $lovable-def-size: 14px;
 	.word-prompt-sections {
 		display: grid;
 		gap: .5rem;
+		padding-bottom: 1rem;
+	}
+
+	.word-prompt-status:not(:empty) {
+		margin-top: 1rem;
 	}
 
 	.word-prompt-section {
@@ -4196,6 +4205,31 @@ body.album-theme-global-fogbound {
 	color: rgb(128, 128, 128);
 	opacity: 0.9;
 	padding-top: 0.2rem;
+}
+
+.word-ask-ai-button {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin-top: 6px;
+	padding: 4px 8px;
+	border: 1px solid currentColor;
+	border-radius: 6px;
+	background: transparent;
+	color: inherit;
+	font-family: $lovable-font;
+	font-size: 12px;
+	line-height: 1.4;
+	cursor: pointer;
+
+	&:hover {
+		background-color: rgba(128, 128, 128, 0.12);
+	}
+
+	&:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
+	}
 }
 
 .source-def-container {
