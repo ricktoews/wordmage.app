@@ -43,7 +43,7 @@ function PopupWordPrompt({ wordObj, onClose }) {
     const copyPrompt = async () => {
         try {
             if (await copyTextToClipboard(prompt)) {
-                setStatus('Copied! Paste the prompt into your AI tool.');
+                onClose();
                 return;
             }
         } catch (_) {

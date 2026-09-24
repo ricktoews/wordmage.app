@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import PopupWordPrompt from './PopupWordPrompt';
 import { copyTextToClipboard } from '../utils/page-download';
 
@@ -6,7 +6,8 @@ jest.mock('../utils/page-download', () => ({ copyTextToClipboard: jest.fn() }));
 
 test('defaults to dictionary entry and etymology and updates the copied prompt when toggled', async () => {
     copyTextToClipboard.mockResolvedValue(true);
-    render(<PopupWordPrompt wordObj={{ word: 'abature', def: 'Traces left by a stag.' }} onClose={() => {}} />);
+    const onClose = jest.fn();
+    render(<PopupWordPrompt wordObj={{ word: 'abature', def: 'Traces left by a stag.' }} onClose={onClose} />);
     const prompt = screen.getByRole('region', { name: 'Your prompt' });
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
     expect(prompt.textContent).toContain("I'd like to ask AI about the word abature.");
@@ -27,18 +28,19 @@ test('defaults to dictionary entry and etymology and updates the copied prompt w
     expect(copied).not.toContain('dictionary-style entry');
     expect(copied).not.toContain('Usage notes:');
     expect(copied).not.toMatch(/\n\d+\./);
-    await screen.findByText('Copied! Paste the prompt into your AI tool.');
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
     fireEvent.click(screen.getByRole('button', { name: 'Pronunciation' }));
     expect(screen.getByRole('status')).toBeEmptyDOMElement();
     fireEvent.click(screen.getByRole('button', { name: 'Etymology' }));
     fireEvent.click(screen.getByRole('button', { name: 'Copy prompt' }));
     expect(copyTextToClipboard.mock.calls.slice(-1)[0][0]).not.toContain('Please include:');
-    await screen.findByText('Copied! Paste the prompt into your AI tool.');
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(2));
 });
 
 test('copies the full prompt including the hidden introduction and closing', async () => {
     copyTextToClipboard.mockResolvedValue(true);
-    render(<PopupWordPrompt wordObj={{ word: 'susurrus', def: 'A whispering sound' }} onClose={() => {}} />);
+    const onClose = jest.fn();
+    render(<PopupWordPrompt wordObj={{ word: 'susurrus', def: 'A whispering sound' }} onClose={onClose} />);
     const prompt = screen.getByRole('region', { name: 'Your prompt' });
     expect(screen.getByRole('dialog')).toHaveFocus();
     expect(prompt.textContent).toContain('susurrus');
@@ -54,7 +56,7 @@ test('copies the full prompt including the hidden introduction and closing', asy
         'Etymology: its origin, roots, and how its meaning developed.',
         'Keep the explanation clear and concise. Distinguish established facts from uncertain or disputed claims. If you cannot verify a detail, say so instead of guessing. Cite reliable dictionary or etymology sources when available; do not invent citations.'
     ].join('\n\n'));
-    expect(await screen.findByText('Copied! Paste the prompt into your AI tool.')).toBeInTheDocument();
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
 });
 
 test('selects the prompt for manual copying when clipboard access fails', async () => {
@@ -63,6 +65,7 @@ test('selects the prompt for manual copying when clipboard access fails', async 
     render(<PopupWordPrompt wordObj={{ word: 'susurrus' }} onClose={onClose} />);
     fireEvent.click(screen.getByRole('button', { name: 'Copy prompt' }));
     expect(await screen.findByText(/Could not copy automatically/)).toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
     const prompt = screen.getByRole('region', { name: 'Your prompt' });
     const manualPrompt = screen.getByRole('region', { name: 'Prompt for manual copying' });
     expect(window.getSelection().toString()).toBe(manualPrompt.textContent);
