@@ -45,6 +45,9 @@ import Register from './Register';
 import Profile from './Profile';
 import About from './About';
 import History from './components/History';
+import Inbox from './components/Inbox';
+import { ADMIN_ID } from './config';
+import { getInboxWords } from './utils/api';
 
 import './App.scss';
 
@@ -91,6 +94,28 @@ function App(props) {
         return localStorage.getItem('wordmage-profile-user_id') || localStorage.getItem('wordmage-anonymous-user_id');
     });
     const hasUserWorkspace = Boolean(activeUserId);
+    const isAdmin = Number(activeUserId) === ADMIN_ID;
+    const [inboxWords, setInboxWords] = useState([]);
+    const [inboxLoading, setInboxLoading] = useState(false);
+    const [inboxError, setInboxError] = useState(null);
+    const hasInboxWords = isAdmin && inboxWords.length > 0;
+
+    useEffect(() => {
+        let cancelled = false;
+        setInboxWords([]);
+        setInboxError(null);
+        setInboxLoading(isAdmin);
+        if (isAdmin) {
+            getInboxWords()
+                .then(words => { if (!cancelled) setInboxWords(words); })
+                .catch(error => {
+                    if (!cancelled) setInboxError('Unable to load inbox words. Please try reloading WordMage.');
+                    console.error('Error loading inbox words:', error);
+                })
+                .finally(() => { if (!cancelled) setInboxLoading(false); });
+        }
+        return () => { cancelled = true; };
+    }, [isAdmin, activeUserId]);
 
     useEffect(() => {
         try {
@@ -430,9 +455,16 @@ function App(props) {
                                 ) : (
                                     <div className="account-initial">{(authUser.name || authUser.email || 'U')[0].toUpperCase()}</div>
                                 )}
+                                {hasInboxWords && <span className="account-inbox-dot" role="status" aria-label="Inbox has words" />}
                             </button>
                             {accountMenuOpen && (
                                 <div className="account-menu" role="menu">
+                                    {hasInboxWords && (
+                                        <button className="account-menu-item" onClick={() => {
+                                            setAccountMenuOpen(false);
+                                            props.history.push('/inbox');
+                                        }}>Inbox</button>
+                                    )}
                                     <button
                                         className="account-menu-item"
                                         onClick={() => { setAccountMenuOpen(false); navToProfile(); }}
@@ -502,6 +534,9 @@ function App(props) {
                             setMastheadShareConfig={setMastheadShareConfig}
                         />)} />
                         <Route exact path="/history" render={props => (<History />)} />
+                        <Route exact path="/inbox" render={() => isAdmin ? (
+                            <Inbox words={inboxWords} isLoading={inboxLoading} error={inboxError} onAIExplain={handleAIExplain} />
+                        ) : null} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             key={`random-${activeUserId || 'none'}`}
                             onAIExplain={handleAIExplain}

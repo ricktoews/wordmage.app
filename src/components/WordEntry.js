@@ -13,7 +13,6 @@ function WordEntry(props) {
 	const { history } = props;
 	const { wordObj, listType, readOnly = false } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
-	const [showInfo, setShowInfo] = useState(false);
 	const [showPrompt, setShowPrompt] = useState(false);
 	const askAIButtonRef = useRef(null);
 	const [historySettings, setHistorySettings] = useState(() => WordsInterface.getHistoryScoringSettings());
@@ -22,11 +21,6 @@ function WordEntry(props) {
 	const viewport6sTimerRef = useRef(null);
 	const scrollStopTimerRef = useRef(null);
 	const isFullyVisibleRef = useRef(false);
-	const sourceList = Array.isArray(wordObj.sources)
-		? wordObj.sources.filter(Boolean)
-		: wordObj.source
-			? [wordObj.source]
-			: [];
 
 	const formatHistoryTimestamp = (timestamp) => {
 		if (!timestamp) {
@@ -55,15 +49,9 @@ function WordEntry(props) {
 		});
 	};
 
-	const sourceSummary = sourceList.length === 0
-		? null
-		: sourceList.length === 1
-			? sourceList[0]
-			: `${sourceList[0]} +${sourceList.length - 1} more`;
-
 	const metadataSummary = listType === 'history'
 		? formatHistoryTimestamp(wordObj.lastViewedAt)
-		: sourceSummary;
+		: null;
 
 	// Check if word is in favorites list (liked array)
 	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
@@ -183,12 +171,6 @@ function WordEntry(props) {
 		history.push('/unscramble', { wordObj: wordObj });
 	}
 
-
-	const handleInfoClick = (e) => {
-		e.stopPropagation();
-		setShowInfo(!showInfo);
-	};
-
 	const handleCardTap = () => {
 		if (readOnly) return;
 		WordsInterface.recordWordInterestSignal(wordObj, 'tap_card', listType);
@@ -223,23 +205,6 @@ function WordEntry(props) {
 						<SparklesIcon />
 						<span>Ask AI</span>
 					</button>
-					{showInfo && (
-						<div className="word-info-popup">
-							{wordObj.sources ? (
-								<>
-									{wordObj.sources.map((source, index) => (
-										source && <div key={index}><strong>Source {index + 1}:</strong> {source}</div>
-									))}
-								</>
-							) : wordObj.source ? (
-								<>
-									<strong>Source:</strong> {wordObj.source}
-								</>
-							) : (
-								<span>No source information available</span>
-							)}
-						</div>
-					)}
 				</div>
 			</div>
 			{showPrompt && createPortal(
@@ -250,15 +215,6 @@ function WordEntry(props) {
 				document.body
 			)}
 			<div className="word-card-actions">
-				{/*}
-			<button 
-				className="word-info-button"
-				onClick={handleInfoClick}
-				aria-label="Word information"
-			>
-				<InfoIcon />
-			</button>
-			*/}
 				<WordCardMenu
 					wordObj={wordObj}
 					listType={listType}

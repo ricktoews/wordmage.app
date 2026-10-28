@@ -2131,11 +2131,24 @@ body.album-theme-global-fogbound {
 
 /* Account dropdown */
 .account-button {
+	position: relative;
 	background: transparent;
 	border: none;
 	padding: 0;
 	margin: 0;
 	cursor: pointer;
+}
+
+.account-inbox-dot {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: #e32636;
+	border: 2px solid white;
+	pointer-events: none;
 }
 
 .account-menu {
@@ -6315,4 +6328,86 @@ input[type="checkbox"] {
 			}
 		}
 	}
+}
+
+ .popup-container .popup.word-prompt-popup {
+    .word-prompt-next-steps {
+        padding: 12px 12px 20px;
+
+        h3 {
+            margin: 0 0 8px;
+            color: var(--global-text, #34244f);
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -.025em;
+        }
+
+        p {
+            margin: 0;
+            color: var(--global-muted, #6a568d);
+            font-size: 14px;
+            line-height: 1.65;
+            max-width: 48ch;
+        }
+    }
+
+    .word-prompt-ai-links {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 24px;
+
+        a.btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 14px;
+            border: 1px solid var(--global-card-border, #ddd2f0);
+            border-radius: 12px;
+            background: var(--global-card-bg, #fcf9ff);
+            color: var(--global-text, #34244f);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background .15s ease, border-color .15s ease;
+
+            svg {
+                font-size: 11px;
+                color: var(--global-muted, #6a568d);
+            }
+
+            &:hover {
+                background: var(--global-card-hover-bg, #f5effd);
+                border-color: var(--global-btn-bg, #7b5aae);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--global-btn-bg, #7b5aae);
+                outline-offset: 3px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .word-prompt-done-actions {
+        margin: 0 12px;
+        padding-top: 16px;
+        border-top: 1px solid var(--global-card-border, #ddd2f0);
+        justify-content: flex-end;
+
+        .btn {
+            padding: 8px 18px;
+            border: 1px solid var(--global-card-border, #ddd2f0);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--global-text, #34244f);
+            font-weight: 500;
+
+            &:hover { background: var(--global-card-hover-bg, #f5effd); }
+        }
+    }
 }

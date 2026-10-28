@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useId } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { copyTextToClipboard } from '../utils/page-download';
 import Popup from './Popup';
 
@@ -14,8 +14,14 @@ const promptSections = [
 
 function PopupWordPrompt({ wordObj, onClose }) {
     const [status, setStatus] = useState('');
+    const [copied, setCopied] = useState(false);
+    const [isMobile] = useState(() => Boolean(
+        navigator.userAgentData?.mobile ||
+        /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    ));
     const [manualCopy, setManualCopy] = useState(false);
-    const [selectedSections, setSelectedSections] = useState([true, true, false, false, false]);
+    const [selectedSections, setSelectedSections] = useState([false, false, true, false, false]);
     const dialogRef = useRef(null);
     const textRef = useRef(null);
     const titleId = useId();
@@ -38,12 +44,14 @@ function PopupWordPrompt({ wordObj, onClose }) {
 
     useEffect(() => {
         dialogRef.current?.focus({ preventScroll: true });
-    }, []);
+    }, [copied]);
 
     const copyPrompt = async () => {
         try {
             if (await copyTextToClipboard(prompt)) {
-                onClose();
+                setCopied(true);
+                setManualCopy(false);
+                setStatus('');
                 return;
             }
         } catch (_) {
@@ -59,7 +67,7 @@ function PopupWordPrompt({ wordObj, onClose }) {
             onClose();
         }
         if (event.key === 'Tab') {
-            const controls = dialogRef.current.querySelectorAll('button');
+            const controls = dialogRef.current.querySelectorAll('button, a[href]');
             const first = controls[0];
             const last = controls[controls.length - 1];
             if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
@@ -81,7 +89,19 @@ function PopupWordPrompt({ wordObj, onClose }) {
                         <button type="button" className="close-icon" aria-label="Close prompt"><FontAwesomeIcon icon={faXmark} /></button>
                     </div>
                     <div className="popup-body">
-                        <div role="region" aria-label="Your prompt" className="word-prompt-preview">
+                        {copied ? (
+                            <div className="word-prompt-next-steps">
+                                <h3>Take it to your favorite AI</h3>
+                                <p>Your prompt is ready to paste into ChatGPT, Gemini, Claude, or any AI tool you prefer.</p>
+                                {!isMobile && (
+                                    <div className="word-prompt-ai-links">
+                                        <a className="btn btn-default" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" aria-label="Open ChatGPT (new tab)"><span>ChatGPT</span><FontAwesomeIcon icon={faArrowUpRightFromSquare} aria-hidden="true" /></a>
+                                        <a className="btn btn-default" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Gemini (new tab)"><span>Gemini</span><FontAwesomeIcon icon={faArrowUpRightFromSquare} aria-hidden="true" /></a>
+                                        <a className="btn btn-default" href="https://claude.ai/" target="_blank" rel="noopener noreferrer" aria-label="Open Claude (new tab)"><span>Claude</span><FontAwesomeIcon icon={faArrowUpRightFromSquare} aria-hidden="true" /></a>
+                                    </div>
+                                )}
+                            </div>
+                        ) : <div role="region" aria-label="Your prompt" className="word-prompt-preview">
                             <p>I'd like to ask AI about the word <em>{wordObj.word}</em>.</p>
                             <p>Please include:</p>
                             <div className="word-prompt-sections">
@@ -103,13 +123,17 @@ function PopupWordPrompt({ wordObj, onClose }) {
                                     </button>
                                 ))}
                             </div>
-                        </div>
+                        </div>}
                         {manualCopy && (
                             <div ref={textRef} role="region" aria-label="Prompt for manual copying" className="word-prompt-manual-copy">{prompt}</div>
                         )}
-                        <p className="word-prompt-status" role="status" aria-live="polite">{status}</p>
-                        <div className="button-wrapper">
-                            <button type="button" className="btn btn-primary" onClick={copyPrompt}>Copy prompt</button>
+                        {status && <p className="word-prompt-status" role="status" aria-live="polite">{status}</p>}
+                        <div className={`button-wrapper${copied ? ' word-prompt-done-actions' : ''}`}>
+                            {copied ? (
+                                <button type="button" className="btn btn-primary" onClick={onClose}>Close</button>
+                            ) : (
+                                <button type="button" className="btn btn-primary" onClick={copyPrompt}>Copy prompt</button>
+                            )}
                         </div>
                     </div>
                 </div>

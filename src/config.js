@@ -1,3 +1,5 @@
+export const ADMIN_ID = 4;
+
 export const CONFIG = {
     domain: 'https://wordmage.toews-api.com'
 };

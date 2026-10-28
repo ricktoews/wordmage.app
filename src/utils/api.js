@@ -29,4 +29,17 @@ async function getRandomPageData(user_id) {
 }
 
 
-export { getWordsPage, getRandomPageData };
+async function getInboxWords() {
+	const response = await authFetch(`${base}/inbox-words`);
+	if (!response.ok) {
+		throw new Error(`Unable to load inbox words (${response.status})`);
+	}
+	const data = await response.json();
+	const words = Array.isArray(data) ? data : data.words || data.records;
+	if (!Array.isArray(words)) {
+		throw new Error('Invalid inbox words response');
+	}
+	return words.map(word => ({ ...word, def: word.def ?? word.definition }));
+}
+
+export { getWordsPage, getRandomPageData, getInboxWords };
