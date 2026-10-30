@@ -193,7 +193,7 @@ function WordEntry(props) {
 					{metadataSummary && (
 						<div className="word-item-source">✦ {metadataSummary}</div>
 					)}
-					<button
+					{listType !== 'inbox' && <button
 						type="button"
 						className="word-ask-ai-button"
 						ref={askAIButtonRef}
@@ -204,7 +204,7 @@ function WordEntry(props) {
 					>
 						<SparklesIcon />
 						<span>Ask AI</span>
-					</button>
+					</button>}
 				</div>
 			</div>
 			{showPrompt && createPortal(
@@ -214,7 +214,7 @@ function WordEntry(props) {
 				}} />,
 				document.body
 			)}
-			<div className="word-card-actions">
+			{listType !== 'inbox' && <div className="word-card-actions">
 				<WordCardMenu
 					wordObj={wordObj}
 					listType={listType}
@@ -228,7 +228,7 @@ function WordEntry(props) {
 					}}
 					readOnly={readOnly}
 				/>
-			</div>
+			</div>}
 		</div>
 	);
 }

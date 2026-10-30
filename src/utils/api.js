@@ -42,4 +42,24 @@ async function getInboxWords() {
 	return words.map(word => ({ ...word, def: word.def ?? word.definition }));
 }
 
-export { getWordsPage, getRandomPageData, getInboxWords };
+async function markInboxWordsRead() {
+	const response = await authFetch(`${base}/inbox-words/mark-read`, {
+		method: 'POST'
+	});
+	if (!response.ok) {
+		throw new Error(`Unable to mark inbox words as read (${response.status})`);
+	}
+}
+
+async function removeInboxWords(wordIds) {
+	const response = await authFetch(`${base}/inbox-words/remove`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ word_ids: wordIds })
+	});
+	if (!response.ok) {
+		throw new Error(`Unable to remove inbox words (${response.status})`);
+	}
+}
+
+export { getWordsPage, getRandomPageData, getInboxWords, markInboxWordsRead, removeInboxWords };

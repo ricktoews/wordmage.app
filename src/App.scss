@@ -4089,6 +4089,20 @@ body.album-theme-global-fogbound {
 	padding: 5px 0;
 }
 
+.inbox-word-selection {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 5px 20px 0;
+	cursor: pointer;
+	font-size: 0.875rem;
+
+	input {
+		width: 18px;
+		height: 18px;
+	}
+}
+
 .word-item {
 	display: flex;
 	justify-content: space-between;

@@ -173,6 +173,7 @@ function WordScroller(props) {
 			>
 				{visibleItems.map(({ key, wordItem }) => (
 					<div key={key} className="word-item-container">
+						{props.renderWordSelection && props.renderWordSelection(wordItem)}
 						<WordEntry
 						popupAlbums={popupAlbums} popupWordShare={popupWordShare}
 						wordObj={wordItem}

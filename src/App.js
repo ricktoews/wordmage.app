@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useContext, useMemo } from 'react';
+import { useEffect, useState, useRef, useContext, useMemo, useCallback } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -99,6 +99,16 @@ function App(props) {
     const [inboxLoading, setInboxLoading] = useState(false);
     const [inboxError, setInboxError] = useState(null);
     const hasInboxWords = isAdmin && inboxWords.length > 0;
+    const hasUnreadInboxWords = isAdmin && inboxWords.some(word =>
+        Number(word.inbox) === 1 && !Number(word.inbox_read)
+    );
+    const handleInboxMarkedRead = useCallback(() => {
+        setInboxWords(words => words.map(word => ({ ...word, inbox_read: 1 })));
+    }, []);
+    const handleInboxWordsRemoved = useCallback(wordIds => {
+        const removedIds = new Set(wordIds);
+        setInboxWords(words => words.filter(word => !removedIds.has(word.id)));
+    }, []);
 
     useEffect(() => {
         let cancelled = false;
@@ -455,7 +465,7 @@ function App(props) {
                                 ) : (
                                     <div className="account-initial">{(authUser.name || authUser.email || 'U')[0].toUpperCase()}</div>
                                 )}
-                                {hasInboxWords && <span className="account-inbox-dot" role="status" aria-label="Inbox has words" />}
+                                {hasUnreadInboxWords && <span className="account-inbox-dot" role="status" aria-label="Inbox has unread words" />}
                             </button>
                             {accountMenuOpen && (
                                 <div className="account-menu" role="menu">
@@ -535,7 +545,7 @@ function App(props) {
                         />)} />
                         <Route exact path="/history" render={props => (<History />)} />
                         <Route exact path="/inbox" render={() => isAdmin ? (
-                            <Inbox words={inboxWords} isLoading={inboxLoading} error={inboxError} onAIExplain={handleAIExplain} />
+                            <Inbox words={inboxWords} isLoading={inboxLoading} error={inboxError} onAIExplain={handleAIExplain} onMarkedRead={handleInboxMarkedRead} onWordsRemoved={handleInboxWordsRemoved} />
                         ) : null} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             key={`random-${activeUserId || 'none'}`}
