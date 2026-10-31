@@ -1,37 +1,74 @@
 import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
-import { markInboxWordsRead, removeInboxWords } from '../utils/api';
+import WordSelection from './WordSelection';
+import Popup from './Popup';
+import { acceptWords, rejectWords, getInboxWords, markInboxWordsRead } from '../utils/api';
 
-function Inbox({ words, isLoading, error, onAIExplain, onMarkedRead, onWordsRemoved }) {
-    const [selectedIds, setSelectedIds] = useState(new Set());
-    const [isRemoving, setIsRemoving] = useState(false);
-    const [actionError, setActionError] = useState(null);
-    const selectedWords = words.filter(word => selectedIds.has(word.id));
+const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
-    const toggleWord = id => {
-        setSelectedIds(previous => {
+const getInboxTheme = theme => {
+    const saved = theme || (typeof window !== 'undefined' ? window.localStorage.getItem('wordmage.albumTheme') : null);
+    return ALBUM_THEMES.includes(saved) ? saved : 'classic';
+};
+
+function Inbox({ words, isLoading, error, onAIExplain, onMarkedRead, onWordsRefreshed }) {
+    const [albumTheme, setAlbumTheme] = useState(() => getInboxTheme());
+
+    useEffect(() => {
+        const handleThemeChanged = event => setAlbumTheme(getInboxTheme(event?.detail?.theme));
+        const handleStorage = event => {
+            if (event.key === 'wordmage.albumTheme') setAlbumTheme(getInboxTheme());
+        };
+        window.addEventListener('wordmage:albumThemeChanged', handleThemeChanged);
+        window.addEventListener('storage', handleStorage);
+        return () => {
+            window.removeEventListener('wordmage:albumThemeChanged', handleThemeChanged);
+            window.removeEventListener('storage', handleStorage);
+        };
+    }, []);
+
+    const [selected, setSelected] = useState(new Set());
+    const [busy, setBusy] = useState(false);
+    const [confirmReject, setConfirmReject] = useState(false);
+    const [message, setMessage] = useState('');
+    const [actionError, setActionError] = useState('');
+    const selectedIds = words.filter(word => selected.has(word.id)).map(word => word.id);
+    const disabled = busy || isLoading || Boolean(error);
+
+    const toggleSelection = id => {
+        if (disabled) return;
+        setSelected(previous => {
             const next = new Set(previous);
-            if (next.has(id)) next.delete(id);
-            else next.add(id);
+            if (next.has(id)) next.delete(id); else next.add(id);
             return next;
         });
     };
 
-    const handleRemove = async () => {
-        if (isRemoving || !selectedWords.length) return;
-        const wordIds = selectedWords.map(word => word.id);
-        setIsRemoving(true);
-        setActionError(null);
+    const review = async action => {
+        if (disabled || !selectedIds.length) return;
+        setConfirmReject(false);
+        setBusy(true);
+        setActionError('');
+        setMessage('');
+        let completed = false;
         try {
-            await removeInboxWords(wordIds);
-            onWordsRemoved(wordIds);
-            setSelectedIds(new Set());
+            const result = await (action === 'accept' ? acceptWords(selectedIds) : rejectWords(selectedIds));
+            completed = true;
+            setSelected(new Set());
+            setMessage(action === 'reject' ? `${result.rejected_count} ${Number(result.rejected_count) === 1 ? 'word' : 'words'} rejected.` : 'Selected words accepted.');
+            const refreshed = await getInboxWords();
+            onWordsRefreshed(refreshed);
         } catch (error) {
-            setActionError('Unable to remove selected words from the Inbox. Please try again.');
+            setActionError(completed
+                ? 'Review saved, but the Inbox could not refresh. Reload the page to see the current words.'
+                : 'Unable to review selected words. Please try again.');
         } finally {
-            setIsRemoving(false);
+            setBusy(false);
         }
     };
+
     useEffect(() => {
         if (isLoading) return;
 
@@ -41,39 +78,50 @@ function Inbox({ words, isLoading, error, onAIExplain, onMarkedRead, onWordsRemo
     }, [isLoading, onMarkedRead]);
 
     return (
-        <div className="word-list-page-container album-content-page">
+        <div className={`word-list-page-container album-content-page album-theme-${albumTheme}`}>
             <div className="favorites-toolbar">
                 <div className="favorites-toolbar-content">
                     <div className="favorites-toolbar-title">Inbox</div>
-                    {!isLoading && !error && words.length > 0 && (
-                        <div className="favorites-toolbar-actions">
-                            <button type="button" className="btn btn-default" disabled={isRemoving}
-                                onClick={() => setSelectedIds(selectedWords.length === words.length ? new Set() : new Set(words.map(word => word.id)))}>
-                                {selectedWords.length === words.length ? 'Clear selection' : 'Select all'}
-                            </button>
-                            <span role="status">{selectedWords.length} selected</span>
-                            <button type="button" className="btn btn-default" disabled={isRemoving || !selectedWords.length} onClick={handleRemove}>
-                                {isRemoving ? 'Removing…' : 'Remove from Inbox'}
-                            </button>
-                        </div>
-                    )}
+                </div>
+                <div className="moods-toolbar-actions">
+                    <button type="button" className="moods-refresh-icon" title="Accept selected" aria-label="Accept selected"
+                        disabled={disabled || !selectedIds.length} onClick={() => review('accept')}>
+                        <FontAwesomeIcon icon={faCheck} />
+                    </button>
+                    <button type="button" className="moods-refresh-icon" title="Reject selected" aria-label="Reject selected"
+                        disabled={disabled || !selectedIds.length} onClick={() => setConfirmReject(true)}>
+                        <FontAwesomeIcon icon={faXmark} />
+                    </button>
                 </div>
             </div>
             <div className="word-list-wrapper">
+                {busy && <p role="status">Saving review and refreshing Inbox…</p>}
+                {message && <p role="status">{message}</p>}
                 {actionError && <p role="alert">{actionError}</p>}
                 {isLoading ? <p role="status">Loading inbox words…</p> : error ? (
                     <p role="alert">{error}</p>
                 ) : words.length === 0 ? <p>Your inbox is empty.</p> : (
-                    <WordScroller pool={words} startingNdx={0} listType="inbox" onAIExplain={onAIExplain}
+                    <WordScroller hasMore={false} pool={words} startingNdx={0} listType="inbox" onAIExplain={onAIExplain}
+                        onWordSelectionToggle={word => toggleSelection(word.id)}
+                        isWordSelected={word => selected.has(word.id)}
                         renderWordSelection={word => (
-                            <label className="inbox-word-selection">
-                                <input type="checkbox" checked={selectedIds.has(word.id)} disabled={isRemoving}
-                                    onChange={() => toggleWord(word.id)} />
-                                <span>Select {word.word}</span>
-                            </label>
+                            <WordSelection word={word.word} checked={selected.has(word.id)} disabled={disabled}
+                                onToggle={() => toggleSelection(word.id)} />
                         )} />
                 )}
             </div>
+            <Popup isVisible={confirmReject} handleBackgroundClick={() => setConfirmReject(false)}>
+                <div role="dialog" aria-modal="true" aria-labelledby="reject-inbox-title">
+                    <div className="popup-header"><h2 id="reject-inbox-title">Reject selected words?</h2></div>
+                    <div className="popup-body">
+                        <p>Reject {selectedIds.length} selected words? Protected entries may remain in the Inbox.</p>
+                        <div className="button-wrapper">
+                            <button type="button" className="btn btn-default" onClick={() => setConfirmReject(false)}>Cancel</button>
+                            <button type="button" className="btn btn-primary" onClick={() => review('reject')}>Confirm rejection</button>
+                        </div>
+                    </div>
+                </div>
+            </Popup>
         </div>
     );
 }

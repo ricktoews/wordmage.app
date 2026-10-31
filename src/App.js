@@ -46,6 +46,7 @@ import Profile from './Profile';
 import About from './About';
 import History from './components/History';
 import Inbox from './components/Inbox';
+import NewWords from './components/NewWords';
 import { ADMIN_ID } from './config';
 import { getInboxWords } from './utils/api';
 
@@ -104,10 +105,6 @@ function App(props) {
     );
     const handleInboxMarkedRead = useCallback(() => {
         setInboxWords(words => words.map(word => ({ ...word, inbox_read: 1 })));
-    }, []);
-    const handleInboxWordsRemoved = useCallback(wordIds => {
-        const removedIds = new Set(wordIds);
-        setInboxWords(words => words.filter(word => !removedIds.has(word.id)));
     }, []);
 
     useEffect(() => {
@@ -318,6 +315,12 @@ function App(props) {
         setHamburgerClass('hamburger-nav');
     }
 
+    const navToNewWords = () => {
+        props.history.push('/new-words');
+        setView('NewWords');
+        setHamburgerClass('hamburger-nav');
+    };
+
     const navToHistory = () => {
         var history = props.history;
         history.push('/history');
@@ -392,6 +395,7 @@ function App(props) {
                 <ul>
                     <li onClick={navToRandom}><FontAwesomeIcon icon={faRandom} /> Random</li>
                     {hasUserWorkspace && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
+                    <li onClick={navToNewWords}><FontAwesomeIcon icon={faBook} /> New Words</li>
                     <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
                     {hasUserWorkspace && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
                     {hasUserWorkspace && <li onClick={navToHistory}><FontAwesomeIcon icon={faHistory} /> History</li>}
@@ -544,8 +548,9 @@ function App(props) {
                             setMastheadShareConfig={setMastheadShareConfig}
                         />)} />
                         <Route exact path="/history" render={props => (<History />)} />
+                        <Route exact path="/new-words" render={() => <NewWords onAIExplain={handleAIExplain} />} />
                         <Route exact path="/inbox" render={() => isAdmin ? (
-                            <Inbox words={inboxWords} isLoading={inboxLoading} error={inboxError} onAIExplain={handleAIExplain} onMarkedRead={handleInboxMarkedRead} onWordsRemoved={handleInboxWordsRemoved} />
+                            <Inbox words={inboxWords} isLoading={inboxLoading} error={inboxError} onAIExplain={handleAIExplain} onMarkedRead={handleInboxMarkedRead} onWordsRefreshed={setInboxWords} />
                         ) : null} />
                         <Route exact path={['/', '/random']} render={props => (<Random
                             key={`random-${activeUserId || 'none'}`}

@@ -171,13 +171,18 @@ function WordEntry(props) {
 		history.push('/unscramble', { wordObj: wordObj });
 	}
 
-	const handleCardTap = () => {
+	const handleCardTap = event => {
+		if (event.target.closest('input, label, button, a')) return;
 		if (readOnly) return;
+		if (props.onSelectionToggle) {
+			props.onSelectionToggle();
+			return;
+		}
 		WordsInterface.recordWordInterestSignal(wordObj, 'tap_card', listType);
 	};
 
 	return wordObj.divider ? <hr className="rejects" /> : (
-		<div className="word-item" ref={wordItemRef} onClick={handleCardTap}>
+		<div className={`word-item${props.selected ? ' word-item-selected' : ''}`} ref={wordItemRef} onClick={handleCardTap}>
 			<div className="word-content-wrapper">
 				<div className="word-item-word-container">
 					<div className="word-edit-btn">
@@ -214,7 +219,11 @@ function WordEntry(props) {
 				}} />,
 				document.body
 			)}
-			{listType !== 'inbox' && <div className="word-card-actions">
+			{props.selectionControl ? (
+                <div className="word-card-actions">
+                    {props.selectionControl}
+                </div>
+            ) : listType !== 'inbox' && <div className="word-card-actions">
 				<WordCardMenu
 					wordObj={wordObj}
 					listType={listType}

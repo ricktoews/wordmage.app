@@ -173,10 +173,13 @@ function WordScroller(props) {
 			>
 				{visibleItems.map(({ key, wordItem }) => (
 					<div key={key} className="word-item-container">
-						{props.renderWordSelection && props.renderWordSelection(wordItem)}
+						{props.renderWordMetadata && props.renderWordMetadata(wordItem)}
 						<WordEntry
 						popupAlbums={popupAlbums} popupWordShare={popupWordShare}
 						wordObj={wordItem}
+							selectionControl={props.renderWordSelection?.(wordItem)}
+							selected={props.isWordSelected?.(wordItem)}
+							onSelectionToggle={props.onWordSelectionToggle ? () => props.onWordSelectionToggle(wordItem) : undefined}
 						listType={props.listType}
 						albumId={props.albumId} hasMoodText={props.hasMoodText} onWordLockToggle={props.onWordLockToggle} onAlbumRefresh={props.onAlbumRefresh}
 						history={props.history}

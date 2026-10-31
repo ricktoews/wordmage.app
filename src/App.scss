@@ -4089,19 +4089,6 @@ body.album-theme-global-fogbound {
 	padding: 5px 0;
 }
 
-.inbox-word-selection {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin: 5px 20px 0;
-	cursor: pointer;
-	font-size: 0.875rem;
-
-	input {
-		width: 18px;
-		height: 18px;
-	}
-}
 
 .word-item {
 	display: flex;
@@ -6424,4 +6411,65 @@ input[type="checkbox"] {
             &:hover { background: var(--global-card-hover-bg, #f5effd); }
         }
     }
+}
+
+.new-words-pagination .btn {
+    background: var(--global-btn-bg, #7b5aae);
+    color: #fff;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    &:disabled { opacity: .5; cursor: default; }
+}
+
+.inbox-word-selection {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    margin: 0 0 0 8px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--global-text, #34244f);
+    cursor: pointer;
+
+    .inbox-word-selection-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 20px;
+        height: 20px;
+        border: 1.5px solid var(--global-muted, #6a568d);
+        border-radius: 4px;
+        background: var(--global-card-bg, #fcf9ff);
+        font-size: 15px;
+        line-height: 1;
+    }
+
+    &[aria-checked='true'] .inbox-word-selection-box {
+        background: var(--global-btn-bg, #7b5aae);
+        border-color: var(--global-btn-bg, #7b5aae);
+        color: #fff;
+    }
+
+    &:focus-visible { outline: 2px solid var(--global-btn-bg, #7b5aae); outline-offset: 2px; border-radius: 6px; }
+    &:disabled { opacity: .5; cursor: default; }
+}
+
+.new-word-accepted-date {
+    margin: 6px 20px 0;
+    font-size: 12px;
+    color: var(--global-muted, #6a568d);
+}
+
+.new-words-pagination { padding: 20px; text-align: center; }
+
+
+.album-content-page .word-item.word-item-selected {
+    background-color: var(--global-featured-header-bg, #ece3fb);
+    border-radius: 8px;
 }

@@ -63,3 +63,24 @@ async function removeInboxWords(wordIds) {
 }
 
 export { getWordsPage, getRandomPageData, getInboxWords, markInboxWordsRead, removeInboxWords };
+
+async function reviewWords(action, wordIds) {
+	const response = await authFetch(`${base}/${action}-words`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ word_ids: wordIds })
+	});
+	if (!response.ok) throw new Error(`Unable to ${action} words (${response.status})`);
+	return response.json();
+}
+
+export const acceptWords = wordIds => reviewWords('accept', wordIds);
+export const rejectWords = wordIds => reviewWords('reject', wordIds);
+
+export async function getNewWords({ limit = 50, offset = 0 } = {}) {
+	const response = await authFetch(`${base}/new-words?${new URLSearchParams({ limit, offset })}`);
+	if (!response.ok) throw new Error(`Unable to load new words (${response.status})`);
+	const data = await response.json();
+	if (!Array.isArray(data.words) || !data.pagination) throw new Error('Invalid new words response');
+	return { ...data, words: data.words.map(word => ({ ...word, def: word.def ?? word.definition })) };
+}
