@@ -39,7 +39,13 @@ async function getInboxWords() {
 	if (!Array.isArray(words)) {
 		throw new Error('Invalid inbox words response');
 	}
-	return words.map(word => ({ ...word, def: word.def ?? word.definition }));
+	return words
+        .map(word => ({ ...word, def: word.def ?? word.definition }))
+        .sort((a, b) => {
+            const unreadFirst = Number(b.inbox_read === null) - Number(a.inbox_read === null);
+            // MySQL DATETIME strings sort chronologically without timezone conversion.
+            return unreadFirst || String(b.added || '').localeCompare(String(a.added || ''));
+        });
 }
 
 async function markInboxWordsRead() {

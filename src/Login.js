@@ -185,19 +185,28 @@ function Login() {
     }, [showAlbumClaimPrompt]);
 
     // If redirected back from the server-side Google auth flow, the
-    // Netlify function adds a `google_user` query param containing a
-    // base64-encoded JSON payload. Mirror `Profile.js` behavior: parse it,
+    // Netlify function adds a `google_user` fragment containing a
+    // base64-encoded JSON payload and ID token. Parse it,
     // persist profile identifiers, fetch `/login` from the API with
     // `google: true` to retrieve custom data, initialize it, then
     // navigate to settings.
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const gu = params.get('google_user');
+        const fragmentParams = new URLSearchParams(window.location.hash.slice(1));
+        const gu = fragmentParams.get('google_user') || params.get('google_user');
         if (!gu) return;
+        // Remove credentials immediately, including when parsing or login fails.
+        params.delete('google_user');
+        fragmentParams.delete('google_user');
+        window.history.replaceState(window.history.state, '', window.location.pathname +
+            (params.toString() ? `?${params}` : '') +
+            (fragmentParams.toString() ? `#${fragmentParams}` : ''));
 
         (async () => {
             try {
-                const decoded = JSON.parse(decodeURIComponent(atob(gu)));
+                const decoded = JSON.parse(new TextDecoder().decode(
+                    Uint8Array.from(atob(gu), char => char.charCodeAt(0))
+                ));
                 if (decoded && decoded.email) {
                     // Persist profile identifiers used elsewhere in the app
                     const providerId = decoded.provider_id || decoded.sub || decoded.id;
@@ -217,7 +226,11 @@ function Login() {
                         const resp = await fetch(`${CONFIG.domain}/login`, {
                             method: 'POST',
                             headers: { 'Content-type': 'application/json' },
-                            body: JSON.stringify({ email: decoded.email, google: true })
+                            body: JSON.stringify({
+                                email: decoded.email,
+                                google: true,
+                                google_id_token: decoded.google_id_token
+                            })
                         });
                         const data = await resp.json();
                         const didPrompt = await maybePromptToClaimAnonymousAlbums({ data, redirectPath: '/settings' });
@@ -411,7 +424,11 @@ function Login() {
                 const resp = await fetch(`${CONFIG.domain}/login`, {
                     method: 'POST',
                     headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify({ email: payload.email, google: true })
+                    body: JSON.stringify({
+                        email: payload.email,
+                        google: true,
+                        google_id_token: response.credential
+                    })
                 });
                 const data = await resp.json();
                 const didPrompt = await maybePromptToClaimAnonymousAlbums({ data, redirectPath: '/' });

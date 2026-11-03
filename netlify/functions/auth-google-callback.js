@@ -67,14 +67,15 @@ exports.handler = async function (event, context) {
             email: idTokenPayload.email,
             name: idTokenPayload.name,
             picture: idTokenPayload.picture,
+            google_id_token: data.id_token,
         };
 
-        // For simplicity, encode the user payload into a base64 string and
-        // include it in the redirect so the SPA can initialize the session.
+        // Carry the token in the fragment so it is not sent in HTTP requests
+        // or referrer headers. The login API must verify it before trusting identity.
         const payloadB64 = Buffer.from(JSON.stringify(user)).toString('base64');
 
-        // Clear the oauth_state cookie and redirect back to /profile with payload
-        const redirectLocation = `/profile?google_user=${encodeURIComponent(payloadB64)}`;
+        // Clear the oauth_state cookie and redirect to the frontend callback handler.
+        const redirectLocation = `/login#google_user=${encodeURIComponent(payloadB64)}`;
         // Match cookie clearing flags with how we set them (omit Secure for http localhost)
         const cookieParts = ['oauth_state=deleted', 'Path=/', 'Max-Age=0', 'HttpOnly', 'SameSite=Lax'];
         if ((process.env.BASE_URL || '').startsWith('https')) {
