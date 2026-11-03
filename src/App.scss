@@ -6473,3 +6473,12 @@ input[type="checkbox"] {
     background-color: var(--global-featured-header-bg, #ece3fb);
     border-radius: 8px;
 }
+
+.assistant-link {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px;
+    overflow-wrap: anywhere;
+    .assistant-link-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; }
+    button:focus-visible, a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+}

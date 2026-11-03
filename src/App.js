@@ -20,6 +20,7 @@ import KeyCapture from './KeyCapture';
 // Import WordMageContext to set Context for app.
 import { WordMageContext } from './WordMageContext';
 import Login from './Login';
+import AssistantLink from './AssistantLink';
 import { clearAuthenticatedToken } from './utils/auth';
 import { createAnonymousUser, hasPendingAlbumClaim, loadUserWorkspace } from './utils/workspace';
 
@@ -485,6 +486,7 @@ function App(props) {
                                     >
                                         Settings
                                     </button>
+                                    <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); props.history.push('/connect-assistant'); }}>Connect an AI assistant</button>
                                     <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); signOut(); }}>Sign out</button>
                                 </div>
                             )}
@@ -557,6 +559,7 @@ function App(props) {
                             onAIExplain={handleAIExplain}
                             setMastheadShareConfig={setMastheadShareConfig}
                         />)} />
+                        <Route path="/connect-assistant" component={AssistantLink} />
                         <Route path="/settings" component={Profile} />
                         <Route path="/login" component={Login} />
                         <Route path="/register" component={Register} />
