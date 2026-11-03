@@ -187,8 +187,8 @@ function Login() {
     // If redirected back from the server-side Google auth flow, the
     // Netlify function adds a `google_user` fragment containing a
     // base64-encoded JSON payload and ID token. Parse it,
-    // persist profile identifiers, fetch `/login` from the API with
-    // `google: true` to retrieve custom data, initialize it, then
+    // persist profile identifiers, send the Google ID token to `/login`
+    // to retrieve custom data, initialize it, then
     // navigate to settings.
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -227,8 +227,8 @@ function Login() {
                             method: 'POST',
                             headers: { 'Content-type': 'application/json' },
                             body: JSON.stringify({
-                                email: decoded.email,
-                                google: true,
+                                // email: decoded.email,
+                                // google: true,
                                 google_id_token: decoded.google_id_token
                             })
                         });
@@ -415,18 +415,15 @@ function Login() {
         }
         // Attempt to load the user's customizations from the server
         // by calling the same login endpoint used for email/password logins.
-        // We send a `google: true` flag so the backend can treat this as
-        // an OAuth-based lookup. Backend must support this behavior; if it
-        // doesn't, you'll need to add a server endpoint that returns custom
-        // data for the provided email when authenticated via Google.
+        // Send only the Google ID token so the backend can verify identity.
         (async () => {
             try {
                 const resp = await fetch(`${CONFIG.domain}/login`, {
                     method: 'POST',
                     headers: { 'Content-type': 'application/json' },
                     body: JSON.stringify({
-                        email: payload.email,
-                        google: true,
+                        // email: payload.email,
+                        // google: true,
                         google_id_token: response.credential
                     })
                 });
