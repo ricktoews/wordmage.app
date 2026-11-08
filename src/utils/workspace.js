@@ -7,14 +7,15 @@ const ANONYMOUS_USER_ID_KEY = 'wordmage-anonymous-user_id';
 const ANONYMOUS_TOKEN_KEY = 'wordmage-anonymous-token';
 const PENDING_ALBUM_CLAIM_KEY = 'wordmage.pendingAlbumClaim';
 
-async function loadUserWorkspace(userId) {
+async function loadUserWorkspace(userId, { entryPath } = {}) {
 	if (!userId) {
 		WordsInterface.initializeCustom({});
 		WordsInterface.setFavoriteWords([]);
 		return {};
 	}
 
-	const response = await authFetch(`${CONFIG.domain}/loadcustom`, {
+	const entryQuery = entryPath === undefined ? '' : `?${new URLSearchParams({ entry: entryPath })}`;
+	const response = await authFetch(`${CONFIG.domain}/loadcustom${entryQuery}`, {
 		method: 'POST',
 		headers: { 'Content-type': 'application/json' },
 		body: JSON.stringify({ user_id: userId })
@@ -77,9 +78,9 @@ async function getActiveUserId() {
 	return createAnonymousUser();
 }
 
-async function ensureActiveWorkspace() {
+async function ensureActiveWorkspace(options) {
 	const userId = await getActiveUserId();
-	await loadUserWorkspace(userId);
+	await loadUserWorkspace(userId, options);
 	return userId;
 }
 

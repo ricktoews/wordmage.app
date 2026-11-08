@@ -6,8 +6,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ensureActiveWorkspace } from './utils/workspace';
 
+const initialPathname = window.location.pathname;
+
 (async () => {
-	await ensureActiveWorkspace(); // Ensure this completes before rendering
+	await ensureActiveWorkspace({ entryPath: initialPathname }); // Ensure this completes before rendering
 	//	await WordsInterface.initializeWordPool();
 
 	// Use createRoot instead of ReactDOM.render
