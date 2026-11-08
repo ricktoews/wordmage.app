@@ -4089,6 +4089,10 @@ body.album-theme-global-fogbound {
 	padding: 5px 0;
 }
 
+.word-list-scroller .inbox-entry-read {
+	background-color: var(--album-sort-bg);
+}
+
 
 .word-item {
 	display: flex;
@@ -6253,7 +6257,8 @@ input[type="checkbox"] {
 	}
 
 	.album-list-title {
-		font-size: 1rem;
+		font-size: 16px;
+		font-weight: 500;
 		color: #2c2c2c;
 	}
 
@@ -6291,7 +6296,9 @@ input[type="checkbox"] {
 		color: white;
 		border: none;
 		border-radius: 8px;
-		font-size: 1rem;
+		font-size: 16px;
+		font-weight: 700;
+		font-family: futura;
 		cursor: pointer;
 		transition: all 0.2s;
 

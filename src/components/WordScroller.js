@@ -172,7 +172,7 @@ function WordScroller(props) {
 				ref={scrollerRef}
 			>
 				{visibleItems.map(({ key, wordItem }) => (
-					<div key={key} className="word-item-container">
+					<div key={key} className={`word-item-container ${props.wordContainerClassName?.(wordItem) || ''}`}>
 						{props.renderWordMetadata && props.renderWordMetadata(wordItem)}
 						<WordEntry
 						popupAlbums={popupAlbums} popupWordShare={popupWordShare}

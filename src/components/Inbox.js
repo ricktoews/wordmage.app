@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import WordScroller from './WordScroller';
@@ -15,6 +15,25 @@ const getInboxTheme = theme => {
 
 function Inbox({ words, isLoading, error, onAIExplain, onMarkedRead, onWordsRefreshed }) {
     const [albumTheme, setAlbumTheme] = useState(() => getInboxTheme());
+    const [readOnArrival, setReadOnArrival] = useState(() => new Map());
+
+    // Keep the arrival status while this page is open, even after marking all words read.
+    useEffect(() => {
+        if (isLoading) return;
+        setReadOnArrival(previous => {
+            const next = new Map(previous);
+            words.forEach(word => {
+                if (!next.has(word.id)) next.set(word.id, Number(word.inbox_read) === 1);
+            });
+            return next;
+        });
+    }, [words, isLoading]);
+
+    const isOlderEntry = word => readOnArrival.get(word.id) ?? (Number(word.inbox_read) === 1);
+    const sortedWords = useMemo(() => {
+        const isRead = word => readOnArrival.get(word.id) ?? (Number(word.inbox_read) === 1);
+        return [...words.filter(word => !isRead(word)), ...words.filter(isRead)];
+    }, [words, readOnArrival]);
 
     useEffect(() => {
         const handleThemeChanged = event => setAlbumTheme(getInboxTheme(event?.detail?.theme));
@@ -101,7 +120,8 @@ function Inbox({ words, isLoading, error, onAIExplain, onMarkedRead, onWordsRefr
                 {isLoading ? <p role="status">Loading inbox words…</p> : error ? (
                     <p role="alert">{error}</p>
                 ) : words.length === 0 ? <p>Your inbox is empty.</p> : (
-                    <WordScroller hasMore={false} pool={words} startingNdx={0} listType="inbox" onAIExplain={onAIExplain}
+                    <WordScroller hasMore={false} pool={sortedWords} startingNdx={0} listType="inbox" onAIExplain={onAIExplain}
+                        wordContainerClassName={word => isOlderEntry(word) ? 'inbox-entry-read' : ''}
                         onWordSelectionToggle={word => toggleSelection(word.id)}
                         isWordSelected={word => selected.has(word.id)}
                         renderWordSelection={word => (
