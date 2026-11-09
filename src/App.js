@@ -13,7 +13,8 @@ import {
     faUser,
     faComment,
     faHistory,
-    faShareNodes
+    faShareNodes,
+    faBars
 } from '@fortawesome/free-solid-svg-icons';
 
 import KeyCapture from './KeyCapture';
@@ -36,7 +37,11 @@ import Popup from './components/Popup';
 import PopupListShare from './components/PopupListShare';
 import UnscrambleGame from './components/UnscrambleGame';
 import BrowseWords from './components/BrowseWords';
+import PageMetadata from './components/PageMetadata';
 import CollectiveWords from './components/CollectiveWords';
+import LandingPage from './public-content/LandingPage';
+import HeaderMock from './mock/HeaderMock';
+import { PublicContent } from './public-content/PublicContent';
 import Train from './components/Train';
 import Albums from './components/Albums';
 import WordAlbum from './components/WordAlbum';
@@ -50,6 +55,7 @@ import Inbox from './components/Inbox';
 import NewWords from './components/NewWords';
 import { ADMIN_ID } from './config';
 import { getInboxWords } from './utils/api';
+import { navigatePublicLink } from './utils/public-navigation';
 
 import './App.scss';
 
@@ -80,6 +86,7 @@ const getAlbumThemeFromStorage = () => {
 };
 
 function App(props) {
+    const isEditorialLanding = ['/rare-words', '/gothic-vocabulary'].includes(props.location.pathname.replace(/\/+$/, ''));
     const [aiExplainWord, setAiExplainWord] = useState(null);
     const [showAppSharePopup, setShowAppSharePopup] = useState(false);
     const [mastheadShareConfig, setMastheadShareConfig] = useState(null);
@@ -167,14 +174,25 @@ function App(props) {
     const hamburgerRef = useRef(null);
     const accountRef = useRef(null);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+    const isMenuOpen = hamburgerClass.includes('hamburger-on');
+
+    useEffect(() => {
+        if (!isMenuOpen) return undefined;
+        const handleEscape = event => {
+            if (event.key === 'Escape') {
+                setHamburgerClass('hamburger-nav');
+                document.querySelector('[data-landing-menu-toggle]')?.focus();
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [isMenuOpen]);
 
     const handleDocumentClicked = e => {
         // Check if clicked outside hambuger menu.
         var el = e.target;
-        var elClass = Array.from(el.classList);
-        var parentElClass = Array.isArray(el.parentNode?.classList) ? Array.from(el.parentNode.classList) : [];
-        if (elClass.indexOf('hamburger-icon') === -1 && parentElClass.indexOf('hamburger-icon') === -1) {
-            if (!hamburgerRef.current.contains(el)) {
+        if (!el.closest?.('.hamburger-icon')) {
+            if (!hamburgerRef.current?.contains(el)) {
                 setHamburgerClass('hamburger-nav');
             }
         }
@@ -389,76 +407,54 @@ function App(props) {
         console.log(`AI Explain requested for: ${word}`);
     }
 
-    return (
-        <div className="App">
+    if (props.location.pathname.replace(/\/+$/, '') === '/mock') {
+        return <><PageMetadata /><HeaderMock user={authUser} /></>;
+    }
 
-            <nav ref={hamburgerRef} className={hamburgerClass}>
-                <ul>
-                    <li onClick={navToRandom}><FontAwesomeIcon icon={faRandom} /> Random</li>
-                    {hasUserWorkspace && <li onClick={navToFavoritesList}><FontAwesomeIcon icon={faThumbsUp} /> Favorites</li>}
-                    <li onClick={navToNewWords}><FontAwesomeIcon icon={faBook} /> New Words</li>
-                    <li onClick={navToBrowseWords}><FontAwesomeIcon icon={faGlasses} /> Browse</li>
-                    {hasUserWorkspace && <li onClick={navToAlbums}><FontAwesomeIcon icon={faFolderOpen} /> Albums</li>}
-                    {hasUserWorkspace && <li onClick={navToHistory}><FontAwesomeIcon icon={faHistory} /> History</li>}
-                    <li onClick={navToProfile}><FontAwesomeIcon icon={faUser} /> Settings</li>
-                    <li onClick={navToAbout}><FontAwesomeIcon icon={faHome} /> About</li>
+    return (
+        <div className={`App${isEditorialLanding ? ' editorial-layout' : ' workspace-layout'}`} onClick={event => navigatePublicLink(event, props.history)}>
+
+            <nav ref={hamburgerRef} className={hamburgerClass} aria-label="Main navigation"
+                aria-hidden={!isMenuOpen} inert={!isMenuOpen ? '' : undefined}>
+                <div className="editorial-menu-heading"><span>Explore WordMage</span><button type="button" aria-label="Close navigation menu" onClick={() => setHamburgerClass('hamburger-nav')}>×</button></div>
+                <ul className="editorial-menu-links">
+                    {[
+                        ['/', 'Random', '↝', navToRandom],
+                        ['/browse', 'Browse', 'A–Z', navToBrowseWords],
+                        ...(hasUserWorkspace ? [
+                            [WordsInterface.getAlbumIds().Favorites ? `/albums/${WordsInterface.getAlbumIds().Favorites}` : '/albums', 'Favorites', '♥', navToFavoritesList],
+                            ['/albums', 'Albums', '▱', navToAlbums]
+                        ] : []),
+                        [null, 'discovery'],
+                        ['/rare-words', 'Rare Words', 'Aa'],
+                        ['/gothic-vocabulary', 'Gothic', '☾'],
+                        [null, 'workspace'],
+                        ['/new-words', 'New Words', '+', navToNewWords],
+                        ['/settings', 'Settings', '⚙', navToProfile],
+                        ['/about', 'About', '?', navToAbout]
+                    ].map(([href, label, glyph, action]) => !href ? <li key={label} role="separator" className="editorial-menu-separator" /> : <li key={label}><a href={href} data-public-link
+                        aria-current={(props.location.pathname === href || (href === '/' && props.location.pathname === '/random')) ? 'page' : undefined}
+                        onClick={event => { if (action && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && event.button === 0) { event.preventDefault(); action(); } setHamburgerClass('hamburger-nav'); }}>
+                        <span className="editorial-menu-glyph" aria-hidden="true">{glyph}</span><span>{label}</span>
+                    </a></li>)}
                 </ul>
             </nav>
+            {isMenuOpen && <button className="editorial-menu-backdrop" type="button" aria-label="Close navigation" onClick={() => setHamburgerClass('hamburger-nav')} />}
 
-            <header className="App-header">
-                <div className="hamburger-icon-container">
-                    <button
-                        type="button"
-                        className="hamburger-icon masthead-emblem-button"
-                        onClick={hamburgerClick}
-                        title="Open navigation menu"
-                        aria-label="Open navigation menu"
-                    >
-                        <img
-                            src="/images/wordmage-logo.png"
-                            alt="WordMage"
-                            className="masthead-emblem"
-                        />
+            <header className="App-header site-masthead">
+                <div className="site-masthead-inner">
+                    <button type="button" className="hamburger-icon site-menu-toggle" data-landing-menu-toggle
+                        aria-expanded={isMenuOpen} onClick={hamburgerClick} title="Open navigation menu" aria-label="Open navigation menu">
+                        <FontAwesomeIcon icon={faBars} />
                     </button>
-                </div>                <div className="header-content">
-                </div>
-
-                <div className="header-nav-buttons">
-                    <button className="header-nav-btn" onClick={navToRandom} title="Random">
-                        <FontAwesomeIcon icon={faRandom} />
-                    </button>
-                    <button className="header-nav-btn" onClick={navToBrowseWords} title="Browse">
-                        <FontAwesomeIcon icon={faGlasses} />
-                    </button>
-                    {hasUserWorkspace && (
-                        <button className="header-nav-btn" onClick={navToFavoritesList} title="Favorites">
-                            <FontAwesomeIcon icon={faThumbsUp} />
-                        </button>
-                    )}
-                    {hasUserWorkspace && (
-                        <button className="header-nav-btn" onClick={navToAlbums} title="Albums">
-                            <FontAwesomeIcon icon={faFolderOpen} />
-                        </button>
-                    )}
-                    <button
-                        className="header-nav-btn"
-                        onClick={handleMastheadShare}
-                        title={mastheadShareConfig?.title || 'Share WordMage'}
-                        aria-label={mastheadShareConfig?.ariaLabel || mastheadShareConfig?.title || 'Share WordMage'}
-                        disabled={mastheadShareConfig?.disabled || false}
-                        data-contextual-help={mastheadShareConfig?.contextualHelpId}
-                    >
-                        <FontAwesomeIcon icon={faShareNodes} />
-                    </button>
-                    {/* {authUser && (
-                        <button className="header-nav-btn" onClick={navToTrain} title="Train">
-                            <FontAwesomeIcon icon={faGraduationCap} />
-                        </button>
-                    )} */}
-                </div>
-
+                    <a href="/" data-public-link className="site-wordmark" aria-label="WordMage home">
+                        <img src="/images/wordmage-logo.png" alt="" width="28" height="32" />
+                        <span>WordMage</span>
+                    </a>
                 <div className="header-right">
-                    {!authUser ? (
+                    {isEditorialLanding ? (
+                        <a href="/browse" data-public-link className="site-browse-link">Browse <span aria-hidden="true">↗</span></a>
+                    ) : !authUser ? (
                         <button className="header-login-btn" onClick={navToLogin} title="Log In">
                             <FontAwesomeIcon icon={faUser} />
                         </button>
@@ -486,16 +482,30 @@ function App(props) {
                                     >
                                         Settings
                                     </button>
-                                    <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); props.history.push('/connect-assistant'); }}>Connect an AI assistant</button>
                                     <button className="account-menu-item" onClick={() => { setAccountMenuOpen(false); signOut(); }}>Sign out</button>
                                 </div>
                             )}
                         </div>
                     )}
                 </div>
+                </div>
             </header>
 
+            {!isEditorialLanding && <nav className="site-bottom-nav" aria-label="Quick navigation">
+                <a href="/random" data-public-link aria-current={['/', '/random'].includes(props.location.pathname) ? 'page' : undefined}>Random</a>
+                <a href="/browse" data-public-link aria-current={props.location.pathname.startsWith('/browse') ? 'page' : undefined}>Browse</a>
+                {hasUserWorkspace && <>
+                    <a href={WordsInterface.getAlbumIds().Favorites ? `/albums/${WordsInterface.getAlbumIds().Favorites}` : '/albums'} data-public-link
+                        aria-current={WordsInterface.getAlbumIds().Favorites && props.location.pathname === `/albums/${WordsInterface.getAlbumIds().Favorites}` ? 'page' : undefined}>Favorites</a>
+                    <a href="/albums" data-public-link aria-current={props.location.pathname.startsWith('/albums') && props.location.pathname !== `/albums/${WordsInterface.getAlbumIds().Favorites}` ? 'page' : undefined}>Albums</a>
+                </>}
+                <button type="button" onClick={handleMastheadShare} title={mastheadShareConfig?.title || 'Share WordMage'}
+                    aria-label={mastheadShareConfig?.ariaLabel || mastheadShareConfig?.title || 'Share WordMage'}
+                    disabled={mastheadShareConfig?.disabled || false} data-contextual-help={mastheadShareConfig?.contextualHelpId}>Share</button>
+            </nav>}
+
             <ContextualHelp hints={CONTEXTUAL_HELP_HINTS} />
+            <PageMetadata />
 
             <WordMageContext.Provider value={contextProviderValue}>
                 {aiExplainWord && (
@@ -517,7 +527,10 @@ function App(props) {
                 </Popup>
 
                 <KeyCapture>
-                    <Switch>
+                    <div className="app-page-content"><Switch>
+                        <Route exact path={['/rare-words', '/gothic-vocabulary']} render={({ location }) => (
+                            <LandingPage appHeader key={location.pathname} page={location.pathname.replace(/\/+$/, '')} onMenuToggle={hamburgerClick} menuOpen={isMenuOpen} />
+                        )} />
                         <Route exact path={['/unscramble/:word/:def']} render={props => <UnscrambleGame />} />
                         <Route exact path={['/what-to-train']} render={props => (<Train
                             onAIExplain={handleAIExplain}
@@ -533,18 +546,16 @@ function App(props) {
                         />)} />
                         <Route exact path='/unscramble/:word' render={props => <UnscrambleGame />} />
                         <Route exact path='/unscramble' render={props => <UnscrambleGame />} />
-                        <Route path="/browse/:start?" render={props => (<BrowseWords
+                        <Route exact path="/browse/:start?" render={props => (<BrowseWords
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route path="/collective/:start?" render={props => (<CollectiveWords
-                            onAIExplain={handleAIExplain}
-                        />)} />
-                        <Route path="/shared/albums/:token" render={props => (<SharedAlbum />)} />
+                        <Route exact path="/collective/:start?" component={CollectiveWords} />
+                        <Route exact path="/shared/albums/:token" render={props => (<SharedAlbum />)} />
                         <Route exact path="/albums" render={props => (<Albums
                             key={`albums-${activeUserId || 'none'}`}
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route path="/albums/:id" render={props => (<WordAlbum
+                        <Route exact path="/albums/:id" render={props => (<WordAlbum
                             key={`album-${activeUserId || 'none'}-${props.match.params.id}`}
                             onAIExplain={handleAIExplain}
                             setMastheadShareConfig={setMastheadShareConfig}
@@ -559,12 +570,13 @@ function App(props) {
                             onAIExplain={handleAIExplain}
                             setMastheadShareConfig={setMastheadShareConfig}
                         />)} />
-                        <Route path="/connect-assistant" component={AssistantLink} />
-                        <Route path="/settings" component={Profile} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/about" component={About} />
-                    </Switch>
+                        <Route exact path="/connect-assistant" component={AssistantLink} />
+                        <Route exact path="/settings" component={Profile} />
+                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/register" component={Register} />
+                        <Route exact path="/about" component={About} />
+                        <Route render={() => <PublicContent page="/404" />} />
+                    </Switch></div>
                 </KeyCapture>
             </WordMageContext.Provider>
 

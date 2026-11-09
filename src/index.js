@@ -3,13 +3,19 @@ import { createRoot } from 'react-dom/client'; // Updated import
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
+import './public-content/public.css';
 import reportWebVitals from './reportWebVitals';
 import { ensureActiveWorkspace } from './utils/workspace';
 
 const initialPathname = window.location.pathname;
 
 (async () => {
-	await ensureActiveWorkspace({ entryPath: initialPathname }); // Ensure this completes before rendering
+	try {
+		await ensureActiveWorkspace({ entryPath: initialPathname });
+	} catch (error) {
+		// Public reference pages remain usable when the workspace API is unavailable.
+		console.error('Unable to initialize the workspace:', error);
+	}
 	//	await WordsInterface.initializeWordPool();
 
 	// Use createRoot instead of ReactDOM.render

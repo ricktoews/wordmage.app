@@ -1,0 +1,287 @@
+{
+  "retrievedAt": "2026-11-09T06:33:36.968418+00:00",
+  "rare": [
+    {
+      "id": 2873,
+      "word": "edacious",
+      "def": "having a strong appetite; gluttonous (often jocular)",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 4746,
+      "word": "lustrum",
+      "def": "period of five years; purification of Roman nation every five years; census.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 10524,
+      "word": "opsimath",
+      "def": "A person who begins to learn or study later in life.",
+      "source": "The Logodaedalian’s Dictionary of Interesting and Unusual Words",
+      "is_rare": 1
+    },
+    {
+      "id": 833,
+      "word": "aposematic",
+      "def": "(zoology) having warning coloration or other signals that deter predators.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 8603,
+      "word": "verecund",
+      "def": "bashful; modest",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 4722,
+      "word": "lucubration",
+      "def": "the act of late-night study or writing, especially by artificial light; often suggesting laborious or pretentious effort",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 2374,
+      "word": "cunctation",
+      "def": "Delay; procrastination or habitual postponement.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 9267,
+      "word": "apricity",
+      "def": "The warmness of the sun in winter.",
+      "source": "OED",
+      "is_rare": 1
+    },
+    {
+      "id": 3620,
+      "word": "gnathonic",
+      "def": "falsely flattering; fawning; sycophantic; parasitic",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 2421,
+      "word": "cynosure",
+      "def": "A guiding star; a person or thing that serves as a center of attraction or interest.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 311,
+      "word": "ailurophile",
+      "def": "a lover of cats.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 744,
+      "word": "antiphrasis",
+      "def": "Rhetoric use of a word in the opposite sense to its usual one, for humorous or ironic purposes.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 1478,
+      "word": "borborygmus",
+      "def": "rumbling of gas in the stomach.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 10124,
+      "word": "goetic",
+      "def": "Pertaining to the practice of invoking spirits or the supernatural.",
+      "source": "The Logodaedalian’s Dictionary of Interesting and Unusual Words",
+      "is_rare": 1
+    },
+    {
+      "id": 523,
+      "word": "anacoluthon",
+      "def": "an abrupt shift in midsentence in syntax to another construction",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 3218,
+      "word": "exiguous",
+      "def": "very small in amount, size, or degree; scanty; meager",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 2044,
+      "word": "clinamen",
+      "def": "In Epicurean philosophy, the spontaneous and unpredictable swerve of atoms, allowing for free will; by extension, a decisive deviation or deflection from an expected course.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 1865,
+      "word": "chalybeate",
+      "def": "containing salts of iron; n. such water, medicine, etc.",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 2909,
+      "word": "eleemosynary",
+      "def": "pertaining to charity; living on charity",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    },
+    {
+      "id": 3769,
+      "word": "hebdomadal",
+      "def": "once every seven days; weekly",
+      "source": "Luciferous Logolepsy",
+      "is_rare": 1
+    }
+  ],
+  "gothic": [
+    {
+      "id": 6954,
+      "word": "quietus",
+      "def": "receipt; release; act of dispatching or disposing of; knockout or fatal blow; death.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 5897,
+      "word": "oubliette",
+      "def": "A dungeon or prison cell, typically accessible only through a trapdoor in the ceiling.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 3242,
+      "word": "exsanguine",
+      "def": "lacking blood.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 9143,
+      "word": "premonstrance",
+      "def": "a portent, an omen",
+      "source": "Cabinet of Linguistic Curiosities",
+      "is_gothic": 1
+    },
+    {
+      "id": 8181,
+      "word": "teratology",
+      "def": "the study of monsters",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 6304,
+      "word": "phantasmagoria",
+      "def": "crowd of phantoms; series of shifting images or scenes.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 4836,
+      "word": "malediction",
+      "def": "curse.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 4362,
+      "word": "jeremiad",
+      "def": "mournful prophecy, story or complaint.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 4279,
+      "word": "invultuation",
+      "def": "stabbing of wax image of person to be injured as form of witchcraft.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 4511,
+      "word": "lamia",
+      "def": "mythical monster with snake's body and woman's head and breasts.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 2355,
+      "word": "cryptozoic",
+      "def": "living hidden, or in darkness.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 1964,
+      "word": "chthonian",
+      "def": "Pertaining to underworld deities or spirits; associated with subterranean or earth-based gods, especially in classical mythology.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 4841,
+      "word": "malison",
+      "def": "a curse; an utterance invoking harm or misfortune",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 4126,
+      "word": "immure",
+      "def": "imprison; entomb.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 6610,
+      "word": "preagonal",
+      "def": "immediately preceding death throes.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 3325,
+      "word": "feretory",
+      "def": "shrine; chapel for bier; bier.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 10814,
+      "word": "Lugubrious",
+      "def": "Excessively mournful, gloomy, or dismal.",
+      "source": null,
+      "is_gothic": 1
+    },
+    {
+      "id": 7519,
+      "word": "sepulture",
+      "def": "interment.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 2983,
+      "word": "energumen",
+      "def": "person possessed by evil spirit; fanatic.",
+      "source": "Luciferous Logolepsy",
+      "is_gothic": 1
+    },
+    {
+      "id": 9948,
+      "word": "energumenical",
+      "def": "Relating to a person possessed by a spirit or spirit-like force.",
+      "source": "The Logodaedalian’s Dictionary of Interesting and Unusual Words",
+      "is_gothic": 1
+    }
+  ]
+}

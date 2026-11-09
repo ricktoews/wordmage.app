@@ -183,7 +183,7 @@ function Random(props) {
 	return (
 		<div className={`browse-container random-page album-theme-${albumTheme}`}>
 			<div className="random-toolbar">
-				<div className="random-toolbar-title">Random</div>
+				<h1 className="random-toolbar-title">Random</h1>
 				<div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
 					{lastRefreshSnapshot && (
 						<button
@@ -209,6 +209,7 @@ function Random(props) {
 				</div>
 			</div>
 
+
 			{featuredWord && (
 				<div className="random-featured-card">
 					<div className="random-featured-header">
@@ -233,6 +234,7 @@ function Random(props) {
 			{isLoading && randomWords.length === 0 && (
 				<div className="loading-message">Loading random words...</div>
 			)}
+
 
 			<Popup
 				isVisible={showSharePopup}

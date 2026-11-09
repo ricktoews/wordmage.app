@@ -1,1 +1,2 @@
-/* /index.html 200
+# npm run build generates explicit public and private routes before this fallback.
+/* /404.html 404

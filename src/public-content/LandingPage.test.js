@@ -1,0 +1,35 @@
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import LandingPage from './LandingPage';
+import snapshot from './landing-snapshot.json';
+import { getLandingPageWords } from '../utils/api';
+jest.mock('../utils/api', () => ({ getLandingPageWords: jest.fn() }));
+const response = (page, prefix) => ({ success: true, page, words: Array.from({ length: 20 }, (_, i) => ({ id: `${prefix}-${i}`, word: `${prefix} word ${i}`, def: `Meaning ${i}`, source: 'Test collection' })) });
+
+test('API selection survives navigation/remount, refresh replaces it, and failed refresh preserves it', async () => {
+    sessionStorage.clear();
+    getLandingPageWords.mockResolvedValueOnce(response('rare', 'first'));
+    const page = render(<LandingPage page="/rare-words" />);
+    await waitFor(() => expect(screen.getByRole('complementary')).toHaveTextContent('first word'));
+    const featured = screen.getByRole('complementary').textContent;
+    page.unmount();
+    const returning = render(<LandingPage page="/rare-words" />);
+    expect(screen.getByRole('complementary').textContent).toBe(featured);
+    expect(getLandingPageWords).toHaveBeenCalledTimes(1);
+    getLandingPageWords.mockResolvedValueOnce(response('rare', 'second'));
+    fireEvent.click(screen.getByRole('button', { name: 'Show different words' }));
+    await waitFor(() => expect(screen.getByRole('complementary')).toHaveTextContent('second word'));
+    const refreshed = screen.getByRole('complementary').textContent;
+    getLandingPageWords.mockRejectedValueOnce(new Error('offline'));
+    fireEvent.click(screen.getByRole('button', { name: 'Show different words' }));
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('current words have been kept'));
+    expect(screen.getByRole('complementary').textContent).toBe(refreshed);
+    returning.unmount();
+    getLandingPageWords.mockRejectedValueOnce(new Error('offline'));
+    render(<LandingPage page="/gothic-vocabulary" />);
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Showing a saved selection'));
+    expect(screen.getByRole('complementary')).toHaveTextContent(snapshot.gothic[0].word);
+    getLandingPageWords.mockResolvedValueOnce(response('gothic', 'dark'));
+    fireEvent.click(screen.getByRole('button', { name: 'Show different words' }));
+    await waitFor(() => expect(screen.getByRole('complementary')).toHaveTextContent('dark word'));
+    expect(getLandingPageWords).toHaveBeenLastCalledWith('gothic');
+});

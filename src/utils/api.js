@@ -90,3 +90,15 @@ export async function getNewWords({ limit = 50, offset = 0 } = {}) {
 	if (!Array.isArray(data.words) || !data.pagination) throw new Error('Invalid new words response');
 	return { ...data, words: data.words.map(word => ({ ...word, def: word.def ?? word.definition })) };
 }
+
+// Uses the app's existing signed-in or anonymous token; no user ID is needed.
+export async function getLandingPageWords(page, count = 20) {
+    if (!['rare', 'gothic'].includes(page)) throw new Error('Invalid landing page');
+    const response = await authFetch(`${base}/get-landing-page-words`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page, count })
+    });
+    if (!response.ok) throw new Error(`Unable to load landing words (${response.status})`);
+    return response.json();
+}

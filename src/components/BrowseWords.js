@@ -150,7 +150,7 @@ function BrowseWords(props) {
 	return (
 		<div className={`browse-container browse-page album-theme-${albumTheme}`}>
 			<div className="browse-toolbar">
-				<div className="browse-toolbar-title">Browse</div>
+				<h1 className="browse-toolbar-title">Browse</h1>
 				<div className="browse-toolbar-search">
 					<input type="text" autoCapitalize="off" className="partial-word" onChange={handlePartialWord} placeholder="Jump to" />
 				</div>
