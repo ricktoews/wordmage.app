@@ -1,3 +1,4 @@
+import { ALBUM_THEMES, REMOVED_THEMES } from '../utils/themes';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +9,7 @@ import { authFetch } from '../utils/auth';
 import Popup from './Popup';
 import PopupListShare from './PopupListShare';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
-const GLOBAL_HEADER_THEME_CLASSES = ALBUM_THEMES.map(theme => `album-theme-global-${theme}`);
+const GLOBAL_HEADER_THEME_CLASSES = [...ALBUM_THEMES, ...REMOVED_THEMES].map(theme => `album-theme-global-${theme}`);
 
 function getRefreshUndoStorageKey(albumId) {
     return `wordmage.albumRefreshUndo.${albumId}`;

@@ -22,7 +22,7 @@ import Popup from './Popup';
 function WordCardMenu(props) {
     const { wordObj, listType, albumId, onAlbumRefresh, popupAlbums, hasMoodText, onWordLockToggle, readOnly = false } = props;
     const [isOpen, setIsOpen] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(WordsInterface.isWordLiked(wordObj.word));
+    const isBookmarked = props.isFavorite ?? WordsInterface.isWordLiked(wordObj.word);
     const [isLocked, setIsLocked] = useState(wordObj.is_locked || false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [menuPosition, setMenuPosition] = useState('bottom');
@@ -95,67 +95,10 @@ function WordCardMenu(props) {
         await copyTextToClipboard(`${wordObj.word}. ${definition}`.trim());
     };
 
-    const handleBookmark = async (e) => {
-        e.stopPropagation();
-        const newBookmarkedState = !isBookmarked;
+    const handleBookmark = (event) => {
+        event.stopPropagation();
         setIsOpen(false);
-
-        try {
-            const albumIds = WordsInterface.getAlbumIds();
-            const favoritesAlbumId = albumIds.Favorites;
-
-            if (!favoritesAlbumId) {
-                console.error('Favorites album ID not found');
-                alert('Favorites album not configured. Please try again.');
-                return;
-            }
-
-            if (newBookmarkedState) {
-                // Add word to Favorites album
-                const response = await authFetch(`${CONFIG.domain}/albums/add-word`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        album_id: favoritesAlbumId,
-                        word_id: wordObj.id
-                    })
-                });
-
-                if (response.ok) {
-                    setIsBookmarked(true);
-                    WordsInterface.addToLiked(wordObj);
-                    WordsInterface.recordWordInterestSignal(wordObj, 'favorite_or_album', listType);
-                    if (props.onUpdate) props.onUpdate();
-                    if (onAlbumRefresh) onAlbumRefresh();
-                } else {
-                    console.error('Failed to add word to Favorites');
-                    alert('Failed to add word to Favorites. Please try again.');
-                }
-            } else {
-                // Remove word from Favorites album
-                const response = await authFetch(`${CONFIG.domain}/albums/delete-word`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        album_id: favoritesAlbumId,
-                        word_id: wordObj.id
-                    })
-                });
-
-                if (response.ok) {
-                    setIsBookmarked(false);
-                    WordsInterface.removeFromLiked(wordObj);
-                    if (props.onUpdate) props.onUpdate();
-                    if (onAlbumRefresh) onAlbumRefresh();
-                } else {
-                    console.error('Failed to remove word from Favorites');
-                    alert('Failed to remove word from Favorites. Please try again.');
-                }
-            }
-        } catch (error) {
-            console.error('Error toggling favorite:', error);
-            alert('Error toggling favorite. Please try again.');
-        }
+        props.onFavoriteToggle?.(event);
     };
 
     const handleAddToAlbum = (e) => {
@@ -280,6 +223,7 @@ function WordCardMenu(props) {
                             <button
                                 className="word-card-menu-item"
                                 onClick={handleBookmark}
+                                disabled={props.favoritePending}
                             >
                                 <FontAwesomeIcon icon={isBookmarked ? faThumbsDown : faThumbsUp} />
                                 <span>{isBookmarked ? 'Remove Favorite' : 'Favorite word'}</span>

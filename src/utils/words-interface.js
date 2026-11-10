@@ -111,11 +111,18 @@ function initializeCustom(albumIds = {}) {
     userData.albumIds = albumIds;
 }
 
+function notifyFavoritesChanged(wordObj) {
+    if (typeof window !== 'undefined' && typeof window.CustomEvent === 'function') {
+        window.dispatchEvent(new window.CustomEvent('wordmage:favoritesChanged', { detail: { word: wordObj?.word } }));
+    }
+}
+
 function setFavoriteWords(words = []) {
     userData.favoriteWords = words.map((fav) => ({
         ...fav,
         def: fav.definition || fav.def || ''
     }));
+    notifyFavoritesChanged();
 }
 
 function getFavoriteWords() {
@@ -412,6 +419,7 @@ function addToLiked(wordObj) {
             ...wordObj,
             def: wordObj.definition || wordObj.def || ''
         });
+        notifyFavoritesChanged(wordObj);
     }
 }
 
@@ -419,6 +427,7 @@ function removeFromLiked(wordObj) {
     const wordToRemove = wordObj.word || '';
     if (!wordToRemove) return;
     userData.favoriteWords = userData.favoriteWords.filter(word => word.word !== wordToRemove);
+    notifyFavoritesChanged(wordObj);
 }
 
 function getSignalStateForWord(word, now, signalSessionIdleMs) {

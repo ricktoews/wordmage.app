@@ -18,7 +18,7 @@ def line(target='/loadcustom?entry=%2Falbums', method='POST', ip='203.0.113.9', 
 
 class LandingSummaryTests(unittest.TestCase):
     def test_public_entry_paths_and_preflights(self):
-        for route in ['/', '/random', '/rare-words', '/gothic-vocabulary', '/browse', '/about']:
+        for route in ['/', '/random', '/rare-words', '/gothic-vocabulary', '/collective-nouns', '/browse', '/about']:
             from urllib.parse import urlencode
             target = '/loadcustom?' + urlencode({'entry': route})
             self.assertEqual(summary.parse_landing(line(target), ZoneInfo('UTC'))[1], route)

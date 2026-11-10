@@ -2,7 +2,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { PublicContent } from './PublicContent';
 import snapshot from './landing-snapshot.json';
 import { pageForPath } from './pages';
-import { combineCollectives, CollectiveCollection } from './CollectiveCollection.draft.mjs';
+import { combineCollectives } from './collective-data.mjs';
+import { CollectiveLanding } from './CollectiveLanding.mjs';
 
 test('public pages provide descriptive headings and crawlable paths into the app', () => {
     render(<PublicContent page="/rare-words" />);
@@ -19,9 +20,9 @@ test('collective nouns search subjects and merge duplicate sources without losin
     const merged = combineCollectives([item, { ...item, source: 'Second', highlight: true }]);
     expect(merged).toHaveLength(1);
     expect(merged[0]).toEqual(expect.objectContaining({ sources: ['First', 'Second'], highlight: true }));
-    render(<CollectiveCollection />);
+    render(<CollectiveLanding />);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'goldfinches' } });
-    expect(screen.getByRole('status')).toHaveTextContent('expressions shown');
+    expect(screen.getByRole('status')).toHaveTextContent('1 expression');
     expect(screen.getAllByRole('heading', { level: 3 }).every(heading => /goldfinches/i.test(heading.textContent))).toBe(true);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'no-match-xyz' } });
     expect(screen.getByRole('status')).toHaveTextContent('0 expressions');
@@ -29,7 +30,7 @@ test('collective nouns search subjects and merge duplicate sources without losin
 });
 
 test('canonical aliases, private routes, and missing pages have distinct metadata policies', () => {
-    expect(pageForPath('/collective-nouns').noindex).toBe(true);
+    expect(pageForPath('/collective-nouns').path).toBe('/collective-nouns');
     expect(pageForPath('/random/').path).toBe('/');
     expect(pageForPath('/rare-word-generator').title).toBe('Page Not Found | WordMage');
     expect(pageForPath('/rare-words/').path).toBe('/rare-words');
@@ -45,4 +46,20 @@ test('Gothic landing introduces API-sourced words without invented categories or
     expect(screen.queryByRole('link', { name: /Enter collection/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Gothic word categories' })).not.toBeInTheDocument();
     expect(screen.getByText(snapshot.gothic[1].word)).toBeInTheDocument();
+});
+
+test('collective landing retains the featured expression across navigation and clears filters', () => {
+    const first = render(<CollectiveLanding />);
+    const feature = screen.getByRole('complementary', { name: 'Featured collective noun' }).textContent;
+    first.unmount();
+    render(<CollectiveLanding />);
+    expect(screen.getByRole('complementary', { name: 'Featured collective noun' }).textContent).toBe(feature);
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Collection favorites' }));
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '  GOLDFINCHES  ' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 expression');
+    fireEvent.click(screen.getByRole('button', { name: 'Show all' }));
+    expect(screen.getByRole('searchbox')).toHaveValue('');
+    expect(screen.getByRole('checkbox')).not.toBeChecked();
+    expect(screen.getByRole('status')).toHaveTextContent('447 expressions');
+    expect(screen.getByText(/individual usage histories have not been assessed/)).toBeInTheDocument();
 });

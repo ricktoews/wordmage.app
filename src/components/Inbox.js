@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from '../utils/themes';
 import { useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +7,6 @@ import WordSelection from './WordSelection';
 import Popup from './Popup';
 import { acceptWords, rejectWords, getInboxWords, markInboxWordsRead } from '../utils/api';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 const getInboxTheme = theme => {
     const saved = theme || (typeof window !== 'undefined' ? window.localStorage.getItem('wordmage.albumTheme') : null);

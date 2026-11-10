@@ -8,6 +8,7 @@ const { renderToStaticMarkup } = require('react-dom/server');
 async function main() {
     const { origin, pages, appRoutes } = await import('../src/public-content/pages.mjs');
     const { PublicContent } = await import('../src/public-content/PublicContent.mjs');
+    const { CollectiveLanding } = await import('../src/public-content/CollectiveLanding.mjs');
     const snapshot = require('../src/public-content/landing-snapshot.json');
     const output = path.resolve(process.argv[2] || 'build');
     const template = fs.readFileSync(path.join(output, 'index.html'), 'utf8')
@@ -32,7 +33,7 @@ async function main() {
         if (page.deferred) return;
         const theme = route === '/rare-words' ? 'rare' : route === '/gothic-vocabulary' ? 'gothic' : null;
         const landingWords = theme ? snapshot[theme].slice(0, theme === 'rare' ? 9 : 13) : undefined;
-        const content = renderToStaticMarkup(React.createElement(PublicContent, { page: route, landingWords, embedded: ['/', '/browse'].includes(route) }));
+        const content = renderToStaticMarkup(React.createElement(route === '/collective-nouns' ? CollectiveLanding : PublicContent, { page: route, landingWords, embedded: ['/', '/browse'].includes(route) }));
         const html = documentFor(page, content, page.noindex ? null : route);
         write(route === '/' ? 'index.html' : route === '/404' ? '404.html' : `${route.slice(1)}/index.html`, html);
         if (route === '/') write('random/index.html', html);
@@ -49,6 +50,10 @@ async function main() {
     write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${preview ? '' : indexable.map(route => `  <url><loc>${origin}${route}</loc></url>`).join('\n')}\n</urlset>\n`);
     write('robots.txt', `User-agent: *\nAllow: /\n${preview ? '' : `Sitemap: ${origin}/sitemap.xml\n`}`);
     const rules = [
+        '/collective/index.html /collective-nouns 301!',
+        '/collective /collective-nouns 301!',
+        '/collective/ /collective-nouns 301!',
+        '/collective/:start /collective-nouns?search=:start 301!',
         '/index.html / 301!',
         '/random/index.html /random 301!',
         ...indexable.filter(route => route !== '/').map(route => `${route}/index.html ${route} 301!`),

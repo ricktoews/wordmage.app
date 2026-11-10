@@ -45,6 +45,11 @@ async function checkRoute(route, authenticated, bundle) {
     try {
         dom.window.eval(bundle);
         await waitFor(() => dom.window.document.querySelector('.App'));
+        if (route === '/collective-nouns') {
+            assert.ok(dom.window.document.querySelector('.editorial-collective'));
+            assert.equal(dom.window.document.querySelectorAll('.collective-grid article').length, 447);
+            assert.ok(dom.window.document.querySelector('.hamburger-nav a[href="/collective-nouns"]'));
+        }
         const click = href => dom.window.document.querySelector(`a[data-public-link][href="${href}"]`)
             .dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true, button: 0 }));
         click('/gothic-vocabulary');
@@ -92,7 +97,7 @@ async function checkRoute(route, authenticated, bundle) {
 async function main() {
     const manifest = JSON.parse(fs.readFileSync('build/asset-manifest.json', 'utf8'));
     const bundle = fs.readFileSync(path.join('build', manifest.files['main.js'].replace(/^\//, '')), 'utf8');
-    for (const route of ['/', '/random', '/rare-words', '/gothic-vocabulary', '/browse', '/about']) {
+    for (const route of ['/', '/random', '/rare-words', '/gothic-vocabulary', '/collective-nouns', '/browse', '/about']) {
         for (const authenticated of [false, true]) await checkRoute(route, authenticated, bundle);
     }
 }

@@ -40,13 +40,13 @@ const pages = {
 
     },
     '/collective-nouns': {
-        deferred: true, // Findings/proposal must be reviewed before restoration ships.
-        title: 'Unusual Collective Nouns for Animals, Birds and People | WordMage',
-        description: 'Browse and search WordMage’s collective nouns by animal, subject, or expression. Explore historical and playful group names with recorded source labels.',
-        heading: 'A collection of curious collectives.',
-        eyebrow: 'Animals, birds, people, and things',
-        intro: 'A charm of goldfinches, a business of ferrets: collective expressions can be practical, poetic, or playful. Explore this separate WordMage collection by subject or expression. Source labels identify the recorded collection, not proof that a term is common in everyday speech.',
-        closing: 'These records include historical hunting language and literary or humorous inventions. They are not official scientific names. Duplicate expressions are combined, while their recorded sources are preserved. Some historical labels for people reflect the attitudes of their source and may sound unkind today.'
+        title: 'Collective Nouns — Curious Names for Animals, People and Things | WordMage',
+        description: 'Explore unusual collective nouns for animals, birds, people and things. Browse curious expressions, search by subject, and discover the collection’s favorites.',
+        heading: 'Collective nouns. Curious company.',
+        lead: 'Collective nouns.', accent: 'Curious company.',
+        intro: 'The peculiar pleasure of naming a group.',
+        collectionTitle: 'An assembly of curiosities.',
+        collectionIntro: 'A business of ferrets, a charm of goldfinches: curious names for company, collected for the pleasure of finding them.'
     },
     '/browse': {
         title: 'Browse Unusual English Words and Meanings | WordMage',
@@ -56,11 +56,8 @@ const pages = {
     },
     '/about': {
         title: 'About WordMage — A Collection for Word Lovers',
-        description: 'WordMage is a place for curious readers, writers, and word lovers to discover unusual English vocabulary, explore meanings, and build personal word collections.',
-        heading: 'For the pleasure of finding a word.',
-        eyebrow: 'About WordMage',
-        intro: 'WordMage is a collection for readers, writers, and anyone who enjoys the less-travelled paths of English. Discover unusual vocabulary, explore meanings, and gather words around a mood or interest.',
-        closing: 'The collection brings together material from several recorded sources, including Luciferous Logolepsy. Definitions and source labels are starting points for exploration; consult a current dictionary for pronunciation, usage, and additional senses. The collective-nouns collection is a separate resource, with its own historical and literary source labels.'
+        description: 'WordMage is entertainment for word fanciers: several thousand off-the-beaten-path words with recreational appeal for the logophile.',
+        heading: 'About WordMage'
     },
     '/404': {
         title: 'Page Not Found | WordMage',
@@ -76,12 +73,13 @@ const appRoutes = [
     '/mock', '/albums', '/albums/:id', '/shared/albums/:token', '/history', '/new-words',
     '/inbox', '/connect-assistant', '/settings', '/login', '/register',
     '/what-to-train', '/training-room', '/unscramble', '/unscramble/:word',
-    '/unscramble/:word/:def', '/browse/:start', '/collective', '/collective/:start'
+    '/unscramble/:word/:def', '/browse/:start'
 ];
 
 function pageForPath(pathname) {
     const path = pathname.replace(/\/+$/, '') || '/';
     if (path === '/mock') return { title: 'Header Design Preview | WordMage', description: 'WordMage design preview.', noindex: true, path: null };
+    if (/^\/collective(?:\/[^/]+)?$/.test(path)) return { ...pages['/collective-nouns'], path: '/collective-nouns' };
     if (path === '/random') return { ...pages['/'], path: '/' };
     if (pages[path] && !pages[path].deferred) return { ...pages[path], path };
     if (appRoutes.some(route => new RegExp(`^${route.replace(/:[^/]+/g, '[^/]+')}$`).test(path))) {

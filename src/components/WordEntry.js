@@ -2,8 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import PopupWordPrompt from './PopupWordPrompt';
 import SparklesIcon from './icons/SparklesIcon';
+import FavoriteThumb from './icons/FavoriteThumb';
+import { CONFIG } from '../config';
+import { authFetch } from '../utils/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 import WordsInterface from '../utils/words-interface';
 import WordCardMenu from './WordCardMenu';
 import { FacebookShareButton, FacebookIcon } from "react-share";
@@ -14,6 +17,8 @@ function WordEntry(props) {
 	const { wordObj, listType, readOnly = false } = props;
 	const [updateToggle, setUpdateToggle] = useState(false);
 	const [showPrompt, setShowPrompt] = useState(false);
+	const [favoritePending, setFavoritePending] = useState(false);
+	const favoriteRequest = useRef(false);
 	const askAIButtonRef = useRef(null);
 	const [historySettings, setHistorySettings] = useState(() => WordsInterface.getHistoryScoringSettings());
 	const wordItemRef = useRef(null);
@@ -55,6 +60,46 @@ function WordEntry(props) {
 
 	// Check if word is in favorites list (liked array)
 	const isFavorited = WordsInterface.isWordLiked(wordObj.word);
+
+	useEffect(() => {
+		const syncFavorite = event => {
+			if (!event.detail?.word || event.detail.word === wordObj.word) {
+				setUpdateToggle(value => !value);
+			}
+		};
+		window.addEventListener('wordmage:favoritesChanged', syncFavorite);
+		return () => window.removeEventListener('wordmage:favoritesChanged', syncFavorite);
+	}, [wordObj.word]);
+
+	const handleFavoriteToggle = async event => {
+		event.stopPropagation();
+		if (readOnly || listType === 'inbox' || favoriteRequest.current) return;
+		favoriteRequest.current = true;
+		setFavoritePending(true);
+		try {
+			const albumId = WordsInterface.getAlbumIds().Favorites;
+			if (!albumId) throw new Error('Favorites album not configured. Please try again.');
+			const adding = !WordsInterface.isWordLiked(wordObj.word);
+			const response = await authFetch(`${CONFIG.domain}/albums/${adding ? 'add-word' : 'delete-word'}`, {
+				method: 'POST', headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ album_id: albumId, word_id: wordObj.id })
+			});
+			if (!response.ok) throw new Error('Unable to update Favorites. Please try again.');
+			if (adding) {
+				WordsInterface.addToLiked(wordObj);
+				WordsInterface.recordWordInterestSignal(wordObj, 'favorite_or_album', listType);
+			} else {
+				WordsInterface.removeFromLiked(wordObj);
+			}
+			setUpdateToggle(value => !value);
+			props.onAlbumRefresh?.();
+		} catch (error) {
+			window.alert(error.message || 'Unable to update Favorites. Please try again.');
+		} finally {
+			favoriteRequest.current = false;
+			setFavoritePending(false);
+		}
+	};
 
 	useEffect(() => {
 		const syncHistorySettings = () => {
@@ -182,35 +227,26 @@ function WordEntry(props) {
 	};
 
 	return wordObj.divider ? <hr className="rejects" /> : (
-		<div className={`word-item${props.selected ? ' word-item-selected' : ''}`} ref={wordItemRef} onClick={handleCardTap}>
+		<div className={`word-item${listType !== 'inbox' ? ' word-item-compact-actions' : ''}${props.selected ? ' word-item-selected' : ''}`} ref={wordItemRef} onClick={handleCardTap}>
 			<div className="word-content-wrapper">
 				<div className="word-item-word-container">
 					<div className="word-edit-btn">
 
 					</div>
-					{(listType === 'browse' || listType === 'random') && isFavorited && <span className="featured-word-icon"><FontAwesomeIcon icon={faThumbsUp} /></span>}
+					{listType !== 'inbox' && !readOnly && <button type="button" className="word-favorite-toggle"
+						aria-label={`${isFavorited ? 'Remove' : 'Add'} ${wordObj.word} ${isFavorited ? 'from' : 'to'} Favorites`}
+						title={`${isFavorited ? 'Remove' : 'Add'} ${wordObj.word} ${isFavorited ? 'from' : 'to'} Favorites`}
+						aria-pressed={isFavorited} aria-busy={favoritePending} disabled={favoritePending} onClick={handleFavoriteToggle}>
+						<FavoriteThumb filled={isFavorited} />
+					</button>}
 					{!!wordObj.is_locked && <span className="word-lock-icon"><FontAwesomeIcon icon={faLock} /></span>}
 					<div className="word-item-word word-item-word-no-after">{wordObj.word}</div>
 					<span className="word-item-sep">. </span>
 					<div className="word-item-def">{wordObj.def}</div>
 				</div>
-				<div className="word-item-def-container">
-					{metadataSummary && (
-						<div className="word-item-source">✦ {metadataSummary}</div>
-					)}
-					{listType !== 'inbox' && <button
-						type="button"
-						className="word-ask-ai-button"
-						ref={askAIButtonRef}
-						onClick={(event) => {
-							event.stopPropagation();
-							setShowPrompt(true);
-						}}
-					>
-						<SparklesIcon />
-						<span>Ask AI</span>
-					</button>}
-				</div>
+				{metadataSummary && <div className="word-item-def-container">
+					<div className="word-item-source">✦ {metadataSummary}</div>
+				</div>}
 			</div>
 			{showPrompt && createPortal(
 				<PopupWordPrompt wordObj={wordObj} onClose={() => {
@@ -219,13 +255,24 @@ function WordEntry(props) {
 				}} />,
 				document.body
 			)}
-			{props.selectionControl ? (
-                <div className="word-card-actions">
-                    {props.selectionControl}
-                </div>
-            ) : listType !== 'inbox' && <div className="word-card-actions">
-				<WordCardMenu
+			{(props.selectionControl || listType !== 'inbox') && <div className="word-card-actions">
+				{listType !== 'inbox' && <button
+					type="button"
+					className="word-ask-ai-button"
+					aria-label={`Ask AI about ${wordObj.word}`}
+					title={`Ask AI about ${wordObj.word}`}
+					aria-haspopup="dialog"
+					ref={askAIButtonRef}
+					onClick={(event) => {
+						event.stopPropagation();
+						setShowPrompt(true);
+					}}
+				>
+					<SparklesIcon />
+				</button>}
+				{props.selectionControl || <WordCardMenu
 					wordObj={wordObj}
+					isFavorite={isFavorited} favoritePending={favoritePending} onFavoriteToggle={handleFavoriteToggle}
 					listType={listType}
 					albumId={props.albumId}
 					hasMoodText={props.hasMoodText}
@@ -236,7 +283,7 @@ function WordEntry(props) {
 						setUpdateToggle(!updateToggle);
 					}}
 					readOnly={readOnly}
-				/>
+				/>}
 			</div>}
 		</div>
 	);

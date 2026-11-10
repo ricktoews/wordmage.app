@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from './utils/themes';
 import { useEffect, useRef, useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -7,14 +8,10 @@ import { WordMageContext } from './WordMageContext';
 import { clearAuthenticatedToken, persistTokenFromResponse } from './utils/auth';
 import { loadUserWorkspace } from './utils/workspace';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const ALBUM_THEME_LABELS = {
 	classic: 'Literary',
 	paper: 'Parchment',
 	ink: 'Nocturne',
-	arcane: 'Arcane',
-	eldritch: 'Eldritch',
-	obsidian: 'Obsidian',
 	fogbound: 'Fogbound',
 };
 

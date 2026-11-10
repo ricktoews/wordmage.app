@@ -1,8 +1,8 @@
+import { ALBUM_THEMES } from '../utils/themes';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getNewWords } from '../utils/api';
 import WordScroller from './WordScroller';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 const getNewWordsTheme = theme => {
     const saved = theme || (typeof window !== 'undefined' ? window.localStorage.getItem('wordmage.albumTheme') : null);

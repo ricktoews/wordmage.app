@@ -52,7 +52,12 @@ test('production HTML contains substantive content and one correct canonical per
             assert.ok(html.includes(snapshot[theme][0].word));
             assert.ok(html.includes(snapshot[theme][1].def.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;')));
         }
-        assert.ok(!sitemap.includes('collective-nouns'));
+        assert.ok(sitemap.includes('https://wordmage.app/collective-nouns'));
+        const collectiveHtml = fs.readFileSync(path.join(dir, 'collective-nouns/index.html'), 'utf8');
+        assert.ok(collectiveHtml.includes('A charm of goldfinches'));
+        assert.equal((collectiveHtml.match(/<article /g) || []).length, 447);
+        assert.ok(collectiveHtml.includes('individual usage histories have not been assessed'));
+        assert.ok(!collectiveHtml.includes('name="robots" content="noindex'));
         assert.equal(fs.readFileSync(path.join(dir, 'index.html'), 'utf8'), fs.readFileSync(path.join(dir, 'random/index.html'), 'utf8'));
         assert.ok(!/albums|login|inbox|random/.test(sitemap));
         assert.ok(fs.readFileSync(path.join(dir, 'albums/index.html'), 'utf8').includes('noindex'));

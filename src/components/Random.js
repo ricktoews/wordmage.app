@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from '../utils/themes';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +8,6 @@ import WordScroller from './WordScroller';
 import Popup from './Popup';
 import PopupListShare from './PopupListShare';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 function getRandomRefreshUndoStorageKey(userId) {
 	return `wordmage.randomRefreshUndo.${userId || 'anon'}`;

@@ -1,5 +1,5 @@
 export default {
-  "retrieved": "2026-11-08",
+  "retrieved": "2026-11-09",
   "endpoint": "https://wordmage.toews-api.com/get-words",
   "table": "collective_nouns",
   "records": [

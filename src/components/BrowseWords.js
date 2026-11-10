@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from '../utils/themes';
 import ReactDOM from 'react-dom';
 import { useEffect, useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
@@ -13,7 +14,6 @@ const INFINITE_SCROLLING_ON = 'list-loading-container';
 const INFINITE_SCROLLING_OFF = 'hide-section';
 const listLength = 20;
 const listIncrement = 30;
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 
 function BrowseWords(props) {

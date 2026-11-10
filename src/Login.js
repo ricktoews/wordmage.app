@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from './utils/themes';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { WordMageContext } from './WordMageContext';
@@ -47,7 +48,6 @@ function loadScript(src) {
     });
 }
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 const normalizeAlbumId = (albumId) => String(albumId);
 const getStoredAlbumTheme = () => {
     const savedTheme = localStorage.getItem('wordmage.albumTheme');

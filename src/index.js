@@ -1,4 +1,5 @@
 import React from 'react';
+import { migrateRemovedTheme } from './utils/themes';
 import { createRoot } from 'react-dom/client'; // Updated import
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
@@ -8,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import { ensureActiveWorkspace } from './utils/workspace';
 
 const initialPathname = window.location.pathname;
+migrateRemovedTheme();
 
 (async () => {
 	try {

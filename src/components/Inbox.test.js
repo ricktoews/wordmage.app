@@ -90,13 +90,13 @@ test('reports a refresh failure separately after a successful review', async () 
 });
 
 test('uses the saved theme and responds to theme and storage changes', () => {
-    localStorage.setItem('wordmage.albumTheme', 'obsidian');
+    localStorage.setItem('wordmage.albumTheme', 'ink');
     try {
         setup();
         // Theme classes belong to the page wrapper rather than a semantic control.
         // eslint-disable-next-line testing-library/no-node-access
         const page = screen.getByText('Inbox').closest('.album-content-page');
-        expect(page).toHaveClass('album-theme-obsidian');
+        expect(page).toHaveClass('album-theme-ink');
         fireEvent(window, new CustomEvent('wordmage:albumThemeChanged', { detail: { theme: 'paper' } }));
         expect(page).toHaveClass('album-theme-paper');
         localStorage.setItem('wordmage.albumTheme', 'fogbound');

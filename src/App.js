@@ -1,5 +1,6 @@
+import { ALBUM_THEMES, REMOVED_THEMES } from './utils/themes';
 import { useEffect, useState, useRef, useContext, useMemo, useCallback } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faRandom,
@@ -38,7 +39,7 @@ import PopupListShare from './components/PopupListShare';
 import UnscrambleGame from './components/UnscrambleGame';
 import BrowseWords from './components/BrowseWords';
 import PageMetadata from './components/PageMetadata';
-import CollectiveWords from './components/CollectiveWords';
+import { CollectiveLanding } from './public-content/CollectiveLanding.mjs';
 import LandingPage from './public-content/LandingPage';
 import HeaderMock from './mock/HeaderMock';
 import { PublicContent } from './public-content/PublicContent';
@@ -59,8 +60,7 @@ import { navigatePublicLink } from './utils/public-navigation';
 
 import './App.scss';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
-const GLOBAL_THEME_CLASSES = ALBUM_THEMES.map((theme) => `album-theme-global-${theme}`);
+const GLOBAL_THEME_CLASSES = [...ALBUM_THEMES, ...REMOVED_THEMES].map((theme) => `album-theme-global-${theme}`);
 const CONTEXTUAL_HELP_HINTS = [
     {
         id: 'random-share-button-v1',
@@ -86,7 +86,7 @@ const getAlbumThemeFromStorage = () => {
 };
 
 function App(props) {
-    const isEditorialLanding = ['/rare-words', '/gothic-vocabulary'].includes(props.location.pathname.replace(/\/+$/, ''));
+    const isEditorialLanding = ['/rare-words', '/gothic-vocabulary', '/collective-nouns'].includes(props.location.pathname.replace(/\/+$/, ''));
     const [aiExplainWord, setAiExplainWord] = useState(null);
     const [showAppSharePopup, setShowAppSharePopup] = useState(false);
     const [mastheadShareConfig, setMastheadShareConfig] = useState(null);
@@ -428,6 +428,7 @@ function App(props) {
                         [null, 'discovery'],
                         ['/rare-words', 'Rare Words', 'Aa'],
                         ['/gothic-vocabulary', 'Gothic', '☾'],
+                        ['/collective-nouns', 'Collective Nouns', '⋮'],
                         [null, 'workspace'],
                         ['/new-words', 'New Words', '+', navToNewWords],
                         ['/settings', 'Settings', '⚙', navToProfile],
@@ -549,7 +550,8 @@ function App(props) {
                         <Route exact path="/browse/:start?" render={props => (<BrowseWords
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route exact path="/collective/:start?" component={CollectiveWords} />
+                        <Route exact path="/collective-nouns" render={() => <CollectiveLanding appHeader />} />
+                        <Route exact path="/collective/:start?" render={({ match }) => <Redirect to={{ pathname: '/collective-nouns', search: match.params.start ? `?${new URLSearchParams({ search: match.params.start })}` : '' }} />} />
                         <Route exact path="/shared/albums/:token" render={props => (<SharedAlbum />)} />
                         <Route exact path="/albums" render={props => (<Albums
                             key={`albums-${activeUserId || 'none'}`}

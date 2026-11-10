@@ -1,4 +1,5 @@
 import React from 'react';
+import { AboutContent } from './AboutContent.mjs';
 import { pages } from './pages.mjs';
 import words from './words.mjs';
 const h = React.createElement;
@@ -30,7 +31,7 @@ const examples = {
 };
 
 function PublicLinks() {
-    const links = [['/', 'Random words'], ['/rare-words', 'Rare words'], ['/gothic-vocabulary', 'Gothic vocabulary'], ['/browse', 'Browse words'], ['/about', 'About WordMage']];
+    const links = [['/', 'Random words'], ['/rare-words', 'Rare words'], ['/gothic-vocabulary', 'Gothic vocabulary'], ['/collective-nouns', 'Collective nouns'], ['/browse', 'Browse words'], ['/about', 'About WordMage']];
     return h('nav', { className: 'public-links', 'aria-label': 'Explore WordMage' },
         links.map(([href, label]) => h('a', { href, key: href, 'data-public-link': true }, label)));
 }
@@ -59,7 +60,7 @@ function MenuIcon() {
 }
 
 function EditorialMenu({ currentPath, onNavigate }) {
-    const links = [['/', 'Random words', '↝'], ['/rare-words', 'Rare words', 'Aa'], ['/gothic-vocabulary', 'Gothic vocabulary', '☾'], ['/browse', 'Browse words', 'A–Z'], ['/about', 'About WordMage', '?']];
+    const links = [['/', 'Random words', '↝'], ['/rare-words', 'Rare words', 'Aa'], ['/gothic-vocabulary', 'Gothic vocabulary', '☾'], ['/collective-nouns', 'Collective nouns', '⋮'], ['/browse', 'Browse words', 'A–Z'], ['/about', 'About WordMage', '?']];
     return h('ul', { className: 'editorial-menu-links' }, links.map(([href, label, glyph]) =>
         h('li', { key: href }, h('a', { href, 'data-public-link': true, onClick: onNavigate, 'aria-current': currentPath === href ? 'page' : undefined },
             h('span', { className: 'editorial-menu-glyph', 'aria-hidden': true }, glyph), h('span', null, label)))));
@@ -138,6 +139,7 @@ function PublicContent({ page = '/', embedded = false, onMenuToggle, menuOpen, l
                 h('h2', null, data.note), h(WordCards, { names: data.words })),
             h('footer', { className: 'public-content random-static-samples' }, h(PublicLinks)));
     }
+    if (page === '/about') return h(AboutContent);
     if (page === '/browse') return h('main', { className: 'public-content' },
         h('h1', null, 'Browse'), h(WordCards, { names: pages[page].words }));
     const data = pages[page] || pages['/404'];
@@ -155,4 +157,4 @@ function PublicContent({ page = '/', embedded = false, onMenuToggle, menuOpen, l
         !embedded ? h('footer', null, h('h2', null, 'Keep exploring'), h(PublicLinks)) : null);
 }
 
-export { PublicContent, PublicLinks, WordCards, EditorialMenu };
+export { PublicContent, PublicLinks, WordCards, EditorialMenu, EditorialMasthead };

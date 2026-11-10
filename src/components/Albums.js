@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from '../utils/themes';
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +7,6 @@ import { CONFIG } from '../config';
 import { authFetch } from '../utils/auth';
 import Popup from './Popup';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 function randomizeWords(array) {
     const shuffled = [...array];

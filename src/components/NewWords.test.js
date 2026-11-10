@@ -30,14 +30,14 @@ test('allows retry after load failure', async () => {
 
 test('applies the saved theme and responds to theme changes', async () => {
     getNewWords.mockResolvedValue({ words: [], pagination: { has_more: false } });
-    localStorage.setItem('wordmage.albumTheme', 'obsidian');
+    localStorage.setItem('wordmage.albumTheme', 'ink');
     try {
         render(<NewWords />);
         await screen.findByText('No new words yet.');
         // Theme classes live on the page wrapper.
         // eslint-disable-next-line testing-library/no-node-access
         const page = screen.getByText('New Words').closest('.album-content-page');
-        expect(page).toHaveClass('album-theme-obsidian');
+        expect(page).toHaveClass('album-theme-ink');
         fireEvent(window, new CustomEvent('wordmage:albumThemeChanged', { detail: { theme: 'paper' } }));
         expect(page).toHaveClass('album-theme-paper');
         localStorage.setItem('wordmage.albumTheme', 'fogbound');

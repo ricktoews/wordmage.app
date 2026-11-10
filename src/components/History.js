@@ -1,3 +1,4 @@
+import { ALBUM_THEMES } from '../utils/themes';
 import { useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -7,7 +8,6 @@ import PopupAlbumSelect from './PopupAlbumSelect';
 import Popup from './Popup';
 import './History.scss';
 
-const ALBUM_THEMES = ['classic', 'paper', 'ink', 'arcane', 'eldritch', 'obsidian', 'fogbound'];
 
 function History(props) {
 	const [history, setHistory] = useState(() => WordsInterface.getBrowseHistory());
@@ -20,7 +20,7 @@ function History(props) {
 		}
 
 		const savedTheme = window.localStorage.getItem('wordmage.albumTheme');
-		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'paper';
+		return ALBUM_THEMES.includes(savedTheme) ? savedTheme : 'classic';
 	});
 
 	const handleClearAll = useCallback(() => {
