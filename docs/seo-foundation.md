@@ -38,7 +38,7 @@ no new registration step, analytics service, paid service, or generator is added
 | `/random` | Same content and canonical `/`; existing navigation still works |
 | `/rare-words` | Curated rare-word definitions and editorial context |
 | `/gothic-vocabulary` | Vocabulary grouped by darkness, atmosphere, architecture, mystery, and emotion |
-| `/collective-nouns` | Deferred for proposal review; no active route, navigation link, static output, or sitemap entry |
+| `/collective-nouns` | Public collection with all distinct expressions, source labels, search, sorting, and optional highlights |
 | `/browse` | Introduction and sample vocabulary alongside existing API-powered Browse |
 | `/about` | Updated description and ordinary links to public resources |
 
@@ -55,8 +55,8 @@ therefore return a real 404 instead of a soft 404. Existing syntactically valid
 private dynamic routes retain their application shell and existing API behavior;
 this layer does not validate album IDs. The client also renders a not-found page.
 
-Old `/collective` and `/collective/:start` URLs retain their original noindex
-application shell while restoration is deferred. They are not promoted in navigation. Public HTML entry
+Old `/collective` URLs permanently redirect to `/collective-nouns`; starting
+terms become a search query. Public HTML entry
 files redirect to their canonical route. Trailing-slash variants use the same
 canonical. Query strings and fragments never enter canonical URLs.
 
@@ -92,8 +92,7 @@ public links keep their real hrefs and existing React navigation behavior.
 These two routes have a dedicated public navigation drawer with an active-page
 indicator, outside-click close, and Escape close. Before JavaScript mounts, the
 initial HTML uses a native details-based menu instead. The internal Random, Browse,
-and album experiences retain their existing layouts. Collective Nouns
-remains deferred rather than being activated as part of a visual change.
+and album experiences retain their existing layouts. Collective Nouns has since been restored as a separate landing page.
 
 The same components generate the initial HTML and the React pages. Rare and Gothic
 vocabulary now comes from `POST /get-landing-page-words` using the existing
@@ -114,50 +113,19 @@ Browse initial-HTML samples, independent of the new landing selections.
 The database flags determine the Rare and Gothic selections. No public shared URL for that
 album was supplied, so no personal album was fetched, exposed, or made indexable.
 
-## Collective-nouns investigation and proposed restoration
+## Collective-nouns collection
 
-Evidence found:
+The existing separate `collective_nouns` model and public `collective` response
+supply a checked-in snapshot of 488 records. Duplicate expressions merge into 447
+cards, preserving all source labels and highlights. The public page includes all
+447 in initial HTML and provides browser-side searching, sorting, and an optional
+collection-favorites filter. A highlighted hero expression persists per tab.
 
-- Existing backend: `wordmage-api/classes/Words.php`, method `getCollective()`.
-- Table: **`collective_nouns`**, independent of `word_pool`.
-- Existing query: `SELECT id, term, refers_to, expression, source, highlight FROM
-  collective_nouns ORDER BY term`.
-- Existing public endpoint: `GET https://wordmage.toews-api.com/get-words`, returning
-  `wordPool` and a separate `collective` array. The API maps `refers_to` to `refersTo`
-  and converts `highlight` to a boolean; its public records omit the database ID.
-- Surviving frontend: `src/components/CollectiveWords.js`, including subject/term
-  sorting, highlighted records, and source-merging logic. Its collection depended
-  on initialization that is now commented out in `src/index.js`.
-
-The logical column schema above is confirmed by the existing query and live API.
-SQL types, constraints, and indexes were not inspected: that would require database
-access. No backend, database, or server changes were made.
-
-The live public snapshot contains **488 records**: 385 labelled `Lipton 1977` and
-103 `Book of St. Albans`. All have term, subject, expression, and source values;
-23 are highlighted. Case-insensitive comparison of term, subject, and expression
-finds **41 duplicate records**, leaving **447 distinct expressions**.
-
-The unshipped draft reuses the old behavior of combining duplicate sources
-and retaining highlights, but loads its own public snapshot directly. It does not
-initialize or download the entire word pool. The draft would place all expressions in initial
-HTML, sorted by subject; search also matches the term and expression. Highlight-only
-is optional rather than hiding most of the data by default. Filters are local and
-do not create crawlable search-result URLs or additional API requests.
-
-The proposed page explains these data limitations: source labels are provenance, not
-proof of common usage; the collection contains historical, literary, humorous,
-and sometimes dated descriptions of people. There is no reliable animal/person
-category field, so an animal-only filter was not inferred. Further editorial work
-could add verified usage labels and source-page references; the original database
-is left intact. The draft supports search by animal or subject but is not exposed in the active app.
-
-Restoration is **deferred** because the complete instruction requires findings and a
-proposal before rebuilding. The earlier implementation is retained only as
-`src/public-content/CollectiveCollection.draft.mjs`; the active app and build do not
-import it or its 488-record snapshot. There is no migration into `word_pool`.
-The public manifest marks the route as deferred. See
-`docs/collective-nouns-proposal.md` for the evidence-label proposal and review scope.
+No category, attestation, or everyday-usage status is inferred from source labels.
+The page explains that individual usage histories have not been assessed. The
+model, data-quality findings, maintenance command, and remaining evidence work are
+recorded in `docs/collective-nouns-proposal.md`. No database or API-server change
+was needed. The old frontend component and draft remain reference material.
 
 ## Validation and next experiment
 
@@ -171,12 +139,12 @@ node tools/check-public-http.mjs http://localhost:8888
 ```
 
 The HTTP check verifies substantive no-JavaScript HTML, canonicals, public 200s,
-unknown-route 404s, private noindex shells, all sitemap URLs, and the legacy collective shell.
+unknown-route 404s, private noindex shells, all sitemap URLs, and legacy collective redirects.
 Production and preview/branch artifacts are tested independently. No live deploy
 or search-engine indexing submission is part of this change.
 
 The production-bundle smoke test runs in jsdom with mocked API responses. It checks
-direct mounting of all six active public paths for both anonymous and signed-in
+direct mounting of all seven active public paths for both anonymous and signed-in
 visitors, public navigation, Random loading, canonical updates, and the single
 startup entry marker. It is not a visual browser/layout test.
 

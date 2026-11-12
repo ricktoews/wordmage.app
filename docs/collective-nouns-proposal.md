@@ -1,9 +1,38 @@
 # Collective Nouns: findings and proposal for review
 
-Status: **not restored in the active public site**. The first request was truncated
-before the instruction to report findings and a proposed implementation first.
-The previously written draft is now excluded from routes, navigation, generated
-HTML, the sitemap, and the application bundle. It has not been deployed.
+Status: **restored locally at `/collective-nouns` following the new landing-page request**.
+The findings and approach were reported before implementation. The separate data
+model is preserved. This restoration has not been deployed by the agent.
+
+## Implemented presentation
+
+- Shared site header, Browse link, and full hamburger menu; a muted green hero
+  with a geometric grouping motif, literary heading, and featured expression.
+- All 447 distinct expressions are present in initial HTML, with source labels.
+  The 488-record public snapshot was checked again on November 9, 2026.
+- Search by animal, subject, collective term, or expression; sort by subject or
+  term; optional “Collection favorites” filter uses the existing highlight field.
+- Duplicate expressions merge their source labels. The highlighted hero
+  expression remains stable within a tab’s session. There are no new API calls
+  for normal visits and no database changes.
+- Usage/attestation has **not** been inferred. A collection note makes clear that
+  source labels and highlights do not establish common usage. The proposed
+  per-entry evidence map below remains future work requiring actual references.
+- The canonical route is in the sitemap and navigation. Legacy `/collective`
+  routes redirect to it; a legacy starting term becomes a search query. Startup
+  tracking retains the initial pathname and excludes ordinary route changes.
+
+Refresh the separate public snapshot deliberately, review it, then rebuild:
+
+```bash
+node tools/refresh-collectives-snapshot.mjs
+npm run build
+```
+
+This maintenance command reads the existing public endpoint, saves only its
+`collective` array, validates required fields, and performs no server writes.
+The older draft and legacy component remain for reference; the active page reuses
+its duplicate-merging logic via `collective-data.mjs`.
 
 ## What survives
 
@@ -42,7 +71,7 @@ attestation. The records mix animal names with historical, humorous, and sometim
 unkind descriptions of people. Source-page references and historical context are
 not consistently available in the API.
 
-## Proposed modest implementation
+## Original proposal and remaining evidence work
 
 1. Keep `collective_nouns` as the source of truth. Never migrate these records into
    `word_pool`. Use its separate public snapshot for build-time HTML and client

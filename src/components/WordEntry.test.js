@@ -154,3 +154,16 @@ test('Inbox and read-only cards do not expose favorite toggles', () => {
     render(<><Card /><WordEntry wordObj={{ id: 5, word: 'clepsydra', def: 'A water clock.' }} listType="album" readOnly /></>);
     expect(screen.queryByRole('button', { name: /to Favorites|from Favorites/ })).not.toBeInTheDocument();
 });
+
+test('word cards omit supplied examples while retaining card actions', () => {
+    render(<WordEntry wordObj={{ id: 5, word: 'clepsydra', def: 'A water clock.', examples: [
+        { sentence: 'The clepsydra marked the passing hours.', source: 'AI-generated' },
+        { sentence: 'Only the first example is needed.' }
+    ] }} listType="random" />);
+    expect(screen.getByText('A water clock.')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Example sentence')).not.toBeInTheDocument();
+    expect(screen.queryByText('The clepsydra marked the passing hours.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Only the first example is needed.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Ask AI about clepsydra' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Add clepsydra to Favorites' })).toBeInTheDocument();
+});

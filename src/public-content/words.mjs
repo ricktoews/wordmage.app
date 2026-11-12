@@ -15,7 +15,21 @@ export default [
     "id": "9267",
     "word": "apricity",
     "def": "The warmness of the sun in winter.",
-    "source": "OED"
+    "source": "OED",
+    "examples": [
+      {
+        "sentence": "After a week of freezing rain, the apricity on the south-facing bench felt like an unexpected gift.",
+        "source": "AI-generated"
+      },
+      {
+        "sentence": "The old cat sought out every patch of apricity that crossed the library floor in January.",
+        "source": "AI-generated"
+      },
+      {
+        "sentence": "They lingered in the orchard for the brief apricity, though frost still silvered the grass beneath their boots.",
+        "source": "AI-generated"
+      }
+    ]
   },
   {
     "id": "9641",
@@ -69,7 +83,21 @@ export default [
     "id": "1650",
     "word": "caliginous",
     "def": "misty, dim, or murky; obscure or dark (also figurative)",
-    "source": "Luciferous Logolepsy"
+    "source": "Luciferous Logolepsy",
+    "examples": [
+      {
+        "sentence": "A caliginous fog swallowed the harbor lamps until even the nearest pier seemed imaginary.",
+        "source": "AI-generated"
+      },
+      {
+        "sentence": "The scholar's caliginous explanation left his students less certain of the theorem than when the lecture began.",
+        "source": "AI-generated"
+      },
+      {
+        "sentence": "Beyond the gate lay a caliginous garden where moonlight struggled through the yew trees.",
+        "source": "AI-generated"
+      }
+    ]
   },
   {
     "id": "2315",

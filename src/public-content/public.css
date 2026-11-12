@@ -298,3 +298,30 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 .word-favorite-toggle:focus:not(:focus-visible) { outline: none; box-shadow: none; }
 .word-favorite-toggle:focus-visible { outline: 2px solid var(--global-input-focus, #7b5aae); outline-offset: 2px; }
 .word-favorite-toggle:disabled { opacity: .5; cursor: wait; }
+
+/* Only the vocabulary band uses the card theme; surrounding copy stays on paper. */
+.editorial-landing { overflow-x: clip; }
+.editorial-collection-header { margin-bottom: 0; border-bottom: 0; }
+.editorial-word-band {
+    --word-band-bg: var(--global-page-bg, #fffefe);
+    position: relative;
+    isolation: isolate;
+    padding: 28px 0 18px;
+    border-top: 1px solid #392c4b26;
+    border-bottom: 1px solid #392c4b26;
+}
+.editorial-word-band:has(.album-theme-fogbound) { --word-band-bg: #d0dde6; }
+.editorial-word-band::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 50vw);
+    width: 100vw;
+    background: var(--word-band-bg);
+}
+@media (max-width: 600px) {
+    .editorial-collection-header { margin-bottom: 0; }
+    .editorial-word-band { padding-top: 24px; }
+}

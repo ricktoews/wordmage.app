@@ -55,7 +55,21 @@
       "word": "apricity",
       "def": "The warmness of the sun in winter.",
       "source": "OED",
-      "is_rare": 1
+      "is_rare": 1,
+      "examples": [
+        {
+          "sentence": "After a week of freezing rain, the apricity on the south-facing bench felt like an unexpected gift.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "The old cat sought out every patch of apricity that crossed the library floor in January.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "They lingered in the orchard for the brief apricity, though frost still silvered the grass beneath their boots.",
+          "source": "AI-generated"
+        }
+      ]
     },
     {
       "id": 3620,
@@ -97,7 +111,33 @@
       "word": "goetic",
       "def": "Pertaining to the practice of invoking spirits or the supernatural.",
       "source": "The Logodaedalian’s Dictionary of Interesting and Unusual Words",
-      "is_rare": 1
+      "is_rare": 1,
+      "examples": [
+        {
+          "sentence": "The scholar had devoted forty years to the study of goetic manuscripts, only to discover that the most dangerous incantation was scribbled in the margin of a cookbook.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "Beneath the ruined abbey, a circle of blackened candles marked the site of a goetic ritual that the villagers dared not discuss.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "Aunt Mildred regarded the Ouija board as harmless entertainment, though her nephew suspected her interests had become decidedly goetic.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "The historian distinguished the ceremonial practices of the priesthood from the goetic traditions concerned with summoning and commanding spirits.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "The old grimoire contained goetic instructions written in a cramped, feverish hand, with ominous warnings beside certain names.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "His attempts at goetic sorcery produced neither demons nor revelations, but did succeed in alarming the cat.",
+          "source": "AI-generated"
+        }
+      ]
     },
     {
       "id": 523,
@@ -176,7 +216,21 @@
       "word": "teratology",
       "def": "the study of monsters",
       "source": "Luciferous Logolepsy",
-      "is_gothic": 1
+      "is_gothic": 1,
+      "examples": [
+        {
+          "sentence": "The antiquarian's treatise on teratology catalogued dragons, giants, and other creatures from medieval legend.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "Modern medical teratology investigates congenital anomalies and their causes, rather than the fabulous monsters of old bestiaries.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "His enthusiasm for mythical teratology led him to classify every creature in the tapestry, including a unicorn with suspiciously bovine features.",
+          "source": "AI-generated"
+        }
+      ]
     },
     {
       "id": 6304,
@@ -204,7 +258,21 @@
       "word": "invultuation",
       "def": "stabbing of wax image of person to be injured as form of witchcraft.",
       "source": "Luciferous Logolepsy",
-      "is_gothic": 1
+      "is_gothic": 1,
+      "examples": [
+        {
+          "sentence": "The witchcraft trial records described invultuation: the alleged harming of an enemy by piercing a wax likeness.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "In the gothic tale, the sorcerer practiced invultuation by candlelight, whispering the name of his rival.",
+          "source": "AI-generated"
+        },
+        {
+          "sentence": "The folklorist studied invultuation as a historical belief in sympathetic magic, not as an established means of causing injury.",
+          "source": "AI-generated"
+        }
+      ]
     },
     {
       "id": 4511,
@@ -283,5 +351,6 @@
       "source": "The Logodaedalian’s Dictionary of Interesting and Unusual Words",
       "is_gothic": 1
     }
-  ]
+  ],
+  "examplesRetrievedAt": "2026-11-11"
 }

@@ -63,3 +63,13 @@ test('collective landing retains the featured expression across navigation and c
     expect(screen.getByRole('status')).toHaveTextContent('447 expressions');
     expect(screen.getByText(/individual usage histories have not been assessed/)).toBeInTheDocument();
 });
+
+test('landing cards and their featured word omit supplied examples', () => {
+    render(<PublicContent page="/rare-words" landingWords={[
+        { id: 1, word: 'first specimen', def: 'First meaning.', examples: [{ sentence: 'The first specimen appeared.', source: 'AI-generated' }] },
+        { id: 2, word: 'second specimen', def: 'Second meaning.', examples: [{ sentence: 'The second specimen followed.', source: 'AI-generated' }, { sentence: 'Not shown.' }] }
+    ]} />);
+    expect(screen.getByRole('complementary')).not.toHaveTextContent('The first specimen appeared.');
+    expect(screen.queryByText('The second specimen followed.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Not shown.')).not.toBeInTheDocument();
+});

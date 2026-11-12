@@ -88,7 +88,7 @@ function WordOrnament({ gothic }) {
                 h('text', { x: 180, y: 246, textAnchor: 'middle', fill: 'currentColor', stroke: 'none', fontSize: 160, fontFamily: 'Georgia, serif', opacity: .22 }, 'æ')));
 }
 
-function EditorialLanding({ page, onMenuToggle, menuOpen, landingWords = [], onRefresh, selectionLoading, selectionError, appHeader }) {
+function EditorialLanding({ page, onMenuToggle, menuOpen, landingWords = [], onRefresh, selectionLoading, selectionError, appHeader, wordCards }) {
     const data = pages[page];
     const design = data.landing;
     const featured = landingWords[0];
@@ -113,7 +113,14 @@ function EditorialLanding({ page, onMenuToggle, menuOpen, landingWords = [], onR
                     h('div', { className: 'editorial-section-heading' },
                         h('p', { className: 'editorial-eyebrow' }, design.collectionLabel),
                         h('h2', { id: 'collection-title' }, design.collectionTitle), h('p', null, data.intro))),
-                h(WordCards, { entries: landingWords.slice(1) }),
+                h('div', { className: 'editorial-word-band' }, wordCards || h('div', { className: 'landing-app-cards album-content-page album-theme-classic' },
+                    h('div', { className: 'word-list-scroller' }, landingWords.slice(1).map(word =>
+                        h('div', { className: 'word-item-container', key: word.id },
+                            h('article', { className: 'word-item' }, h('div', { className: 'word-content-wrapper' },
+                                h('div', { className: 'word-item-word-container' },
+                                    h('strong', { className: 'word-item-word word-item-word-no-after' }, word.word),
+                                    h('span', { className: 'word-item-sep' }, '. '),
+                                    h('div', { className: 'word-item-def' }, word.def))))))))),
                 h('p', { className: 'editorial-closing' }, data.closing),
                 onRefresh ? h('div', { className: 'editorial-selection-controls' },
                     h('button', { type: 'button', className: 'editorial-refresh', onClick: onRefresh, disabled: selectionLoading, 'aria-describedby': 'selection-refresh-help' },
@@ -128,8 +135,8 @@ function EditorialLanding({ page, onMenuToggle, menuOpen, landingWords = [], onR
                 h(PublicLinks))));
 }
 
-function PublicContent({ page = '/', embedded = false, onMenuToggle, menuOpen, landingWords, onRefresh, selectionLoading, selectionError, appHeader }) {
-    if (pages[page]?.landing) return h(EditorialLanding, { page, onMenuToggle, menuOpen, landingWords, onRefresh, selectionLoading, selectionError, appHeader });
+function PublicContent({ page = '/', embedded = false, onMenuToggle, menuOpen, landingWords, onRefresh, selectionLoading, selectionError, appHeader, wordCards }) {
+    if (pages[page]?.landing) return h(EditorialLanding, { page, onMenuToggle, menuOpen, landingWords, onRefresh, selectionLoading, selectionError, appHeader, wordCards });
     if (embedded && page === '/') {
         const data = pages[page];
         // These examples are replaced by the existing shared random-list engine.

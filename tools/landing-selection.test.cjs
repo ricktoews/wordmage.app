@@ -46,3 +46,16 @@ test('dedicated endpoint membership is accepted only for a validated themed resp
     assert.throws(() => landingResponse({ success: false, page: 'rare', words: [word(40)] }, 'rare'));
     assert.throws(() => landingResponse({ success: true, page: 'rare', words: [] }, 'rare'));
 });
+
+test('landing normalization and session persistence preserve supplied examples', async () => {
+    const { landingResponse, saveSelection } = await modulePromise;
+    const example = { sentence: 'The clepsydra marked the passing hours.', source: 'AI-generated' };
+    const words = landingResponse({ success: true, page: 'rare', words: [{ ...word(99), examples: [example] }] }, 'rare');
+    assert.deepEqual(words[0].examples, [example]);
+    const data = new Map();
+    global.sessionStorage = { getItem: key => data.get(key), setItem: (key, value) => data.set(key, value) };
+    saveSelection('rare', words);
+    const reloaded = await import('../src/public-content/landing-selection.mjs?examples');
+    assert.deepEqual(reloaded.readSelection('rare')[0].examples, [example]);
+    delete global.sessionStorage;
+});

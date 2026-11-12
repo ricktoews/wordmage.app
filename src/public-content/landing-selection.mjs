@@ -12,7 +12,8 @@ function eligibleWords(records, theme) {
             typeof definition !== 'string' || !definition.trim() || seen.has(String(record.id))) return [];
         seen.add(String(record.id));
         return [{ id: String(record.id), word: record.word, def: definition,
-            source: typeof record.source === 'string' ? record.source : '', [flag]: 1 }];
+            source: typeof record.source === 'string' ? record.source : '',
+            examples: Array.isArray(record.examples) ? record.examples : [], [flag]: 1 }];
     });
 }
 

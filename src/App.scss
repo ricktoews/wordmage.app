@@ -5982,3 +5982,13 @@ input[type="checkbox"] {
     .assistant-link-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; }
     button:focus-visible, a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
 }
+
+// Embedded discovery lists use the same cards without the internal toolbar offset.
+.landing-app-cards.album-content-page[class*="album-theme-"],
+.landing-app-cards.album-content-page .word-list-container {
+    background: transparent;
+}
+.landing-app-cards .word-list-scroller {
+    top: 0;
+    margin-top: 0;
+}

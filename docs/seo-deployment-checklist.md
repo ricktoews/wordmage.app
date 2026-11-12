@@ -4,8 +4,8 @@ Nothing has been deployed or submitted to Search Console by this work.
 
 ## Before deployment
 
-- Review the public copy and the separately deferred Collective Nouns proposal.
-  The active canonical pages are `/`, `/rare-words`, `/gothic-vocabulary`, `/browse`,
+- Review the public copy and Collective Nouns source-label presentation.
+  The active canonical pages are `/`, `/rare-words`, `/gothic-vocabulary`, `/collective-nouns`, `/browse`,
   and `/about`. `/random` remains a working alias canonicalized to `/`.
 - In Netlify, use the tracked `netlify.toml`: build command `npm run build`, publish
   directory `build`, functions directory `netlify/functions`. Do not deploy the
@@ -15,7 +15,7 @@ Nothing has been deployed or submitted to Search Console by this work.
 - Run the build and focused checks documented in `docs/seo-foundation.md`.
 - Check a Netlify deploy preview: HTML and response headers should say `noindex`,
   including after React navigation. Preview and branch-build sitemaps should have
-  no URLs. A production-context build must have the five canonical sitemap URLs.
+  no URLs. A production-context build must have the six canonical sitemap URLs.
 - Open each page on a narrow/mobile viewport. Check headings, readable word cards,
   navigation, Random refresh/undo, and popup behavior. Automated DOM checks do not
   substitute for this visual review.
@@ -28,11 +28,12 @@ Nothing has been deployed or submitted to Search Console by this work.
    already be in the response before JavaScript executes.
 2. Check `/sitemap.xml` and `/robots.txt`. Every sitemap URL must resolve with HTTP
    200, reference `https://wordmage.app`, have matching canonical metadata, and lack
-   `noindex`. Private routes, `/random`, and deferred `/collective-nouns` must not
+   `noindex`. Private routes and `/random` must not
    appear in the sitemap. The generated robots file advertises its sitemap.
 3. Request a nonexistent route and `/rare-words/not-a-page`: both must return 404.
    Verify that `/albums`, `/login`, `/inbox`, and shared album URLs remain noindex.
-   No private content should appear in generated public HTML.
+   No private content should appear in generated public HTML. Legacy `/collective`
+   URLs should redirect to `/collective-nouns`, preserving starting terms as search.
 4. In browser Network tools, open a fresh tab at `/rare-words?test=1#example`, then
    at `/gothic-vocabulary`. Expect exactly one startup POST per document to
    `/loadcustom?entry=%2Frare-words` or
@@ -85,7 +86,7 @@ Official guidance: [property types](https://support.google.com/webmasters/answer
    and any parsing errors. Submission tells Google the sitemap location; it does
    not upload it or guarantee that every page will be indexed.
 3. Use **URL Inspection → Test live URL** for `/`, `/rare-words`, and
-   `/gothic-vocabulary`. Check indexing eligibility and the tested HTML. Request
+   `/gothic-vocabulary` and `/collective-nouns`. Check indexing eligibility and the tested HTML. Request
    indexing of these pages if appropriate. Do not submit preview URLs.
 4. Let data accumulate. Compare non-brand query impressions/clicks and landing
    pages over several weeks. The Apache summary supplies startup counts by entry

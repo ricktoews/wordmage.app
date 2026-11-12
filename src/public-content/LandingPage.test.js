@@ -1,18 +1,25 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import LandingPage from './LandingPage';
 import snapshot from './landing-snapshot.json';
 import { getLandingPageWords } from '../utils/api';
 jest.mock('../utils/api', () => ({ getLandingPageWords: jest.fn() }));
+beforeEach(() => { global.IntersectionObserver = jest.fn(() => ({ observe: jest.fn(), disconnect: jest.fn() })); });
+afterEach(() => { delete global.IntersectionObserver; });
+const renderPage = page => render(<MemoryRouter><LandingPage page={page} /></MemoryRouter>);
 const response = (page, prefix) => ({ success: true, page, words: Array.from({ length: 20 }, (_, i) => ({ id: `${prefix}-${i}`, word: `${prefix} word ${i}`, def: `Meaning ${i}`, source: 'Test collection' })) });
 
 test('API selection survives navigation/remount, refresh replaces it, and failed refresh preserves it', async () => {
     sessionStorage.clear();
     getLandingPageWords.mockResolvedValueOnce(response('rare', 'first'));
-    const page = render(<LandingPage page="/rare-words" />);
+    const page = renderPage('/rare-words');
     await waitFor(() => expect(screen.getByRole('complementary')).toHaveTextContent('first word'));
+    expect(document.querySelectorAll('.word-item')).toHaveLength(8);
+    expect(screen.getAllByRole('button', { name: /Ask AI/i })).toHaveLength(8);
+    expect(document.querySelector('.public-word-grid')).toBeNull();
     const featured = screen.getByRole('complementary').textContent;
     page.unmount();
-    const returning = render(<LandingPage page="/rare-words" />);
+    const returning = renderPage('/rare-words');
     expect(screen.getByRole('complementary').textContent).toBe(featured);
     expect(getLandingPageWords).toHaveBeenCalledTimes(1);
     getLandingPageWords.mockResolvedValueOnce(response('rare', 'second'));
@@ -25,7 +32,7 @@ test('API selection survives navigation/remount, refresh replaces it, and failed
     expect(screen.getByRole('complementary').textContent).toBe(refreshed);
     returning.unmount();
     getLandingPageWords.mockRejectedValueOnce(new Error('offline'));
-    render(<LandingPage page="/gothic-vocabulary" />);
+    renderPage('/gothic-vocabulary');
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Showing a saved selection'));
     expect(screen.getByRole('complementary')).toHaveTextContent(snapshot.gothic[0].word);
     getLandingPageWords.mockResolvedValueOnce(response('gothic', 'dark'));
