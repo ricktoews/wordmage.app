@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { PublicContent } from './PublicContent';
 import WordScroller from '../components/WordScroller';
-import { ALBUM_THEMES } from '../utils/themes';
 import snapshot from './landing-snapshot.json';
 import { getLandingPageWords } from '../utils/api';
 import { landingResponse, selectWords, readSelection, saveSelection } from './landing-selection.mjs';
@@ -24,22 +23,6 @@ export default function LandingPage({ page, ...props }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const cardWords = useMemo(() => words.slice(1), [words]);
-    const [albumTheme, setAlbumTheme] = useState(() => {
-        try { return localStorage.getItem('wordmage.albumTheme') || 'classic'; }
-        catch (_) { return 'classic'; }
-    });
-    useEffect(() => {
-        const syncTheme = event => {
-            try { setAlbumTheme(event?.detail?.theme || localStorage.getItem('wordmage.albumTheme') || 'classic'); }
-            catch (_) { setAlbumTheme('classic'); }
-        };
-        window.addEventListener('wordmage:albumThemeChanged', syncTheme);
-        window.addEventListener('storage', syncTheme);
-        return () => {
-            window.removeEventListener('wordmage:albumThemeChanged', syncTheme);
-            window.removeEventListener('storage', syncTheme);
-        };
-    }, []);
     const mounted = useRef(false);
     useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
 
@@ -77,7 +60,7 @@ export default function LandingPage({ page, ...props }) {
     }
 
     return <PublicContent page={page} {...props} landingWords={words}
-        wordCards={<div className={`landing-app-cards album-content-page album-theme-${ALBUM_THEMES.includes(albumTheme) ? albumTheme : 'classic'}`}>
+        wordCards={<div className={`landing-app-cards album-content-page landing-editorial-cards landing-${theme}-cards`}>
             <WordScroller pool={cardWords} listType="browse" hasMore={false} startingNdx={0} />
         </div>}
         onRefresh={refresh} selectionLoading={loading} selectionError={error} />;

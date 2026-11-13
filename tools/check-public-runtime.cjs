@@ -47,7 +47,7 @@ async function checkRoute(route, authenticated, bundle) {
         await waitFor(() => dom.window.document.querySelector('.App'));
         if (route === '/collective-nouns') {
             assert.ok(dom.window.document.querySelector('.editorial-collective'));
-            assert.equal(dom.window.document.querySelectorAll('.collective-grid article').length, 447);
+            assert.equal(dom.window.document.querySelectorAll('.collective-list > li').length, 447);
             assert.ok(dom.window.document.querySelector('.hamburger-nav a[href="/collective-nouns"]'));
         }
         const click = href => dom.window.document.querySelector(`a[data-public-link][href="${href}"]`)

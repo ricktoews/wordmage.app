@@ -113,7 +113,7 @@ function EditorialLanding({ page, onMenuToggle, menuOpen, landingWords = [], onR
                     h('div', { className: 'editorial-section-heading' },
                         h('p', { className: 'editorial-eyebrow' }, design.collectionLabel),
                         h('h2', { id: 'collection-title' }, design.collectionTitle), h('p', null, data.intro))),
-                h('div', { className: 'editorial-word-band' }, wordCards || h('div', { className: 'landing-app-cards album-content-page album-theme-classic' },
+                h('div', { className: 'editorial-word-band' }, wordCards || h('div', { className: `landing-app-cards album-content-page landing-editorial-cards landing-${gothic ? 'gothic' : 'rare'}-cards` },
                     h('div', { className: 'word-list-scroller' }, landingWords.slice(1).map(word =>
                         h('div', { className: 'word-item-container', key: word.id },
                             h('article', { className: 'word-item' }, h('div', { className: 'word-content-wrapper' },

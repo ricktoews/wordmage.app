@@ -17,6 +17,10 @@ test('API selection survives navigation/remount, refresh replaces it, and failed
     expect(document.querySelectorAll('.word-item')).toHaveLength(8);
     expect(screen.getAllByRole('button', { name: /Ask AI/i })).toHaveLength(8);
     expect(document.querySelector('.public-word-grid')).toBeNull();
+    expect(document.querySelector('.landing-rare-cards')).toBeInTheDocument();
+    fireEvent(window, new CustomEvent('wordmage:albumThemeChanged', { detail: { theme: 'fogbound' } }));
+    expect(document.querySelector('.landing-rare-cards')).toBeInTheDocument();
+    expect(document.querySelector('.landing-app-cards')).not.toHaveClass('album-theme-fogbound');
     const featured = screen.getByRole('complementary').textContent;
     page.unmount();
     const returning = renderPage('/rare-words');
@@ -35,6 +39,10 @@ test('API selection survives navigation/remount, refresh replaces it, and failed
     renderPage('/gothic-vocabulary');
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Showing a saved selection'));
     expect(screen.getByRole('complementary')).toHaveTextContent(snapshot.gothic[0].word);
+    expect(document.querySelector('.landing-gothic-cards')).toBeInTheDocument();
+    fireEvent(window, new CustomEvent('wordmage:albumThemeChanged', { detail: { theme: 'fogbound' } }));
+    expect(document.querySelector('.landing-app-cards')).not.toHaveClass('album-theme-fogbound');
+    expect(document.querySelector('.landing-app-cards')).toHaveClass('landing-editorial-cards');
     getLandingPageWords.mockResolvedValueOnce(response('gothic', 'dark'));
     fireEvent.click(screen.getByRole('button', { name: 'Show different words' }));
     await waitFor(() => expect(screen.getByRole('complementary')).toHaveTextContent('dark word'));

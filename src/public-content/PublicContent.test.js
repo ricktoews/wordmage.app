@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { PublicContent } from './PublicContent';
 import snapshot from './landing-snapshot.json';
 import { pageForPath } from './pages';
@@ -22,11 +22,11 @@ test('collective nouns search subjects and merge duplicate sources without losin
     expect(merged[0]).toEqual(expect.objectContaining({ sources: ['First', 'Second'], highlight: true }));
     render(<CollectiveLanding />);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'goldfinches' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 expression');
-    expect(screen.getAllByRole('heading', { level: 3 }).every(heading => /goldfinches/i.test(heading.textContent))).toBe(true);
+    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(1);
+    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem').every(entry => /goldfinches/i.test(entry.textContent))).toBe(true);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'no-match-xyz' } });
-    expect(screen.getByRole('status')).toHaveTextContent('0 expressions');
-    expect(screen.queryByRole('heading', { level: 3 })).not.toBeInTheDocument();
+    expect(screen.getByText(/No expressions found/)).toBeInTheDocument();
+    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).queryByRole('listitem')).not.toBeInTheDocument();
 });
 
 test('canonical aliases, private routes, and missing pages have distinct metadata policies', () => {
@@ -54,14 +54,18 @@ test('collective landing retains the featured expression across navigation and c
     first.unmount();
     render(<CollectiveLanding />);
     expect(screen.getByRole('complementary', { name: 'Featured collective noun' }).textContent).toBe(feature);
-    fireEvent.click(screen.getByRole('checkbox', { name: 'Collection favorites' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Favorite a charm of goldfinches$/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Favorites' }));
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: '  GOLDFINCHES  ' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 expression');
-    fireEvent.click(screen.getByRole('button', { name: 'Show all' }));
+    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(1);
+    expect(screen.queryByRole('button', { name: 'Show all' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'All' }));
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '' } });
     expect(screen.getByRole('searchbox')).toHaveValue('');
-    expect(screen.getByRole('checkbox')).not.toBeChecked();
-    expect(screen.getByRole('status')).toHaveTextContent('447 expressions');
-    expect(screen.getByText(/individual usage histories have not been assessed/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Favorites' })).toHaveAttribute('aria-pressed', 'false');
+    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(447);
+    expect(screen.getByRole('heading', { name: 'About this collection' })).toBeInTheDocument();
+    expect(screen.getByText(/individual usage histories have not been assessed/)).toBeVisible();
 });
 
 test('landing cards and their featured word omit supplied examples', () => {
