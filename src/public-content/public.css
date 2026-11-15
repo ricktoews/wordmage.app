@@ -453,3 +453,25 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 
 /* Temporarily hide collective favorites while retaining saved selections. */
 .collective-list .word-favorite-toggle { display: none; }
+
+@media (min-width: 900px) {
+    .collective-category-index {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 48px;
+        align-items: start;
+    }
+    .collective-category-index a { height: 100%; box-sizing: border-box; }
+}
+
+.editorial-collective .editorial-section-heading,
+.editorial-collective .collective-source-note { max-width: none; }
+
+@media (min-width: 900px) {
+    .collective-category-page .collective-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap: 32px;
+        align-items: start;
+    }
+}
