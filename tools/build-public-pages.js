@@ -33,7 +33,7 @@ async function main() {
         if (page.deferred) return;
         const theme = route === '/rare-words' ? 'rare' : route === '/gothic-vocabulary' ? 'gothic' : null;
         const landingWords = theme ? snapshot[theme].slice(0, theme === 'rare' ? 9 : 13) : undefined;
-        const content = renderToStaticMarkup(React.createElement(route === '/collective-nouns' ? CollectiveLanding : PublicContent, { page: route, landingWords, embedded: ['/', '/browse'].includes(route) }));
+        const content = renderToStaticMarkup(React.createElement(route.startsWith('/collective-nouns') ? CollectiveLanding : PublicContent, { page: route, categorySlug: page.collectiveCategory, landingWords, embedded: ['/', '/browse'].includes(route) }));
         const html = documentFor(page, content, page.noindex ? null : route);
         write(route === '/' ? 'index.html' : route === '/404' ? '404.html' : `${route.slice(1)}/index.html`, html);
         if (route === '/') write('random/index.html', html);

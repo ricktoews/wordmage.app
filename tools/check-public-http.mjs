@@ -45,11 +45,11 @@ console.log('301 Random HTML file alias');
 const sitemapResponse = await fetch(`${base}/sitemap.xml`);
 assert.equal(sitemapResponse.status, 200);
 const locations = [...(await sitemapResponse.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => new URL(match[1]));
-assert.equal(locations.length, 6);
+assert.equal(locations.length, 16);
 for (const location of locations) {
     assert.equal(location.origin, 'https://wordmage.app');
     const response = await fetch(`${base}${location.pathname}`, { redirect: 'manual' });
     assert.equal(response.status, 200, `sitemap ${location.pathname}`);
     assert.ok((await response.text()).includes(`rel="canonical" href="${location.href}"`));
 }
-console.log('All six sitemap URLs resolve with matching production canonicals.');
+console.log('All sitemap URLs resolve with matching production canonicals.');

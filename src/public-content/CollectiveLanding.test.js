@@ -4,7 +4,7 @@ import { CollectiveLanding } from './CollectiveLanding.mjs';
 beforeEach(() => localStorage.clear());
 
 test('collective favorites toggle, persist on remount, and stay separate from word favorites', () => {
-    const first = render(<CollectiveLanding appHeader />);
+    const first = render(<CollectiveLanding appHeader categorySlug="birds" />);
     const button = screen.getAllByRole('button', { name: /^Favorite / })[0];
     const expression = button.getAttribute('aria-label').replace(/^Favorite /, '');
     expect(button).toHaveAttribute('aria-pressed', 'false');
@@ -14,7 +14,7 @@ test('collective favorites toggle, persist on remount, and stay separate from wo
     expect(button.querySelector('path')).toHaveAttribute('fill', 'currentColor');
     expect(JSON.parse(localStorage.getItem('wordmage.collective-favorites.v1'))).toHaveLength(1);
     first.unmount();
-    render(<CollectiveLanding appHeader />);
+    render(<CollectiveLanding appHeader categorySlug="birds" />);
     const restored = screen.getByRole('button', { name: `Unfavorite ${expression}` });
     expect(restored).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(restored);
@@ -23,7 +23,7 @@ test('collective favorites toggle, persist on remount, and stay separate from wo
 });
 
 test('collective favorites synchronize changes from another tab', () => {
-    render(<CollectiveLanding appHeader />);
+    render(<CollectiveLanding appHeader categorySlug="birds" />);
     const button = screen.getAllByRole('button', { name: /^Favorite / })[0];
     fireEvent.click(button);
     localStorage.removeItem('wordmage.collective-favorites.v1');
@@ -31,13 +31,34 @@ test('collective favorites synchronize changes from another tab', () => {
     expect(button).toHaveAttribute('aria-pressed', 'false');
 });
 
-test('Favorites and All filter the list using browser favorites', () => {
+test('category pages omit filters but keep individual favorite toggles', () => {
+    render(<CollectiveLanding appHeader categorySlug="birds" />);
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Favorites' })).not.toBeInTheDocument();
+    expect(screen.getAllByRole('listitem')).toHaveLength(65);
+    expect(screen.getAllByRole('button', { name: /^Favorite / })).toHaveLength(65);
+});
+
+test('overview displays only the category links in supplied order', () => {
     render(<CollectiveLanding appHeader />);
-    const button = screen.getAllByRole('button', { name: /^Favorite / })[0];
-    fireEvent.click(button);
-    fireEvent.click(screen.getByRole('button', { name: 'Favorites' }));
-    expect(screen.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getAllByRole('listitem')).toHaveLength(1);
-    fireEvent.click(screen.getByRole('button', { name: 'All' }));
-    expect(screen.getAllByRole('listitem')).toHaveLength(447);
+    const links = [...document.querySelectorAll('.collective-category-index a')];
+    expect(links).toHaveLength(10);
+    expect(links[0]).toHaveAttribute('aria-label', 'Birds of a Feather');
+    expect(links[9]).toHaveAttribute('aria-label', 'Curiosities and Absurdities');
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    expect(document.querySelector('.collective-list')).toBeNull();
+});
+
+test('category headings link to dedicated pages with only their own expressions', () => {
+    const overview = render(<CollectiveLanding appHeader />);
+    expect(screen.getByRole('link', { name: 'Birds of a Feather' })).toHaveAttribute('href', '/collective-nouns/birds');
+    overview.unmount();
+    const category = render(<CollectiveLanding appHeader categorySlug="birds" />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Birds of a Feather');
+    expect(document.querySelectorAll('.collective-category')).toHaveLength(1);
+    expect(document.querySelectorAll('.collective-list > li')).toHaveLength(65);
+    expect(screen.getByRole('link', { name: /All collective nouns/ })).toHaveAttribute('href', '/collective-nouns');
+    category.unmount();
+    render(<CollectiveLanding appHeader categorySlug="nonexistent" />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('This page has wandered off');
 });

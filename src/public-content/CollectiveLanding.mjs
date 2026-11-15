@@ -1,12 +1,9 @@
 import React from 'react';
 import FavoriteThumb from '../components/icons/FavoriteThumb.mjs';
-import { collectives, collectiveKey } from './collective-data.mjs';
+import { categories, collectives, collectiveKey } from './collective-data.mjs';
 import { pages } from './pages.mjs';
-import { PublicLinks, EditorialMasthead } from './PublicContent.mjs';
+import { PublicLinks, EditorialMasthead, PublicContent } from './PublicContent.mjs';
 const h = React.createElement;
-const highlights = collectives.filter(item => item.highlight);
-const initialFeature = highlights.find(item => item.term.toLowerCase() === 'charm') || highlights[0] || collectives[0];
-let rememberedFeature;
 const favoritesStorageKey = 'wordmage.collective-favorites.v1';
 function readFavorites(fallback = new Set()) {
     try {
@@ -14,7 +11,6 @@ function readFavorites(fallback = new Set()) {
         return new Set(Array.isArray(saved) ? saved.filter(key => typeof key === 'string') : fallback);
     } catch (_) { return new Set(fallback); }
 }
-const featureStorageKey = 'wordmage.collective-feature.v1';
 
 function CollectiveOrnament() {
     return h('svg', { className: 'editorial-ornament', viewBox: '0 0 360 360', fill: 'none', stroke: 'currentColor', strokeWidth: 1, 'aria-hidden': true },
@@ -26,10 +22,11 @@ function CollectiveOrnament() {
         }), h('circle', { cx: 180, cy: 180, r: 10, fill: 'currentColor', opacity: .5 }));
 }
 
-function CollectiveLanding({ appHeader = false }) {
+function CollectiveLanding({ appHeader = false, collection, loadError = '', categorySlug }) {
+    const entries = collection?.collectives || collectives;
+    const categoryList = collection?.categories || categories;
+    const category = categorySlug ? categoryList.find(item => item.slug === categorySlug) : null;
     const data = pages['/collective-nouns'];
-    const [featured, setFeatured] = React.useState(initialFeature);
-    const [search, setSearch] = React.useState(() => typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') || '');
     const [favorites, setFavorites] = React.useState(() => new Set());
     React.useEffect(() => {
         setFavorites(readFavorites());
@@ -48,57 +45,54 @@ function CollectiveLanding({ appHeader = false }) {
         catch (_) { /* Keep the selection for this visit when storage is unavailable. */ }
         setFavorites(next);
     }
-    const [onlyFavorites, setOnlyFavorites] = React.useState(false);
-    React.useEffect(() => {
-        let savedKey = rememberedFeature;
-        try { savedKey = sessionStorage.getItem(featureStorageKey) || savedKey; } catch (_) { /* Private browsing may restrict storage. */ }
-        const saved = collectives.find(item => collectiveKey(item) === savedKey);
-        const next = saved || highlights[Math.floor(Math.random() * highlights.length)] || initialFeature;
-        rememberedFeature = collectiveKey(next);
-        try { sessionStorage.setItem(featureStorageKey, rememberedFeature); } catch (_) { /* Keep the in-memory selection. */ }
-        setFeatured(next);
-    }, []);
-    const visible = React.useMemo(() => {
-        const query = search.trim().toLowerCase();
-        return collectives.filter(item => (!onlyFavorites || favorites.has(collectiveKey(item))) &&
-            [item.term, item.refersTo, item.expression].some(value => value.toLowerCase().includes(query)))
-            .sort((a, b) => a.refersTo.localeCompare(b.refersTo) || a.expression.localeCompare(b.expression));
-    }, [search, onlyFavorites, favorites]);
+    const visible = React.useMemo(() => entries.filter(item => !categorySlug || item.categoryId === category?.id)
+        .sort((a, b) => a.refersTo.localeCompare(b.refersTo) || a.expression.localeCompare(b.expression)),
+    [entries, categorySlug, category?.id]);
 
-    return h('div', { className: 'editorial-landing editorial-collective', style: { '--collective-sticky-top': appHeader ? '50px' : '64px' } },
+    const sections = categoryList.map(category => ({ ...category, entries: visible.filter(item => item.categoryId === category.id) }))
+        .filter(category => category.entries.length);
+
+    if (categorySlug && !category) return h(PublicContent, { page: '/404' });
+
+    return h('div', { className: `editorial-landing editorial-collective${category ? ' collective-category-page' : ''}`, style: { '--collective-sticky-top': appHeader ? '50px' : '64px' } },
         !appHeader ? h(EditorialMasthead, { page: '/collective-nouns' }) : null,
         h('main', null,
+            category ? h('header', { className: 'collective-category-intro' },
+                h('a', { href: '/collective-nouns', 'data-public-link': true }, '← All collective nouns'),
+                h('h1', { className: category.imagePath ? 'collective-accessible-title' : undefined }, category.name),
+                category.imagePath ? h('img', { className: 'collective-category-image', src: category.imagePath, alt: '', decoding: 'async' }) : null,
+                category.description ? h('p', null, category.description) : null) :
             h('section', { className: 'editorial-hero', 'aria-labelledby': 'landing-title' },
                 h('div', { className: 'editorial-hero-inner' },
                     h('div', { className: 'editorial-hero-copy' },
                         h('h1', { id: 'landing-title' }, data.lead, ' ', h('em', null, data.accent)),
                         h('p', { className: 'editorial-hero-description' }, data.intro)),
-                    h('aside', { className: 'editorial-feature', 'aria-label': 'Featured collective noun' },
-                        h(CollectiveOrnament),
-                        h('div', { className: 'editorial-feature-content' },
-                            h('p', { className: 'editorial-feature-label' }, 'In good company'),
-                            h('p', { className: 'editorial-feature-word' }, featured.term),
-                            h('p', { className: 'editorial-feature-definition' }, featured.expression),
-                            h('p', { className: 'editorial-feature-source' }, 'Collection source: ', featured.sources.join('; ')))))),
-            h('section', { className: 'editorial-collection', id: 'collection', 'aria-labelledby': 'collection-title' },
-                h('div', { className: 'editorial-collection-header' }, h('div', { className: 'editorial-section-heading' },
+                    h('div', { className: 'editorial-feature', 'aria-hidden': true }, h(CollectiveOrnament)))),
+            h('section', { className: 'editorial-collection', id: 'collection', 'aria-labelledby': category ? undefined : 'collection-title', 'aria-label': category ? 'Category collection' : undefined },
+                !category ? h('div', { className: 'editorial-collection-header' }, h('div', { className: 'editorial-section-heading' },
                     h('p', { className: 'editorial-eyebrow' }, 'Creatures, people, and things'),
-                    h('h2', { id: 'collection-title' }, data.collectionTitle), h('p', null, data.collectionIntro))),
-                h('div', { className: 'collective-controls', role: 'group', 'aria-label': 'Filter collective nouns' },
-                    h('div', { className: 'collective-search' },
-                        h('input', { type: 'search', 'aria-label': 'Find an expression', value: search, placeholder: 'Search', onChange: event => setSearch(event.target.value) }),
-                        h('svg', { className: 'collective-search-icon', viewBox: '0 0 24 24', width: 18, height: 18, fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, 'aria-hidden': true },
-                            h('circle', { cx: 10.5, cy: 10.5, r: 6.5 }), h('path', { d: 'm16 16 5 5' }))),
-                    h('button', { type: 'button', className: 'collective-favorites-filter', 'aria-pressed': onlyFavorites, onClick: () => setOnlyFavorites(value => !value) }, onlyFavorites ? 'All' : 'Favorites')),
-                h('ul', { className: 'collective-list', 'aria-label': 'Collective noun expressions' }, visible.map(item =>
+                    h('h2', { id: 'collection-title' }, category ? 'Explore the expressions' : data.collectionTitle), !category ? h('p', null, data.collectionIntro) : null)) : null,
+                loadError ? h('p', { role: 'status' }, loadError) : null,
+                !category ? h('nav', { className: 'collective-category-index', 'aria-label': 'Collective noun categories' },
+                    categoryList.map(item => h('a', { key: item.id, href: `/collective-nouns/${item.slug}`, 'data-public-link': true,
+                        'aria-label': item.name },
+                        !item.imagePath ? h('span', { className: 'collective-category-name' }, item.name) : null,
+                        item.imagePath ? h('img', { className: 'collective-category-image', src: item.imagePath, alt: '', loading: 'lazy', decoding: 'async',
+                            onError: event => { event.currentTarget.hidden = true; } }) : null,
+                        item.description ? h('span', { className: 'collective-category-description' }, item.description) : null))) :
+                h('div', { role: 'region', 'aria-label': 'Collective noun expressions' }, sections.map(category =>
+                    h('section', { className: 'collective-category', key: category.id, 'aria-label': category.name },
+                        h('ul', { className: 'collective-list', 'aria-label': category.name }, category.entries.map(item =>
                     h('li', { key: collectiveKey(item) },
                         h('button', { type: 'button', className: 'word-favorite-toggle',
                             'aria-label': `${favorites.has(collectiveKey(item)) ? 'Unfavorite' : 'Favorite'} ${item.expression}`,
                             'aria-pressed': favorites.has(collectiveKey(item)),
                             title: 'Favorite saved in this browser', onClick: () => toggleFavorite(item) },
                             h(FavoriteThumb, { filled: favorites.has(collectiveKey(item)) })),
-                        h('span', { className: 'word-item-word word-item-word-no-after' }, item.expression)))),
-                !visible.length ? h('p', null, 'No expressions found. Try another search, or switch from Favorites to All.') : null,
+                        h('span', { className: 'collective-expression-copy' },
+                            h('span', { className: 'word-item-word word-item-word-no-after' }, item.expression),
+                            h('small', { className: 'collective-expression-source' }, 'Source: ', item.sources.join('; '))))))))),
+                category && !visible.length ? h('p', null, 'No expressions in this category yet.') : null,
                 h('section', { className: 'collective-source-note', 'aria-labelledby': 'collective-about-title' },
                     h('h2', { id: 'collective-about-title' }, 'About this collection'),
                     h('p', null, 'These expressions come from the collection’s records labelled Lipton 1977 and Book of St. Albans. They include historical and fanciful group names. Source labels are preserved; individual usage histories have not been assessed. Favorites are saved only in this browser.'))),

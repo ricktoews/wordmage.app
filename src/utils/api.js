@@ -102,3 +102,10 @@ export async function getLandingPageWords(page, count = 20) {
     if (!response.ok) throw new Error(`Unable to load landing words (${response.status})`);
     return response.json();
 }
+
+// Public collection: available before anonymous or signed-in initialization completes.
+export async function getCollectiveNouns() {
+    const response = await fetch(`${base}/collective-nouns`);
+    if (!response.ok) throw new Error(`Unable to load collective nouns (${response.status})`);
+    return response.json();
+}

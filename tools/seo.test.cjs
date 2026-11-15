@@ -28,7 +28,7 @@ test('production HTML contains substantive content and one correct canonical per
             }
             const file = route === '/' ? 'index.html' : route === '/404' ? '404.html' : `${route.slice(1)}/index.html`;
             const html = fs.readFileSync(path.join(dir, file), 'utf8');
-            assert.ok(html.replace(/<[^>]*>/g, '').includes(page.heading));
+            assert.ok(html.replace(/<[^>]*>/g, '').replace(/&#x27;/g, "'").replace(/&amp;/g, '&').includes(page.heading));
             assert.ok(/<h1\b/.test(html));
             assert.equal((html.match(/<h1\b/g) || []).length, 1);
             assert.equal((html.match(/name="robots"/g) || []).length, 1);
@@ -53,9 +53,18 @@ test('production HTML contains substantive content and one correct canonical per
             assert.ok(html.includes(snapshot[theme][1].def.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;')));
         }
         assert.ok(sitemap.includes('https://wordmage.app/collective-nouns'));
+        const { categories, collectives } = await import('../src/public-content/collective-data.mjs');
+        for (const category of categories) {
+            const html = fs.readFileSync(path.join(dir, `collective-nouns/${category.slug}/index.html`), 'utf8');
+            assert.equal((html.match(/<li><button type="button" class="word-favorite-toggle"/g) || []).length,
+                collectives.filter(item => item.categoryId === category.id).length);
+            assert.ok(html.includes('href="/collective-nouns"'));
+        }
+
         const collectiveHtml = fs.readFileSync(path.join(dir, 'collective-nouns/index.html'), 'utf8');
-        assert.ok(collectiveHtml.includes('A charm of goldfinches'));
-        assert.equal((collectiveHtml.match(/<li><button type="button" class="word-favorite-toggle"/g) || []).length, 447);
+        assert.ok(collectiveHtml.includes('Birds of a Feather'));
+        assert.ok(collectiveHtml.includes('href="/collective-nouns/birds"'));
+        assert.equal((collectiveHtml.match(/<li><button type="button" class="word-favorite-toggle"/g) || []).length, 0);
         assert.ok(collectiveHtml.includes('individual usage histories have not been assessed'));
         assert.ok(!collectiveHtml.includes('name="robots" content="noindex'));
         assert.equal(fs.readFileSync(path.join(dir, 'index.html'), 'utf8'), fs.readFileSync(path.join(dir, 'random/index.html'), 'utf8'));

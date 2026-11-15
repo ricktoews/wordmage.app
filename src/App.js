@@ -39,7 +39,7 @@ import PopupListShare from './components/PopupListShare';
 import UnscrambleGame from './components/UnscrambleGame';
 import BrowseWords from './components/BrowseWords';
 import PageMetadata from './components/PageMetadata';
-import { CollectiveLanding } from './public-content/CollectiveLanding.mjs';
+import CollectivePage from './public-content/CollectivePage';
 import LandingPage from './public-content/LandingPage';
 import HeaderMock from './mock/HeaderMock';
 import { PublicContent } from './public-content/PublicContent';
@@ -86,7 +86,7 @@ const getAlbumThemeFromStorage = () => {
 };
 
 function App(props) {
-    const isEditorialLanding = ['/rare-words', '/gothic-vocabulary', '/collective-nouns'].includes(props.location.pathname.replace(/\/+$/, ''));
+    const isEditorialLanding = ['/rare-words', '/gothic-vocabulary', '/collective-nouns'].includes(props.location.pathname.replace(/\/+$/, '')) || props.location.pathname.startsWith('/collective-nouns/');
     const [aiExplainWord, setAiExplainWord] = useState(null);
     const [showAppSharePopup, setShowAppSharePopup] = useState(false);
     const [mastheadShareConfig, setMastheadShareConfig] = useState(null);
@@ -550,7 +550,7 @@ function App(props) {
                         <Route exact path="/browse/:start?" render={props => (<BrowseWords
                             onAIExplain={handleAIExplain}
                         />)} />
-                        <Route exact path="/collective-nouns" render={() => <CollectiveLanding appHeader />} />
+                        <Route exact path="/collective-nouns/:categorySlug?" render={({ match }) => <CollectivePage appHeader key={match.params.categorySlug || 'all'} categorySlug={match.params.categorySlug} />} />
                         <Route exact path="/collective/:start?" render={({ match }) => <Redirect to={{ pathname: '/collective-nouns', search: match.params.start ? `?${new URLSearchParams({ search: match.params.start })}` : '' }} />} />
                         <Route exact path="/shared/albums/:token" render={props => (<SharedAlbum />)} />
                         <Route exact path="/albums" render={props => (<Albums

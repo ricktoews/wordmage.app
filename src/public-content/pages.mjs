@@ -1,3 +1,4 @@
+import { categories } from './collective-data.mjs';
 // Shared by React and the build-time HTML generator. No browser or API dependency.
 const origin = 'https://wordmage.app';
 const pages = {
@@ -68,6 +69,15 @@ const pages = {
         noindex: true
     }
 };
+
+categories.forEach(category => {
+    pages[`/collective-nouns/${category.slug}`] = {
+        title: `${category.name} — Collective Nouns | WordMage`,
+        description: `Explore collective nouns in ${category.name}, from WordMage’s collection of curious expressions.`,
+        heading: category.name,
+        collectiveCategory: category.slug
+    };
+});
 
 const appRoutes = [
     '/mock', '/albums', '/albums/:id', '/shared/albums/:token', '/history', '/new-words',

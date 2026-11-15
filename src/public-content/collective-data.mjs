@@ -10,6 +10,7 @@ function combineCollectives(records) {
     });
     return [...merged.values()].sort((a, b) => a.refersTo.localeCompare(b.refersTo));
 }
+const categories = [...(collectiveData.categories || [])].sort((a, b) => a.sortOrder - b.sortOrder);
 const collectives = combineCollectives(collectiveData.records);
 const collectiveKey = item => [item.term, item.refersTo, item.expression].map(value => value.trim().toLowerCase()).join('|');
-export { collectives, collectiveKey, combineCollectives };
+export { categories, collectives, collectiveKey, combineCollectives };

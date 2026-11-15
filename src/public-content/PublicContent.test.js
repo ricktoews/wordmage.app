@@ -20,13 +20,8 @@ test('collective nouns search subjects and merge duplicate sources without losin
     const merged = combineCollectives([item, { ...item, source: 'Second', highlight: true }]);
     expect(merged).toHaveLength(1);
     expect(merged[0]).toEqual(expect.objectContaining({ sources: ['First', 'Second'], highlight: true }));
-    render(<CollectiveLanding />);
-    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'goldfinches' } });
-    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(1);
-    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem').every(entry => /goldfinches/i.test(entry.textContent))).toBe(true);
-    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'no-match-xyz' } });
-    expect(screen.getByText(/No expressions found/)).toBeInTheDocument();
-    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).queryByRole('listitem')).not.toBeInTheDocument();
+    render(<CollectiveLanding categorySlug="birds" />);
+    expect(within(screen.getByRole('region', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(65);
 });
 
 test('canonical aliases, private routes, and missing pages have distinct metadata policies', () => {
@@ -48,22 +43,10 @@ test('Gothic landing introduces API-sourced words without invented categories or
     expect(screen.getByText(snapshot.gothic[1].word)).toBeInTheDocument();
 });
 
-test('collective landing retains the featured expression across navigation and clears filters', () => {
-    const first = render(<CollectiveLanding />);
-    const feature = screen.getByRole('complementary', { name: 'Featured collective noun' }).textContent;
-    first.unmount();
-    render(<CollectiveLanding />);
-    expect(screen.getByRole('complementary', { name: 'Featured collective noun' }).textContent).toBe(feature);
-    fireEvent.click(screen.getByRole('button', { name: /^Favorite a charm of goldfinches$/i }));
-    fireEvent.click(screen.getByRole('button', { name: 'Favorites' }));
-    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '  GOLDFINCHES  ' } });
-    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(1);
-    expect(screen.queryByRole('button', { name: 'Show all' })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'All' }));
-    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '' } });
-    expect(screen.getByRole('searchbox')).toHaveValue('');
-    expect(screen.getByRole('button', { name: 'Favorites' })).toHaveAttribute('aria-pressed', 'false');
-    expect(within(screen.getByRole('list', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(447);
+test('collective category shows the collection note without filters', () => {
+    render(<CollectiveLanding categorySlug="birds" />);
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Favorites' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'About this collection' })).toBeInTheDocument();
     expect(screen.getByText(/individual usage histories have not been assessed/)).toBeVisible();
 });

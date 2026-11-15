@@ -109,3 +109,18 @@ The unshipped draft demonstrates search, sorting, highlights, and duplicate merg
 It does **not** implement verified per-entry evidence labels and is not proposed
 as a finished restoration. Review should settle whether unverified records belong
 in the default view or behind an explicit “Include unverified expressions” filter.
+
+The browser now loads `GET /collective-nouns`, whose array entries include a
+nested `category` object. Categories are grouped by `category.id` and ordered by
+`category.sortOrder`; category names and slugs also come from this response.
+The bundled snapshot remains available for initial HTML and request failures.
+`tools/refresh-collectives-snapshot.mjs` now refreshes that snapshot from the same
+endpoint, including category metadata. Browser favorites retain their existing
+expression-based keys, independently of database IDs.
+
+Category headings now link to `/collective-nouns/<category-slug>`. Each category
+page keeps search and browser Favorites scoped to its category ID and links back
+to the full collection. The ten category pages have generated initial HTML,
+individual titles/canonicals, and sitemap entries. Unknown slugs return HTTP 404.
+New API categories appear in the overview immediately; refresh the bundled
+snapshot and rebuild to publish their direct, indexable category URLs.
