@@ -2,7 +2,7 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import { PublicContent } from './PublicContent';
 import snapshot from './landing-snapshot.json';
 import { pageForPath } from './pages';
-import { combineCollectives } from './collective-data.mjs';
+import { collectives, combineCollectives } from './collective-data.mjs';
 import { CollectiveLanding } from './CollectiveLanding.mjs';
 
 test('public pages provide descriptive headings and crawlable paths into the app', () => {
@@ -21,7 +21,7 @@ test('collective nouns search subjects and merge duplicate sources without losin
     expect(merged).toHaveLength(1);
     expect(merged[0]).toEqual(expect.objectContaining({ sources: ['First', 'Second'], highlight: true }));
     render(<CollectiveLanding categorySlug="birds" />);
-    expect(within(screen.getByRole('region', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(65);
+    expect(within(screen.getByRole('region', { name: 'Collective noun expressions' })).getAllByRole('listitem')).toHaveLength(collectives.filter(item => item.categoryId === 1).length);
 });
 
 test('canonical aliases, private routes, and missing pages have distinct metadata policies', () => {

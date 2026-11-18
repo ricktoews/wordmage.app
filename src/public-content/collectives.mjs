@@ -1,5 +1,5 @@
 export default {
-  "retrieved": "2026-11-13",
+  "retrieved": "2026-11-17",
   "endpoint": "https://wordmage.toews-api.com/collective-nouns",
   "table": "collective_nouns",
   "categories": [
@@ -8,7 +8,7 @@ export default {
       "name": "Birds of a Feather",
       "slug": "birds",
       "description": "From an exaltation of larks to a murder of crows, discover the curious names bestowed upon our feathered companions.",
-      "imagePath": "https://wordmage.toews-api.com/public/collective/Victorian%20Parliament%20of%20Owls.png",
+      "imagePath": "/collective/Victorian%20Parliament%20of%20Owls.png",
       "sortOrder": 10
     },
     {
@@ -16,7 +16,7 @@ export default {
       "name": "Beasts of Field and Forest",
       "slug": "mammals",
       "description": "Prides, skulks, sleuths, and other curious assemblies of creatures great and small.",
-      "imagePath": null,
+      "imagePath": "/collective/Woodland%20Beasts%20Plaque%20Engraving.png",
       "sortOrder": 20
     },
     {
@@ -24,7 +24,7 @@ export default {
       "name": "Fins, Scales and Creeping Things",
       "slug": "other-animals",
       "description": "Beneath the waves and among the undergrowth, even the humblest creatures gather under extraordinary names.",
-      "imagePath": null,
+      "imagePath": "/collective/Vintage%20Engraved%20Aquatic%20Creature%20Scroll.png",
       "sortOrder": 30
     },
     {
@@ -32,7 +32,7 @@ export default {
       "name": "Trades and Occupations",
       "slug": "occupations",
       "description": "Every profession deserves a collective name—and some are considerably less flattering than others.",
-      "imagePath": null,
+      "imagePath": "/collective/Vintage%20Trades%20and%20Occupations%20Workshop.png",
       "sortOrder": 40
     },
     {
@@ -40,7 +40,7 @@ export default {
       "name": "The Learned and the Powerful",
       "slug": "authority",
       "description": "Judges, scholars, politicians, and other dignitaries assemble beneath names of varying degrees of dignity.",
-      "imagePath": null,
+      "imagePath": "/collective/Sepia%20Engraving%20of%20Learned%20Dignitaries.png",
       "sortOrder": 50
     },
     {
@@ -48,7 +48,7 @@ export default {
       "name": "Saints and Sinners",
       "slug": "religion",
       "description": "Monks, friars, prelates, and other figures of faith gather in expressions both reverent and irreverent.",
-      "imagePath": null,
+      "imagePath": "/collective/Saints%20and%20Sinners%20Engraving.png",
       "sortOrder": 60
     },
     {
@@ -56,7 +56,7 @@ export default {
       "name": "All the World's a Stage",
       "slug": "performing-arts",
       "description": "Musicians, actors, dancers, and artists take their places in a colorful cast of collective expressions.",
-      "imagePath": null,
+      "imagePath": "/collective/All%20the%20World%E2%80%99s%20a%20Stage.png",
       "sortOrder": 70
     },
     {
@@ -64,7 +64,7 @@ export default {
       "name": "The Human Comedy",
       "slug": "human-comedy",
       "description": "A gallery of human habits, vanities, relationships, and peculiarities, lovingly—and sometimes mercilessly—named.",
-      "imagePath": null,
+      "imagePath": "/collective/The%20Human%20Comedy_%20Victorian%20Foibles-1.png",
       "sortOrder": 80
     },
     {
@@ -72,7 +72,7 @@ export default {
       "name": "Science and Discovery",
       "slug": "science",
       "description": "Where physicists, chemists, astronomers, and their fellow investigators find themselves grouped by the language of their disciplines.",
-      "imagePath": null,
+      "imagePath": "/collective/Victorian%20Science%20and%20Discovery%20Engraving.png",
       "sortOrder": 90
     },
     {
@@ -80,12 +80,16 @@ export default {
       "name": "Curiosities and Absurdities",
       "slug": "curiosities",
       "description": "A cabinet of linguistic oddities, from flights of yesterdays to promises of tomorrows.",
-      "imagePath": null,
+      "imagePath": "/collective/The%20Curious%20and%20the%20Unusual.png",
       "sortOrder": 100
     }
   ],
   "records": [
     {
+      "id": 343,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "abominable sight",
       "refersTo": "monks",
       "expression": "an abominable sight of monks",
@@ -94,6 +98,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 367,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "acne",
       "refersTo": "adolescents",
       "expression": "an acne of adolescents",
@@ -102,6 +110,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 456,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ambush",
       "refersTo": "widows",
       "expression": "an ambush of widows",
@@ -110,6 +122,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 272,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "army",
       "refersTo": "caterpillars",
       "expression": "an army of caterpillars",
@@ -118,6 +134,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 392,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "aroma",
       "refersTo": "bakers",
       "expression": "an aroma of bakers",
@@ -126,6 +146,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 506,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "assemblee",
       "refersTo": "choreographers",
       "expression": "an assemblee of choreographers",
@@ -134,6 +158,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 523,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "attitude",
       "refersTo": "seniors",
       "expression": "an attitude of seniors",
@@ -142,6 +170,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 525,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "avunculus",
       "refersTo": "alumni",
       "expression": "an avunculus of alumni",
@@ -150,6 +182,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 366,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "babble",
       "refersTo": "barbers",
       "expression": "a babble of barbers",
@@ -158,6 +194,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 51,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "badling",
       "refersTo": "ducks",
       "expression": "A badling of ducks",
@@ -166,6 +206,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 241,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bale",
       "refersTo": "turtles",
       "expression": "a bale of turtles",
@@ -174,6 +218,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 201,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "band",
       "refersTo": "men",
       "expression": "a band of men",
@@ -182,6 +230,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 46,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "barren",
       "refersTo": "mules",
       "expression": "A barren of mules",
@@ -190,6 +242,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 277,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "barren",
       "refersTo": "mules",
       "expression": "a barren of mules",
@@ -198,6 +254,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 517,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bed",
       "refersTo": "swingers",
       "expression": "a bed of swingers",
@@ -206,6 +266,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 395,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bellyful",
       "refersTo": "bores",
       "expression": "a bellyful of bores",
@@ -214,6 +278,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 206,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bevy",
       "refersTo": "beauties",
       "expression": "a bevy of beauties",
@@ -222,6 +290,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 238,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bevy",
       "refersTo": "roebucks",
       "expression": "a bevy of roebucks",
@@ -230,6 +302,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 9,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bevy",
       "refersTo": "ladies",
       "expression": "A bevy of ladies",
@@ -238,6 +314,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 11,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "bevy",
       "refersTo": "quails",
       "expression": "A bevy of quails",
@@ -246,6 +326,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 10,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bevy",
       "refersTo": "roe deer",
       "expression": "A bevy of roe deer",
@@ -254,6 +338,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 318,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "blackening",
       "refersTo": "shoemakers",
       "expression": "a blackening of shoemakers",
@@ -262,6 +350,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 463,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "blarney",
       "refersTo": "bartenders",
       "expression": "a blarney of bartenders",
@@ -270,6 +362,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 344,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "blast",
       "refersTo": "hunters",
       "expression": "a blast of hunters",
@@ -278,6 +374,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 83,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bleach",
       "refersTo": "cobblers",
       "expression": "A bleach of cobblers",
@@ -286,6 +386,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 373,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bloat",
       "refersTo": "hippopotami",
       "expression": "a bloat of hippopotami",
@@ -294,6 +398,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 412,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "blur",
       "refersTo": "impressionists",
       "expression": "a blur of impressionists",
@@ -302,6 +410,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 89,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "blush",
       "refersTo": "boys",
       "expression": "A blush of boys",
@@ -310,6 +422,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 305,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "boast",
       "refersTo": "soldiers",
       "expression": "a boast of soldiers",
@@ -318,6 +434,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 69,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "boast",
       "refersTo": "soldiers",
       "expression": "A boast of soldiers",
@@ -326,6 +446,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 496,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bored",
       "refersTo": "trustees",
       "expression": "a bored of trustees",
@@ -334,6 +458,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 259,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "bouquet",
       "refersTo": "pheasants",
       "expression": "a bouquet of pheasants",
@@ -342,6 +470,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 494,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bouquet",
       "refersTo": "winetasters",
       "expression": "a bouquet of winetasters",
@@ -350,6 +482,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 546,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bowl",
       "refersTo": "keglers",
       "expression": "a bowl of keglers",
@@ -358,6 +494,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 36,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "brace",
       "refersTo": "greyhounds",
       "expression": "A brace of greyhounds (two)",
@@ -366,6 +506,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 508,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "brace",
       "refersTo": "stagehands",
       "expression": "a brace of stagehands",
@@ -374,6 +518,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 569,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "breach",
       "refersTo": "premises",
       "expression": "a breach of premises",
@@ -382,6 +530,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 562,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "breakdown",
       "refersTo": "plans",
       "expression": "a breakdown of plans",
@@ -390,6 +542,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 534,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "brood",
       "refersTo": "researchers",
       "expression": "a brood of researchers",
@@ -398,6 +554,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 452,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "brood",
       "refersTo": "chessplayers",
       "expression": "a brood of chessplayers",
@@ -406,6 +566,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 204,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "brood",
       "refersTo": "hens",
       "expression": "a brood of hens",
@@ -414,6 +578,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 50,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "brood",
       "refersTo": "hens",
       "expression": "A brood of hens",
@@ -422,6 +590,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 263,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "building",
       "refersTo": "rooks",
       "expression": "a building of rooks",
@@ -430,6 +602,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 33,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "bury",
       "refersTo": "rabbits",
       "expression": "A bury of coneys",
@@ -438,6 +614,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 235,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "business",
       "refersTo": "ferrets",
       "expression": "a business of ferrets",
@@ -446,6 +626,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 35,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "business",
       "refersTo": "ferrets",
       "expression": "A business of ferrets",
@@ -454,6 +638,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 440,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "buzz",
       "refersTo": "barflies",
       "expression": "a buzz of barflies",
@@ -462,6 +650,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 307,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cajolery",
       "refersTo": "taverners",
       "expression": "a cajolery of taverners",
@@ -470,6 +662,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 568,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cancellation",
       "refersTo": "trains",
       "expression": "a cancellation of trains",
@@ -478,6 +674,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 393,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "caper",
       "refersTo": "kids",
       "expression": "a caper of kids",
@@ -486,6 +686,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 23,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cast",
       "refersTo": "bread",
       "expression": "A cast of bread",
@@ -494,6 +698,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 101,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "cast",
       "refersTo": "hawks",
       "expression": "A cast of hawks of the tower (two)",
@@ -502,6 +710,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 255,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "cast",
       "refersTo": "hawks",
       "expression": "a cast of hawks",
@@ -510,6 +722,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 481,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cc",
       "refersTo": "Mexicans",
       "expression": "a cc of Mexicans",
@@ -518,6 +734,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 254,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "cete",
       "refersTo": "badgers",
       "expression": "a cete of badgers",
@@ -526,6 +746,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 32,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cete",
       "refersTo": "badgers",
       "expression": "A cete of badgers",
@@ -534,6 +758,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 554,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "chain",
       "refersTo": "bobolinks",
       "expression": "a chain of bobolinks",
@@ -542,6 +770,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 445,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "charge",
       "refersTo": "taxis",
       "expression": "a charge of taxis",
@@ -550,6 +782,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 340,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "charge",
       "refersTo": "curates",
       "expression": "a charge of curates",
@@ -558,6 +794,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 249,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "charm",
       "refersTo": "finches",
       "expression": "a charm of finches",
@@ -566,6 +806,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 22,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "charm",
       "refersTo": "goldfinches",
       "expression": "A charm of goldfinches",
@@ -574,6 +818,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 526,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "clamber",
       "refersTo": "assistant professors",
       "expression": "a clamber of assistant professors",
@@ -582,6 +830,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 27,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "clattering",
       "refersTo": "choughs",
       "expression": "A clattering of choughs",
@@ -590,6 +842,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 436,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "click",
       "refersTo": "photographers",
       "expression": "a click of photographers",
@@ -598,6 +854,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 275,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "clowder",
       "refersTo": "cats",
       "expression": "a clowder of cats",
@@ -606,6 +866,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 320,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cluster",
       "refersTo": "grapes",
       "expression": "a cluster of grapes",
@@ -614,6 +878,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 352,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cluster",
       "refersTo": "knots",
       "expression": "a cluster of knots",
@@ -622,6 +890,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 321,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cluster",
       "refersTo": "churls",
       "expression": "a cluster of churls",
@@ -630,6 +902,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 85,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cluster",
       "refersTo": "grapes",
       "expression": "A cluster of grapes",
@@ -638,6 +914,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 86,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cluster",
       "refersTo": "churls",
       "expression": "A cluster of churls",
@@ -646,6 +926,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 270,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "clutch",
       "refersTo": "eggs",
       "expression": "a clutch of eggs",
@@ -654,6 +938,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 577,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "clutch",
       "refersTo": "second thoughts",
       "expression": "a clutch of second thoughts",
@@ -662,6 +950,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 420,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "colloid",
       "refersTo": "chemists",
       "expression": "a colloid of chemists",
@@ -670,6 +962,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 539,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "colony",
       "refersTo": "bacteriologists",
       "expression": "a colony of bacteriologists",
@@ -678,6 +974,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 229,
+      "note": null,
+      "interest_level": 0,
+      "hide_term": false,
       "term": "colony",
       "refersTo": "penguins",
       "expression": "a colony of penguins",
@@ -686,6 +986,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 210,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "colony",
       "refersTo": "ants",
       "expression": "a colony of ants",
@@ -694,6 +998,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 376,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "column",
       "refersTo": "accountants",
       "expression": "a column of accountants",
@@ -702,6 +1010,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 563,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "comedy",
       "refersTo": "airline schedules",
       "expression": "a comedy of airline schedules",
@@ -710,6 +1022,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 228,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "company",
       "refersTo": "parrots",
       "expression": "a company of parrots",
@@ -718,6 +1034,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 451,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "complex",
       "refersTo": "psychoanalysts",
       "expression": "a complex of psychoanalysts",
@@ -726,6 +1046,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 434,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "concatenation",
       "refersTo": "orgiasts",
       "expression": "a concatenation of orgiasts",
@@ -734,6 +1058,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 462,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "conglomerate",
       "refersTo": "geologists",
       "expression": "a conglomerate of geologists",
@@ -742,6 +1070,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 95,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "congregation",
       "refersTo": "plovers",
       "expression": "A congregation of plovers",
@@ -750,6 +1082,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 17,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "congregation",
       "refersTo": "people",
       "expression": "A congregation of people",
@@ -758,6 +1094,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 260,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "congregation",
       "refersTo": "plovers",
       "expression": "a congregation of plovers",
@@ -766,6 +1106,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 380,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "conjunction",
       "refersTo": "grammarians",
       "expression": "a conjunction of grammarians",
@@ -774,6 +1118,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 441,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "consternation",
       "refersTo": "mothers",
       "expression": "a consternation of mothers",
@@ -782,6 +1130,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 59,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "converting",
       "refersTo": "preachers",
       "expression": "A converting of preachers",
@@ -790,6 +1142,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 290,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "converting",
       "refersTo": "preachers",
       "expression": "a converting of preachers",
@@ -798,6 +1154,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 507,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cord",
       "refersTo": "woodwinds",
       "expression": "a cord of woodwinds",
@@ -806,6 +1166,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 38,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "couple",
       "refersTo": "spaniels",
       "expression": "A couple of spaniels",
@@ -814,6 +1178,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 39,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "couple",
       "refersTo": "running hounds",
       "expression": "A couple of running hounds",
@@ -822,6 +1190,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 24,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "couple / pair",
       "refersTo": "bottles",
       "expression": "A couple or pair of bottles",
@@ -830,6 +1202,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 230,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "cover",
       "refersTo": "coots",
       "expression": "a cover of coots",
@@ -838,6 +1214,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 96,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "covert",
       "refersTo": "coots",
       "expression": "A covert of coots",
@@ -846,6 +1226,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 208,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "covey",
       "refersTo": "partridges",
       "expression": "a covey of partridges",
@@ -854,6 +1238,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 91,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "covey",
       "refersTo": "partridges",
       "expression": "A covey of partridges",
@@ -862,6 +1250,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 214,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cowardice",
       "refersTo": "curs",
       "expression": "a cowardice of curs",
@@ -870,6 +1262,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 239,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "crash",
       "refersTo": "rhinoceroses",
       "expression": "a crash of rhinoceroses",
@@ -878,6 +1274,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 364,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "crunch",
       "refersTo": "wrestlers",
       "expression": "a crunch of wrestlers",
@@ -886,6 +1286,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 274,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cry",
       "refersTo": "players",
       "expression": "a cry of players",
@@ -894,6 +1298,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 424,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "curse",
       "refersTo": "creditors",
       "expression": "a curse of creditors",
@@ -902,6 +1310,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 335,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "cutting",
       "refersTo": "cobblers",
       "expression": "a cutting of cobblers",
@@ -910,6 +1322,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 61,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "damning",
       "refersTo": "jurors",
       "expression": "A damning of jurors",
@@ -918,6 +1334,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 384,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "dash",
       "refersTo": "commuters",
       "expression": "a dash of commuters",
@@ -926,6 +1346,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 256,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "deceit",
       "refersTo": "lapwings",
       "expression": "a deceit of lapwings",
@@ -934,6 +1358,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 409,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "delicatesse",
       "refersTo": "gourmets",
       "expression": "a delicatesse of gourmets",
@@ -942,6 +1370,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 410,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "delicatessen",
       "refersTo": "gourmands",
       "expression": "a delicatessen of gourmands",
@@ -950,6 +1382,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 390,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "delirium",
       "refersTo": "debutantes",
       "expression": "a delirium of debutantes",
@@ -958,6 +1394,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 476,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "descent",
       "refersTo": "relatives",
       "expression": "a descent of relatives",
@@ -966,6 +1406,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 267,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "descent",
       "refersTo": "woodpeckers",
       "expression": "a descent of woodpeckers",
@@ -974,6 +1418,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 93,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "desert",
       "refersTo": "lapwings",
       "expression": "A desert of lapwings",
@@ -982,6 +1430,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 339,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "dignity",
       "refersTo": "canons",
       "expression": "a dignity of canons",
@@ -990,6 +1442,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 460,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "dilation",
       "refersTo": "pupils",
       "expression": "a dilation of pupils",
@@ -998,6 +1454,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 293,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "diligence",
       "refersTo": "messengers",
       "expression": "a diligence of messengers",
@@ -1006,6 +1466,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 62,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "diligence",
       "refersTo": "messengers",
       "expression": "A diligence of messengers",
@@ -1014,6 +1478,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 363,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "disagreement",
       "refersTo": "statesmen",
       "expression": "a disagreement of statesmen",
@@ -1022,6 +1490,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 535,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "discord",
       "refersTo": "experts",
       "expression": "a discord of experts",
@@ -1030,6 +1502,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 341,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "discretion",
       "refersTo": "priests",
       "expression": "a discretion of priests",
@@ -1038,6 +1514,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 82,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "disguising",
       "refersTo": "tailors",
       "expression": "A disguising of tailors",
@@ -1046,6 +1526,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 28,
+      "note": "The term alludes to the behavior of some nesting birds, which feign injury to lure predators away from their nests.",
+      "interest_level": 3,
+      "hide_term": false,
       "term": "dissimulation",
       "refersTo": "birds",
       "expression": "A dissimulation of birds",
@@ -1054,6 +1538,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 233,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "dissimulation",
       "refersTo": "birds",
       "expression": "a dissimulation of birds",
@@ -1062,6 +1550,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 354,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "disworship",
       "refersTo": "Scots",
       "expression": "a disworship of Scots",
@@ -1070,6 +1562,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 58,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "doctrine",
       "refersTo": "doctors",
       "expression": "A doctrine of doctors",
@@ -1078,6 +1574,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 291,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "doctrine",
       "refersTo": "doctors",
       "expression": "a doctrine of doctors",
@@ -1086,6 +1586,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 301,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "draught",
       "refersTo": "bottlers",
       "expression": "a draught of bottlers",
@@ -1094,6 +1598,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 65,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "draught",
       "refersTo": "butlers",
       "expression": "A draught of butlers",
@@ -1102,6 +1610,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 271,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "dray",
       "refersTo": "squirrels",
       "expression": "a dray of squirrels",
@@ -1110,6 +1622,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 81,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drift",
       "refersTo": "fishermen",
       "expression": "A drift of fishers",
@@ -1118,6 +1634,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 247,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drift",
       "refersTo": "hogs",
       "expression": "a drift of hogs",
@@ -1126,6 +1646,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 43,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drift",
       "refersTo": "swine",
       "expression": "A drift of tame swine",
@@ -1134,6 +1658,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 317,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drift",
       "refersTo": "fishermen",
       "expression": "a drift of fishermen",
@@ -1142,6 +1670,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 533,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drift",
       "refersTo": "lecturers",
       "expression": "a drift of lecturers",
@@ -1150,6 +1682,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 258,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drove",
       "refersTo": "cattle",
       "expression": "a drove of cattle",
@@ -1158,6 +1694,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 464,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drove",
       "refersTo": "cabdrivers",
       "expression": "a drove of cabdrivers",
@@ -1166,6 +1706,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 530,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drowse",
       "refersTo": "underachievers",
       "expression": "a drowse of underachievers",
@@ -1174,6 +1718,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 351,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "drunkenness",
       "refersTo": "cobblers",
       "expression": "a drunkenness of cobblers",
@@ -1182,6 +1730,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 97,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "duel",
       "refersTo": "turtledoves",
       "expression": "A duel of turtledoves",
@@ -1190,6 +1742,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 225,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "dule",
       "refersTo": "doves",
       "expression": "a dule of doves",
@@ -1198,6 +1754,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 326,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "eloquence",
       "refersTo": "lawyers",
       "expression": "an eloquence of lawyers",
@@ -1206,6 +1766,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 455,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "entrance",
       "refersTo": "actresses",
       "expression": "an entrance of actresses",
@@ -1214,6 +1778,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 528,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "entrenchment",
       "refersTo": "full professors",
       "expression": "an entrenchment of full professors",
@@ -1222,6 +1790,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 529,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ex cathedra",
       "refersTo": "professors emeriti",
       "expression": "an ex cathedra of professors emeriti",
@@ -1230,6 +1802,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 18,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "exaltation",
       "refersTo": "larks",
       "expression": "An exaltation of larks",
@@ -1238,6 +1814,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 286,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "exaltation",
       "refersTo": "larks",
       "expression": "an exaltation of larks",
@@ -1246,6 +1826,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 322,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "example",
       "refersTo": "masters",
       "expression": "an example of masters",
@@ -1254,6 +1838,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 331,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "execution",
       "refersTo": "officers",
       "expression": "an execution of officers",
@@ -1262,6 +1850,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 514,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "expectation",
       "refersTo": "heirs",
       "expression": "an expectation of heirs",
@@ -1270,6 +1862,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 467,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "explosion",
       "refersTo": "Italians",
       "expression": "an explosion of Italians",
@@ -1278,6 +1874,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 403,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "extreme unction",
       "refersTo": "undertakers",
       "expression": "an extreme unction of undertakers",
@@ -1286,6 +1886,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 459,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "failing",
       "refersTo": "students",
       "expression": "a failing of students",
@@ -1294,6 +1898,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 332,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "faith",
       "refersTo": "merchants",
       "expression": "a faith of merchants",
@@ -1302,6 +1910,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 224,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "fall",
       "refersTo": "woodcocks",
       "expression": "a fall of woodcocks",
@@ -1310,6 +1922,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 94,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "fall",
       "refersTo": "woodcocks",
       "expression": "A fall of woodcocks",
@@ -1318,6 +1934,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 415,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "family",
       "refersTo": "biologists",
       "expression": "a family of biologists",
@@ -1326,6 +1946,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 21,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "fellowship",
       "refersTo": "yeomen",
       "expression": "A fellowship of yeomen",
@@ -1334,6 +1958,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 472,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "fifth",
       "refersTo": "Scots",
       "expression": "a fifth of Scots",
@@ -1342,6 +1970,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 311,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "fighting",
       "refersTo": "beggars",
       "expression": "a fighting of beggars",
@@ -1350,6 +1982,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 75,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "fighting",
       "refersTo": "beggars",
       "expression": "A fighting of beggars",
@@ -1358,6 +1994,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 561,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "fine kettle",
       "refersTo": "fish",
       "expression": "a fine kettle of fish",
@@ -1366,6 +2006,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 383,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "flap",
       "refersTo": "nuns",
       "expression": "a flap of nuns",
@@ -1374,6 +2018,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 578,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "flight",
       "refersTo": "yesterdays",
       "expression": "a flight of yesterdays",
@@ -1382,6 +2030,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 273,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "flight",
       "refersTo": "swallows",
       "expression": "a flight of swallows",
@@ -1390,6 +2042,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 474,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "flight",
       "refersTo": "Arabs",
       "expression": "a flight of Arabs",
@@ -1398,6 +2054,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 103,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "flight",
       "refersTo": "goshawks",
       "expression": "A flight of goshawks",
@@ -1406,6 +2066,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 25,
+      "note": null,
+      "interest_level": 0,
+      "hide_term": false,
       "term": "flight",
       "refersTo": "doves",
       "expression": "A flight of doves",
@@ -1414,6 +2078,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 405,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "flight",
       "refersTo": "dancers (male)",
       "expression": "a flight of dancers (male)",
@@ -1422,6 +2090,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 404,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "float",
       "refersTo": "dancers (female)",
       "expression": "a float of dancers (female)",
@@ -1430,6 +2102,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 200,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "flock",
       "refersTo": "sheep",
       "expression": "a flock of sheep",
@@ -1438,6 +2114,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 359,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "flush",
       "refersTo": "plumbers",
       "expression": "a flush of plumbers",
@@ -1446,6 +2126,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 499,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "flush",
       "refersTo": "W.C.'s",
       "expression": "a flush of W.C.'s",
@@ -1454,6 +2138,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 327,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "foresight",
       "refersTo": "housekeepers",
       "expression": "a foresight of housekeepers",
@@ -1462,6 +2150,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 524,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "fortitude",
       "refersTo": "graduate students",
       "expression": "a fortitude of graduate students",
@@ -1470,6 +2162,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 378,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "frost",
       "refersTo": "dowagers",
       "expression": "a frost of dowagers",
@@ -1478,6 +2174,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 377,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "fumble",
       "refersTo": "checkgrabbers",
       "expression": "a fumble of checkgrabbers",
@@ -1486,6 +2186,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 334,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gaggle",
       "refersTo": "women",
       "expression": "a gaggle of women",
@@ -1494,6 +2198,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 49,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "gaggle",
       "refersTo": "geese",
       "expression": "A gaggle of geese",
@@ -1502,6 +2210,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 251,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "gaggle",
       "refersTo": "geese",
       "expression": "a gaggle of geese (on water)",
@@ -1510,6 +2222,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 221,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gam",
       "refersTo": "whales",
       "expression": "a gam of whales",
@@ -1518,6 +2234,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 223,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gang",
       "refersTo": "elk",
       "expression": "a gang of elk",
@@ -1526,6 +2246,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 558,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gaze",
       "refersTo": "raccoons",
       "expression": "a gaze of raccoons",
@@ -1534,6 +2258,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 382,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "giggle",
       "refersTo": "girls",
       "expression": "a giggle of girls",
@@ -1542,6 +2270,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 510,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gild",
       "refersTo": "directors",
       "expression": "a gild of directors",
@@ -1550,6 +2282,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 551,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "glint",
       "refersTo": "goldfish",
       "expression": "a glint of goldfish",
@@ -1558,6 +2294,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 71,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "glossing",
       "refersTo": "tavern-keepers",
       "expression": "A glossing of taverners",
@@ -1566,6 +2306,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 571,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "glut",
       "refersTo": "commercials",
       "expression": "a glut of commercials",
@@ -1574,6 +2318,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 389,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "goggle",
       "refersTo": "aviators",
       "expression": "a goggle of aviators",
@@ -1582,6 +2330,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 348,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "goring",
       "refersTo": "butchers",
       "expression": "a goring of butchers",
@@ -1590,6 +2342,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 443,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "graft",
       "refersTo": "tree surgeons",
       "expression": "a graft of tree surgeons",
@@ -1598,6 +2354,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 522,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gratitude",
       "refersTo": "juniors",
       "expression": "a gratitude of juniors",
@@ -1606,6 +2366,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 492,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "grip",
       "refersTo": "porters",
       "expression": "a grip of porters",
@@ -1614,6 +2378,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 518,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "grope",
       "refersTo": "groupies",
       "expression": "a grope of groupies",
@@ -1622,6 +2390,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 468,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gross",
       "refersTo": "Germans",
       "expression": "a gross of Germans",
@@ -1630,6 +2402,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 413,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "gulp",
       "refersTo": "cormorants",
       "expression": "a gulp of cormorants",
@@ -1638,6 +2414,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 515,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "gush",
       "refersTo": "sycophants",
       "expression": "a gush of sycophants",
@@ -1646,6 +2426,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 408,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "hack",
       "refersTo": "smokers",
       "expression": "a hack of smokers",
@@ -1654,6 +2438,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 423,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "haggle",
       "refersTo": "vendors",
       "expression": "a haggle of vendors",
@@ -1662,6 +2450,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 44,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "harass",
       "refersTo": "horses",
       "expression": "A harass of horses",
@@ -1670,6 +2462,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 283,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "harras",
       "refersTo": "horses",
       "expression": "a harras of horses",
@@ -1678,6 +2474,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 541,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "helix",
       "refersTo": "geneticists",
       "expression": "a helix of geneticists",
@@ -1686,6 +2486,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 287,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "herd",
       "refersTo": "harlots",
       "expression": "a herd of harlots",
@@ -1694,6 +2498,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 3,
+      "note": null,
+      "interest_level": 0,
+      "hide_term": false,
       "term": "herd",
       "refersTo": "swans",
       "expression": "A herd of swans",
@@ -1702,6 +2510,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 1,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "herd",
       "refersTo": "harts",
       "expression": "A herd of harts",
@@ -1710,6 +2522,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 7,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "herd",
       "refersTo": "harlots",
       "expression": "A herd of harlots",
@@ -1718,6 +2534,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 4,
+      "note": null,
+      "interest_level": 0,
+      "hide_term": false,
       "term": "herd",
       "refersTo": "cranes",
       "expression": "A herd of cranes",
@@ -1726,6 +2546,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 2,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "herd",
       "refersTo": "deer",
       "expression": "A herd of all manner of deer",
@@ -1734,6 +2558,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 6,
+      "note": null,
+      "interest_level": 0,
+      "hide_term": false,
       "term": "herd",
       "refersTo": "wrens",
       "expression": "A herd of wrens",
@@ -1742,6 +2570,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 5,
+      "note": null,
+      "interest_level": 0,
+      "hide_term": false,
       "term": "herd",
       "refersTo": "curlews",
       "expression": "A herd of curlews",
@@ -1750,6 +2582,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 198,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "herd",
       "refersTo": "elephants",
       "expression": "a herd of elephants",
@@ -1758,6 +2594,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 536,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "hive",
       "refersTo": "allergists",
       "expression": "a hive of allergists",
@@ -1766,6 +2606,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 573,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ho ho!",
       "refersTo": "loopholes",
       "expression": "a ho ho! of loopholes",
@@ -1774,6 +2618,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 454,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "horde",
       "refersTo": "misers",
       "expression": "a horde of misers",
@@ -1782,6 +2630,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 20,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "host",
       "refersTo": "men",
       "expression": "A host of men",
@@ -1790,6 +2642,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 265,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "host",
       "refersTo": "sparrows",
       "expression": "a host of sparrows",
@@ -1798,6 +2654,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 540,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "host",
       "refersTo": "epidemiologists",
       "expression": "a host of epidemiologists",
@@ -1806,6 +2666,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 99,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "host",
       "refersTo": "sparrows",
       "expression": "A host of sparrows",
@@ -1814,6 +2678,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 205,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "host",
       "refersTo": "angels",
       "expression": "a host of angels",
@@ -1822,6 +2690,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 295,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "host",
       "refersTo": "men",
       "expression": "a host of men",
@@ -1830,6 +2702,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 565,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "hover",
       "refersTo": "helicopters",
       "expression": "a hover of helicopters",
@@ -1838,6 +2714,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 242,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "hover",
       "refersTo": "trout",
       "expression": "a hover of trout",
@@ -1846,6 +2726,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 243,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "husk",
       "refersTo": "hares",
       "expression": "a husk of hares",
@@ -1854,6 +2738,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 465,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "iamb",
       "refersTo": "poets",
       "expression": "an iamb of poets",
@@ -1862,6 +2750,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 336,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "illusion",
       "refersTo": "painters",
       "expression": "an illusion of painters",
@@ -1870,6 +2762,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 297,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "impatience",
       "refersTo": "wives",
       "expression": "an impatience of wives",
@@ -1878,6 +2774,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 308,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "impertinence",
       "refersTo": "peddlers",
       "expression": "an impertinence of peddlers",
@@ -1886,6 +2786,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 559,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "implausibility",
       "refersTo": "gnus",
       "expression": "an implausibility of gnus",
@@ -1894,6 +2798,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 90,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "incredibility",
       "refersTo": "cuckolds",
       "expression": "An incredibility of cuckolds",
@@ -1902,6 +2810,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 324,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "incredulity",
       "refersTo": "cuckolds",
       "expression": "an incredulity of cuckolds",
@@ -1910,6 +2822,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 372,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "indifference",
       "refersTo": "waiters",
       "expression": "an indifference of waiters",
@@ -1918,6 +2834,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 375,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "intrusion",
       "refersTo": "cockroaches",
       "expression": "an intrusion of cockroaches",
@@ -1926,6 +2846,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 473,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "invasion",
       "refersTo": "Israelis",
       "expression": "an invasion of Israelis",
@@ -1934,6 +2858,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 560,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "kettle",
       "refersTo": "fish",
       "expression": "a kettle of fish",
@@ -1942,6 +2870,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 213,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "kindle",
       "refersTo": "kittens",
       "expression": "a kindle of kittens",
@@ -1950,6 +2882,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 41,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "kindle",
       "refersTo": "kittens",
       "expression": "A kindle of young cats",
@@ -1958,6 +2894,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 266,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "knot",
       "refersTo": "toads",
       "expression": "a knot of toads",
@@ -1966,6 +2906,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 244,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "labor",
       "refersTo": "moles",
       "expression": "a labor of moles",
@@ -1974,6 +2918,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 337,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "lash",
       "refersTo": "carters",
       "expression": "a lash of carters",
@@ -1982,6 +2930,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 70,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "laughter",
       "refersTo": "innkeepers",
       "expression": "A laughter of hostelers",
@@ -1990,6 +2942,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 306,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "laughter",
       "refersTo": "hostlers",
       "expression": "a laughter of hostlers",
@@ -1998,6 +2954,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 450,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "leap",
       "refersTo": "banderilleros",
       "expression": "a leap of banderilleros",
@@ -2006,6 +2966,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 531,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "leap",
       "refersTo": "overachievers",
       "expression": "a leap of overachievers",
@@ -2014,6 +2978,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 215,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "leap",
       "refersTo": "leopards",
       "expression": "a leap of leopards",
@@ -2022,6 +2990,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 102,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "leash",
       "refersTo": "hawks",
       "expression": "A leash of the same hawks (three)",
@@ -2030,6 +3002,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 37,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "leash",
       "refersTo": "greyhounds",
       "expression": "A leash of greyhounds (three)",
@@ -2038,6 +3014,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 381,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "leer",
       "refersTo": "boys",
       "expression": "a leer of boys",
@@ -2046,6 +3026,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 545,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "lie",
       "refersTo": "golfers",
       "expression": "a lie of golfers",
@@ -2054,6 +3038,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 479,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "liter",
       "refersTo": "chemists",
       "expression": "a liter of chemists",
@@ -2062,6 +3050,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 199,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "litter",
       "refersTo": "pups",
       "expression": "a litter of pups",
@@ -2070,6 +3062,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 40,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "litter",
       "refersTo": "whelps",
       "expression": "A litter of whelps",
@@ -2078,6 +3074,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 421,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "load",
       "refersTo": "drunks",
       "expression": "a load of drunks",
@@ -2086,6 +3086,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 485,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "lot",
       "refersTo": "used car dealers",
       "expression": "a lot of used car dealers",
@@ -2094,6 +3098,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 361,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "lurch",
       "refersTo": "busses",
       "expression": "a lurch of busses",
@@ -2102,6 +3110,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 347,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "lying",
       "refersTo": "pardoners",
       "expression": "a lying of pardoners",
@@ -2110,6 +3122,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 489,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "magnum",
       "refersTo": "hit men",
       "expression": "a magnum of hit men",
@@ -2118,6 +3134,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 72,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "malapertness",
       "refersTo": "peddlers",
       "expression": "A malapertness of peddlers",
@@ -2126,6 +3146,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 387,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "mass",
       "refersTo": "priests",
       "expression": "a mass of priests",
@@ -2134,6 +3158,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 509,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "measure",
       "refersTo": "wardrobe ladies",
       "expression": "a measure of wardrobe ladies",
@@ -2142,6 +3170,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 313,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "melody",
       "refersTo": "harpists",
       "expression": "a melody of harpists",
@@ -2150,6 +3182,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 77,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "melody",
       "refersTo": "harpers",
       "expression": "A melody of harpers",
@@ -2158,6 +3194,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 369,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "merde",
       "refersTo": "caniches",
       "expression": "a merde of caniches",
@@ -2166,6 +3206,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 457,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "mess",
       "refersTo": "officers",
       "expression": "a mess of officers",
@@ -2174,6 +3218,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 576,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "metamorphosis",
       "refersTo": "ovoids",
       "expression": "a metamorphosis of ovoids",
@@ -2182,6 +3230,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 480,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "meter",
       "refersTo": "percussionists",
       "expression": "a meter of percussionists",
@@ -2190,6 +3242,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 432,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "mews",
       "refersTo": "cathouses",
       "expression": "a mews of cathouses",
@@ -2198,6 +3254,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 212,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "murder",
       "refersTo": "crows",
       "expression": "a murder of crows",
@@ -2206,6 +3266,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 280,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "murmuration",
       "refersTo": "starlings",
       "expression": "a murmuration of starlings",
@@ -2214,6 +3278,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 15,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "muster",
       "refersTo": "peacocks",
       "expression": "A muster of peacocks",
@@ -2222,6 +3290,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 269,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "mustering",
       "refersTo": "storks",
       "expression": "a mustering of storks",
@@ -2230,6 +3302,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 386,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "mutter",
       "refersTo": "mothers-in-law",
       "expression": "a mutter of mothers-in-law",
@@ -2238,6 +3314,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 368,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "nerve",
       "refersTo": "neighbors",
       "expression": "a nerve of neighbors",
@@ -2246,6 +3326,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 222,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "nest",
       "refersTo": "rabbits",
       "expression": "a nest of rabbits",
@@ -2254,6 +3338,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 315,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "neverthriving",
       "refersTo": "jugglers",
       "expression": "a neverthriving of jugglers",
@@ -2262,6 +3350,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 437,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "no-no",
       "refersTo": "nannies",
       "expression": "a no-no of nannies",
@@ -2270,6 +3362,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 52,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "non-patience",
       "refersTo": "wives",
       "expression": "A non-patience of wives",
@@ -2278,6 +3374,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 399,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "nucleus",
       "refersTo": "physicists",
       "expression": "a nucleus of physicists",
@@ -2286,6 +3386,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 484,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "number",
       "refersTo": "statisticians",
       "expression": "a number of statisticians",
@@ -2294,6 +3398,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 8,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "nye",
       "refersTo": "pheasants",
       "expression": "A nye of pheasants",
@@ -2302,6 +3410,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 63,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "obedience",
       "refersTo": "servants",
       "expression": "An obedience of servants",
@@ -2310,6 +3422,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 299,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "obeisance",
       "refersTo": "servants",
       "expression": "an obeisance of servants",
@@ -2318,6 +3434,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 330,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "observance",
       "refersTo": "hermits",
       "expression": "an observance of hermits",
@@ -2326,6 +3446,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 575,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "obsolescence",
       "refersTo": "appliances",
       "expression": "an obsolescence of appliances",
@@ -2334,6 +3458,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 417,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ogle",
       "refersTo": "office boys",
       "expression": "an ogle of office boys",
@@ -2342,6 +3470,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 411,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ohm",
       "refersTo": "electricians",
       "expression": "an ohm of electricians",
@@ -2350,6 +3482,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 257,
+      "note": "The Book of St. Albans gives “a muster of peacocks,” using muster in the sense of “show” or “display.” In 1925, The Illustrated Sporting and Dramatic News used “an ostentation of peacocks” instead.",
+      "interest_level": 3,
+      "hide_term": false,
       "term": "ostentation",
       "refersTo": "peacocks",
       "expression": "an ostentation of peacocks",
@@ -2358,6 +3494,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 477,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "overcharge",
       "refersTo": "repairmen",
       "expression": "an overcharge of repairmen",
@@ -2366,6 +3506,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 219,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pace",
       "refersTo": "asses",
       "expression": "a pace of asses",
@@ -2374,6 +3518,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 237,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "paddling",
       "refersTo": "ducks",
       "expression": "a paddling of ducks",
@@ -2382,6 +3530,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 439,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pallor",
       "refersTo": "nightwatchmen",
       "expression": "a pallor of nightwatchmen",
@@ -2390,6 +3542,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 532,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pallor",
       "refersTo": "night students",
       "expression": "a pallor of night students",
@@ -2398,6 +3554,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 487,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pan",
       "refersTo": "reviewers",
       "expression": "a pan of reviewers",
@@ -2406,6 +3566,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 511,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "panic",
       "refersTo": "producers",
       "expression": "a panic of producers",
@@ -2414,6 +3578,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 458,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "parenthesis",
       "refersTo": "cellists",
       "expression": "a parenthesis of cellists",
@@ -2422,6 +3590,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 435,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "parlay",
       "refersTo": "horseplayers",
       "expression": "a parlay of horseplayers",
@@ -2430,6 +3602,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 285,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "parliament",
       "refersTo": "owls",
       "expression": "a parliament of owls",
@@ -2438,6 +3614,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 227,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "party",
       "refersTo": "jays",
       "expression": "a party of jays",
@@ -2446,6 +3626,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 211,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "passel",
       "refersTo": "brats",
       "expression": "a passel of brats",
@@ -2454,6 +3638,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 449,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pavanne",
       "refersTo": "matadors",
       "expression": "a pavanne of matadors",
@@ -2462,6 +3650,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 469,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "peck",
       "refersTo": "Frenchmen",
       "expression": "a peck of Frenchmen",
@@ -2470,6 +3662,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 466,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "peel",
       "refersTo": "vacationers",
       "expression": "a peel of vacationers",
@@ -2478,6 +3674,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 234,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "peep",
       "refersTo": "chickens",
       "expression": "a peep of chickens",
@@ -2486,6 +3686,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 284,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pencil",
       "refersTo": "lines",
       "expression": "a pencil of lines",
@@ -2494,6 +3698,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 500,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "phalynx",
       "refersTo": "flashers",
       "expression": "a phalynx of flashers",
@@ -2502,6 +3710,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 357,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "piddle",
       "refersTo": "puppies",
       "expression": "a piddle of puppies",
@@ -2510,6 +3722,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 429,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pinch",
       "refersTo": "producers",
       "expression": "a pinch of producers",
@@ -2518,6 +3734,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 471,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pint",
       "refersTo": "Irishmen",
       "expression": "a pint of Irishmen",
@@ -2526,6 +3746,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 574,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pitfall",
       "refersTo": "fine print",
       "expression": "a pitfall of fine print",
@@ -2534,6 +3758,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 236,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "pitying",
       "refersTo": "turtledoves",
       "expression": "a pitying of turtledoves",
@@ -2542,6 +3770,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 513,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "plague",
       "refersTo": "locals",
       "expression": "a plague of locals",
@@ -2550,6 +3782,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 209,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "plague",
       "refersTo": "locusts",
       "expression": "a plague of locusts",
@@ -2558,6 +3794,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 521,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "platitude",
       "refersTo": "sophomores",
       "expression": "a platitude of sophomores",
@@ -2566,6 +3806,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 520,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "plenitude",
       "refersTo": "freshmen",
       "expression": "a plenitude of freshmen",
@@ -2574,6 +3818,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 512,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "plot",
       "refersTo": "playwrights",
       "expression": "a plot of playwrights",
@@ -2582,6 +3830,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 216,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pod",
       "refersTo": "seals",
       "expression": "a pod of seals",
@@ -2590,6 +3842,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 329,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pontificality",
       "refersTo": "prelates",
       "expression": "a pontificality of prelates",
@@ -2598,6 +3854,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 426,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "portfolio",
       "refersTo": "brokers",
       "expression": "a portfolio of brokers",
@@ -2606,6 +3866,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 567,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "postponement",
       "refersTo": "trains",
       "expression": "a postponement of trains",
@@ -2614,6 +3878,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 486,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pot",
       "refersTo": "dieters",
       "expression": "a pot of dieters",
@@ -2622,6 +3890,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 552,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pounce",
       "refersTo": "cats",
       "expression": "a pounce of cats",
@@ -2630,6 +3902,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 370,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pound",
       "refersTo": "pianists",
       "expression": "a pound of pianists",
@@ -2638,6 +3914,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 482,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pound",
       "refersTo": "carpenters",
       "expression": "a pound of carpenters",
@@ -2646,6 +3926,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 470,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pound",
       "refersTo": "Englishmen",
       "expression": "a pound of Englishmen",
@@ -2654,6 +3938,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 78,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "poverty",
       "refersTo": "pipers",
       "expression": "A poverty of pipers",
@@ -2662,6 +3950,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 314,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "poverty",
       "refersTo": "pipers",
       "expression": "a poverty of pipers",
@@ -2670,6 +3962,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 391,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "prance",
       "refersTo": "equestrians",
       "expression": "a prance of equestrians",
@@ -2678,6 +3974,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 398,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pratfall",
       "refersTo": "clowns",
       "expression": "a pratfall of clowns",
@@ -2686,6 +3986,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 30,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pride",
       "refersTo": "lions",
       "expression": "A pride of lions",
@@ -2694,6 +3998,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 197,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "pride",
       "refersTo": "lions",
       "expression": "a pride of lions",
@@ -2702,6 +4010,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 416,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "profit",
       "refersTo": "gurus",
       "expression": "a profit of gurus",
@@ -2710,6 +4022,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 580,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "promise",
       "refersTo": "tomorrows",
       "expression": "a promise of tomorrows",
@@ -2718,6 +4034,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 346,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "promise",
       "refersTo": "tapsters",
       "expression": "a promise of tapsters",
@@ -2726,6 +4046,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 302,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "proud showing",
       "refersTo": "tailors",
       "expression": "a proud showing of tailors",
@@ -2734,6 +4058,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 66,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "proud showing",
       "refersTo": "tailors",
       "expression": "A proud showing of tailors",
@@ -2742,6 +4070,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 55,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "prudence",
       "refersTo": "vicars",
       "expression": "A prudence of vicars",
@@ -2750,6 +4082,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 298,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "prudence",
       "refersTo": "vicars",
       "expression": "a prudence of vicars",
@@ -2758,6 +4094,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 400,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "pummel",
       "refersTo": "masseurs",
       "expression": "a pummel of masseurs",
@@ -2766,6 +4106,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 388,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "puree",
       "refersTo": "straphangers",
       "expression": "a puree of straphangers",
@@ -2774,6 +4118,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 501,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "queue",
       "refersTo": "actors",
       "expression": "a queue of actors",
@@ -2782,6 +4130,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 570,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "quincunx",
       "refersTo": "planets",
       "expression": "a quincunx of planets",
@@ -2790,6 +4142,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 478,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "quire",
       "refersTo": "angels",
       "expression": "a quire of angels",
@@ -2798,6 +4154,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 548,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "race",
       "refersTo": "jockeys",
       "expression": "a race of jockeys",
@@ -2806,6 +4166,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 542,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "raft",
       "refersTo": "swimmers",
       "expression": "a raft of swimmers",
@@ -2814,6 +4178,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 218,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "rafter",
       "refersTo": "turkeys",
       "expression": "a rafter of turkeys",
@@ -2822,6 +4190,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 246,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rag",
       "refersTo": "colts",
       "expression": "a rag of colts",
@@ -2830,6 +4202,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 45,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "rag / rake",
       "refersTo": "colts",
       "expression": "A rag or rake of colts",
@@ -2838,6 +4214,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 87,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rage",
       "refersTo": "maidens",
       "expression": "A rage of maidens",
@@ -2846,6 +4226,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 323,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rage",
       "refersTo": "maidens",
       "expression": "a rage of maidens",
@@ -2854,6 +4238,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 353,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rascal",
       "refersTo": "boys",
       "expression": "a rascal of boys",
@@ -2862,6 +4250,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 88,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ravel",
       "refersTo": "knaves",
       "expression": "A ravel of knaves",
@@ -2870,6 +4262,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 448,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "recession",
       "refersTo": "economists",
       "expression": "a recession of economists",
@@ -2878,6 +4274,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 572,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rhapsody",
       "refersTo": "blues",
       "expression": "a rhapsody of blues",
@@ -2886,6 +4286,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 34,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "richness",
       "refersTo": "martens",
       "expression": "A richness of martens",
@@ -2894,6 +4298,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 264,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "richness",
       "refersTo": "martens",
       "expression": "a richness of martens",
@@ -2902,6 +4310,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 325,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "riffraff",
       "refersTo": "knaves",
       "expression": "a riffraff of knaves",
@@ -2910,6 +4322,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 401,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "ring",
       "refersTo": "jewelers",
       "expression": "a ring of jewelers",
@@ -2918,6 +4334,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 502,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "riot",
       "refersTo": "comedians",
       "expression": "a riot of comedians",
@@ -2926,6 +4346,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 557,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "romp",
       "refersTo": "otters",
       "expression": "a romp of otters",
@@ -2934,6 +4358,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 516,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rood",
       "refersTo": "boors",
       "expression": "a rood of boors",
@@ -2942,6 +4370,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 29,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "rout",
       "refersTo": "knights",
       "expression": "A rout of knights",
@@ -2950,6 +4382,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 296,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "route",
       "refersTo": "knights",
       "expression": "a route of knights",
@@ -2958,6 +4394,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 279,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "route",
       "refersTo": "wolves",
       "expression": "a route of wolves",
@@ -2966,6 +4406,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 544,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "row",
       "refersTo": "oarsmen",
       "expression": "a row of oarsmen",
@@ -2974,6 +4418,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 556,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "run",
       "refersTo": "coyotes",
       "expression": "a run of coyotes",
@@ -2982,6 +4430,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 333,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "safeguard",
       "refersTo": "porters",
       "expression": "a safeguard of porters",
@@ -2990,6 +4442,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 397,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "saunter",
       "refersTo": "cowboys",
       "expression": "a saunter of cowboys",
@@ -2998,6 +4454,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 196,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "school",
       "refersTo": "fish",
       "expression": "a school of fish",
@@ -3006,6 +4466,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 289,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "school",
       "refersTo": "clerks",
       "expression": "a school of clerks",
@@ -3014,6 +4478,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 57,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "school",
       "refersTo": "clerks",
       "expression": "A school of clerks",
@@ -3022,6 +4490,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 446,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "schrei",
       "refersTo": "heldentenoren",
       "expression": "a schrei of heldentenoren",
@@ -3030,6 +4502,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 553,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "scold",
       "refersTo": "jays",
       "expression": "a scold of jays",
@@ -3038,6 +4514,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 349,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "scolding",
       "refersTo": "seamstresses",
       "expression": "a scolding of seamstresses",
@@ -3046,6 +4526,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 488,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "scoop",
       "refersTo": "reporters",
       "expression": "a scoop of reporters",
@@ -3054,6 +4538,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 438,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "score",
       "refersTo": "bachelors",
       "expression": "a score of bachelors",
@@ -3062,6 +4550,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 493,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "scream",
       "refersTo": "newsboys",
       "expression": "a scream of newsboys",
@@ -3070,6 +4562,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 550,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "scurry",
       "refersTo": "squirrels",
       "expression": "a scurry of squirrels",
@@ -3078,6 +4574,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 64,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "seat",
       "refersTo": "ushers",
       "expression": "A seat of ushers",
@@ -3086,6 +4586,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 60,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sentence",
       "refersTo": "judges",
       "expression": "A sentence of judges",
@@ -3094,6 +4598,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 292,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sentence",
       "refersTo": "judges",
       "expression": "a sentence of judges",
@@ -3102,6 +4610,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 538,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "series",
       "refersTo": "radiologists",
       "expression": "a series of radiologists",
@@ -3110,6 +4622,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 505,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "set",
       "refersTo": "designers",
       "expression": "a set of designers",
@@ -3118,6 +4634,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 300,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "set",
       "refersTo": "ushers",
       "expression": "a set of ushers",
@@ -3126,6 +4646,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 549,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shiver",
       "refersTo": "sharks",
       "expression": "a shiver of sharks",
@@ -3134,6 +4658,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 245,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shoal",
       "refersTo": "bass",
       "expression": "a shoal of bass",
@@ -3142,6 +4670,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 371,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shower",
       "refersTo": "meteorologists",
       "expression": "a shower of meteorologists",
@@ -3150,6 +4682,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 278,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shrewdness",
       "refersTo": "apes",
       "expression": "a shrewdness of apes",
@@ -3158,6 +4694,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 447,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shriek",
       "refersTo": "claques",
       "expression": "a shriek of claques",
@@ -3166,6 +4706,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 519,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shriek",
       "refersTo": "contestants",
       "expression": "a shriek of contestants",
@@ -3174,6 +4718,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 406,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shrivel",
       "refersTo": "critics",
       "expression": "a shrivel of critics",
@@ -3182,6 +4730,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 407,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "shush",
       "refersTo": "librarians",
       "expression": "a shush of librarians",
@@ -3190,6 +4742,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 13,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "siege",
       "refersTo": "bitterns",
       "expression": "A siege of bitterns",
@@ -3198,6 +4754,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 12,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "siege",
       "refersTo": "herons",
       "expression": "A siege of herons",
@@ -3206,6 +4766,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 240,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "siege",
       "refersTo": "herons",
       "expression": "a siege of herons",
@@ -3214,6 +4778,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 252,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "singular",
       "refersTo": "boars",
       "expression": "a singular of boars",
@@ -3222,6 +4790,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 42,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "singular",
       "refersTo": "boars",
       "expression": "A singular of boars",
@@ -3230,6 +4802,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 250,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "skein",
       "refersTo": "geese",
       "expression": "a skein of geese (in flight)",
@@ -3238,6 +4814,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 427,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "skirl",
       "refersTo": "pipers",
       "expression": "a skirl of pipers",
@@ -3246,6 +4826,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 328,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "skulk",
       "refersTo": "thieves",
       "expression": "a skulk of thieves",
@@ -3254,6 +4838,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 232,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "skulk",
       "refersTo": "foxes",
       "expression": "a skulk of foxes",
@@ -3262,6 +4850,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 342,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "skulk",
       "refersTo": "friars",
       "expression": "a skulk of friars",
@@ -3270,6 +4862,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 444,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "slant",
       "refersTo": "journalists",
       "expression": "a slant of journalists",
@@ -3278,6 +4874,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 202,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "slate",
       "refersTo": "candidates",
       "expression": "a slate of candidates",
@@ -3286,6 +4886,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 396,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "slaver",
       "refersTo": "gluttons",
       "expression": "a slaver of gluttons",
@@ -3294,6 +4898,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 31,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sleuth",
       "refersTo": "bears",
       "expression": "A sleuth of bears",
@@ -3302,6 +4910,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 495,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "slew",
       "refersTo": "exterminators",
       "expression": "a slew of exterminators",
@@ -3310,6 +4922,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 217,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sloth",
       "refersTo": "bears",
       "expression": "a sloth of bears",
@@ -3318,6 +4934,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 425,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "slumber",
       "refersTo": "old guard",
       "expression": "a slumber of old guard",
@@ -3326,6 +4946,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 282,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "smack",
       "refersTo": "jellyfish",
       "expression": "a smack of jellyfish",
@@ -3334,6 +4958,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 84,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "smear",
       "refersTo": "curriers",
       "expression": "A smear of curriers",
@@ -3342,6 +4970,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 319,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "smirk",
       "refersTo": "couriers",
       "expression": "a smirk of couriers",
@@ -3350,6 +4982,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 362,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sneer",
       "refersTo": "butlers",
       "expression": "a sneer of butlers",
@@ -3358,6 +4994,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 231,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "sord",
       "refersTo": "mallards",
       "expression": "a sord of mallards",
@@ -3366,6 +5006,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 14,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "sorde / suite",
       "refersTo": "mallards",
       "expression": "A sorde or suite of mallards",
@@ -3374,6 +5018,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 268,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sounder",
       "refersTo": "swine",
       "expression": "a sounder of swine",
@@ -3382,6 +5030,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 503,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "spate",
       "refersTo": "ingenues",
       "expression": "a spate of ingenues",
@@ -3390,6 +5042,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 504,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "spite",
       "refersTo": "prima donnas",
       "expression": "a spite of prima donnas",
@@ -3398,6 +5054,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 490,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "split",
       "refersTo": "debtors",
       "expression": "a split of debtors",
@@ -3406,6 +5066,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 281,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "spring",
       "refersTo": "teal",
       "expression": "a spring of teal",
@@ -3414,6 +5078,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 92,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "spring",
       "refersTo": "teals",
       "expression": "A spring of teals",
@@ -3422,6 +5090,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 433,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "sprinkling",
       "refersTo": "gardeners",
       "expression": "a sprinkling of gardeners",
@@ -3430,6 +5102,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 310,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "squat",
       "refersTo": "daubers",
       "expression": "a squat of daubers",
@@ -3438,6 +5114,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 74,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "squat",
       "refersTo": "plasterers",
       "expression": "A squat of daubers",
@@ -3446,6 +5126,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 566,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "stack",
       "refersTo": "planes",
       "expression": "a stack of planes",
@@ -3454,6 +5138,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 68,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "stalk",
       "refersTo": "foresters",
       "expression": "A stalk of foresters",
@@ -3462,6 +5150,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 304,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "stalk",
       "refersTo": "foresters",
       "expression": "a stalk of foresters",
@@ -3470,6 +5162,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 497,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "stampede",
       "refersTo": "philatelists",
       "expression": "a stampede of philatelists",
@@ -3478,6 +5174,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 414,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "stand",
       "refersTo": "flamingoes",
       "expression": "a stand of flamingoes",
@@ -3486,6 +5186,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 53,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "state",
       "refersTo": "princes",
       "expression": "A state of princes",
@@ -3494,6 +5198,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 294,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "state",
       "refersTo": "princes",
       "expression": "a state of princes",
@@ -3502,6 +5210,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 422,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "stone",
       "refersTo": "drunks",
       "expression": "a stone of drunks (In England)",
@@ -3510,6 +5222,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 418,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "store",
       "refersTo": "gypsies",
       "expression": "a store of gypsies",
@@ -3518,6 +5234,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 430,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "strangle",
       "refersTo": "city-dwellers",
       "expression": "a strangle of city-dwellers",
@@ -3526,6 +5246,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 207,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "string",
       "refersTo": "ponies",
       "expression": "a string of ponies",
@@ -3534,6 +5258,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 365,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "string",
       "refersTo": "violinists",
       "expression": "a string of violinists",
@@ -3542,6 +5270,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 491,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "strip",
       "refersTo": "ecdysiasts",
       "expression": "a strip of ecdysiasts",
@@ -3550,6 +5282,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 385,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "stud",
       "refersTo": "poker players",
       "expression": "a stud of poker players",
@@ -3558,6 +5294,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 79,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "subtlety",
       "refersTo": "sergeants",
       "expression": "A subtlety of sergeants",
@@ -3566,6 +5306,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 316,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "subtlety",
       "refersTo": "sergeants",
       "expression": "a subtlety of sergeants",
@@ -3574,6 +5318,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 288,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "superfluity",
       "refersTo": "nuns",
       "expression": "a superfluity of nuns",
@@ -3582,6 +5330,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 56,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "superfluity",
       "refersTo": "nuns",
       "expression": "A superfluity of nuns",
@@ -3590,6 +5342,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 100,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "swarm",
       "refersTo": "bees",
       "expression": "A swarm of bees",
@@ -3598,6 +5354,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 203,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "swarm",
       "refersTo": "bees",
       "expression": "a swarm of bees",
@@ -3606,6 +5366,10 @@ export default {
       "categoryId": 3
     },
     {
+      "id": 374,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "swish",
       "refersTo": "hairdressers",
       "expression": "a swish of hairdressers",
@@ -3614,6 +5378,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 80,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "tabernacle",
       "refersTo": "bakers",
       "expression": "A tabernacle of bakers",
@@ -3622,6 +5390,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 431,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "tabula rasa",
       "refersTo": "empiricists",
       "expression": "a tabula rasa of empiricists",
@@ -3630,6 +5402,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 419,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "tantrum",
       "refersTo": "decorators",
       "expression": "a tantrum of decorators",
@@ -3638,6 +5414,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 67,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "temperance",
       "refersTo": "cooks",
       "expression": "A temperance of cooks",
@@ -3646,6 +5426,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 303,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "temperance",
       "refersTo": "cooks",
       "expression": "a temperance of cooks",
@@ -3654,6 +5438,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 527,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "tenure",
       "refersTo": "associate professors",
       "expression": "a tenure of associate professors",
@@ -3662,6 +5450,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 54,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "thong",
       "refersTo": "barons",
       "expression": "A thong of barons",
@@ -3670,6 +5462,10 @@ export default {
       "categoryId": 5
     },
     {
+      "id": 309,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "thrave",
       "refersTo": "threshers",
       "expression": "a thrave of threshers",
@@ -3678,6 +5474,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 73,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "thrave",
       "refersTo": "threshers",
       "expression": "A thrave of threshers",
@@ -3686,6 +5486,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 345,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "threatening",
       "refersTo": "courtiers",
       "expression": "a threatening of courtiers",
@@ -3694,6 +5498,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 442,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "thrill",
       "refersTo": "fans",
       "expression": "a thrill of fans",
@@ -3702,6 +5510,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 253,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "tidings",
       "refersTo": "magpies",
       "expression": "a tidings of magpies",
@@ -3710,6 +5522,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 98,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "tidings",
       "refersTo": "magpies",
       "expression": "A tidings of magpies",
@@ -3718,6 +5534,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 453,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "torque",
       "refersTo": "mechanics",
       "expression": "a torque of mechanics",
@@ -3726,6 +5546,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 564,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "tragedy",
       "refersTo": "railroad schedules",
       "expression": "a tragedy of railroad schedules",
@@ -3734,6 +5558,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 356,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "trance",
       "refersTo": "lovers",
       "expression": "a trance of lovers",
@@ -3742,6 +5570,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 461,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "transplant",
       "refersTo": "suburbanites",
       "expression": "a transplant of suburbanites",
@@ -3750,6 +5582,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 394,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "trine",
       "refersTo": "astrologers",
       "expression": "a trine of astrologers",
@@ -3758,6 +5594,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 48,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "trip",
       "refersTo": "hares",
       "expression": "A trip of hares",
@@ -3766,6 +5606,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 248,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "trip",
       "refersTo": "goats",
       "expression": "a trip of goats",
@@ -3774,6 +5618,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 47,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "trip",
       "refersTo": "goats",
       "expression": "A trip of goats",
@@ -3782,6 +5630,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 358,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "trip",
       "refersTo": "hippies",
       "expression": "a trip of hippies",
@@ -3790,6 +5642,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 261,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "troop",
       "refersTo": "kangaroos",
       "expression": "a troop of kangaroos",
@@ -3798,6 +5654,10 @@ export default {
       "categoryId": 2
     },
     {
+      "id": 498,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "truculence",
       "refersTo": "moving men",
       "expression": "a truculence of moving men",
@@ -3806,6 +5666,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 547,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "tumbler",
       "refersTo": "gymnasts",
       "expression": "a tumbler of gymnasts",
@@ -3814,6 +5678,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 579,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "twinkling",
       "refersTo": "todays",
       "expression": "a twinkling of todays",
@@ -3822,6 +5690,10 @@ export default {
       "categoryId": 10
     },
     {
+      "id": 402,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "unction",
       "refersTo": "undertakers",
       "expression": "an unction of undertakers",
@@ -3830,6 +5702,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 262,
+      "note": null,
+      "interest_level": null,
+      "hide_term": true,
       "term": "unkindness",
       "refersTo": "ravens",
       "expression": "an unkindness of ravens",
@@ -3838,6 +5714,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 26,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "unkindness",
       "refersTo": "ravens",
       "expression": "An unkindness of ravens",
@@ -3846,6 +5726,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 312,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "untruth",
       "refersTo": "summoners",
       "expression": "an untruth of summoners",
@@ -3854,6 +5738,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 76,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "untruth",
       "refersTo": "summoners",
       "expression": "An untruth of summoners",
@@ -3862,6 +5750,10 @@ export default {
       "categoryId": 6
     },
     {
+      "id": 483,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "vial",
       "refersTo": "Borgias",
       "expression": "a vial of Borgias",
@@ -3870,6 +5762,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 537,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "void",
       "refersTo": "urologists",
       "expression": "a void of urologists",
@@ -3878,6 +5774,10 @@ export default {
       "categoryId": 9
     },
     {
+      "id": 555,
+      "note": null,
+      "interest_level": 3,
+      "hide_term": false,
       "term": "wake",
       "refersTo": "buzzards",
       "expression": "a wake of buzzards",
@@ -3886,6 +5786,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 16,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "walk",
       "refersTo": "snipes",
       "expression": "A walk of snipes",
@@ -3894,6 +5798,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 220,
+      "note": null,
+      "interest_level": 1,
+      "hide_term": false,
       "term": "walk",
       "refersTo": "snipe",
       "expression": "a walk of snipe",
@@ -3902,6 +5810,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 350,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "wandering",
       "refersTo": "tinkers",
       "expression": "a wandering of tinkers",
@@ -3910,6 +5822,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 276,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "watch",
       "refersTo": "nightingales",
       "expression": "a watch of nightingales",
@@ -3918,6 +5834,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 475,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "watch",
       "refersTo": "Swiss",
       "expression": "a watch of Swiss",
@@ -3926,6 +5846,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 19,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "watch",
       "refersTo": "nightingales",
       "expression": "A watch of nightingales",
@@ -3934,6 +5858,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 338,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "waywardness",
       "refersTo": "herdsmen",
       "expression": "a waywardness of herdsmen",
@@ -3942,6 +5870,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 226,
+      "note": null,
+      "interest_level": 2,
+      "hide_term": false,
       "term": "wedge",
       "refersTo": "swans",
       "expression": "a wedge of swans",
@@ -3950,6 +5882,10 @@ export default {
       "categoryId": 1
     },
     {
+      "id": 543,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "wheeze",
       "refersTo": "joggers",
       "expression": "a wheeze of joggers",
@@ -3958,6 +5894,10 @@ export default {
       "categoryId": 8
     },
     {
+      "id": 379,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "whine",
       "refersTo": "clarinetists",
       "expression": "a whine of clarinetists",
@@ -3966,6 +5906,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 428,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "wiggle",
       "refersTo": "starlets",
       "expression": "a wiggle of starlets",
@@ -3974,6 +5918,10 @@ export default {
       "categoryId": 7
     },
     {
+      "id": 360,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "wince",
       "refersTo": "dentists",
       "expression": "a wince of dentists",
@@ -3982,6 +5930,10 @@ export default {
       "categoryId": 4
     },
     {
+      "id": 355,
+      "note": null,
+      "interest_level": null,
+      "hide_term": false,
       "term": "worship",
       "refersTo": "writers",
       "expression": "a worship of writers",

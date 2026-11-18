@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { collectives } from './collective-data.mjs';
 import { CollectiveLanding } from './CollectiveLanding.mjs';
 
 beforeEach(() => localStorage.clear());
@@ -35,8 +36,8 @@ test('category pages omit filters but keep individual favorite toggles', () => {
     render(<CollectiveLanding appHeader categorySlug="birds" />);
     expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Favorites' })).not.toBeInTheDocument();
-    expect(screen.getAllByRole('listitem')).toHaveLength(65);
-    expect(screen.getAllByRole('button', { name: /^Favorite / })).toHaveLength(65);
+    expect(screen.getAllByRole('listitem')).toHaveLength(collectives.filter(item => item.categoryId === 1).length);
+    expect(screen.getAllByRole('button', { name: /^Favorite / })).toHaveLength(collectives.filter(item => item.categoryId === 1).length);
 });
 
 test('overview displays only the category links in supplied order', () => {
@@ -56,7 +57,7 @@ test('category headings link to dedicated pages with only their own expressions'
     const category = render(<CollectiveLanding appHeader categorySlug="birds" />);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Birds of a Feather');
     expect(document.querySelectorAll('.collective-category')).toHaveLength(1);
-    expect(document.querySelectorAll('.collective-list > li')).toHaveLength(65);
+    expect(document.querySelectorAll('.collective-list > li')).toHaveLength(collectives.filter(item => item.categoryId === 1).length);
     expect(screen.getByRole('link', { name: /All collective nouns/ })).toHaveAttribute('href', '/collective-nouns');
     category.unmount();
     render(<CollectiveLanding appHeader categorySlug="nonexistent" />);
