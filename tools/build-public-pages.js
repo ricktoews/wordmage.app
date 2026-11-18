@@ -53,7 +53,8 @@ async function main() {
         '/collective/index.html /collective-nouns 301!',
         '/collective /collective-nouns 301!',
         '/collective/ /collective-nouns 301!',
-        '/collective/:start /collective-nouns?search=:start 301!',
+        // Existing /collective/ image assets must take precedence over legacy links.
+        '/collective/:start /collective-nouns?search=:start 301',
         '/index.html / 301!',
         '/random/index.html /random 301!',
         ...indexable.filter(route => route !== '/').map(route => `${route}/index.html ${route} 301!`),

@@ -7,7 +7,7 @@ for (const [route, sample, canonical] of [
     ['/', 'petrichor', '/'], ['/random', 'petrichor', '/'],
     ['/rare-words', snapshot.rare[0].word, '/rare-words'],
     ['/gothic-vocabulary', snapshot.gothic[0].word, '/gothic-vocabulary'],
-    ['/collective-nouns', 'A charm of goldfinches', '/collective-nouns'],
+    ['/collective-nouns', 'Collective noun categories', '/collective-nouns'],
     ['/browse', 'abderian', '/browse'], ['/about', 'entertainment for word fanciers', '/about']
 ]) {
     const response = await fetch(`${base}${route}`, { redirect: 'manual' });
@@ -38,6 +38,12 @@ for (const route of ['/collective', '/collective/', '/collective/index.html', '/
     assert.equal(destination.pathname, '/collective-nouns');
     if (route.endsWith('/goldfinches')) assert.equal(destination.searchParams.get('search'), 'goldfinches');
 }
+for (const route of ['/collective/Victorian%20Parliament%20of%20Owls.png', '/collective-illustrations/Red-Billed%20Chough%20on%20Coastal%20Ruins.png']) {
+    const response = await fetch(`${base}${route}`, { redirect: 'manual' });
+    assert.equal(response.status, 200, route);
+    assert.ok(response.headers.get('content-type').startsWith('image/'), route);
+}
+console.log('200 illustration assets without redirects');
 console.log('301 legacy collective routes');
 const aliasFile = await fetch(`${base}/random/index.html`, { redirect: 'manual' });
 assert.equal(aliasFile.status, 301);
