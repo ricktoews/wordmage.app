@@ -31,7 +31,17 @@ function combineCollectives(records) {
     });
     return [...merged.values()].sort(compareCollectives);
 }
+// Group after sorting, preserving the leading expression's interest ranking.
+function groupCollectivesBySubject(entries) {
+    const groups = new Map();
+    entries.forEach(item => {
+        const key = item.refersTo.trim().toLowerCase();
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(item);
+    });
+    return [...groups.values()];
+}
 const categories = [...(collectiveData.categories || [])].sort((a, b) => a.sortOrder - b.sortOrder);
 const collectives = combineCollectives(collectiveData.records);
 const collectiveKey = item => [item.term, item.refersTo, item.expression].map(value => value.trim().toLowerCase()).join('|');
-export { interestLevel, compareCollectives, categories, collectives, collectiveKey, combineCollectives };
+export { groupCollectivesBySubject, interestLevel, compareCollectives, categories, collectives, collectiveKey, combineCollectives };

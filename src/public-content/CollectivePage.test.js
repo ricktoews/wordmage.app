@@ -68,7 +68,7 @@ test('category pages omit sorting controls', () => {
     expect(screen.queryByRole('group', { name: 'Sort expressions' })).not.toBeInTheDocument();
 });
 
-test('supplied notes appear after the expression and before its source, without duplicates', () => {
+test('only the primary expression note is displayed once per subject group', () => {
     const row = record(1, 'First group', 'an expression with context');
     const collection = normalizeCollectiveResponse([
         { ...row, note: 'A little context.' },
@@ -76,10 +76,9 @@ test('supplied notes appear after the expression and before its source, without 
         { ...record(1, 'First group', 'an expression without a note'), note: '   ' }
     ]);
     render(<CollectiveLanding appHeader categorySlug="category-1" collection={collection} />);
-    const note = screen.getByText('A little context.');
-    expect(note.previousElementSibling).toHaveTextContent('(Test; Other source)');
-    expect(note.previousElementSibling.previousElementSibling).toHaveTextContent('an expression with context');
+    expect(screen.getByText('A little context.')).toBeInTheDocument();
     expect(document.querySelectorAll('.collective-expression-note')).toHaveLength(1);
+    expect(collection.collectives.find(item => item.expression === row.expression).notes).toEqual(['A little context.']);
 });
 
 test('category images use UI-root paths for new paths and legacy API-hosted URLs', () => {
@@ -102,5 +101,28 @@ test('term illustrations use UI assets, omit blanks, and survive merging duplica
     const images = document.querySelectorAll('.collective-expression-image');
     expect(images).toHaveLength(1);
     expect(images[0]).toHaveAttribute('src', '/collective-illustrations/Red-Billed%20Chough%20on%20Coastal%20Ruins.png');
-    expect(images[0].previousElementSibling).toHaveTextContent('(Test; Other source)');
+    expect(images[0].previousElementSibling).toHaveTextContent('Also another expression(Test)');
+    expect(images[0].parentElement).toHaveTextContent('(Test; Other source)');
+});
+
+test('expressions for one subject stay together, each with its own source and Also for alternatives', () => {
+    const collection = normalizeCollectiveResponse([
+        { ...record(1, 'First group', 'a deceit of lapwings'), term: 'deceit', refersTo: 'lapwings', source: 'First source', interest_level: 3, image_path: '/collective-illustrations/test.png', note: 'Primary note.' },
+        { ...record(1, 'First group', 'a desert of lapwings'), term: 'desert', refersTo: ' Lapwings ', source: 'Second source', interest_level: 1, note: 'Alternative note stays hidden.' },
+        { ...record(1, 'First group', 'a charm of finches'), term: 'charm', refersTo: 'finches', interest_level: 2 },
+        { ...record(2, 'Second group', 'a flight of lapwings'), refersTo: 'lapwings' }
+    ]);
+    render(<CollectiveLanding appHeader categorySlug="category-1" collection={collection} />);
+    const groups = document.querySelectorAll('.collective-subject-group');
+    expect(groups).toHaveLength(2);
+    expect(groups[0].querySelectorAll('.collective-expression')).toHaveLength(2);
+    expect(groups[0]).toHaveTextContent('a deceit of lapwings(First source)Also a desert of lapwings(Second source)');
+    expect(groups[0].querySelectorAll('.collective-also')).toHaveLength(1);
+    expect(groups[0].lastElementChild).toHaveClass('collective-expression-note');
+    expect(groups[0].lastElementChild).toHaveTextContent('Primary note.');
+    expect(groups[0].lastElementChild.previousElementSibling).toHaveClass('collective-expression-image');
+    expect(groups[0].querySelectorAll('.collective-expression-note')).toHaveLength(1);
+    expect(screen.queryByText('Alternative note stays hidden.')).not.toBeInTheDocument();
+    expect(groups[1].querySelector('.collective-also')).toBeNull();
+    expect(screen.queryByText('a flight of lapwings')).not.toBeInTheDocument();
 });

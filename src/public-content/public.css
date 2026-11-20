@@ -481,3 +481,8 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 
 .collective-expression-image { display: block; width: 100%; max-width: 300px; max-height: 240px; height: auto; object-fit: contain; margin: 12px 0; }
 .collective-expression-image[hidden] { display: none; }
+
+.collective-list > li.collective-subject-group { display: block; }
+.collective-expression { display: flex; align-items: baseline; }
+.collective-expression + .collective-expression { margin-top: 10px; }
+.collective-also { font: 400 13px/1.45 Roboto, system-ui, sans-serif; color: #59665e; }

@@ -1,6 +1,6 @@
 import React from 'react';
 import FavoriteThumb from '../components/icons/FavoriteThumb.mjs';
-import { categories, collectives, collectiveKey, compareCollectives } from './collective-data.mjs';
+import { categories, collectives, collectiveKey, compareCollectives, groupCollectivesBySubject } from './collective-data.mjs';
 import { pages } from './pages.mjs';
 import { PublicLinks, EditorialMasthead, PublicContent } from './PublicContent.mjs';
 const h = React.createElement;
@@ -52,6 +52,18 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
     const sections = categoryList.map(category => ({ ...category, entries: visible.filter(item => item.categoryId === category.id) }))
         .filter(category => category.entries.length);
 
+    function renderExpression(item, index) {
+        return h('div', { className: 'collective-expression', key: collectiveKey(item) },
+            h('button', { type: 'button', className: 'word-favorite-toggle',
+                'aria-label': `${favorites.has(collectiveKey(item)) ? 'Unfavorite' : 'Favorite'} ${item.expression}`,
+                'aria-pressed': favorites.has(collectiveKey(item)), title: 'Favorite saved in this browser',
+                onClick: () => toggleFavorite(item) }, h(FavoriteThumb, { filled: favorites.has(collectiveKey(item)) })),
+            h('span', { className: 'collective-expression-copy' },
+                index > 0 ? h('span', { className: 'collective-also' }, 'Also ') : null,
+                h('span', { className: 'word-item-word word-item-word-no-after' }, item.expression),
+                h('small', { className: 'collective-expression-source' }, `(${item.sources.join('; ')})`)));
+    }
+
     if (categorySlug && !category) return h(PublicContent, { page: '/404' });
 
     return h('div', { className: `editorial-landing editorial-collective${category ? ' collective-category-page' : ''}`, style: { '--collective-sticky-top': appHeader ? '50px' : '64px' } },
@@ -82,19 +94,12 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
                         item.description ? h('span', { className: 'collective-category-description' }, item.description) : null))) :
                 h('div', { role: 'region', 'aria-label': 'Collective noun expressions' }, sections.map(category =>
                     h('section', { className: 'collective-category', key: category.id, 'aria-label': category.name },
-                        h('ul', { className: 'collective-list', 'aria-label': category.name }, category.entries.map(item =>
-                    h('li', { key: collectiveKey(item) },
-                        h('button', { type: 'button', className: 'word-favorite-toggle',
-                            'aria-label': `${favorites.has(collectiveKey(item)) ? 'Unfavorite' : 'Favorite'} ${item.expression}`,
-                            'aria-pressed': favorites.has(collectiveKey(item)),
-                            title: 'Favorite saved in this browser', onClick: () => toggleFavorite(item) },
-                            h(FavoriteThumb, { filled: favorites.has(collectiveKey(item)) })),
-                        h('span', { className: 'collective-expression-copy' },
-                            h('span', { className: 'word-item-word word-item-word-no-after' }, item.expression),
-                            h('small', { className: 'collective-expression-source' }, `(${item.sources.join('; ')})`),
-                            item.image_path ? h('img', { className: 'collective-expression-image', src: item.image_path, alt: '', loading: 'lazy', decoding: 'async',
-                                onError: event => { event.currentTarget.hidden = true; } }) : null,
-                            item.notes?.map(note => h('span', { className: 'collective-expression-note', key: note }, note))))))))),
+                        h('ul', { className: 'collective-list', 'aria-label': category.name }, groupCollectivesBySubject(category.entries).map(group =>
+                            h('li', { className: 'collective-subject-group', key: group[0].refersTo.trim().toLowerCase() }, group.map(renderExpression),
+                                [...new Set(group.map(item => item.image_path).filter(Boolean))].map(src =>
+                                    h('img', { className: 'collective-expression-image', key: src, src, alt: '', loading: 'lazy', decoding: 'async',
+                                        onError: event => { event.currentTarget.hidden = true; } })),
+                                group[0].notes?.[0] ? h('span', { className: 'collective-expression-note' }, group[0].notes[0]) : null)))))),
                 category && !visible.length ? h('p', null, 'No expressions in this category yet.') : null,
                 h('section', { className: 'collective-source-note', 'aria-labelledby': 'collective-about-title' },
                     h('h2', { id: 'collective-about-title' }, 'About this collection'),

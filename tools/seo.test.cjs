@@ -56,7 +56,7 @@ test('production HTML contains substantive content and one correct canonical per
         const { categories, collectives } = await import('../src/public-content/collective-data.mjs');
         for (const category of categories) {
             const html = fs.readFileSync(path.join(dir, `collective-nouns/${category.slug}/index.html`), 'utf8');
-            assert.equal((html.match(/<li><button type="button" class="word-favorite-toggle"/g) || []).length,
+            assert.equal((html.match(/<button type="button" class="word-favorite-toggle"/g) || []).length,
                 collectives.filter(item => item.categoryId === category.id).length);
             assert.ok(html.includes('href="/collective-nouns"'));
         }
@@ -64,7 +64,7 @@ test('production HTML contains substantive content and one correct canonical per
         const collectiveHtml = fs.readFileSync(path.join(dir, 'collective-nouns/index.html'), 'utf8');
         assert.ok(collectiveHtml.includes('Birds of a Feather'));
         assert.ok(collectiveHtml.includes('href="/collective-nouns/birds"'));
-        assert.equal((collectiveHtml.match(/<li><button type="button" class="word-favorite-toggle"/g) || []).length, 0);
+        assert.equal((collectiveHtml.match(/<button type="button" class="word-favorite-toggle"/g) || []).length, 0);
         assert.ok(collectiveHtml.includes('individual usage histories have not been assessed'));
         assert.ok(!collectiveHtml.includes('name="robots" content="noindex'));
         assert.equal(fs.readFileSync(path.join(dir, 'index.html'), 'utf8'), fs.readFileSync(path.join(dir, 'random/index.html'), 'utf8'));
