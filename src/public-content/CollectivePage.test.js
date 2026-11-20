@@ -63,22 +63,9 @@ test('display ranks visible entries by interest, with subject ordering for ties 
         .toEqual(['first', 'second', 'zero', 'unrated']);
 });
 
-test('category controls sort by subject, collective term, or interest level', () => {
-    const collection = normalizeCollectiveResponse([
-        { ...record(1, 'First group', 'a zephyr of apes'), term: 'zephyr', refersTo: 'apes', interest_level: 1 },
-        { ...record(1, 'First group', 'an accord of zebras'), term: 'accord', refersTo: 'zebras', interest_level: 2 },
-        { ...record(1, 'First group', 'a gathering of bees'), term: 'gathering', refersTo: 'bees', interest_level: 3 }
-    ]);
-    render(<CollectiveLanding appHeader categorySlug="category-1" collection={collection} />);
-    const expressions = () => [...document.querySelectorAll('.collective-list .word-item-word')].map(item => item.textContent);
-    expect(expressions()).toEqual(['a gathering of bees', 'an accord of zebras', 'a zephyr of apes']);
-    fireEvent.click(screen.getByRole('button', { name: 'Subject A–Z' }));
-    expect(expressions()).toEqual(['a zephyr of apes', 'a gathering of bees', 'an accord of zebras']);
-    fireEvent.click(screen.getByRole('button', { name: 'Term A–Z' }));
-    expect(expressions()).toEqual(['an accord of zebras', 'a gathering of bees', 'a zephyr of apes']);
-    fireEvent.click(screen.getByRole('button', { name: 'Interest level' }));
-    expect(screen.getByRole('button', { name: 'Interest level' })).toHaveAttribute('aria-pressed', 'true');
-    expect(expressions()[0]).toBe('a gathering of bees');
+test('category pages omit sorting controls', () => {
+    render(<CollectiveLanding appHeader categorySlug="birds" />);
+    expect(screen.queryByRole('group', { name: 'Sort expressions' })).not.toBeInTheDocument();
 });
 
 test('supplied notes appear after the expression and before its source, without duplicates', () => {
@@ -90,8 +77,8 @@ test('supplied notes appear after the expression and before its source, without 
     ]);
     render(<CollectiveLanding appHeader categorySlug="category-1" collection={collection} />);
     const note = screen.getByText('A little context.');
-    expect(note.previousElementSibling).toHaveTextContent('an expression with context');
-    expect(note.nextElementSibling).toHaveTextContent('Source: Test; Other source');
+    expect(note.previousElementSibling).toHaveTextContent('(Test; Other source)');
+    expect(note.previousElementSibling.previousElementSibling).toHaveTextContent('an expression with context');
     expect(document.querySelectorAll('.collective-expression-note')).toHaveLength(1);
 });
 
@@ -115,5 +102,5 @@ test('term illustrations use UI assets, omit blanks, and survive merging duplica
     const images = document.querySelectorAll('.collective-expression-image');
     expect(images).toHaveLength(1);
     expect(images[0]).toHaveAttribute('src', '/collective-illustrations/Red-Billed%20Chough%20on%20Coastal%20Ruins.png');
-    expect(images[0].previousElementSibling).toHaveTextContent('a clattering of choughs');
+    expect(images[0].previousElementSibling).toHaveTextContent('(Test; Other source)');
 });

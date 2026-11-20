@@ -27,7 +27,6 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
     const categoryList = collection?.categories || categories;
     const category = categorySlug ? categoryList.find(item => item.slug === categorySlug) : null;
     const data = pages['/collective-nouns'];
-    const [sortOrder, setSortOrder] = React.useState('interest');
     const [favorites, setFavorites] = React.useState(() => new Set());
     React.useEffect(() => {
         setFavorites(readFavorites());
@@ -47,12 +46,8 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
         setFavorites(next);
     }
     const visible = React.useMemo(() => entries.filter(item => !categorySlug || item.categoryId === category?.id)
-        .sort((a, b) => {
-            if (sortOrder === 'interest') return compareCollectives(a, b);
-            const primary = sortOrder === 'term' ? a.term.localeCompare(b.term) : a.refersTo.localeCompare(b.refersTo);
-            return primary || a.expression.localeCompare(b.expression);
-        }),
-    [entries, categorySlug, category?.id, sortOrder]);
+        .sort(compareCollectives),
+    [entries, categorySlug, category?.id]);
 
     const sections = categoryList.map(category => ({ ...category, entries: visible.filter(item => item.categoryId === category.id) }))
         .filter(category => category.entries.length);
@@ -77,9 +72,6 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
                 !category ? h('div', { className: 'editorial-collection-header' }, h('div', { className: 'editorial-section-heading' },
                     h('p', { className: 'editorial-eyebrow' }, 'Creatures, people, and things'),
                     h('h2', { id: 'collection-title' }, category ? 'Explore the expressions' : data.collectionTitle), !category ? h('p', null, data.collectionIntro) : null)) : null,
-                category ? h('div', { className: 'collective-sort-controls', role: 'group', 'aria-label': 'Sort expressions' },
-                    [['subject', 'Subject A–Z'], ['term', 'Term A–Z'], ['interest', 'Interest level']].map(([value, label]) =>
-                        h('button', { key: value, type: 'button', 'aria-pressed': sortOrder === value, onClick: () => setSortOrder(value) }, label))) : null,
                 loadError ? h('p', { role: 'status' }, loadError) : null,
                 !category ? h('nav', { className: 'collective-category-index', 'aria-label': 'Collective noun categories' },
                     categoryList.map(item => h('a', { key: item.id, href: `/collective-nouns/${item.slug}`, 'data-public-link': true,
@@ -99,10 +91,10 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
                             h(FavoriteThumb, { filled: favorites.has(collectiveKey(item)) })),
                         h('span', { className: 'collective-expression-copy' },
                             h('span', { className: 'word-item-word word-item-word-no-after' }, item.expression),
+                            h('small', { className: 'collective-expression-source' }, `(${item.sources.join('; ')})`),
                             item.image_path ? h('img', { className: 'collective-expression-image', src: item.image_path, alt: '', loading: 'lazy', decoding: 'async',
                                 onError: event => { event.currentTarget.hidden = true; } }) : null,
-                            item.notes?.map(note => h('span', { className: 'collective-expression-note', key: note }, note)),
-                            h('small', { className: 'collective-expression-source' }, 'Source: ', item.sources.join('; '))))))))),
+                            item.notes?.map(note => h('span', { className: 'collective-expression-note', key: note }, note))))))))),
                 category && !visible.length ? h('p', null, 'No expressions in this category yet.') : null,
                 h('section', { className: 'collective-source-note', 'aria-labelledby': 'collective-about-title' },
                     h('h2', { id: 'collective-about-title' }, 'About this collection'),
