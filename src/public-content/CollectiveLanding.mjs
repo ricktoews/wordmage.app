@@ -59,14 +59,17 @@ function CollectiveLanding({ appHeader = false, collection, loadError = '', cate
                 'aria-pressed': favorites.has(collectiveKey(item)), title: 'Favorite saved in this browser',
                 onClick: () => toggleFavorite(item) }, h(FavoriteThumb, { filled: favorites.has(collectiveKey(item)) })),
             h('span', { className: 'collective-expression-copy' },
-                index > 0 ? h('span', { className: 'collective-also' }, 'Also ') : null,
+                index > 0 ? h('span', { className: 'collective-also' }, 'also ') : null,
                 h('span', { className: 'word-item-word word-item-word-no-after' }, item.expression),
-                h('small', { className: 'collective-expression-source' }, `(${item.sources.join('; ')})`)));
+                item.sources.length ? h(React.Fragment, null, ' ',
+                    h('small', { className: 'collective-expression-source' }, item.sources.join('; '))) : null));
     }
 
     if (categorySlug && !category) return h(PublicContent, { page: '/404' });
 
-    return h('div', { className: `editorial-landing editorial-collective${category ? ' collective-category-page' : ''}`, style: { '--collective-sticky-top': appHeader ? '50px' : '64px' } },
+    const categoryClass = category ? ` collective-category-page${category.slug === 'birds' ? ' collective-category-birds' : ''}` : '';
+
+    return h('div', { className: `editorial-landing editorial-collective${categoryClass}`, style: { '--collective-sticky-top': appHeader ? '50px' : '64px' } },
         !appHeader ? h(EditorialMasthead, { page: '/collective-nouns' }) : null,
         h('main', null,
             category ? h('header', { className: 'collective-category-intro' },

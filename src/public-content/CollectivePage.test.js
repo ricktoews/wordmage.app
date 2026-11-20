@@ -101,11 +101,11 @@ test('term illustrations use UI assets, omit blanks, and survive merging duplica
     const images = document.querySelectorAll('.collective-expression-image');
     expect(images).toHaveLength(1);
     expect(images[0]).toHaveAttribute('src', '/collective-illustrations/Red-Billed%20Chough%20on%20Coastal%20Ruins.png');
-    expect(images[0].previousElementSibling).toHaveTextContent('Also another expression(Test)');
-    expect(images[0].parentElement).toHaveTextContent('(Test; Other source)');
+    expect(images[0].previousElementSibling).toHaveTextContent('also another expression Test');
+    expect(images[0].parentElement.querySelector('.collective-expression-source').textContent).toBe('Test; Other source');
 });
 
-test('expressions for one subject stay together, each with its own source and Also for alternatives', () => {
+test('expressions for one subject stay together, each with its own source and also for alternatives', () => {
     const collection = normalizeCollectiveResponse([
         { ...record(1, 'First group', 'a deceit of lapwings'), term: 'deceit', refersTo: 'lapwings', source: 'First source', interest_level: 3, image_path: '/collective-illustrations/test.png', note: 'Primary note.' },
         { ...record(1, 'First group', 'a desert of lapwings'), term: 'desert', refersTo: ' Lapwings ', source: 'Second source', interest_level: 1, note: 'Alternative note stays hidden.' },
@@ -116,7 +116,10 @@ test('expressions for one subject stay together, each with its own source and Al
     const groups = document.querySelectorAll('.collective-subject-group');
     expect(groups).toHaveLength(2);
     expect(groups[0].querySelectorAll('.collective-expression')).toHaveLength(2);
-    expect(groups[0]).toHaveTextContent('a deceit of lapwings(First source)Also a desert of lapwings(Second source)');
+    expect([...groups[0].querySelectorAll('.collective-expression')].map(item => item.textContent)).toEqual([
+        'a deceit of lapwings First source',
+        'also a desert of lapwings Second source'
+    ]);
     expect(groups[0].querySelectorAll('.collective-also')).toHaveLength(1);
     expect(groups[0].lastElementChild).toHaveClass('collective-expression-note');
     expect(groups[0].lastElementChild).toHaveTextContent('Primary note.');

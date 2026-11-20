@@ -449,7 +449,18 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 .collective-category-intro .collective-category-image { margin-top: 24px; }
 
 .collective-expression-copy { display: block; min-width: 0; }
-.collective-expression-source { display: block; margin-top: 3px; color: #6a766c; font: 400 11.5px/1.45 Roboto, system-ui, sans-serif; }
+.collective-category-birds .collective-expression-copy .word-item-word { font-variant-caps: small-caps; }
+.collective-expression-source {
+    display: inline-block;
+    box-sizing: border-box;
+    max-width: 100%;
+    margin-inline-start: 4px;
+    padding: 1px 5px;
+    border: 1px solid #aab2a8;
+    border-radius: 3px;
+    color: #6a766c;
+    font: 400 11.5px/1.45 Roboto, system-ui, sans-serif;
+}
 
 /* Temporarily hide collective favorites while retaining saved selections. */
 .collective-list .word-favorite-toggle { display: none; }
@@ -484,5 +495,5 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 
 .collective-list > li.collective-subject-group { display: block; }
 .collective-expression { display: flex; align-items: baseline; }
-.collective-expression + .collective-expression { margin-top: 10px; }
-.collective-also { font: 400 13px/1.45 Roboto, system-ui, sans-serif; color: #59665e; }
+.collective-expression + .collective-expression { margin-top: 5px; }
+.collective-also { font: italic 400 13px/1.45 Roboto, system-ui, sans-serif; color: #59665e; }
