@@ -456,7 +456,7 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
     max-width: 100%;
     margin-inline-start: 4px;
     padding: 1px 5px;
-    border: 1px solid #aab2a8;
+    border: 1px solid #c8cec4;
     border-radius: 3px;
     color: #6a766c;
     font: 400 11.5px/1.45 Roboto, system-ui, sans-serif;
@@ -488,7 +488,7 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 }
 
 
-.collective-expression-note { display: block; margin: 6px 0; color: #59665e; font: 400 13px/1.55 Roboto, system-ui, sans-serif; white-space: pre-line; }
+.collective-expression-note { display: block; margin: 6px 0; color: #59665e; font: italic 400 14px/1.55 'Libre Baskerville', Baskerville, Georgia, serif; white-space: pre-line; }
 
 .collective-expression-image { display: block; width: 100%; max-width: 300px; max-height: 240px; height: auto; object-fit: contain; margin: 12px 0; }
 .collective-expression-image[hidden] { display: none; }
@@ -496,4 +496,4 @@ body .App .site-masthead a.site-browse-link { display: inline-flex; align-items:
 .collective-list > li.collective-subject-group { display: block; }
 .collective-expression { display: flex; align-items: baseline; }
 .collective-expression + .collective-expression { margin-top: 5px; }
-.collective-also { font: italic 400 13px/1.45 Roboto, system-ui, sans-serif; color: #59665e; }
+.collective-also { font: italic 400 13px/1.45 'Libre Baskerville', Baskerville, Georgia, serif; color: #59665e; }
